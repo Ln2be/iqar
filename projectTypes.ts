@@ -15,20 +15,22 @@ export interface UserType {
 }
 
 export interface Post {
-  type: String;
-  departement: String;
-  region: String;
-  details: String;
+  _id: string;
+  type: string;
+  departement: string;
+  region: string;
+  details: string;
   images: [
     {
-      data: String;
-      width: Number;
-      height: Number;
+      data: string;
+      width: number;
+      height: number;
     }
   ];
-  price: Number;
-  tel: String;
-  id: String;
+  price: number;
+  tel: string;
+  id: string;
   createdAt: Date;
-  count: Number;
+  count: number;
+  user: string;
 }

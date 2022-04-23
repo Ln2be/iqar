@@ -1,12 +1,12 @@
 import * as React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import TextField from "@mui/material/TextField";
 import rtlPlugin from "stylis-plugin-rtl";
 import { prefixer } from "stylis";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import Header from "./auth/header";
-import { Box } from "@mui/system";
+import { ReactNode } from "react";
+import { Container } from "@mui/material";
 
 const theme = createTheme({
   direction: "rtl", // Both here and <body dir="rtl">
@@ -17,12 +17,12 @@ const cacheRtl = createCache({
   stylisPlugins: [prefixer, rtlPlugin],
 });
 
-export default function Layout({ children }) {
+export default function Layout({ children }: { children: JSX.Element }) {
   return (
     <CacheProvider value={cacheRtl}>
       <ThemeProvider theme={theme}>
         <Header></Header>
-        <Box dir="rtl">{children}</Box>
+        <>{children}</>
       </ThemeProvider>
     </CacheProvider>
   );

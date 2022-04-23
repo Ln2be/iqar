@@ -1,4 +1,4 @@
-import div from "../components/layout";
+import React from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Radio from "@mui/material/Radio";
@@ -12,7 +12,6 @@ import { useState } from "react";
 import Layout from "../components/layout";
 import { Box } from "@mui/system";
 import Router from "next/router";
-import { v4 as uuidv4 } from "uuid";
 import { useUser } from "../lib/auth/hooks";
 
 export default function Page() {
@@ -238,7 +237,7 @@ export default function Page() {
                   var imageWH = new Image();
                   imageWH.src = value;
 
-                  var hwPromise = new Promise((resolve, reject) => {
+                  var hwPromise = new Promise((resolve) => {
                     imageWH.onload = (event) => {
                       image.width = event.target.width;
                       image.height = event.target.height;

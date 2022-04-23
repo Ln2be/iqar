@@ -1,13 +1,15 @@
+import React from "react";
 import Layout from "../components/layout";
 import Image from "next/image";
 import { DBPost } from "../lib/mongo";
 import { Box } from "@mui/system";
 import Router from "next/router";
+import { Post } from "../projectTypes";
 
-export default function Page({ posts }) {
-  const postsOb = JSON.parse(posts);
+export default function Page({ posts }: { posts: string }) {
+  const postsOb = JSON.parse(posts) as [Post];
 
-  const typeArabic = {
+  const typeArabic: { [key: string]: string } = {
     buying: "شراء",
     selling: "بيع",
     demandRent: "طلب ايجار",
@@ -27,15 +29,12 @@ export default function Page({ posts }) {
           const image = post.images[0];
           return (
             <Box
+              key={i}
               sx={{
                 display: "flex",
                 flexDirection: "column",
               }}
-              onClick={() => {
-                Router.push("/post?id=" + post._id);
-              }}
             >
-              <Box></Box>
               {image ? (
                 <Image
                   key={i}
@@ -43,6 +42,9 @@ export default function Page({ posts }) {
                   width={image.width}
                   height={image.height}
                   src={image.data}
+                  onClick={() => {
+                    Router.push("/post?id=" + post._id);
+                  }}
                 ></Image>
               ) : (
                 <></>
@@ -85,8 +87,12 @@ export default function Page({ posts }) {
   );
 }
 
-export async function getServerSideProps({ query }) {
-  var postsObject = [];
+export async function getServerSideProps({
+  query,
+}: {
+  query: { [key: string]: string };
+}) {
+  let postsObject = [];
   if (query.type && query.departement) {
     postsObject = await DBPost.find({
       type: query.type,

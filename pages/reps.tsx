@@ -1,9 +1,18 @@
+import React, { Component } from "react";
 import Layout from "../components/layout";
 import { DBUser } from "../lib/mongo";
 import { Box } from "@mui/system";
+import { UserType } from "../projectTypes";
 
-export default function Page({ usersJson }) {
-  const users = JSON.parse(usersJson);
+type JSONValue =
+  | string
+  | number
+  | boolean
+  | { [x: string]: JSONValue }
+  | Array<JSONValue>;
+
+export default function Page({ usersJson }: { usersJson: string }) {
+  const users: [UserType] = JSON.parse(usersJson);
 
   return (
     <Layout>
@@ -18,6 +27,7 @@ export default function Page({ usersJson }) {
         {users.map((user, i) => {
           return (
             <Box
+              key={i}
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -43,7 +53,7 @@ export default function Page({ usersJson }) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: any) {
   const usersObject = await DBUser.find({});
   const usersJson = JSON.stringify(usersObject);
 

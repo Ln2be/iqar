@@ -1,17 +1,18 @@
+import React from "react";
 import Layout from "../components/layout";
 import Image from "next/image";
 import { Box } from "@mui/system";
 import { DBPost } from "../lib/mongo";
-import { Button as a } from "@mui/material";
 import { useUser } from "../lib/auth/hooks";
+import { Post } from "../projectTypes";
 
-export default function Page({ postjson }) {
+export default function Page({ postjson }: { postjson: string }) {
   const user = useUser();
 
-  const post = JSON.parse(postjson);
+  const post = JSON.parse(postjson) as Post;
   // const post = null;
 
-  const typeArabic = {
+  const typeArabic: { [key: string]: string } = {
     buying: "شراء",
     selling: "بيع",
     demandRent: "طلب ايجار",
@@ -88,7 +89,11 @@ export default function Page({ postjson }) {
   );
 }
 
-export async function getServerSideProps({ query }) {
+export async function getServerSideProps({
+  query,
+}: {
+  query: { [key: string]: string };
+}) {
   const postObject = await DBPost.findOne({ _id: query.id });
 
   const postjson = JSON.stringify(postObject);

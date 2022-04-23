@@ -1,3 +1,4 @@
+import React, { Component } from "react";
 import type { NextPage } from "next";
 import { useUser } from "../lib/auth/hooks";
 import Layout from "../components/auth/layout";
@@ -14,12 +15,12 @@ const Home: NextPage = () => {
       <ol>
         <li>Click Login and enter a username and password.</li>
         <li>
-          You'll be redirected to Home. Click on Profile, notice how your
+          You will be redirected to Home. Click on Profile, notice how your
           session is being used through a token stored in a cookie.
         </li>
         <li>
-          Click Logout and try to go to Profile again. You'll get redirected to
-          Login.
+          Click Logout and try to go to Profile again. You will get redirected
+          to Login.
         </li>
       </ol>
 

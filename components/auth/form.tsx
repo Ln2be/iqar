@@ -1,3 +1,4 @@
+import React from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
@@ -50,7 +51,7 @@ const currencies = [
   },
 ];
 
-var post = {
+const post = {
   nature: "",
   text: "",
   departement: "",
@@ -58,7 +59,7 @@ var post = {
   images: [],
 };
 
-const Form = ({ isLogin, errorMessage, space, onSubmit }: formType) => (
+const Form = ({ isLogin, errorMessage, onSubmit }: formType) => (
   <form onSubmit={onSubmit}>
     {isLogin ? (
       <Box
