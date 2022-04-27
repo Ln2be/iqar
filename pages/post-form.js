@@ -16,6 +16,7 @@ import { useUser } from "../lib/auth/hooks";
 
 export default function Page() {
   const user = useUser();
+  const [imagesUrl, setImagesUrl] = useState([]);
 
   const departements = [
     {
@@ -201,12 +202,24 @@ export default function Page() {
               type="file"
               onChange={(event) => {
                 const files = event.target.files;
+
+                // Only files are allowed
+                const nf = files.length < 5 ? files.length : 5;
                 imPromises = [];
-                for (let i = 0; i < files.length; i++) {
-                  let file = files.item(i);
-                  const im = resizeFile(file);
-                  imPromises.push(im);
-                }
+
+                // for (let i = 0; i < nf; i++) {
+                //   let file = files.item(i);
+                //   const im = resizeFile(file);
+                //   imPromises.push(im);
+                // }
+
+                imPromises = [...new Array(nf)].map((file, i) =>
+                  resizeFile(files.item(i))
+                );
+
+                // setImagesUrl(
+                //   [...new Array(nf)].map((file, i) => files.item(i))
+                // );
               }}
               accept="image/*"
               hidden
@@ -220,6 +233,17 @@ export default function Page() {
             flexDirection: "row-reverse",
           }}
         >
+          <Box
+            sx={{
+              display: "flex",
+              mb: 2,
+            }}
+          >
+            {imagesUrl.map((url) => (
+              <img src={URL.createObjectURL(url)}></img>
+            ))}
+          </Box>
+          {/* This button needs to be viewed again */}
           <Button
             variant="contained"
             onClick={async () => {

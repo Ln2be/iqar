@@ -45,6 +45,7 @@ const postSchema = new Schema<Post>({
   id: String,
   count: Number,
   createdAt: Date,
+  user: String,
 });
 
 export const DBPost =

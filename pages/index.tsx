@@ -1,47 +1,119 @@
-import React, { Component } from "react";
-import type { NextPage } from "next";
+import React from "react";
+import Layout from "../components/layout";
+import Image from "next/image";
+import { DBPost } from "../lib/mongo";
+import { Box } from "@mui/system";
+import Router from "next/router";
+import { Post } from "../projectTypes";
 import { useUser } from "../lib/auth/hooks";
-import Layout from "../components/auth/layout";
+import { DEPARTEMENTS } from "../lib/translate";
 
-const Home: NextPage = () => {
+export default function Page({ posts }: { posts: string }) {
   const user = useUser();
+  const postsOb = JSON.parse(posts) as [Post];
 
+  const typeArabic: { [key: string]: string } = {
+    buying: "شراء",
+    selling: "بيع",
+    demandRent: "طلب ايجار",
+    offerRent: "عرض ايجار",
+  };
   return (
     <Layout>
-      <h1>Passport.js Example</h1>
-
-      <p>Steps to test the example:</p>
-
-      <ol>
-        <li>Click Login and enter a username and password.</li>
-        <li>
-          You will be redirected to Home. Click on Profile, notice how your
-          session is being used through a token stored in a cookie.
-        </li>
-        <li>
-          Click Logout and try to go to Profile again. You will get redirected
-          to Login.
-        </li>
-      </ol>
-
-      {user && (
-        <>
-          <p>Currently logged in as:</p>
-          <pre>{JSON.stringify(user)}</pre>
-        </>
-      )}
-
-      <style jsx>{`
-        li {
-          margin-bottom: 0.5rem;
-        }
-        pre {
-          white-space: pre-wrap;
-          word-wrap: break-word;
-        }
-      `}</style>
+      <Box
+        sx={{
+          display: "grid",
+          gap: 2,
+          maxWidth: "400px",
+          p: 2,
+        }}
+      >
+        {postsOb.map((post, i) => {
+          const image = post.images[0];
+          return (
+            <Box
+              key={i}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              {image ? (
+                <Image
+                  key={i}
+                  layout="responsive"
+                  width={image.width}
+                  height={image.height}
+                  src={image.data}
+                  onClick={() => {
+                    Router.push("/post?id=" + post._id);
+                  }}
+                ></Image>
+              ) : (
+                <></>
+              )}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box>{typeArabic[post.type]}</Box>
+                <Box>{DEPARTEMENTS[post.departement]}</Box>
+                <Box>{post.region}</Box>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                }}
+              >
+                {post.details}
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box>{post.count}</Box>
+                <Box>{48692007}</Box>
+              </Box>
+            </Box>
+          );
+        })}
+      </Box>
     </Layout>
   );
-};
+}
 
-export default Home;
+export async function getServerSideProps({
+  query,
+}: {
+  query: { [key: string]: string };
+}) {
+  let postsObject = [];
+  if (query.type && query.departement) {
+    postsObject = await DBPost.find({
+      type: query.type,
+      departement: query.departement,
+    });
+  } else if (query.user) {
+    postsObject = await DBPost.find({
+      user: query.user,
+    });
+  } else {
+    postsObject = await DBPost.find({});
+  }
+
+  const posts = JSON.stringify(postsObject);
+
+  return {
+    props: {
+      posts,
+    },
+  };
+}

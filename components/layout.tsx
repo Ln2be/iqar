@@ -4,9 +4,10 @@ import rtlPlugin from "stylis-plugin-rtl";
 import { prefixer } from "stylis";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
-import Header from "./auth/header";
-import { ReactNode } from "react";
-import { Container } from "@mui/material";
+import GHeader from "./gHeader";
+import AuthHeader from "./auth/AuthHeader";
+import Footer from "./footer";
+import { Box } from "@mui/system";
 
 const theme = createTheme({
   direction: "rtl", // Both here and <body dir="rtl">
@@ -21,8 +22,19 @@ export default function Layout({ children }: { children: JSX.Element }) {
   return (
     <CacheProvider value={cacheRtl}>
       <ThemeProvider theme={theme}>
-        <Header></Header>
-        <>{children}</>
+        <GHeader></GHeader>
+        <AuthHeader></AuthHeader>
+        <Box
+          sx={{
+            p: 2,
+            overflowY: "scroll",
+            mb: 6,
+          }}
+        >
+          {children}
+        </Box>
+
+        <Footer></Footer>
       </ThemeProvider>
     </CacheProvider>
   );

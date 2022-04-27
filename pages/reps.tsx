@@ -3,6 +3,7 @@ import Layout from "../components/layout";
 import { DBUser } from "../lib/mongo";
 import { Box } from "@mui/system";
 import { UserType } from "../projectTypes";
+import { DEPARTEMENTS } from "../lib/translate";
 
 type JSONValue =
   | string
@@ -41,7 +42,7 @@ export default function Page({ usersJson }: { usersJson: string }) {
                 }}
               >
                 <Box>{user.username}</Box>
-                <Box>{user.departement}</Box>
+                <Box>{DEPARTEMENTS[user.departement]}</Box>
                 <Box>{user.region}</Box>
                 <Box>{user.tel}</Box>
               </Box>

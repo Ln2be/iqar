@@ -1,23 +1,34 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { DBCount, DBPost } from "../../lib/mongo";
+import fs from "fs";
+import { Buffer } from "buffer";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const query = req.query;
+  const bodyPost = req.body;
+  const images = bodyPost.images;
 
-  if (query.id) {
-    const post = await DBPost.find({ _id: query.id });
-    res.json(post);
+  const devUrl = "/home/elhassen/Downloads/images/";
+  const devSite = "http://localhost/images/";
+
+  const prodUrl = "/var/www/iqar/images/";
+  const prodSite = "https://iqar.store/images/";
+
+  if (images.length > 0) {
+    images.map((image: any, i: number) => {
+      const name: string = +Date.now() + ".jpeg";
+
+      fs.writeFileSync(
+        prodUrl + name,
+        Buffer.from(image.data.split(",")[1], "base64")
+      );
+
+      bodyPost.images[i].data = prodSite + name;
+    });
   }
-
-  if (query.type) {
-    const post = await DBPost.find({ type: query.type });
-    res.json(post);
-  }
-
-  // count the number of user
+  // count the number of posts
   const postCounter =
     (await DBCount.findOne({ name: "user" })) ||
     (await new DBCount({ name: "user" }).save());

@@ -89,7 +89,15 @@ const Form = ({ isLogin, errorMessage, onSubmit }: formType) => (
           <Button type="submit" variant="contained">
             ارسال
           </Button>
-          <Link href="/auth/signup">ليس لدي حساب</Link>
+          <Link href="/auth/signup?space=user">
+            <a
+              style={{
+                color: "blue",
+              }}
+            >
+              ليس لدي حساب
+            </a>
+          </Link>
         </Box>
       </Box>
     ) : (

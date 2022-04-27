@@ -58,9 +58,7 @@ export default function Page() {
   // const router = useRouter();
 
   function handleSearch() {
-    Router.push(
-      "/feeds?type=" + search.type + "&departement=" + search.departement
-    );
+    Router.push("/?type=" + search.type + "&departement=" + search.departement);
   }
   return (
     <Layout>
@@ -69,7 +67,7 @@ export default function Page() {
           display: "flex",
           flexDirection: "column",
           maxWidth: "400px",
-          p: { sx: 1, md: 2 },
+          p: 2,
         }}
       >
         <FormControl>

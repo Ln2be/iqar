@@ -1,6 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import { useUser } from "../../lib/auth/hooks";
+import HomeIcon from "@mui/icons-material/Home";
+import SearchIcon from "@mui/icons-material/Search";
 
 const Header = () => {
   const user = useUser();
@@ -11,7 +13,8 @@ const Header = () => {
         <ul>
           <li>
             <Link href="/">
-              <a>Home</a>
+              <HomeIcon></HomeIcon>
+              {/* <a>Home</a> */}
             </Link>
           </li>
           {user ? (
