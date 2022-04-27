@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Box } from "@mui/system";
 import { useUser } from "../../lib/auth/hooks";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";

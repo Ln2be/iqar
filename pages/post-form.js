@@ -239,8 +239,8 @@ export default function Page() {
               mb: 2,
             }}
           >
-            {imagesUrl.map((url) => (
-              <img src={URL.createObjectURL(url)}></img>
+            {imagesUrl.map((url, i) => (
+              <img key={i} src={URL.createObjectURL(url)}></img>
             ))}
           </Box>
           {/* This button needs to be viewed again */}
