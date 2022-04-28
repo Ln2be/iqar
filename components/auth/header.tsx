@@ -14,6 +14,7 @@ const Header = () => {
           <li>
             <Link href="/">
               <HomeIcon></HomeIcon>
+              الرئيسية
               {/* <a>Home</a> */}
             </Link>
           </li>

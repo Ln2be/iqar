@@ -24,24 +24,78 @@ export default function GHeader() {
         p: { xs: 2, md: 2 },
       }}
     >
-      <HomeIcon
-        onClick={() => {
-          router.push("/");
+      <Box
+        sx={{
+          display: "inline-flex",
+          flexDirection: "row",
+          // justifyItems: "center",
+          alignItems: "center",
         }}
-      ></HomeIcon>
+      >
+        <Box
+          sx={{
+            pr: 1,
+          }}
+        >
+          <HomeIcon
+            onClick={() => {
+              router.push("/");
+            }}
+          ></HomeIcon>
+        </Box>
+        <Box>الاعلانات</Box>
+      </Box>
+      <img
+        style={{
+          height: "40px",
+        }}
+        src="/favicon.ico"
+      ></img>
 
       {user ? (
-        <LogoutIcon
-          onClick={() => {
-            router.push("/api/auth/logout");
+        <Box
+          sx={{
+            display: "inline-flex",
+            flexDirection: "row",
+            // justifyItems: "center",
+            alignItems: "center",
           }}
-        ></LogoutIcon>
+        >
+          <Box
+            sx={{
+              pr: 1,
+            }}
+          >
+            <LogoutIcon
+              onClick={() => {
+                router.push("/api/auth/logout");
+              }}
+            ></LogoutIcon>
+          </Box>
+          <Box>الخروج</Box>
+        </Box>
       ) : (
-        <LoginIcon
-          onClick={() => {
-            router.push("/auth/login?space=user");
+        <Box
+          sx={{
+            display: "inline-flex",
+            flexDirection: "row",
+            // justifyItems: "center",
+            alignItems: "center",
           }}
-        ></LoginIcon>
+        >
+          <Box
+            sx={{
+              pr: 1,
+            }}
+          >
+            <LoginIcon
+              onClick={() => {
+                router.push("/auth/login?space=user");
+              }}
+            ></LoginIcon>
+          </Box>
+          <Box>الدخول</Box>
+        </Box>
       )}
     </Box>
   );

@@ -10,22 +10,27 @@ export default async function handler(
   const bodyPost = req.body;
   const images = bodyPost.images;
 
+  const isProduction = process.env.NODE_ENV === "production";
+
   const devUrl = "/home/elhassen/Downloads/images/";
   const devSite = "http://localhost/images/";
 
   const prodUrl = "/var/www/iqar/images/";
   const prodSite = "https://iqar.store/images/";
 
+  const url = isProduction ? prodUrl : devUrl;
+  const site = isProduction ? prodSite : devSite;
+
   if (images.length > 0) {
     images.map((image: any, i: number) => {
       const name: string = +Date.now() + ".jpeg";
 
       fs.writeFileSync(
-        prodUrl + name,
+        url + name,
         Buffer.from(image.data.split(",")[1], "base64")
       );
 
-      bodyPost.images[i].data = prodSite + name;
+      bodyPost.images[i].data = site + name;
     });
   }
   // count the number of posts
