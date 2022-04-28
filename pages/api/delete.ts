@@ -6,5 +6,6 @@ export default async function helper(
   res: NextApiResponse
 ) {
   const deletedPost = await DBPost.deleteOne({ _id: req.query.id });
-  res.redirect("/").json(deletedPost);
+  res.writeHead(302, { Location: "/" });
+  res.json(deletedPost);
 }
