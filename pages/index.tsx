@@ -7,6 +7,7 @@ import Router from "next/router";
 import { Post } from "../projectTypes";
 import { useUser } from "../lib/auth/hooks";
 import { DEPARTEMENTS } from "../lib/translate";
+import Head from "next/head";
 
 export default function Page({ posts }: { posts: string }) {
   const user = useUser();
@@ -19,74 +20,96 @@ export default function Page({ posts }: { posts: string }) {
     offerRent: "عرض ايجار",
   };
   return (
-    <Layout>
-      <Box
-        sx={{
-          display: "grid",
-          gap: 2,
-          maxWidth: "400px",
-          p: 2,
-        }}
-      >
-        {postsOb.map((post, i) => {
-          const image = post.images[0];
-          return (
-            <Box
-              key={i}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              {image ? (
-                <Image
-                  key={i}
-                  layout="responsive"
-                  width={image.width}
-                  height={image.height}
-                  src={image.data}
-                  onClick={() => {
-                    Router.push("/post?id=" + post._id);
+    <>
+      <Head>
+        <title>
+          مؤسسة وسيطة لبيع و شراء و ايجار المنازل و الشقق و العقارات بشكل عام في
+          نواكشوط موريتانيا
+        </title>
+        <meta
+          name="description"
+          content="احصل اعل المنزل او الشقة التي تبحث عنها"
+          key="desc"
+        />
+        <meta property="og:title" content="وسيط بيع و شراء العقارات" />
+        <meta
+          property="og:description"
+          content="تتوفر عقار نواكشوط على الكثير من عروض بيع و شراء و ايجار العقارات"
+        />
+        <meta
+          property="og:image"
+          content="https://example.com/images/cool-page.jpg"
+        />
+      </Head>
+      <Layout>
+        <Box
+          sx={{
+            display: "grid",
+            gap: 2,
+            maxWidth: "400px",
+            p: 2,
+          }}
+        >
+          {postsOb.map((post, i) => {
+            const image = post.images[0];
+            return (
+              <Box
+                key={i}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                {image ? (
+                  <Image
+                    key={i}
+                    layout="responsive"
+                    width={image.width}
+                    height={image.height}
+                    src={image.data}
+                    onClick={() => {
+                      Router.push("/post?id=" + post._id);
+                    }}
+                  ></Image>
+                ) : (
+                  <></>
+                )}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                   }}
-                ></Image>
-              ) : (
-                <></>
-              )}
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Box>{typeArabic[post.type]}</Box>
-                <Box>{DEPARTEMENTS[post.departement]}</Box>
-                <Box>{post.region}</Box>
+                >
+                  <Box>{typeArabic[post.type]}</Box>
+                  <Box>{DEPARTEMENTS[post.departement]}</Box>
+                  <Box>{post.region}</Box>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  {post.details}
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box>{post.count}</Box>
+                  <Box>{48692007}</Box>
+                </Box>
               </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                }}
-              >
-                {post.details}
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Box>{post.count}</Box>
-                <Box>{48692007}</Box>
-              </Box>
-            </Box>
-          );
-        })}
-      </Box>
-    </Layout>
+            );
+          })}
+        </Box>
+      </Layout>
+    </>
   );
 }
 
