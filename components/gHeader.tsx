@@ -24,27 +24,26 @@ export default function GHeader() {
         p: { xs: 2, md: 2 },
       }}
     >
-      <Box
-        sx={{
-          display: "inline-flex",
-          flexDirection: "row",
-          // justifyItems: "center",
-          alignItems: "center",
-        }}
-      >
+      <Link href={"/"}>
         <Box
           sx={{
-            pr: 1,
+            display: "inline-flex",
+            flexDirection: "row",
+            // justifyItems: "center",
+            alignItems: "center",
           }}
         >
-          <HomeIcon
-            onClick={() => {
-              router.push("/");
+          <Box
+            sx={{
+              pr: 1,
             }}
-          ></HomeIcon>
+          >
+            <HomeIcon></HomeIcon>
+          </Box>
+          <Box>الاعلانات</Box>
         </Box>
-        <Box>الاعلانات</Box>
-      </Box>
+      </Link>
+
       <img
         style={{
           height: "40px",
@@ -53,49 +52,45 @@ export default function GHeader() {
       ></img>
 
       {user ? (
-        <Box
-          sx={{
-            display: "inline-flex",
-            flexDirection: "row",
-            // justifyItems: "center",
-            alignItems: "center",
-          }}
-        >
+        <Link href={"/api/auth/logout"}>
           <Box
             sx={{
-              pr: 1,
+              display: "inline-flex",
+              flexDirection: "row",
+              // justifyItems: "center",
+              alignItems: "center",
             }}
           >
-            <LogoutIcon
-              onClick={() => {
-                router.push("/api/auth/logout");
+            <Box
+              sx={{
+                pr: 1,
               }}
-            ></LogoutIcon>
+            >
+              <LogoutIcon></LogoutIcon>
+            </Box>
+            <Box>الخروج</Box>
           </Box>
-          <Box>الخروج</Box>
-        </Box>
+        </Link>
       ) : (
-        <Box
-          sx={{
-            display: "inline-flex",
-            flexDirection: "row",
-            // justifyItems: "center",
-            alignItems: "center",
-          }}
-        >
+        <Link href={"/auth/login?space=user"}>
           <Box
             sx={{
-              pr: 1,
+              display: "inline-flex",
+              flexDirection: "row",
+              // justifyItems: "center",
+              alignItems: "center",
             }}
           >
-            <LoginIcon
-              onClick={() => {
-                router.push("/auth/login?space=user");
+            <Box
+              sx={{
+                pr: 1,
               }}
-            ></LoginIcon>
+            >
+              <LoginIcon></LoginIcon>
+            </Box>
+            <Box>الدخول</Box>
           </Box>
-          <Box>الدخول</Box>
-        </Box>
+        </Link>
       )}
     </Box>
   );

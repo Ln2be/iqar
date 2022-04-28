@@ -8,6 +8,7 @@ import { Post } from "../projectTypes";
 import { useUser } from "../lib/auth/hooks";
 import { DEPARTEMENTS } from "../lib/translate";
 import Head from "next/head";
+import { Typography } from "@mui/material";
 
 export default function Page({ posts }: { posts: string }) {
   const user = useUser();
@@ -45,7 +46,7 @@ export default function Page({ posts }: { posts: string }) {
         <Box
           sx={{
             display: "grid",
-            gap: 2,
+            gap: 4,
             maxWidth: "400px",
             p: 2,
           }}
@@ -58,6 +59,10 @@ export default function Page({ posts }: { posts: string }) {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
+                  borderTop: 1,
+                  borderColor: (theme) => {
+                    return theme.palette.primary.light;
+                  },
                 }}
               >
                 {image ? (
@@ -74,36 +79,48 @@ export default function Page({ posts }: { posts: string }) {
                 ) : (
                   <></>
                 )}
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box>{typeArabic[post.type]}</Box>
-                  <Box>{DEPARTEMENTS[post.departement]}</Box>
-                  <Box>{post.region}</Box>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-around",
-                  }}
-                >
-                  {post.details}
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box>{post.count}</Box>
-                  <Box>{48692007}</Box>
-                </Box>
+                <Typography gutterBottom variant="h6">
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      pb: 1,
+                      // backgroundColor: (theme) => {
+                      //   return theme.palette.primary.light;
+                      // },
+                      // color: "white",
+                    }}
+                  >
+                    <Box>{typeArabic[post.type]}</Box>
+                    <Box>{DEPARTEMENTS[post.departement]}</Box>
+                    <Box>{post.region}</Box>
+                  </Box>
+                </Typography>
+
+                <Typography variant="body2">
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    {post.details}
+                  </Box>
+                </Typography>
+
+                <Typography variant="body2" color="text.secondary">
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Box>{post.count}</Box>
+                    <Box>{48692007}</Box>
+                  </Box>
+                </Typography>
               </Box>
             );
           })}
