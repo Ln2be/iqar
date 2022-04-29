@@ -67,7 +67,7 @@ export default function Page({ posts }: { posts: string }) {
             const image = post.images[0];
 
             return (
-              <Card sx={{ maxWidth: 345 }}>
+              <Card key={i} sx={{ maxWidth: 345 }}>
                 {image && (
                   <CardMedia
                     component="img"
