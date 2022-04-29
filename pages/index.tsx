@@ -3,15 +3,27 @@ import Layout from "../components/layout";
 import Image from "next/image";
 import { DBPost } from "../lib/mongo";
 import { Box } from "@mui/system";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import { Post } from "../projectTypes";
 import { useUser } from "../lib/auth/hooks";
 import { DEPARTEMENTS } from "../lib/translate";
 import Head from "next/head";
-import { Typography } from "@mui/material";
+import { WhatsappShareButton } from "react-share";
+import WhatsappButton from "../components/whatsapp";
+
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Typography,
+} from "@mui/material";
+import Link from "next/link";
 
 export default function Page({ posts }: { posts: string }) {
   const user = useUser();
+  const router = useRouter();
   const postsOb = JSON.parse(posts) as [Post];
 
   const typeArabic: { [key: string]: string } = {
@@ -53,63 +65,42 @@ export default function Page({ posts }: { posts: string }) {
         >
           {postsOb.map((post, i) => {
             const image = post.images[0];
+
             return (
-              <Box
-                key={i}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  borderTop: 1,
-                  borderColor: (theme) => {
-                    return theme.palette.primary.light;
-                  },
-                }}
-              >
-                {image ? (
-                  <Image
-                    key={i}
-                    layout="responsive"
-                    width={image.width}
-                    height={image.height}
-                    src={image.data}
-                    onClick={() => {
-                      Router.push("/post?id=" + post._id);
-                    }}
-                  ></Image>
-                ) : (
-                  <></>
+              <Card sx={{ maxWidth: 345 }}>
+                {image && (
+                  <CardMedia
+                    component="img"
+                    // height="140"
+                    image={image?.data}
+                    alt="green iguana"
+                  />
                 )}
-                <Typography gutterBottom variant="h6">
+                <CardContent>
                   <Box
                     sx={{
                       display: "flex",
                       flexDirection: "row",
                       justifyContent: "space-between",
-                      pb: 1,
-                      // backgroundColor: (theme) => {
-                      //   return theme.palette.primary.light;
-                      // },
-                      // color: "white",
                     }}
                   >
-                    <Box>{typeArabic[post.type]}</Box>
-                    <Box>{DEPARTEMENTS[post.departement]}</Box>
-                    <Box>{post.region}</Box>
+                    <Box>
+                      <Typography gutterBottom variant="h5">
+                        {typeArabic[post.type]}
+                      </Typography>
+                    </Box>
+                    <Box></Box>
+                    <Box>
+                      <Typography gutterBottom variant="h5">
+                        {post.departement &&
+                          post.region &&
+                          DEPARTEMENTS[post.departement] + " - " + post.region}
+                      </Typography>
+                    </Box>
                   </Box>
-                </Typography>
-
-                <Typography variant="body2">
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                    }}
-                  >
+                  <Typography gutterBottom variant="h6" color="text.secondary">
                     {post.details}
-                  </Box>
-                </Typography>
-
-                <Typography variant="body2" color="text.secondary">
+                  </Typography>
                   <Box
                     sx={{
                       display: "flex",
@@ -117,11 +108,52 @@ export default function Page({ posts }: { posts: string }) {
                       justifyContent: "space-between",
                     }}
                   >
-                    <Box>{post.count}</Box>
-                    <Box>{48692007}</Box>
+                    <Typography variant="body1" color="text.secondary">
+                      {"السعر:   " + post.price}
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <WhatsappButton
+                          phone={"+22248692007"}
+                          message={"https://iqar.store/post?id=" + post._id}
+                        >
+                          <Button variant="contained">واتساب</Button>
+                        </WhatsappButton>
+                        {48692007}
+                      </Box>
+                    </Typography>
                   </Box>
-                </Typography>
-              </Box>
+                </CardContent>
+                <CardActions>
+                  {post.images?.length > 1 && (
+                    <Button
+                      onClick={() => {
+                        router.push("/post?id=" + post._id);
+                      }}
+                      size="small"
+                    >
+                      المزيد من الصور
+                    </Button>
+                  )}
+                  <WhatsappShareButton
+                    url={"https://iqar.store/post?id=" + post._id}
+                  >
+                    <Box
+                      sx={{
+                        color: "blue",
+                        fontSize: "small",
+                      }}
+                    >
+                      مشاركة
+                    </Box>
+                  </WhatsappShareButton>
+                </CardActions>
+              </Card>
             );
           })}
         </Box>
