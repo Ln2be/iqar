@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import { UserType, Post } from "../projectTypes";
 
-mongoose.connect("mongodb://localhost:27017/iqar2");
+mongoose.connect("mongodb://localhost:27017/iqar4");
 
 const countSchema = new Schema({
   name: String,
@@ -50,3 +50,20 @@ const postSchema = new Schema<Post>({
 
 export const DBPost =
   mongoose.models.DBPost || mongoose.model("DBPost", postSchema);
+
+const userCodesSchema = new Schema({
+  code: Number,
+  used: Number,
+});
+
+export const DBUserCode =
+  mongoose.models.DBUserCode || mongoose.model("DBUserCode", userCodesSchema);
+
+const adminCodesSchema = new Schema({
+  code: Number,
+  used: Number,
+});
+
+export const DBAdminCode =
+  mongoose.models.DBAdminCode ||
+  mongoose.model("DBAdminCode", adminCodesSchema);

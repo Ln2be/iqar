@@ -11,8 +11,22 @@ import { useUser } from "../lib/auth/hooks";
 import NumberFormat from "react-number-format";
 import { useForm } from "react-hook-form";
 
+var post = {
+  type: "",
+  departement: "",
+  region: "",
+  details: "",
+  images: [],
+  price: 0,
+  tel: "",
+  user: "",
+  userTel: "",
+};
 export default function Page() {
   const user = useUser();
+
+  post.user = user?.username;
+  post.userTel = user?.tel;
   const {
     register,
     handleSubmit,
@@ -82,18 +96,6 @@ export default function Page() {
 
   const [needPictures, setNeedPictures] = useState(false);
 
-  var post = {
-    type: "",
-    departement: "",
-    region: "",
-    details: "",
-    images: [],
-    price: 0,
-    tel: "",
-    user: user?.username,
-    userTel: user?.tel,
-  };
-
   var imPromises = [];
 
   const handleSubmitToServer = function () {
@@ -157,17 +159,16 @@ export default function Page() {
         }}
       >
         <TextField
-          id="outlined-select-currency"
+          id="type"
           select
           label="نوع الاعلان"
-          {...register("type", { required: true })}
+          {...register("typev", { required: true })}
           // value={currency}
           onChange={(event) => {
             post.type = event.target.value;
-            setNeedPictures(true);
+            const bool = post.type == "selling" || post.type == "offerRent";
+            setNeedPictures(bool);
           }}
-          // helperText="اختر المقاطعة"
-          required
         >
           {adtypes.map((option) => (
             <MenuItem key={option.value} value={option.value}>
@@ -175,7 +176,7 @@ export default function Page() {
             </MenuItem>
           ))}
         </TextField>
-        {errors.type && (
+        {errors.typev && (
           <small
             style={{
               color: "red",
@@ -314,10 +315,17 @@ export default function Page() {
             sx={{
               display: "flex",
               mb: 2,
+              overflow: "scroll",
             }}
           >
             {imagesUrl.map((url, i) => (
-              <img key={i} src={URL.createObjectURL(url)}></img>
+              <img
+                style={{
+                  width: "100%",
+                }}
+                key={i}
+                src={URL.createObjectURL(url)}
+              ></img>
             ))}
           </Box>
           {/* This button needs to be viewed again */}

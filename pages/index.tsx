@@ -89,7 +89,6 @@ export default function Page({ posts }: { posts: string }) {
                         {typeArabic[post.type]}
                       </Typography>
                     </Box>
-                    <Box></Box>
                     <Box>
                       <Typography gutterBottom variant="h5">
                         {post.departement &&
@@ -172,13 +171,13 @@ export async function getServerSideProps({
     postsObject = await DBPost.find({
       type: query.type,
       departement: query.departement,
-    });
+    }).sort({ createdAt: -1 });
   } else if (query.user) {
     postsObject = await DBPost.find({
       user: query.user,
-    });
+    }).sort({ createdAt: -1 });
   } else {
-    postsObject = await DBPost.find({});
+    postsObject = await DBPost.find({}).sort({ createdAt: -1 });
   }
 
   const posts = JSON.stringify(postsObject);

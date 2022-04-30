@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { v4 as uuidv4 } from "uuid";
 import { UserType } from "../../projectTypes";
-import { DBCount, DBUser } from "../mongo";
+import { DBAdminCode, DBCount, DBUser, DBUserCode } from "../mongo";
 
 /**
  * User methods. The example doesn't contain a DB, but for real applications you must use a
@@ -38,9 +38,17 @@ export async function createUser(newUser: UserType) {
 
   user.count = userCounter.count + 1;
 
-  const savedUser = await new DBUser(user).save();
+  const codeCorrect =
+    newUser.role == "user"
+      ? await DBUserCode.findOne({ code: newUser.code })
+      : await DBAdminCode.findOne({ code: newUser.code });
 
-  return { username: newUser.username, createdAt: Date.now() };
+  if (codeCorrect) {
+    const savedUser = await new DBUser(user).save();
+    return true;
+  } else {
+    return false;
+  }
 }
 
 // Here you should lookup for the user in your DB

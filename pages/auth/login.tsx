@@ -4,6 +4,7 @@ import { useUser } from "../../lib/auth/hooks";
 import Layout from "../../components/layout";
 import Form from "../../components/auth/form";
 import { Box } from "@mui/system";
+import { text } from "stream/consumers";
 
 const Login = () => {
   useUser({ redirectTo: "/", redirectIfFound: true });
@@ -33,7 +34,9 @@ const Login = () => {
       if (res.status === 200) {
         Router.push("/");
       } else {
-        throw new Error(await res.text());
+        const txt = await res.text();
+        console.log(["txt"]);
+        // throw new Error(txt);
       }
     } catch (error: any) {
       console.error("An unexpected error happened occurred:", error);

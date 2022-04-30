@@ -6,6 +6,21 @@ import { DBPost } from "../lib/mongo";
 import { useUser } from "../lib/auth/hooks";
 import { Post } from "../projectTypes";
 import Head from "next/head";
+import WhatsappButton from "../components/whatsapp";
+
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  Button,
+  CardActions,
+} from "@mui/material";
+import image from "next/image";
+import router from "next/router";
+import { WhatsappShareButton } from "react-share";
+import { DEPARTEMENTS } from "../lib/translate";
+import Link from "next/link";
 
 export default function Page({ postjson }: { postjson: string }) {
   const user = useUser();
@@ -38,58 +53,99 @@ export default function Page({ postjson }: { postjson: string }) {
           }}
         >
           {post ? (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Box>{typeArabic[post.type]}</Box>
-                <Box>{post.departement}</Box>
-                <Box>{post.region}</Box>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                }}
-              >
-                {post.details}
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Box>{post._id}</Box>
-                <Box>{48692007}</Box>
-              </Box>
-              <Box>
-                {post.images &&
-                  post.images.map((image, i) => (
-                    <Image
-                      key={i}
-                      layout="responsive"
-                      width={image.width}
-                      height={image.height}
-                      src={image.data}
-                    ></Image>
+            <Card sx={{ maxWidth: 345 }}>
+              <CardContent>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box>
+                    <Typography gutterBottom variant="h5">
+                      {typeArabic[post.type]}
+                    </Typography>
+                  </Box>
+                  <Box></Box>
+                  <Box>
+                    <Typography gutterBottom variant="h5">
+                      {post.departement &&
+                        post.region &&
+                        DEPARTEMENTS[post.departement] + " - " + post.region}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Typography gutterBottom variant="h6" color="text.secondary">
+                  {post.details}
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography variant="body1" color="text.secondary">
+                    {"السعر:   " + post.price}
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <WhatsappButton
+                        phone={"+22248692007"}
+                        message={"https://iqar.store/post?id=" + post._id}
+                      >
+                        <Button variant="contained">واتساب</Button>
+                      </WhatsappButton>
+                      {48692007}
+                    </Box>
+                  </Typography>
+                </Box>
+              </CardContent>
+              {post.images?.map((image, i) => (
+                <CardMedia
+                  component="img"
+                  // height="140"
+                  image={image?.data}
+                  alt="green iguana"
+                />
+              ))}
+              <CardActions>
+                {post.images?.length > 1 && (
+                  <Button
+                    onClick={() => {
+                      router.push("/post?id=" + post._id);
+                    }}
+                    size="small"
+                  >
+                    المزيد من الصور
+                  </Button>
+                )}
+                <WhatsappShareButton
+                  url={"https://iqar.store/post?id=" + post._id}
+                >
+                  <Box
+                    sx={{
+                      color: "blue",
+                      fontSize: "small",
+                    }}
+                  >
+                    مشاركة
+                  </Box>
+                </WhatsappShareButton>
+                {user?.role == "admin" ||
+                  (user?.username == post.user && (
+                    <Link href={"/api/delete?id=" + post._id}>
+                      <Button style={{ color: "red" }}>حذف</Button>
+                    </Link>
                   ))}
-              </Box>
-              {(user?.role == "admin" || user?.username == post.user) && (
-                <a href={"/api/delete?id=" + post._id}>حذف</a>
-              )}
-            </Box>
+              </CardActions>
+            </Card>
           ) : (
             <Box>{"no post"}</Box>
           )}

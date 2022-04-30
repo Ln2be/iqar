@@ -41,6 +41,8 @@ const Signup = () => {
       });
       if (res.status === 200) {
         Router.push("/auth/login");
+      } else if (res.status === 300) {
+        setErrorMsg("الكود غير صحيح");
       } else {
         throw new Error(await res.text());
       }
