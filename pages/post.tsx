@@ -109,6 +109,7 @@ export default function Page({ postjson }: { postjson: string }) {
               </CardContent>
               {post.images?.map((image, i) => (
                 <CardMedia
+                  key={i}
                   component="img"
                   // height="140"
                   image={image?.data}

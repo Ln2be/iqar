@@ -95,7 +95,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }: formType) => {
               // alignItem: "right",
             }}
           >
-            <Button onClick={onSubmit} type="submit" variant="contained">
+            <Button type="submit" variant="contained">
               ارسال
             </Button>
             <Link href="/auth/signup?space=user">

@@ -1,3 +1,4 @@
+import React from "react";
 import { Box } from "@mui/system";
 import { WhatsappShareButton } from "react-share";
 import { useRouter } from "next/router";
@@ -54,8 +55,8 @@ export default function Page({ posts }: { posts: any }) {
           </tr>
         </thead>
         <tbody>
-          {postsOb.map((post: any) => (
-            <tr>
+          {postsOb.map((post: any, i: number) => (
+            <tr key={i}>
               <td>{post.code}</td>
               <td>{post.used}</td>
               <td>
