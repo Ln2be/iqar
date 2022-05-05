@@ -6,4 +6,4 @@ Disallow: /accounts
 User-agent: *
 Allow: /
 
-Sitemap: https://iqar.store/imagessitemap.xml
+Sitemap: https://iqar.store/sitemap.xml
