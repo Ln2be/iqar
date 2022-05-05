@@ -55,7 +55,7 @@ export default function Page({ usersJson }: { usersJson: string }) {
 }
 
 export async function getServerSideProps(context: any) {
-  const usersObject = await DBUser.find({});
+  const usersObject = await DBUser.find({ role: "user" });
   const usersJson = JSON.stringify(usersObject);
 
   return {

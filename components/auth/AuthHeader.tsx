@@ -35,7 +35,11 @@ export default function AuthHeader() {
                 {user?.username}
               </Box>
             </Box>
-            <Box>
+            <Box
+              sx={{
+                cursor: "pointer",
+              }}
+            >
               <Link href="/reps">الممثلين</Link>
             </Box>
           </Box>

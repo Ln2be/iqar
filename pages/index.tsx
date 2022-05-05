@@ -108,14 +108,15 @@ export default function Page({ posts }: { posts: string }) {
                       justifyContent: "space-between",
                     }}
                   >
-                    <Typography variant="body1" color="text.secondary">
-                      <Box>{"السعر :"}</Box>
-
+                    <Box>
+                      <Typography variant="body1" color="text.secondary">
+                        {"السعر :"}
+                      </Typography>
                       <NumberFormat
                         value={post.price}
                         thousandSeparator={true}
                       />
-                    </Typography>
+                    </Box>
 
                     <Box
                       sx={{
@@ -153,6 +154,9 @@ export default function Page({ posts }: { posts: string }) {
                         router.push("/post?id=" + post._id);
                       }}
                       size="small"
+                      style={{
+                        color: "blue",
+                      }}
                     >
                       المزيد من الصور
                     </Button>

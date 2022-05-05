@@ -31,6 +31,7 @@ export default function GHeader() {
             flexDirection: "row",
             // justifyItems: "center",
             alignItems: "center",
+            cursor: "pointer",
           }}
         >
           <Box
@@ -59,6 +60,7 @@ export default function GHeader() {
               flexDirection: "row",
               // justifyItems: "center",
               alignItems: "center",
+              cursor: "pointer",
             }}
           >
             <Box
@@ -79,6 +81,7 @@ export default function GHeader() {
               flexDirection: "row",
               // justifyItems: "center",
               alignItems: "center",
+              cursor: "pointer",
             }}
           >
             <Box

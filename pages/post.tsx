@@ -87,11 +87,12 @@ export default function Page({ postjson }: { postjson: string }) {
                     justifyContent: "space-between",
                   }}
                 >
-                  <Typography variant="body1" color="text.secondary">
-                    <Box>{"السعر :"}</Box>
-
+                  <Box>
+                    <Typography variant="body1" color="text.secondary">
+                      {"السعر :"}
+                    </Typography>
                     <NumberFormat value={post.price} thousandSeparator={true} />
-                  </Typography>
+                  </Box>
                   <Box
                     sx={{
                       display: "flex",
@@ -138,7 +139,6 @@ export default function Page({ postjson }: { postjson: string }) {
                     image={image?.data}
                     alt="green iguana"
                   />
-                  )
                 </Box>
               ))}
               <CardActions>

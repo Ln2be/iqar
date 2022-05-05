@@ -251,6 +251,7 @@ export default function Page() {
             onChange={(event) => {
               post.details = event.target.value;
             }}
+            helperText="مساحة المنزل   الشارع  الخ"
           />
           <TextField
             id="outlined-basic"
