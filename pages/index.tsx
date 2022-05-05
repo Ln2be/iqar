@@ -135,7 +135,8 @@ export default function Page({ posts }: { posts: string }) {
                       </Typography>
                     </Box>
                   </Box>
-                  {user?.role == "admin" && (
+                  {(user?.role == "admin" ||
+                    (user && user?.username == post.user)) && (
                     <Box
                       sx={{
                         display: "flex",
