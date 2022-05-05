@@ -119,9 +119,6 @@ export default function Page({ postjson }: { postjson: string }) {
                     }}
                   >
                     {"هاتف الزبون : " + post.tel}
-                    <Link href={"/api/delete?id=" + post._id}>
-                      <Button style={{ color: "red" }}>حذف</Button>
-                    </Link>
                   </Box>
                 )}
               </CardContent>

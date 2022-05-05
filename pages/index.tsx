@@ -141,9 +141,15 @@ export default function Page({ posts }: { posts: string }) {
                         display: "flex",
                         flexDirection: "row",
                         justifyContent: "space-between",
+                        mt: 2,
                       }}
                     >
-                      {"هاتف الزبون : " + post.tel}
+                      <Box>{"هاتف الزبون : " + post.tel}</Box>
+                      <Box>
+                        <Link href={"/api/delete?id=" + post._id}>
+                          <Button style={{ color: "red" }}>حذف</Button>
+                        </Link>
+                      </Box>
                     </Box>
                   )}
                 </CardContent>
