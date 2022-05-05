@@ -143,7 +143,7 @@ export default function Page({ posts }: { posts: string }) {
                         justifyContent: "space-between",
                       }}
                     >
-                      {"هابف الزبون : " + post.tel}
+                      {"هاتف الزبون : " + post.tel}
                     </Box>
                   )}
                 </CardContent>

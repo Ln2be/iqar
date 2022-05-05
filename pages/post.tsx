@@ -118,7 +118,7 @@ export default function Page({ postjson }: { postjson: string }) {
                       justifyContent: "space-between",
                     }}
                   >
-                    {post.tel}
+                    {"هاتف الزبون : " + post.tel}
                   </Box>
                 )}
               </CardContent>
