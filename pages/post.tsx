@@ -108,18 +108,18 @@ export default function Page({ postjson }: { postjson: string }) {
                       {48692007}
                     </Typography>
                   </Box>
-                  {user?.role == "admin" && (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      {post.tel}
-                    </Box>
-                  )}
                 </Box>
+                {user?.role == "admin" && (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    {post.tel}
+                  </Box>
+                )}
               </CardContent>
               {post.images?.map((image, i) => (
                 <Box
