@@ -23,14 +23,20 @@ export default async function handler(
 
   if (images.length > 0) {
     images.map((image: any, i: number) => {
-      const name: string = +Date.now() + ".jpeg";
+      const name: string =
+        Date.now() +
+        "random" +
+        Math.floor(Math.random() * (1000000 - 100000)) +
+        100000 +
+        ".jpeg";
 
-      fs.writeFileSync(
+      fs.writeFile(
         url + name,
-        Buffer.from(image.data.split(",")[1], "base64")
+        Buffer.from(image.data.split(",")[1], "base64"),
+        () => {
+          bodyPost.images[i].data = site + name;
+        }
       );
-
-      bodyPost.images[i].data = site + name;
     });
   }
   // count the number of posts

@@ -110,22 +110,33 @@ export default function Page({ posts }: { posts: string }) {
                     <Typography variant="body1" color="text.secondary">
                       {"السعر:   " + post.price}
                     </Typography>
-                    <Typography variant="body1" color="text.secondary">
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <WhatsappButton
+                        phone={"+22248692007"}
+                        message={"https://iqar.store/post?id=" + post._id}
+                      >
+                        <Button variant="contained">واتساب</Button>
+                      </WhatsappButton>
+                      <Typography variant="body1" color="text.secondary">
+                        {48692007}
+                      </Typography>
+                    </Box>
+                    {user?.role == "admin" && (
                       <Box
                         sx={{
                           display: "flex",
-                          flexDirection: "column",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
                         }}
                       >
-                        <WhatsappButton
-                          phone={"+22248692007"}
-                          message={"https://iqar.store/post?id=" + post._id}
-                        >
-                          <Button variant="contained">واتساب</Button>
-                        </WhatsappButton>
-                        {48692007}
+                        {post.tel}
                       </Box>
-                    </Typography>
+                    )}
                   </Box>
                 </CardContent>
                 <CardActions>
@@ -171,13 +182,13 @@ export async function getServerSideProps({
     postsObject = await DBPost.find({
       type: query.type,
       departement: query.departement,
-    }).sort({ createdAt: -1 });
+    }).sort({ createdAt: 1 });
   } else if (query.user) {
     postsObject = await DBPost.find({
       user: query.user,
-    }).sort({ createdAt: -1 });
+    }).sort({ createdAt: 1 });
   } else {
-    postsObject = await DBPost.find({}).sort({ createdAt: -1 });
+    postsObject = await DBPost.find({}).sort({ createdAt: 1 });
   }
 
   const posts = JSON.stringify(postsObject);

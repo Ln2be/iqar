@@ -89,44 +89,59 @@ export default function Page({ postjson }: { postjson: string }) {
                   <Typography variant="body1" color="text.secondary">
                     {"السعر:   " + post.price}
                   </Typography>
-                  <Typography variant="body1" color="text.secondary">
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <WhatsappButton
+                      phone={"+22248692007"}
+                      message={"https://iqar.store/post?id=" + post._id}
+                    >
+                      <Button variant="contained">واتساب</Button>
+                    </WhatsappButton>
+                    <Typography variant="body1" color="text.secondary">
+                      {48692007}
+                    </Typography>
+                  </Box>
+                  {user?.role == "admin" && (
                     <Box
                       sx={{
                         display: "flex",
-                        flexDirection: "column",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
                       }}
                     >
-                      <WhatsappButton
-                        phone={"+22248692007"}
-                        message={"https://iqar.store/post?id=" + post._id}
-                      >
-                        <Button variant="contained">واتساب</Button>
-                      </WhatsappButton>
-                      {48692007}
+                      {post.tel}
                     </Box>
-                  </Typography>
+                  )}
                 </Box>
+                {post.images.map((im, i) => (
+                  <Box key={i}>{im.data}</Box>
+                ))}
               </CardContent>
               {post.images?.map((image, i) => (
-                <CardMedia
+                <Box
                   key={i}
-                  component="img"
-                  // height="140"
-                  image={image?.data}
-                  alt="green iguana"
-                />
+                  sx={{
+                    display: "grid",
+                    gap: 2,
+                    maxWidth: "400px",
+                    p: 2,
+                  }}
+                >
+                  <CardMedia
+                    key={i}
+                    component="img"
+                    // height="140"
+                    image={image?.data}
+                    alt="green iguana"
+                  />
+                  )
+                </Box>
               ))}
               <CardActions>
-                {post.images?.length > 1 && (
-                  <Button
-                    onClick={() => {
-                      router.push("/post?id=" + post._id);
-                    }}
-                    size="small"
-                  >
-                    المزيد من الصور
-                  </Button>
-                )}
                 <WhatsappShareButton
                   url={"https://iqar.store/post?id=" + post._id}
                 >
@@ -139,12 +154,12 @@ export default function Page({ postjson }: { postjson: string }) {
                     مشاركة
                   </Box>
                 </WhatsappShareButton>
-                {user?.role == "admin" ||
-                  (user?.username == post.user && (
-                    <Link href={"/api/delete?id=" + post._id}>
-                      <Button style={{ color: "red" }}>حذف</Button>
-                    </Link>
-                  ))}
+                {(user?.role == "admin" ||
+                  (user && user?.username == post.user)) && (
+                  <Link href={"/api/delete?id=" + post._id}>
+                    <Button style={{ color: "red" }}>حذف</Button>
+                  </Link>
+                )}
               </CardActions>
             </Card>
           ) : (

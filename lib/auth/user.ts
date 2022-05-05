@@ -38,16 +38,26 @@ export async function createUser(newUser: UserType) {
 
   user.count = userCounter.count + 1;
 
-  const codeCorrect =
-    newUser.role == "user"
-      ? await DBUserCode.findOne({ code: newUser.code })
-      : await DBAdminCode.findOne({ code: newUser.code });
-
-  if (codeCorrect) {
-    const savedUser = await new DBUser(user).save();
-    return true;
-  } else {
-    return false;
+  if (newUser.role == "user") {
+    const codeCorrect = await DBUserCode.findOne({ code: newUser.code });
+    if (!codeCorrect || codeCorrect.used == 1) {
+      return false;
+    } else {
+      const savedUser = await new DBUser(user).save();
+      await DBUserCode.deleteOne({ code: codeCorrect.code });
+      return true;
+    }
+  } else if (newUser.role == "admin") {
+    {
+      const codeCorrect = await DBAdminCode.findOne({ code: newUser.code });
+      if (!codeCorrect || codeCorrect.used == 1) {
+        return false;
+      } else {
+        const savedUser = await new DBUser(user).save();
+        await DBAdminCode.deleteOne({ code: codeCorrect.code });
+        return true;
+      }
+    }
   }
 }
 

@@ -5,15 +5,20 @@ import Layout from "../../components/layout";
 import Form from "../../components/auth/form";
 import { Box } from "@mui/system";
 
-const Signup = () => {
-  const space1 = useRouter().query.space;
+const Signup = ({ queryjson }: { queryjson: string }) => {
+  const query = JSON.parse(queryjson);
+
+  const space1 = query.space;
+  const code = query.code;
   const space = typeof space1 === "string" ? space1 : "";
   useUser({ redirectTo: "/", redirectIfFound: true });
 
   const [errorMsg, setErrorMsg] = useState("");
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: any) {
     e.preventDefault();
+
+    console.log("coming to the handleSubmit");
 
     if (errorMsg) setErrorMsg("");
 
@@ -21,8 +26,8 @@ const Signup = () => {
       username: e.currentTarget.repName.value,
       departement: e.currentTarget.departement.value,
       region: e.currentTarget.region.value,
+      code: code,
       tel: e.currentTarget.tel.value,
-      code: e.currentTarget.code.value,
       password: e.currentTarget.password.value,
       rpassword: e.currentTarget.rpassword.value,
       role: space,
@@ -40,7 +45,10 @@ const Signup = () => {
         body: JSON.stringify(body),
       });
       if (res.status === 200) {
-        Router.push("/auth/login");
+        const done = await res.text();
+        done
+          ? Router.push("/auth/login?space=" + space)
+          : setErrorMsg("الكود غير صحيح");
       } else if (res.status === 300) {
         setErrorMsg("الكود غير صحيح");
       } else {
@@ -67,3 +75,17 @@ const Signup = () => {
 };
 
 export default Signup;
+
+export async function getServerSideProps({
+  query,
+}: {
+  query: { [key: string]: string };
+}) {
+  const queryjson = JSON.stringify(query);
+
+  return {
+    props: {
+      queryjson,
+    },
+  };
+}

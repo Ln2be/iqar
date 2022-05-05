@@ -21,7 +21,11 @@ var post = {
   tel: "",
   user: "",
   userTel: "",
+  createdAt: Date.now(),
 };
+
+var pathFiles = [];
+
 export default function Page() {
   const user = useUser();
 
@@ -35,6 +39,7 @@ export default function Page() {
   } = useForm();
 
   const [imagesUrl, setImagesUrl] = useState([]);
+  const [spinner, setSpinner] = useState(false);
 
   const departements = [
     {
@@ -96,8 +101,6 @@ export default function Page() {
 
   const [needPictures, setNeedPictures] = useState(false);
 
-  var imPromises = [];
-
   const handleSubmitToServer = function () {
     fetch("/api/post", {
       method: "POST",
@@ -113,7 +116,10 @@ export default function Page() {
   };
 
   const handleSubmitThePost = async () => {
+    // setSpinner(true);
     // const im = await resizeFile(post.images[0]);
+
+    const imPromises = pathFiles.map((path) => resizeFile(path));
     Promise.all(imPromises).then((values) => {
       var hwPromises = [];
       values.map((value) => {
@@ -149,195 +155,199 @@ export default function Page() {
 
   return (
     <Layout>
-      <Box
-        component={"form"}
-        sx={{
-          display: "grid",
-          gap: 2,
-          p: { xs: 2, md: 4 },
-          maxWidth: "400px",
-        }}
-      >
-        <TextField
-          id="type"
-          select
-          label="نوع الاعلان"
-          {...register("typev", { required: true })}
-          // value={currency}
-          onChange={(event) => {
-            post.type = event.target.value;
-            const bool = post.type == "selling" || post.type == "offerRent";
-            setNeedPictures(bool);
-          }}
-        >
-          {adtypes.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-        {errors.typev && (
-          <small
-            style={{
-              color: "red",
-            }}
-          >
-            ادخل الاعلان
-          </small>
-        )}
-        <TextField
-          id="outlined-select-currency"
-          select
-          label="المقاطعة"
-          {...register("departement", { required: true })}
-          // value={currency}
-          onChange={(event) => {
-            post.departement = event.target.value;
-          }}
-          helperText="اختر المقاطعة"
-          required
-        >
-          {departements.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-        {errors.departement && (
-          <small
-            style={{
-              color: "red",
-            }}
-          >
-            ادخل المقاطعة
-          </small>
-        )}
-
-        <TextField
-          id="outlined-basic"
-          label="المنطقة"
-          {...register("region", { required: true })}
-          variant="outlined"
-          onChange={(event) => {
-            post.region = event.target.value;
-          }}
-          required
-        />
-        {errors.region && (
-          <small
-            style={{
-              color: "red",
-            }}
-          >
-            ادخل المنطقة
-          </small>
-        )}
-        <TextField
-          id="outlined-basic"
-          multiline
-          label="المواضقات"
-          variant="outlined"
-          onChange={(event) => {
-            post.details = event.target.value;
-          }}
-        />
-        <TextField
-          id="outlined-basic"
-          label="الهاتف"
-          {...register("tel", { required: true })}
-          type="number"
-          variant="outlined"
-          onChange={(event) => {
-            post.tel = event.target.value;
-          }}
-          required
-        />
-        {errors.tel && (
-          <small
-            style={{
-              color: "red",
-            }}
-          >
-            ادخل الهاتف
-          </small>
-        )}
-
-        <TextField
-          id="outlined-basic"
-          label="السعر"
-          type="number"
-          variant="outlined"
-          onChange={(event) => {
-            post.price = event.target.value;
-          }}
-        />
-
+      {spinner ? (
+        <Box>جاري رقع الاعلان</Box>
+      ) : (
         <Box
+          component={"form"}
           sx={{
-            display: needPictures ? "flex" : "none",
-            // alignItem: "right",
-            flexDirection: "row",
+            display: "grid",
+            gap: 2,
+            p: { xs: 2, md: 4 },
+            maxWidth: "400px",
           }}
         >
-          <Button variant="outlined" component="label">
-            صور
-            <input
-              multiple
-              type="file"
-              onChange={(event) => {
-                const files = event.target.files;
-
-                // Only files are allowed
-                const nf = files.length < 5 ? files.length : 5;
-                imPromises = [];
-
-                imPromises = [...new Array(nf)].map((file, i) =>
-                  resizeFile(files.item(i))
-                );
-
-                setImagesUrl(
-                  [...new Array(nf)].map((file, i) => files.item(i))
-                );
+          <TextField
+            id="type"
+            select
+            label="نوع الاعلان"
+            {...register("typev", { required: true })}
+            // value={currency}
+            onChange={(event) => {
+              post.type = event.target.value;
+              const bool = post.type == "selling" || post.type == "offerRent";
+              setNeedPictures(bool);
+            }}
+          >
+            {adtypes.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          {errors.typev && (
+            <small
+              style={{
+                color: "red",
               }}
-              accept="image/*"
-              hidden
-            />
-          </Button>
-        </Box>
-        <Box
-          sx={{
-            diplay: "flex",
-            // alignItem: "right",
-            flexDirection: "row-reverse",
-          }}
-        >
+            >
+              ادخل الاعلان
+            </small>
+          )}
+          <TextField
+            id="outlined-select-currency"
+            select
+            label="المقاطعة"
+            {...register("departement", { required: true })}
+            // value={currency}
+            onChange={(event) => {
+              post.departement = event.target.value;
+            }}
+            helperText="اختر المقاطعة"
+            required
+          >
+            {departements.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          {errors.departement && (
+            <small
+              style={{
+                color: "red",
+              }}
+            >
+              ادخل المقاطعة
+            </small>
+          )}
+
+          <TextField
+            id="outlined-basic"
+            label="المنطقة"
+            {...register("region", { required: true })}
+            variant="outlined"
+            onChange={(event) => {
+              post.region = event.target.value;
+            }}
+            required
+          />
+          {errors.region && (
+            <small
+              style={{
+                color: "red",
+              }}
+            >
+              ادخل المنطقة
+            </small>
+          )}
+          <TextField
+            id="outlined-basic"
+            multiline
+            label="المواضقات"
+            variant="outlined"
+            onChange={(event) => {
+              post.details = event.target.value;
+            }}
+          />
+          <TextField
+            id="outlined-basic"
+            label="الهاتف"
+            {...register("tel", { required: true })}
+            type="number"
+            variant="outlined"
+            onChange={(event) => {
+              post.tel = event.target.value;
+            }}
+            required
+          />
+          {errors.tel && (
+            <small
+              style={{
+                color: "red",
+              }}
+            >
+              ادخل الهاتف
+            </small>
+          )}
+
+          <TextField
+            id="outlined-basic"
+            label="السعر"
+            type="number"
+            variant="outlined"
+            onChange={(event) => {
+              post.price = event.target.value;
+            }}
+          />
+
           <Box
             sx={{
-              display: "flex",
-              mb: 2,
-              overflow: "scroll",
+              display: needPictures ? "flex" : "none",
+              // alignItem: "right",
+              flexDirection: "row",
             }}
           >
-            {imagesUrl.map((url, i) => (
-              <img
-                style={{
-                  width: "100%",
+            <Button variant="outlined" component="label">
+              صور
+              <input
+                multiple
+                type="file"
+                onChange={(event) => {
+                  const files = event.target.files;
+
+                  // Only files are allowed
+                  const nf = files.length < 5 ? files.length : 5;
+                  pathFiles = [];
+
+                  pathFiles = [...new Array(nf)].map((file, i) =>
+                    files.item(i)
+                  );
+
+                  setImagesUrl(
+                    [...new Array(nf)].map((file, i) => files.item(i))
+                  );
                 }}
-                key={i}
-                src={URL.createObjectURL(url)}
-              ></img>
-            ))}
+                accept="image/*"
+                hidden
+              />
+            </Button>
           </Box>
-          {/* This button needs to be viewed again */}
-          <Button
-            type="submit"
-            variant="contained"
-            onClick={handleSubmit(handleSubmitThePost)}
+          <Box
+            sx={{
+              diplay: "flex",
+              // alignItem: "right",
+              flexDirection: "row-reverse",
+            }}
           >
-            ارسال
-          </Button>
+            <Box
+              sx={{
+                display: "flex",
+                mb: 2,
+                overflow: "scroll",
+              }}
+            >
+              {imagesUrl.map((url, i) => (
+                <img
+                  style={{
+                    width: "100%",
+                  }}
+                  key={i}
+                  src={URL.createObjectURL(url)}
+                ></img>
+              ))}
+            </Box>
+            {/* This button needs to be viewed again */}
+            <Button
+              type="submit"
+              variant="contained"
+              onClick={handleSubmit(handleSubmitThePost)}
+            >
+              ارسال
+            </Button>
+          </Box>
         </Box>
-      </Box>
+      )}
     </Layout>
   );
 }
@@ -346,8 +356,8 @@ const resizeFile = (file) =>
   new Promise((resolve) => {
     Resizer.imageFileResizer(
       file,
-      300,
-      300,
+      500,
+      500,
       "JPEG",
       100,
       0,

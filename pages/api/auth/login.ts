@@ -4,7 +4,7 @@ import { localStrategy } from "../../../lib/auth/password-local";
 import { serialize } from "cookie";
 import { NextApiResponse } from "next";
 
-export const MAX_AGE = 60 * 60 * 8; // 8 hours
+export const MAX_AGE = 60 * 60 * 24 * 30 * 12; // One year
 const TOKEN_NAME = "iqarToken";
 
 passport.use(localStrategy);

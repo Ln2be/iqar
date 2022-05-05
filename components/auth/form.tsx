@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
@@ -60,16 +60,42 @@ const post = {
   images: [],
 };
 
-const Form = ({ isLogin, errorMessage, onSubmit }: formType) => {
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm();
+const names = [
+  "repName",
+  "password",
+  "rpassword",
+  "departement",
+  "region",
+  "tel",
+];
 
+let validateMessage = "";
+const Form = ({ isLogin, errorMessage, onSubmit }: formType) => {
+  const [render, setRender] = useState(false);
+
+  function validate(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (isLogin) {
+      onSubmit(e);
+    } else {
+      let validated = true;
+      names.map((name) => {
+        const value = e.currentTarget[name].value;
+        if (!value) {
+          validated = false;
+        }
+      });
+
+      if (!validated) {
+        validateMessage = "الرجاء ادخال جميع الحقول";
+        setRender(true);
+      }
+      validated && onSubmit(e);
+    }
+  }
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={validate}>
       {isLogin ? (
         <Box
           sx={{
@@ -148,6 +174,15 @@ const Form = ({ isLogin, errorMessage, onSubmit }: formType) => {
               alignItem: "right",
             }}
           >
+            {validateMessage && (
+              <p
+                style={{
+                  color: "red",
+                }}
+              >
+                {validateMessage}
+              </p>
+            )}
             <Button type="submit" variant="contained">
               ارسال
             </Button>

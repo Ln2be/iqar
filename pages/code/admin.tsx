@@ -2,7 +2,10 @@ import React from "react";
 import { Box } from "@mui/system";
 import { WhatsappShareButton } from "react-share";
 import { useRouter } from "next/router";
-import { DBPost, DBUserCode } from "../../lib/mongo";
+import { DBAdminCode } from "../../lib/mongo";
+
+const isProduction = process.env.NODE_ENV === "production";
+const urlbase = isProduction ? "https://iqar.store/" : "http://localhost:3000/";
 
 export default function Page({ posts }: { posts: any }) {
   const postsOb = JSON.parse(posts);
@@ -17,7 +20,7 @@ export default function Page({ posts }: { posts: any }) {
       };
     });
 
-    fetch("/api/code?role=user", {
+    fetch("/api/code?role=admin", {
       method: "POST",
       body: JSON.stringify(body),
       headers: {
@@ -61,10 +64,7 @@ export default function Page({ posts }: { posts: any }) {
               <td>{post.used}</td>
               <td>
                 <WhatsappShareButton
-                  url={
-                    "https://iqar.store/auth/signup?space=admin&code=" +
-                    post.code
-                  }
+                  url={urlbase + "auth/signup?space=admin&code=" + post.code}
                 >
                   <Box
                     sx={{
@@ -83,7 +83,7 @@ export default function Page({ posts }: { posts: any }) {
       <button
         onClick={() => {
           sendCodes();
-          router.push("/code/user2");
+          router.push("/code/admin");
         }}
       >
         add another 30
@@ -93,7 +93,7 @@ export default function Page({ posts }: { posts: any }) {
 }
 
 export async function getServerSideProps() {
-  const postsObject = await DBUserCode.find({}).sort({ code: 1 });
+  const postsObject = await DBAdminCode.find({}).sort({ code: 1 });
   const posts = JSON.stringify(postsObject);
 
   return {
