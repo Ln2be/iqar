@@ -5,6 +5,7 @@ import Layout from "../components/layout";
 import CallIcon from "@mui/icons-material/Call";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import Head from "next/head";
+import { Typography } from "@mui/material";
 
 export default function Page() {
   return (
@@ -79,7 +80,15 @@ export default function Page() {
               </a>
             </Box>
           </Box>
-          <Box></Box>
+          <Box>
+            <Typography>
+              عقار انواكشوط هي مؤسسة للوساطة العقارية نقدم خدمات مثل :
+              <li>تاجير الشقق بكل انواع الجودة</li>
+              <li>بيع المنازل </li>
+              <li>بيع القطع الارضية</li>
+              <li>بيع و تأجير العقارات الاخرى</li>
+            </Typography>
+          </Box>
         </Box>
       </Layout>
     </>
