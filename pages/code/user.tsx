@@ -83,7 +83,7 @@ export default function Page({ posts }: { posts: any }) {
       <button
         onClick={() => {
           sendCodes();
-          router.push("/code/user2");
+          router.push("/code/user");
         }}
       >
         add another 30
