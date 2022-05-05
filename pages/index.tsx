@@ -10,6 +10,7 @@ import { DEPARTEMENTS } from "../lib/translate";
 import Head from "next/head";
 import { WhatsappShareButton } from "react-share";
 import WhatsappButton from "../components/whatsapp";
+import NumberFormat from "react-number-format";
 
 import {
   Button,
@@ -108,8 +109,14 @@ export default function Page({ posts }: { posts: string }) {
                     }}
                   >
                     <Typography variant="body1" color="text.secondary">
-                      {"السعر:   " + post.price}
+                      <Box>{"السعر :"}</Box>
+
+                      <NumberFormat
+                        value={post.price}
+                        thousandSeparator={true}
+                      />
                     </Typography>
+
                     <Box
                       sx={{
                         display: "flex",
@@ -126,18 +133,18 @@ export default function Page({ posts }: { posts: string }) {
                         {48692007}
                       </Typography>
                     </Box>
-                    {user?.role == "admin" && (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        {post.tel}
-                      </Box>
-                    )}
                   </Box>
+                  {user?.role == "admin" && (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      {"هابف الزبون : " + post.tel}
+                    </Box>
+                  )}
                 </CardContent>
                 <CardActions>
                   {post.images?.length > 1 && (

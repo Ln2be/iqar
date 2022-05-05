@@ -8,8 +8,8 @@ import Layout from "../components/layout";
 import { Box } from "@mui/system";
 import Router from "next/router";
 import { useUser } from "../lib/auth/hooks";
-import NumberFormat from "react-number-format";
 import { useForm } from "react-hook-form";
+import CircularProgress from "@mui/material/CircularProgress";
 
 var post = {
   type: "",
@@ -116,7 +116,7 @@ export default function Page() {
   };
 
   const handleSubmitThePost = async () => {
-    // setSpinner(true);
+    setSpinner(true);
     // const im = await resizeFile(post.images[0]);
 
     const imPromises = pathFiles.map((path) => resizeFile(path));
@@ -156,7 +156,9 @@ export default function Page() {
   return (
     <Layout>
       {spinner ? (
-        <Box>جاري رقع الاعلان</Box>
+        <Box sx={{ display: "flex" }}>
+          <CircularProgress />
+        </Box>
       ) : (
         <Box
           component={"form"}
@@ -331,6 +333,7 @@ export default function Page() {
                 <img
                   style={{
                     width: "100%",
+                    marginRight: "5px",
                   }}
                   key={i}
                   src={URL.createObjectURL(url)}

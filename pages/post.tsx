@@ -7,6 +7,7 @@ import { useUser } from "../lib/auth/hooks";
 import { Post } from "../projectTypes";
 import Head from "next/head";
 import WhatsappButton from "../components/whatsapp";
+import NumberFormat from "react-number-format";
 
 import {
   Card,
@@ -87,7 +88,9 @@ export default function Page({ postjson }: { postjson: string }) {
                   }}
                 >
                   <Typography variant="body1" color="text.secondary">
-                    {"السعر:   " + post.price}
+                    <Box>{"السعر :"}</Box>
+
+                    <NumberFormat value={post.price} thousandSeparator={true} />
                   </Typography>
                   <Box
                     sx={{
@@ -117,9 +120,6 @@ export default function Page({ postjson }: { postjson: string }) {
                     </Box>
                   )}
                 </Box>
-                {post.images.map((im, i) => (
-                  <Box key={i}>{im.data}</Box>
-                ))}
               </CardContent>
               {post.images?.map((image, i) => (
                 <Box
