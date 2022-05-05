@@ -5,7 +5,8 @@ import Layout from "../components/layout";
 import CallIcon from "@mui/icons-material/Call";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import Head from "next/head";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import WhatsappButton from "../components/whatsapp";
 
 export default function Page() {
   return (
@@ -47,7 +48,19 @@ export default function Page() {
             }}
           >
             <WhatsAppIcon></WhatsAppIcon>
-            <Box>48692007</Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <WhatsappButton phone={"+22248692007"} message={"Salam"}>
+                <Button variant="contained">واتساب</Button>
+              </WhatsappButton>
+              <Typography variant="body1" color="text.secondary">
+                {48692007}
+              </Typography>
+            </Box>
           </Box>
           <Box
             sx={{
