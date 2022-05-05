@@ -144,7 +144,14 @@ export default function Page({ posts }: { posts: string }) {
                         mt: 2,
                       }}
                     >
-                      <Box>{"هاتف الزبون : " + post.tel}</Box>
+                      <Box>
+                        <Box>هاتف الزبون :</Box>
+                        <Box>
+                          <Typography variant="body1" color="text.secondary">
+                            {post.tel}
+                          </Typography>
+                        </Box>
+                      </Box>
                       <Box>
                         <Link href={"/api/delete?id=" + post._id}>
                           <Button style={{ color: "red" }}>حذف</Button>
