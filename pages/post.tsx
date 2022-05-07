@@ -50,7 +50,6 @@ export default function Page({ postjson }: { postjson: string }) {
             display: "grid",
             gap: 2,
             maxWidth: "400px",
-            p: 2,
           }}
         >
           {post ? (
