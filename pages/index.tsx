@@ -61,7 +61,6 @@ export default function Page({ posts }: { posts: string }) {
             display: "grid",
             gap: 4,
             maxWidth: "400px",
-            p: 2,
           }}
         >
           {postsOb.map((post, i) => {
