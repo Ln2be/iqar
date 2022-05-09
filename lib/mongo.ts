@@ -1,7 +1,11 @@
 import mongoose, { Schema } from "mongoose";
 import { UserType, Post } from "../projectTypes";
 
-mongoose.connect("mongodb://localhost:27017/iqardb");
+const isProduction = process.env.NODE_ENV === "production";
+
+const db = isProduction ? "iqardb" : "iqardb2";
+
+mongoose.connect("mongodb://localhost:27017/" + db);
 
 const countSchema = new Schema({
   name: String,

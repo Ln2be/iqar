@@ -17,7 +17,8 @@ export default function AuthHeader() {
               justifyContent: "space-between",
               backgroundColor: "orange",
               color: "white",
-              p: { sx: 1, md: 1 },
+              pl: { sx: 2, md: 2 },
+              pr: { sx: 2, md: 2 },
             }}
           >
             <Box

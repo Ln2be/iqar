@@ -300,7 +300,7 @@ export default function Page() {
                   const files = event.target.files;
 
                   // Only files are allowed
-                  const nf = files.length < 5 ? files.length : 5;
+                  const nf = files.length < 3 ? files.length : 3;
                   pathFiles = [];
 
                   pathFiles = [...new Array(nf)].map((file, i) =>

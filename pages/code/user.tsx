@@ -62,6 +62,7 @@ export default function Page({ posts }: { posts: any }) {
             <tr key={i}>
               <td>{post.code}</td>
               <td>{post.used}</td>
+              <td>{post.used}</td>
               <td>
                 <WhatsappShareButton
                   url={urlbase + "auth/signup?space=user&code=" + post.code}
