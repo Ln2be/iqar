@@ -29,6 +29,7 @@ export default function Layout({ children }: { children: JSX.Element }) {
             p: 2,
             overflowY: "scroll",
             mb: 6,
+            backgroundColor: "#EEE",
           }}
         >
           {children}
