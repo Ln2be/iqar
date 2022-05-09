@@ -80,39 +80,41 @@ export default function Page({ posts }: { posts: string }) {
 
             return (
               <Card key={i} sx={{ maxWidth: 345 }}>
-                <Box
-                  sx={{
-                    position: "relative",
-                  }}
-                >
-                  {image && (
+                {image && (
+                  <Box
+                    sx={{
+                      position: "relative",
+                    }}
+                  >
+                    (
                     <CardMedia
                       component="img"
                       // height="140"
                       image={image?.data}
                       alt="green iguana"
                     />
-                  )}
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      bottom: image.height,
-                      right: "4px",
-                    }}
-                  >
-                    <Button
-                      onClick={() => {
-                        router.push("/post?id=" + post._id);
-                      }}
-                      size="small"
-                      style={{
-                        color: "blue",
+                    )
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        bottom: image.height,
+                        right: "4px",
                       }}
                     >
-                      <ArrowBackIosIcon></ArrowBackIosIcon>
-                    </Button>
+                      <Button
+                        onClick={() => {
+                          router.push("/post?id=" + post._id);
+                        }}
+                        size="small"
+                        style={{
+                          color: "blue",
+                        }}
+                      >
+                        <ArrowBackIosIcon></ArrowBackIosIcon>
+                      </Button>
+                    </Box>
                   </Box>
-                </Box>
+                )}
 
                 <CardContent
                   style={{
