@@ -96,7 +96,7 @@ export default function Page({ posts }: { posts: string }) {
                     <Box
                       sx={{
                         position: "absolute",
-                        bottom: image.height,
+                        bottom: "4px",
                         right: "4px",
                       }}
                     >
