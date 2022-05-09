@@ -86,14 +86,13 @@ export default function Page({ posts }: { posts: string }) {
                       position: "relative",
                     }}
                   >
-                    (
                     <CardMedia
                       component="img"
                       // height="140"
                       image={image?.data}
                       alt="green iguana"
                     />
-                    )
+
                     <Box
                       sx={{
                         position: "absolute",
