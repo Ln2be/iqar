@@ -121,7 +121,7 @@ export default function Page({ posts }: { posts: string }) {
 
                 <CardContent
                   style={{
-                    backgroundColor: "#F7F7F7",
+                    backgroundColor: "#E7FFFF",
                   }}
                 >
                   <Box>
