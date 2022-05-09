@@ -100,21 +100,28 @@ export default function Page({ posts }: { posts: string }) {
                         right: "4px",
                       }}
                     >
-                      <Button
-                        onClick={() => {
-                          router.push("/post?id=" + post._id);
-                        }}
-                        size="small"
-                        style={{
-                          color: "blue",
-                        }}
-                      >
-                        <ArrowBackIosIcon
-                          style={{
-                            color: "black",
+                      {post.images?.length > 1 && (
+                        <Box
+                          sx={{
+                            backgroundColor: (theme) => {
+                              return theme.palette.primary.light;
+                            },
+                            color: "white",
                           }}
-                        ></ArrowBackIosIcon>
-                      </Button>
+                        >
+                          <Button
+                            onClick={() => {
+                              router.push("/post?id=" + post._id);
+                            }}
+                            size="small"
+                            style={{
+                              color: "white",
+                            }}
+                          >
+                            <ArrowBackIosIcon></ArrowBackIosIcon>
+                          </Button>
+                        </Box>
+                      )}
                     </Box>
                   </Box>
                 )}
