@@ -12,6 +12,7 @@ import { WhatsappShareButton } from "react-share";
 import WhatsappButton from "../components/whatsapp";
 import NumberFormat from "react-number-format";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ShareIcon from "@mui/icons-material/Share";
 
 import {
   Button,
@@ -227,19 +228,6 @@ export default function Page({ posts }: { posts: string }) {
                     backgroundColor: "#aaa",
                   }}
                 >
-                  {post.images?.length > 1 && (
-                    <Button
-                      onClick={() => {
-                        router.push("/post?id=" + post._id);
-                      }}
-                      size="small"
-                      style={{
-                        color: "blue",
-                      }}
-                    >
-                      المزيد من الصور
-                    </Button>
-                  )}
                   <WhatsappShareButton
                     url={"https://iqar.store/post?id=" + post._id}
                   >
@@ -249,7 +237,7 @@ export default function Page({ posts }: { posts: string }) {
                         fontSize: "small",
                       }}
                     >
-                      مشاركة
+                      <ShareIcon></ShareIcon>
                     </Box>
                   </WhatsappShareButton>
                 </CardActions>
