@@ -128,7 +128,7 @@ export default function Page({ posts }: { posts: string }) {
 
                 <CardContent
                   style={{
-                    backgroundColor: "#42a5f5",
+                    backgroundColor: "#AAA",
                   }}
                 >
                   <Box>
@@ -224,7 +224,7 @@ export default function Page({ posts }: { posts: string }) {
                 </CardContent>
                 <CardActions
                   style={{
-                    backgroundColor: "#42a5f5",
+                    backgroundColor: "#aaa",
                   }}
                 >
                   {post.images?.length > 1 && (
