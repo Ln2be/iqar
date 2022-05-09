@@ -129,7 +129,7 @@ export default function Page({ posts }: { posts: string }) {
 
                 <CardContent
                   style={{
-                    backgroundColor: "#AAA",
+                    backgroundColor: "#bbb",
                   }}
                 >
                   <Box>
@@ -225,7 +225,7 @@ export default function Page({ posts }: { posts: string }) {
                 </CardContent>
                 <CardActions
                   style={{
-                    backgroundColor: "#aaa",
+                    backgroundColor: "#bbb",
                   }}
                 >
                   <WhatsappShareButton
