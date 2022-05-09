@@ -5,7 +5,7 @@ import Layout from "../components/layout";
 import { Box } from "@mui/system";
 import Link from "next/link";
 import React from "react";
-import WhatsappButton from "../components/whatsapp";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 export default function Page() {
   return (
