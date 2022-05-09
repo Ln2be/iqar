@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useUser } from "../lib/auth/hooks";
+import MenuIcon from "@mui/icons-material/Menu";
 
 export default function GHeader() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function GHeader() {
         p: { xs: 2, md: 2 },
       }}
     >
-      <Link href={"/"}>
+      <Link href={"/menu"}>
         <Box
           sx={{
             display: "inline-flex",
@@ -39,9 +40,9 @@ export default function GHeader() {
               pr: 1,
             }}
           >
-            <HomeIcon></HomeIcon>
+            <MenuIcon></MenuIcon>
           </Box>
-          <Box>الاعلانات</Box>
+          <Box>القائمة</Box>
         </Box>
       </Link>
 

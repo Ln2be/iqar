@@ -111,7 +111,7 @@ export default function Page({ posts }: { posts: string }) {
                       >
                         <ArrowBackIosIcon
                           style={{
-                            color: "white",
+                            color: "black",
                           }}
                         ></ArrowBackIosIcon>
                       </Button>
@@ -217,7 +217,7 @@ export default function Page({ posts }: { posts: string }) {
                 </CardContent>
                 <CardActions
                   style={{
-                    backgroundColor: "#F9F9F9",
+                    backgroundColor: "#E7FFFF",
                   }}
                 >
                   {post.images?.length > 1 && (
