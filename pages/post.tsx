@@ -128,6 +128,7 @@ export default function Page({ postjson }: { postjson: string }) {
                     display: "grid",
                     gap: 2,
                     maxWidth: "400px",
+                    pb: 2,
                   }}
                 >
                   <CardMedia
