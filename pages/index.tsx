@@ -109,8 +109,11 @@ export default function Page({ posts }: { posts: string }) {
                           color: "blue",
                         }}
                       >
-                        go
-                        <ArrowBackIosIcon></ArrowBackIosIcon>
+                        <ArrowBackIosIcon
+                          style={{
+                            color: "white",
+                          }}
+                        ></ArrowBackIosIcon>
                       </Button>
                     </Box>
                   </Box>
