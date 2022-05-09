@@ -5,6 +5,7 @@ import Layout from "../components/layout";
 import { Box } from "@mui/system";
 import Link from "next/link";
 import React from "react";
+import WhatsappButton from "../components/whatsapp";
 
 export default function Page() {
   return (
@@ -72,6 +73,25 @@ export default function Page() {
               <PostAddIcon></PostAddIcon>
             </Box>
             <Box>اضاقة اعلان</Box>
+          </Box>
+        </Link>
+        <Link href="/contactUs">
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              p: 1,
+              cursor: "pointer",
+            }}
+          >
+            <Box
+              sx={{
+                pr: 1,
+              }}
+            >
+              <WhatsAppIcon></WhatsAppIcon>
+            </Box>
+            <Box>اتصل بنا</Box>
           </Box>
         </Link>
       </Box>
