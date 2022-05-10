@@ -24,6 +24,7 @@ export default function Page() {
               flexDirection: "row",
               p: 1,
               cursor: "pointer",
+              backgroundColor: (theme) => theme.palette.primary,
             }}
           >
             <Box
@@ -43,6 +44,7 @@ export default function Page() {
               flexDirection: "row",
               p: 1,
               cursor: "pointer",
+              backgroundColor: (theme) => theme.palette.primary,
             }}
           >
             <Box
@@ -63,6 +65,7 @@ export default function Page() {
               flexDirection: "row",
               p: 1,
               cursor: "pointer",
+              backgroundColor: (theme) => theme.palette.primary,
             }}
           >
             <Box
@@ -82,6 +85,7 @@ export default function Page() {
               flexDirection: "row",
               p: 1,
               cursor: "pointer",
+              backgroundColor: (theme) => theme.palette.primary,
             }}
           >
             <Box
