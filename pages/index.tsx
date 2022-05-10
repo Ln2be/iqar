@@ -160,7 +160,7 @@ export default function Page({ posts }: { posts: string }) {
                       variant="h6"
                       color="text.secondary"
                     >
-                      {post.images[0]?.data}
+                      {post.details}
                     </Typography>
                     <Box
                       sx={{
