@@ -10,6 +10,8 @@ import Router from "next/router";
 import { useUser } from "../lib/auth/hooks";
 import { useForm } from "react-hook-form";
 import CircularProgress from "@mui/material/CircularProgress";
+import imageCompression from "browser-image-compression";
+import { Buffer } from "buffer";
 
 var post = {
   type: "",
@@ -119,7 +121,10 @@ export default function Page() {
     setSpinner(true);
     // const im = await resizeFile(post.images[0]);
 
-    const imPromises = pathFiles.map((path) => resizeFile(path));
+    // const imPromises = pathFiles.map((path) => resizeFile(path));
+
+    const imPromises = pathFiles.map((path) => handleImageUpload(path));
+
     Promise.all(imPromises).then((values) => {
       var hwPromises = [];
       values.map((value) => {
@@ -371,3 +376,40 @@ const resizeFile = (file) =>
       "base64"
     );
   });
+
+async function handleImageUpload(imageFile) {
+  console.log("originalFile instanceof Blob", imageFile instanceof Blob); // true
+  console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
+
+  const options = {
+    maxSizeMB: 1,
+    maxWidthOrHeight: 1920,
+    useWebWorker: true,
+  };
+  try {
+    const compressedFile = await imageCompression(imageFile, options);
+    console.log(
+      "compressedFile instanceof Blob",
+      compressedFile instanceof Blob
+    ); // true
+    console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+
+    // const arrayBuffer = await compressedFile.arrayBuffer();
+    // const image = Buffer.from(arrayBuffer).toString("base64");
+
+    const image = blobToBase64(compressedFile);
+    console.log(image);
+    return image;
+    // await uploadToServer(compressedFile); // write your own logic
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function blobToBase64(blob) {
+  return new Promise((resolve, _) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.readAsDataURL(blob);
+  });
+}
