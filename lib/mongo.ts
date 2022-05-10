@@ -3,7 +3,7 @@ import { UserType, Post } from "../projectTypes";
 
 const isProduction = process.env.NODE_ENV === "production";
 
-const db = isProduction ? "iqardb" : "iqardb2";
+const db = isProduction ? "iqardb" : "iqardb3";
 
 mongoose.connect("mongodb://localhost:27017/" + db);
 

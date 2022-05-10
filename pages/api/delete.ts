@@ -17,12 +17,12 @@ export default async function helper(
   res: NextApiResponse
 ) {
   const post = (await DBPost.findOne({ _id: req.query.id })) as Post;
-  if (post.images.length > 0) {
-    post.images.map((image) => {
-      const name = path.basename(image.data);
-      fs.unlinkSync(url + name);
-    });
-  }
+  // if (post.images.length > 0) {
+  //   post.images.map((image) => {
+  //     const name = path.basename(image.data);
+  //     fs.unlinkSync(url + name);
+  //   });
+  // }
   const deletedPost = await DBPost.deleteOne({ _id: req.query.id });
   res.writeHead(302, { Location: "/" });
   res.json(deletedPost);
