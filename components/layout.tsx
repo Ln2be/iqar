@@ -8,6 +8,9 @@ import GHeader from "./gHeader";
 import AuthHeader from "./auth/AuthHeader";
 import Footer from "./footer";
 import { Box } from "@mui/system";
+import { useRouter } from "next/router";
+import Button from "@mui/material/Button";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const theme = createTheme({
   direction: "rtl", // Both here and <body dir="rtl">
@@ -19,17 +22,50 @@ const cacheRtl = createCache({
 });
 
 export default function Layout({ children }: { children: JSX.Element }) {
+  const router = useRouter();
+  console.log(router.pathname);
   return (
     <CacheProvider value={cacheRtl}>
       <ThemeProvider theme={theme}>
         <GHeader></GHeader>
         <AuthHeader></AuthHeader>
+        {router.pathname != "/" && (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              // backgroundColor: "#bbb",
+            }}
+          >
+            <Box
+              sx={{
+                backgroundColor: (theme) => {
+                  return theme.palette.primary.light;
+                },
+                color: "white",
+                // maxWidth: "80px",
+              }}
+            >
+              <Button
+                onClick={() => {
+                  router.back();
+                }}
+                size="small"
+                style={{
+                  color: "white",
+                }}
+              >
+                <ArrowForwardIosIcon></ArrowForwardIosIcon>
+              </Button>
+            </Box>
+          </Box>
+        )}
         <Box
           sx={{
             p: 2,
             overflowY: "scroll",
             mb: 6,
-            backgroundColor: "#EEE",
+            // backgroundColor: "#EEE",
           }}
         >
           {children}

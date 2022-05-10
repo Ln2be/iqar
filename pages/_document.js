@@ -5,7 +5,7 @@ export default function Document() {
   return (
     <Html>
       <Head />
-      <meta name="theme-color" content="#bbb"></meta>
+      <meta name="theme-color" content="#ccc"></meta>
 
       {/*  Global site tag (gtag.js) - Google Analytics */}
       {/* <script
