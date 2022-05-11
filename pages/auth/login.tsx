@@ -61,11 +61,11 @@ const Login = () => {
           <p>
             لفتح حساب و لاستقادة من بنك معلومات او العمل معنا كممثل اتصل بنا
           </p>
-          <Box>
+          {/* <Box>
             <WhatsappButton phone={"+22248692007"} message={"salam"}>
               <Button variant="contained">واتساب</Button>
             </WhatsappButton>
-          </Box>
+          </Box> */}
         </Box>
 
         <style jsx>{`

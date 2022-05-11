@@ -34,21 +34,38 @@ export default async function handler(
       fs.writeFile(
         url + name,
         Buffer.from(image.data.split(",")[1], "base64"),
-        () => {
+        async () => {
           bodyPost.images[i].data = site + name;
+          if (images.length == i + 1) {
+            // count the number of posts
+            const postCounter =
+              (await DBCount.findOne({ name: "user" })) ||
+              (await new DBCount({ name: "user" }).save());
+
+            await DBCount.updateOne(
+              { name: "user" },
+              { count: postCounter.count + 1 }
+            );
+            // using the database now
+
+            req.body.count = postCounter.count + 1;
+            const post = await new DBPost(req.body).save();
+            res.json(post);
+          }
         }
       );
     });
+  } else {
+    // count the number of posts
+    const postCounter =
+      (await DBCount.findOne({ name: "user" })) ||
+      (await new DBCount({ name: "user" }).save());
+
+    await DBCount.updateOne({ name: "user" }, { count: postCounter.count + 1 });
+    // using the database now
+
+    req.body.count = postCounter.count + 1;
+    const post = await new DBPost(req.body).save();
+    res.json(post);
   }
-  // count the number of posts
-  const postCounter =
-    (await DBCount.findOne({ name: "user" })) ||
-    (await new DBCount({ name: "user" }).save());
-
-  await DBCount.updateOne({ name: "user" }, { count: postCounter.count + 1 });
-  // using the database now
-
-  req.body.count = postCounter.count + 1;
-  const post = await new DBPost(req.body).save();
-  res.json(post);
 }
