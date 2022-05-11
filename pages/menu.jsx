@@ -6,8 +6,11 @@ import { Box } from "@mui/system";
 import Link from "next/link";
 import React from "react";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import { useUser } from "../lib/auth/hooks";
+import StorageIcon from "@mui/icons-material/Storage";
 
 export default function Page() {
+  const user = useUser();
   return (
     <Layout>
       <Box
@@ -81,6 +84,30 @@ export default function Page() {
             <Box>اضاقة اعلان</Box>
           </Box>
         </Link>
+        {user?.role == "user" && (
+          <Link href={"/samsar?userTel=" + user.tel}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                p: 1,
+                cursor: "pointer",
+                backgroundColor: (theme) => theme.palette.primary.main,
+                color: "white",
+              }}
+            >
+              <Box
+                sx={{
+                  pr: 1,
+                }}
+              >
+                <StorageIcon></StorageIcon>
+              </Box>
+              <Box>بنك المعلومات</Box>
+            </Box>
+          </Link>
+        )}
+
         <Link href="/contactUs">
           <Box
             sx={{

@@ -5,6 +5,8 @@ import Layout from "../../components/layout";
 import Form from "../../components/auth/form";
 import { Box } from "@mui/system";
 import { text } from "stream/consumers";
+import WhatsappButton from "../../components/whatsapp";
+import { Button } from "@mui/material";
 
 const Login = () => {
   useUser({ redirectTo: "/", redirectIfFound: true });
@@ -55,6 +57,17 @@ const Login = () => {
             onSubmit={handleSubmit}
           />
         </Box>
+        <Box>
+          <p>
+            لفتح حساب و لاستقادة من بنك معلومات او العمل معنا كممثل اتصل بنا
+          </p>
+          <Box>
+            <WhatsappButton phone={"+22248692007"} message={"salam"}>
+              <Button variant="contained">واتساب</Button>
+            </WhatsappButton>
+          </Box>
+        </Box>
+
         <style jsx>{`
           .login {
             max-width: 21rem;
