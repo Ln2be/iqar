@@ -53,7 +53,10 @@ export default function Page({ posts }: { posts: string }) {
           property="og:description"
           content={"شركة للوساطة العقارية في نواكشوط موريتانيا"}
         />
-        <meta property="og:image" content={"https://iqar.store/favicon.ico"} />
+        <meta
+          property="og:image"
+          content={"https://iqar.store/images/favicon.ico"}
+        />
         <meta
           name="description"
           content="احصل اعل المنزل او الشقة التي تبحث عنها"
