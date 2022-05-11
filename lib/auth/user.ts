@@ -75,7 +75,12 @@ export async function getUser({ tel }: { tel: string }) {
   // return users.find((user) => user.tel === tel);
 
   // use the database
-  return DBUser.findOne({ tel: tel }).select(["username", "_id", "role"]);
+  return DBUser.findOne({ tel: tel }).select([
+    "username",
+    "_id",
+    "role",
+    "tel",
+  ]);
 }
 
 // Compare the password of an already fetched user (using `findUser`) and compare the

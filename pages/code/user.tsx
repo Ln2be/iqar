@@ -3,6 +3,7 @@ import React from "react";
 import { WhatsappShareButton } from "react-share";
 import { useRouter } from "next/router";
 import { DBPost, DBUserCode } from "../../lib/mongo";
+import Link from "next/link";
 
 const isProduction = process.env.NODE_ENV === "production";
 const urlbase = isProduction ? "https://iqar.store/" : "http://localhost:3000/";
@@ -62,7 +63,13 @@ export default function Page({ posts }: { posts: any }) {
             <tr key={i}>
               <td>{post.code}</td>
               <td>{post.used}</td>
-              <td>{post.used}</td>
+              <td>
+                <Link
+                  href={urlbase + "auth/signup?space=user&code=" + post.code}
+                >
+                  go
+                </Link>
+              </td>
               <td>
                 <WhatsappShareButton
                   url={urlbase + "auth/signup?space=user&code=" + post.code}

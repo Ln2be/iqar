@@ -13,6 +13,8 @@ import WhatsappButton from "../components/whatsapp";
 import NumberFormat from "react-number-format";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ShareIcon from "@mui/icons-material/Share";
+import SearchIcon from "@mui/icons-material/Search";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 
 import {
   Button,
@@ -35,7 +37,6 @@ export default function Page({ posts }: { posts: string }) {
     demandRent: "طلب ايجار",
     offerRent: "عرض ايجار",
   };
-
   return (
     <>
       <Head>
@@ -77,6 +78,74 @@ export default function Page({ posts }: { posts: string }) {
             maxWidth: "400px",
           }}
         >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <h3>بنك المعلومات</h3>
+          </Box>
+          {!postsOb.length && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <p>ليس لديك اي اعلان</p>
+            </Box>
+          )}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Link href={"/search?userTel=" + user?.tel}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  p: 1,
+                  cursor: "pointer",
+                  backgroundColor: (theme) => theme.palette.primary.main,
+                  color: "white",
+                }}
+              >
+                <Box
+                  sx={{
+                    pr: 1,
+                  }}
+                >
+                  <SearchIcon></SearchIcon>
+                </Box>
+                <Box>بحث</Box>
+              </Box>
+            </Link>
+
+            <Link href="/post-form">
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  p: 1,
+                  cursor: "pointer",
+                  backgroundColor: (theme) => theme.palette.primary.main,
+                  color: "white",
+                }}
+              >
+                <Box
+                  sx={{
+                    pr: 1,
+                  }}
+                >
+                  <PostAddIcon></PostAddIcon>
+                </Box>
+                <Box>اضاقة اعلان</Box>
+              </Box>
+            </Link>
+          </Box>
           {postsOb.map((post, i) => {
             const image = post.images[0];
 
@@ -261,13 +330,12 @@ export async function getServerSideProps({
     postsObject = await DBPost.find({
       type: query.type,
       departement: query.departement,
+      userTel: query.userTel,
     }).sort({ createdAt: -1 });
-  } else if (query.user) {
+  } else if (query.userTel) {
     postsObject = await DBPost.find({
-      user: query.user,
+      userTel: query.userTel,
     }).sort({ createdAt: -1 });
-  } else {
-    postsObject = await DBPost.find({}).sort({ createdAt: -1 });
   }
 
   const posts = JSON.stringify(postsObject);

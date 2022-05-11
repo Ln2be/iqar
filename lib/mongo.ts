@@ -3,7 +3,7 @@ import { UserType, Post } from "../projectTypes";
 
 const isProduction = process.env.NODE_ENV === "production";
 
-const db = isProduction ? "iqardb" : "iqardb3";
+const db = isProduction ? "iqardb" : "iqardb";
 
 mongoose.connect("mongodb://localhost:27017/" + db);
 
@@ -50,6 +50,7 @@ const postSchema = new Schema<Post>({
   count: Number,
   createdAt: Date,
   user: String,
+  userTel: String,
 });
 
 export const DBPost =

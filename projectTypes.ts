@@ -33,4 +33,5 @@ export interface Post {
   createdAt: Date;
   count: number;
   user: string;
+  userTel: string;
 }

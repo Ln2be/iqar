@@ -29,7 +29,7 @@ export function useUser(
       // If redirectIfFound is also set, redirect if the user was found
       (redirectIfFound && hasUser)
     ) {
-      Router.push(redirectTo);
+      user.role == "user" ? Router.push("/samsar") : Router.push(redirectTo);
     }
   }, [redirectTo, redirectIfFound, finished, hasUser]);
 

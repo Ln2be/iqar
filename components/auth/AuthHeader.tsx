@@ -74,7 +74,7 @@ export default function AuthHeader() {
                 </Box>
               </Box>
               <Box>
-                <Link href={"/?user=" + user.username}>منشوراتي</Link>
+                <Link href={"/samsar?userTel=" + user.tel}>بنك المعلومات</Link>
               </Box>
             </Box>
           </Box>

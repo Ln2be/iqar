@@ -54,11 +54,26 @@ const search: { [key: string]: string } = {
   type: "",
   departement: "",
 };
-export default function Page() {
+export default function Page({ queryjson }: { queryjson: string }) {
   // const router = useRouter();
+  const query = JSON.parse(queryjson);
 
   function handleSearch() {
-    Router.push("/?type=" + search.type + "&departement=" + search.departement);
+    if (query.userTel) {
+      // nothing
+      Router.push(
+        "/samsar?userTel=" +
+          query.userTel +
+          "&type=" +
+          search.type +
+          "&departement=" +
+          search.departement
+      );
+    } else {
+      Router.push(
+        "/?type=" + search.type + "&departement=" + search.departement
+      );
+    }
   }
   return (
     <Layout>
@@ -154,4 +169,18 @@ export default function Page() {
       </Box>
     </Layout>
   );
+}
+
+export async function getServerSideProps({
+  query,
+}: {
+  query: { [key: string]: string };
+}) {
+  const queryjson = JSON.stringify(query);
+
+  return {
+    props: {
+      queryjson,
+    },
+  };
 }
