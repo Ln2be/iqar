@@ -60,7 +60,9 @@ export async function getServerSideProps({
 }: {
   query: { [key: string]: string };
 }) {
-  const usersObject = await DBUser.find({ role: query.role });
+  const usersObject = await DBUser.find({ role: query.role }).sort({
+    departement: +1,
+  });
   const usersJson = JSON.stringify(usersObject);
 
   return {
