@@ -73,6 +73,11 @@ export default function Page({ posts }: { posts: any }) {
               <td>
                 <WhatsappShareButton
                   url={urlbase + "auth/signup?space=rep&code=" + post.code}
+                  onClick={() => {
+                    fetch("/api/useCode?id=" + post._id).then(() => {
+                      router.reload();
+                    });
+                  }}
                 >
                   <Box
                     sx={{
@@ -91,7 +96,7 @@ export default function Page({ posts }: { posts: any }) {
       <button
         onClick={() => {
           sendCodes();
-          router.push("/code/user");
+          router.push("/code/rep");
         }}
       >
         add another 30

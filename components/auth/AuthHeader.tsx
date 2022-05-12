@@ -87,6 +87,42 @@ export default function AuthHeader() {
           </Box>
         )}
       </Box>
+      <Box>
+        {user?.role == "rep" && (
+          <Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                backgroundColor: (theme) => theme.palette.primary.light,
+                color: "white",
+                p: { sx: 1, md: 1 },
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
+                <AccountCircleIcon></AccountCircleIcon>
+                <Box
+                  sx={{
+                    pl: 1,
+                  }}
+                >
+                  {user?.username}
+                </Box>
+              </Box>
+              <Box>
+                <Link href={"/?user=rep&departement=" + user.departement}>
+                  الطلبات
+                </Link>
+              </Box>
+            </Box>
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 }

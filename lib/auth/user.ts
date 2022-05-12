@@ -38,7 +38,7 @@ export async function createUser(newUser: UserType) {
 
   user.count = userCounter.count + 1;
 
-  if (newUser.role == "user") {
+  if (newUser.role == "user" || newUser.role == "rep") {
     const codeCorrect = await DBUserCode.findOne({ code: newUser.code });
     if (!codeCorrect || codeCorrect.used == 1) {
       return false;
@@ -80,6 +80,7 @@ export async function getUser({ tel }: { tel: string }) {
     "_id",
     "role",
     "tel",
+    "departement",
   ]);
 }
 

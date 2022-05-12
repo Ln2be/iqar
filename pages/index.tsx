@@ -315,6 +315,11 @@ export async function getServerSideProps({
       type: query.type,
       departement: query.departement,
     }).sort({ createdAt: -1 });
+  } else if (query.user && query.departement) {
+    postsObject = await DBPost.find({
+      departement: query.departement,
+      $or: [{ type: "buying" }, { type: "demandRent" }],
+    }).sort({ createdAt: -1 });
   } else if (query.user) {
     postsObject = await DBPost.find({
       user: query.user,
