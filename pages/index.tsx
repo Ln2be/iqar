@@ -43,6 +43,8 @@ export default function Page({ posts }: { posts: string }) {
           مؤسسة وسيطة لبيع و شراء و ايجار المنازل و الشقق و العقارات بشكل عام في
           نواكشوط موريتانيا
         </title>
+        <link rel="manifest" href="manifest.webmanifest">
+
         <meta
           name="description"
           content={"موقع لعروض و طلبات العقار في مدينة نواكشوط"}

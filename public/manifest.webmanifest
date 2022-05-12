@@ -1,0 +1,15 @@
+{
+  "background_color": "purple",
+  "description": "بيع و شراء و ايجار العقارات في انواكشوط مورينانيا",
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "images/fovicon.ico",
+      "sizes": "192x192",
+      "type": "image/ico"
+    }
+  ],
+  "name": "عقار انواكشوط",
+  "short_name": "عقار انواكشوط",
+  "start_url": "/index.html"
+}
