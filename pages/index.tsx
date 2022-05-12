@@ -43,7 +43,7 @@ export default function Page({ posts }: { posts: string }) {
           مؤسسة وسيطة لبيع و شراء و ايجار المنازل و الشقق و العقارات بشكل عام في
           نواكشوط موريتانيا
         </title>
-        <link rel="manifest" href="manifest.webmanifest">
+        <link rel="manifest" href="manifest.webmanifest"></link>
 
         <meta
           name="description"
