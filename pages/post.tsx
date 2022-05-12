@@ -48,19 +48,18 @@ export default function Page({ postjson }: { postjson: string }) {
       <Head>
         <title>{post.details + "انواكشوط موريتانيا   "}</title>
         <meta name="description" content={post.details} key="desc" />
-        <meta property="og:title" content={post.details} />
         <meta
-          property="og:description"
+          property="og:title"
           content={
             DEPARTEMENTS[post.departement] +
             " \n" +
             typeArabic[post.type] +
             " \n" +
             subtypeArabic[post.subtype] +
-            " \n" +
-            post.details
+            " \n"
           }
         />
+        <meta property="og:description" content={post.details} />
         <meta property="og:image" content={post.images[0]?.data} />
       </Head>
       <Layout>
