@@ -51,9 +51,9 @@ export default function Page({ postjson }: { postjson: string }) {
         <meta
           property="og:title"
           content={
-            subtypeArabic[post.subtype] +
-            " \n" +
             typeArabic[post.type] +
+            " \n" +
+            subtypeArabic[post.subtype] +
             " \n" +
             DEPARTEMENTS[post.departement] +
             " \n" +
