@@ -210,10 +210,8 @@ export default function Page({ posts }: { posts: string }) {
                           }}
                         >
                           <WhatsappButton
-                            phone={post.tel}
-                            message={
-                              "https://iqar.store/post?id=+222" + post._id
-                            }
+                            phone={"+222" + post.tel}
+                            message={"https://iqar.store/post?id=" + post._id}
                           >
                             <Button variant="contained">واتساب</Button>
                           </WhatsappButton>
