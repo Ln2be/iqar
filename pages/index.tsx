@@ -44,6 +44,7 @@ export default function Page({ posts }: { posts: string }) {
     other: "إخرى",
   };
 
+  const date = Date.now();
   return (
     <>
       <Head>
@@ -200,26 +201,60 @@ export default function Page({ posts }: { posts: string }) {
                           thousandSeparator={true}
                         />
                       </Box>
-
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                        }}
-                      >
-                        <WhatsappButton
-                          phone={"+22248692007"}
-                          message={"https://iqar.store/post?id=" + post._id}
+                      {user?.role == "admin" ? (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                          }}
                         >
-                          <Button variant="contained">واتساب</Button>
-                        </WhatsappButton>
-                        <Typography variant="body1" color="text.secondary">
-                          {48692007}
-                        </Typography>
+                          <WhatsappButton
+                            phone={post.tel}
+                            message={"https://iqar.store/post?id=" + post._id}
+                          >
+                            <Button variant="contained">واتساب</Button>
+                          </WhatsappButton>
+                          <Typography variant="body1" color="text.secondary">
+                            {post.tel}
+                          </Typography>
+                        </Box>
+                      ) : (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                          }}
+                        >
+                          <WhatsappButton
+                            phone={"+22248692007"}
+                            message={"https://iqar.store/post?id=" + post._id}
+                          >
+                            <Button variant="contained">واتساب</Button>
+                          </WhatsappButton>
+                          <Typography variant="body1" color="text.secondary">
+                            {48692007}
+                          </Typography>
+                        </Box>
+                      )}
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        pt: 1,
+                      }}
+                    >
+                      <Box>{"رقم الاعلان :  " + post.count}</Box>
+                      <Box>
+                        {new Date(post.createdAt).getFullYear() +
+                          "-" +
+                          new Date(post.createdAt).getMonth() +
+                          "-" +
+                          new Date(post.createdAt).getDay()}
                       </Box>
                     </Box>
-                    {(user?.role == "admin" ||
-                      (user && user?.username == post.user)) && (
+                    {user?.tel == post.userTel && (
                       <Box
                         sx={{
                           display: "flex",
