@@ -45,6 +45,7 @@ export default function Page({ posts }: { posts: string }) {
   };
 
   const date = Date.now();
+  const options = { year: "numeric", month: "long", day: "numeric" };
   return (
     <>
       <Head>
@@ -210,7 +211,9 @@ export default function Page({ posts }: { posts: string }) {
                         >
                           <WhatsappButton
                             phone={post.tel}
-                            message={"https://iqar.store/post?id=" + post._id}
+                            message={
+                              "https://iqar.store/post?id=+222" + post._id
+                            }
                           >
                             <Button variant="contained">واتساب</Button>
                           </WhatsappButton>
@@ -246,7 +249,9 @@ export default function Page({ posts }: { posts: string }) {
                       }}
                     >
                       <Box>{"رقم الاعلان :  " + post.count}</Box>
-                      <Box>{new Date(post.createdAt).toLocaleDateString()}</Box>
+                      <Box>
+                        {new Date(post.createdAt).toLocaleDateString("ar-MA")}
+                      </Box>
                     </Box>
                     {user?.tel == post.userTel && (
                       <Box
