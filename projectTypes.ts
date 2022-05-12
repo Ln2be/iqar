@@ -17,6 +17,7 @@ export interface UserType {
 export interface Post {
   _id: string;
   type: string;
+  subtype: string;
   departement: string;
   region: string;
   details: string;

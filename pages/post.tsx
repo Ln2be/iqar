@@ -35,6 +35,14 @@ export default function Page({ postjson }: { postjson: string }) {
     demandRent: "طلب ايجار",
     offerRent: "عرض ايجار",
   };
+
+  const subtypeArabic: { [key: string]: string } = {
+    land: "قطعة ارضية",
+    appartment: "شقق",
+    house: "منزل",
+    villa: "فيلا",
+    other: "إخرى",
+  };
   return (
     <>
       <Head>
@@ -62,11 +70,20 @@ export default function Page({ postjson }: { postjson: string }) {
                     justifyContent: "space-between",
                   }}
                 >
-                  <Box>
-                    <Typography gutterBottom variant="h5">
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Typography variant="h5">
                       {typeArabic[post.type]}
                     </Typography>
+                    <Typography gutterBottom variant="h5">
+                      {subtypeArabic[post.subtype]}
+                    </Typography>
                   </Box>
+
                   <Box></Box>
                   <Box>
                     <Typography gutterBottom variant="h5">

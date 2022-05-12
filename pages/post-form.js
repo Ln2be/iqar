@@ -15,6 +15,7 @@ import { Buffer } from "buffer";
 
 var post = {
   type: "",
+  subtype: "",
   departement: "",
   region: "",
   details: "",
@@ -98,6 +99,29 @@ export default function Page() {
     {
       value: "offerRent",
       label: "عرض ايجار",
+    },
+  ];
+
+  const subtypes = [
+    {
+      value: "land",
+      label: "قطعة ارضية",
+    },
+    {
+      value: "appartment",
+      label: "شقق",
+    },
+    {
+      value: "house",
+      label: "منزل",
+    },
+    {
+      value: "villa",
+      label: "فيلا",
+    },
+    {
+      value: "other",
+      label: "اخرى",
     },
   ];
 
@@ -201,6 +225,33 @@ export default function Page() {
               ادخل الاعلان
             </small>
           )}
+
+          <TextField
+            id="type"
+            select
+            label="اختيار فرعي"
+            {...register("subtype", { required: true })}
+            // value={currency}
+            onChange={(event) => {
+              post.subtype = event.target.value;
+            }}
+          >
+            {subtypes.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          {errors.subtype && (
+            <small
+              style={{
+                color: "red",
+              }}
+            >
+              ادخل الاختيار الفرعي
+            </small>
+          )}
+
           <TextField
             id="outlined-select-currency"
             select

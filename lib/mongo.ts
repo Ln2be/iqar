@@ -34,6 +34,7 @@ export const DBUser =
 
 const postSchema = new Schema<Post>({
   type: String,
+  subtype: String,
   departement: String,
   region: String,
   details: String,
