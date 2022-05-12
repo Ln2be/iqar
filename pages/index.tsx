@@ -246,13 +246,7 @@ export default function Page({ posts }: { posts: string }) {
                       }}
                     >
                       <Box>{"رقم الاعلان :  " + post.count}</Box>
-                      <Box>
-                        {new Date(post.createdAt).getFullYear() +
-                          "-" +
-                          new Date(post.createdAt).getMonth() +
-                          "-" +
-                          new Date(post.createdAt).getDay()}
-                      </Box>
+                      <Box>{new Date(post.createdAt).toLocaleDateString()}</Box>
                     </Box>
                     {user?.tel == post.userTel && (
                       <Box
