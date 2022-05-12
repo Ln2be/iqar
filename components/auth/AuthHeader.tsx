@@ -41,14 +41,14 @@ export default function AuthHeader() {
                 cursor: "pointer",
               }}
             >
-              <Link href="/reps">الممثلين</Link>
+              <Link href="/reps?role=rep">الممثلين</Link>
             </Box>
             <Box
               sx={{
                 cursor: "pointer",
               }}
             >
-              <Link href="/reps">الصمصارة</Link>
+              <Link href="/reps?role=user">الصمصارة</Link>
             </Box>
           </Box>
         )}

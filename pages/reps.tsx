@@ -42,7 +42,7 @@ export default function Page({ usersJson }: { usersJson: string }) {
                 }}
               >
                 <Box>{user.username}</Box>
-                <Box>{user.role}</Box>
+                {/* <Box>{user.role}</Box> */}
                 <Box>{DEPARTEMENTS[user.departement]}</Box>
                 <Box>{user.region}</Box>
                 <Box>{user.tel}</Box>
@@ -55,8 +55,12 @@ export default function Page({ usersJson }: { usersJson: string }) {
   );
 }
 
-export async function getServerSideProps(context: any) {
-  const usersObject = await DBUser.find({}).sort({ role: +1 });
+export async function getServerSideProps({
+  query,
+}: {
+  query: { [key: string]: string };
+}) {
+  const usersObject = await DBUser.find({ role: query.role });
   const usersJson = JSON.stringify(usersObject);
 
   return {
