@@ -4,6 +4,8 @@ import { DBUser } from "../lib/mongo";
 import { Box } from "@mui/system";
 import { UserType } from "../projectTypes";
 import { DEPARTEMENTS } from "../lib/translate";
+import WhatsappButton from "../components/whatsapp";
+import { Button, Typography } from "@mui/material";
 
 type JSONValue =
   | string
@@ -45,7 +47,19 @@ export default function Page({ usersJson }: { usersJson: string }) {
                 {/* <Box>{user.role}</Box> */}
                 <Box>{DEPARTEMENTS[user.departement]}</Box>
                 <Box>{user.region}</Box>
-                <Box>{user.tel}</Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <WhatsappButton phone={"+222" + user.tel} message={""}>
+                    <Button variant="contained">واتساب</Button>
+                  </WhatsappButton>
+                  <Typography variant="body1" color="text.secondary">
+                    {user.tel}
+                  </Typography>
+                </Box>
               </Box>
             </Box>
           );

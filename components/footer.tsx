@@ -12,7 +12,13 @@ export default function Footer() {
   const router = useRouter();
 
   return (
-    <Box sx={{ position: "fixed", width: "100%", bottom: 0 }}>
+    <Box
+      sx={{
+        position: "fixed",
+        width: "100%",
+        bottom: 0,
+      }}
+    >
       <BottomNavigation
         showLabels
         value={value}
