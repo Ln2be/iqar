@@ -251,7 +251,7 @@ export default function Page({ posts }: { posts: string }) {
                         {new Date(post.createdAt).toLocaleDateString("ar-MA")}
                       </Box>
                     </Box>
-                    {user?.tel == post.userTel && (
+                    {user && user?.tel == post.userTel && (
                       <Box
                         sx={{
                           display: "flex",
