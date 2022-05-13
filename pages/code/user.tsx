@@ -81,9 +81,6 @@ export default function Page({ posts }: { posts: any }) {
               <td>
                 <WhatsappShareButton
                   url={urlbase + "auth/signup?space=user&code=" + post.code}
-                  onClick={() => {
-                    router.push("/api/useCode?id=" + post._id);
-                  }}
                 >
                   <Box
                     sx={{
@@ -98,9 +95,6 @@ export default function Page({ posts }: { posts: any }) {
               <td>
                 <WhatsappShareButton
                   url={urlbase + "auth/signup?space=rep&code=" + post.code}
-                  onClick={() => {
-                    router.push("/api/useCode?id=" + post._id);
-                  }}
                 >
                   <Box
                     sx={{
