@@ -4,6 +4,7 @@ import { WhatsappShareButton } from "react-share";
 import { useRouter } from "next/router";
 import { DBPost, DBUserCode } from "../../lib/mongo";
 import Link from "next/link";
+import Button from "@mui/material/Button";
 
 const isProduction = process.env.NODE_ENV === "production";
 const urlbase = isProduction ? "https://iqar.store/" : "http://localhost:3000/";
@@ -67,7 +68,14 @@ export default function Page({ posts }: { posts: any }) {
                 <Link
                   href={urlbase + "auth/signup?space=user&code=" + post.code}
                 >
-                  go
+                  gosamsar
+                </Link>
+              </td>
+              <td>
+                <Link
+                  href={urlbase + "auth/signup?space=rep&code=" + post.code}
+                >
+                  gorep
                 </Link>
               </td>
               <td>
@@ -83,9 +91,37 @@ export default function Page({ posts }: { posts: any }) {
                       fontSize: "small",
                     }}
                   >
-                    مشاركة
+                    صمصار
                   </Box>
                 </WhatsappShareButton>
+              </td>
+              <td>
+                <WhatsappShareButton
+                  url={urlbase + "auth/signup?space=rep&code=" + post.code}
+                  onClick={() => {
+                    router.push("/api/useCode?id=" + post._id);
+                  }}
+                >
+                  <Box
+                    sx={{
+                      color: "blue",
+                      fontSize: "small",
+                    }}
+                  >
+                    ممثل
+                  </Box>
+                </WhatsappShareButton>
+              </td>
+              <td>
+                <Button
+                  onClick={() => {
+                    fetch("/api/useCode?id=" + post._id).then(() => {
+                      router.reload();
+                    });
+                  }}
+                >
+                  use
+                </Button>
               </td>
             </tr>
           ))}

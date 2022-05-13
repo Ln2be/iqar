@@ -22,7 +22,10 @@ export default async function handler(
   const url = isProduction ? prodUrl : devUrl;
   const site = isProduction ? prodSite : devSite;
 
-  if (images.length > 0) {
+  if (
+    (images.length > 0 && !bodyPost._id) ||
+    (bodyPost._id && bodyPost.imageUpdated && images.length > 0)
+  ) {
     images.map((image: any, i: number) => {
       const name: string =
         Date.now() +
@@ -37,35 +40,51 @@ export default async function handler(
         async () => {
           bodyPost.images[i].data = site + name;
           if (images.length == i + 1) {
-            // count the number of posts
-            const postCounter =
-              (await DBCount.findOne({ name: "user" })) ||
-              (await new DBCount({ name: "user" }).save());
+            if (bodyPost._id) {
+              const post = await DBPost.updateOne(
+                { _id: bodyPost._id },
+                bodyPost
+              );
+              res.json(post);
+            } else {
+              // count the number of posts
+              const postCounter =
+                (await DBCount.findOne({ name: "user" })) ||
+                (await new DBCount({ name: "user" }).save());
 
-            await DBCount.updateOne(
-              { name: "user" },
-              { count: postCounter.count + 1 }
-            );
-            // using the database now
+              await DBCount.updateOne(
+                { name: "user" },
+                { count: postCounter.count + 1 }
+              );
+              // using the database now
 
-            req.body.count = postCounter.count + 1;
-            const post = await new DBPost(req.body).save();
-            res.json(post);
+              req.body.count = postCounter.count + 1;
+              const post = await new DBPost(req.body).save();
+              res.json(post);
+            }
           }
         }
       );
     });
   } else {
-    // count the number of posts
-    const postCounter =
-      (await DBCount.findOne({ name: "user" })) ||
-      (await new DBCount({ name: "user" }).save());
+    if (bodyPost._id) {
+      const post = await DBPost.updateOne({ _id: bodyPost._id }, bodyPost);
+      res.json(post);
+    } else {
+      // count the number of posts
+      const postCounter =
+        (await DBCount.findOne({ name: "user" })) ||
+        (await new DBCount({ name: "user" }).save());
 
-    await DBCount.updateOne({ name: "user" }, { count: postCounter.count + 1 });
-    // using the database now
+      await DBCount.updateOne(
+        { name: "user" },
+        { count: postCounter.count + 1 }
+      );
+      // using the database now
 
-    req.body.count = postCounter.count + 1;
-    const post = await new DBPost(req.body).save();
-    res.json(post);
+      req.body.count = postCounter.count + 1;
+      const post = await new DBPost(req.body).save();
+      res.json(post);
+    }
   }
 }

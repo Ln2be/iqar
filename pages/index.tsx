@@ -13,6 +13,7 @@ import WhatsappButton from "../components/whatsapp";
 import NumberFormat from "react-number-format";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ShareIcon from "@mui/icons-material/Share";
+import { DBAdminCode, DBCount, DBUser, DBUserCode } from "../mongo";
 
 import {
   Button,
@@ -280,6 +281,22 @@ export default function Page({ posts }: { posts: string }) {
                           </Box>
                         </Box>
                       )}
+                    {user && user?.role == "admin" && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          mt: 2,
+                        }}
+                      >
+                        <Box>
+                          <Link href={"/api/delete?id=" + post._id}>
+                            <Button style={{ color: "red" }}>حذف</Button>
+                          </Link>
+                        </Box>
+                      </Box>
+                    )}
                   </Box>
                 </CardContent>
                 <CardActions

@@ -15,6 +15,13 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/post.tsx", "lib/Roboto-normal.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/post.tsx",
+    "lib/Roboto-normal.js",
+    "pages/post-form.js"
+  ],
   "exclude": ["node_modules"]
 }

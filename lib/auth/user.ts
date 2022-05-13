@@ -51,7 +51,7 @@ export async function createUser(newUser: UserType) {
     }
   } else {
     const codeCorrect = await DBUserCode.findOne({ code: newUser.code });
-    if (!codeCorrect || codeCorrect.used == 1) {
+    if (!codeCorrect) {
       return false;
     } else {
       const savedUser = await new DBUser(user).save();
