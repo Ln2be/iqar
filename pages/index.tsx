@@ -13,7 +13,6 @@ import WhatsappButton from "../components/whatsapp";
 import NumberFormat from "react-number-format";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ShareIcon from "@mui/icons-material/Share";
-import { DBAdminCode, DBCount, DBUser, DBUserCode } from "../mongo";
 
 import {
   Button,
