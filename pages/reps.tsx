@@ -34,6 +34,7 @@ export default function Page({ usersJson }: { usersJson: string }) {
               sx={{
                 display: "flex",
                 flexDirection: "column",
+                overflow: "scroll",
               }}
             >
               <Box
