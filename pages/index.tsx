@@ -251,30 +251,35 @@ export default function Page({ posts }: { posts: string }) {
                         {new Date(post.createdAt).toLocaleDateString("ar-MA")}
                       </Box>
                     </Box>
-                    {user && user?.tel == post.userTel && (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          mt: 2,
-                        }}
-                      >
-                        <Box>
-                          <Box>هاتف الزبون :</Box>
+                    {user &&
+                      user?.tel == post.userTel &&
+                      user?.role != "admin" && (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            mt: 2,
+                          }}
+                        >
                           <Box>
-                            <Typography variant="body1" color="text.secondary">
-                              {post.tel}
-                            </Typography>
+                            <Box>هاتف الزبون :</Box>
+                            <Box>
+                              <Typography
+                                variant="body1"
+                                color="text.secondary"
+                              >
+                                {post.tel}
+                              </Typography>
+                            </Box>
+                          </Box>
+                          <Box>
+                            <Link href={"/api/delete?id=" + post._id}>
+                              <Button style={{ color: "red" }}>حذف</Button>
+                            </Link>
                           </Box>
                         </Box>
-                        <Box>
-                          <Link href={"/api/delete?id=" + post._id}>
-                            <Button style={{ color: "red" }}>حذف</Button>
-                          </Link>
-                        </Box>
-                      </Box>
-                    )}
+                      )}
                   </Box>
                 </CardContent>
                 <CardActions
