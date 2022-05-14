@@ -23,7 +23,7 @@ export default function Page({ usersJson }: { usersJson: string }) {
         <thead></thead>
         <tbody>
           {users.map((user, i) => (
-            <tr>
+            <tr key={i}>
               <td>{user.username}</td>
               <td>{DEPARTEMENTS[user.departement]}</td>
               <td>{user.region}</td>
