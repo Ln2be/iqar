@@ -11,6 +11,7 @@ import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import Button from "@mui/material/Button";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { useEffect, useState } from "react";
 
 const theme = createTheme({
   direction: "rtl", // Both here and <body dir="rtl">
@@ -23,7 +24,14 @@ const cacheRtl = createCache({
 
 export default function Layout({ children }: { children: JSX.Element }) {
   const router = useRouter();
-  console.log(router.pathname);
+
+  // const [tooltipFooter, setTooltipFooter] = useState([false, false, false]);
+  // const { tour } = router.query;
+
+  // function takeTour() {
+  //   setTooltipFooter([true, false, false]);
+  // }
+
   return (
     <CacheProvider value={cacheRtl}>
       <ThemeProvider theme={theme}>

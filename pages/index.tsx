@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/layout";
 import Image from "next/image";
 import { DBPost } from "../lib/mongo";
@@ -24,7 +24,13 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 
-export default function Page({ posts }: { posts: string }) {
+export default function Page({
+  posts,
+  tour,
+}: {
+  posts: string;
+  tour: boolean;
+}) {
   const user = useUser();
   const router = useRouter();
   const postsOb = JSON.parse(posts) as [Post];
@@ -330,6 +336,7 @@ export async function getServerSideProps({
 }: {
   query: { [key: string]: string };
 }) {
+  const tour = query.tour ? true : false;
   let postsObject = [];
   if (query.type && query.departement) {
     postsObject = await DBPost.find({
@@ -353,7 +360,8 @@ export async function getServerSideProps({
 
   return {
     props: {
-      posts,
+      posts: posts,
+      tour: tour,
     },
   };
 }

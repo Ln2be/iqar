@@ -9,3 +9,11 @@ module.exports = {
     domains: ["localhost", "iqar.store"],
   },
 };
+
+const withPWA = require("next-pwa");
+
+module.exports = withPWA({
+  pwa: {
+    dest: "public",
+  },
+});
