@@ -1,6 +1,6 @@
 {
-  "name": "PWA App",
-  "short_name": "App",
+  "name": "عقار نواكشوط",
+  "short_name": "عقار نواكشوط",
   "icons": [
     {
       "src": "/icons/android/icon-192.png",
@@ -8,17 +8,16 @@
       "type": "image/png",
       "purpose": "any maskable"
     },
-    {
-      "src": "/icons/android-chrome-384x384.png",
-      "sizes": "384x384",
-      "type": "image/png"
-    },
+
     {
       "src": "/icons/android/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ],
+
+  "prefer_related_applications": false,
+
   "theme_color": "#FFFFFF",
   "background_color": "#FFFFFF",
   "start_url": "/",

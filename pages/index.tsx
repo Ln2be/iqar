@@ -35,6 +35,24 @@ export default function Page({
   const router = useRouter();
   const postsOb = JSON.parse(posts) as [Post];
 
+  const [installb, setInstallb] = useState("none");
+  // install pwa
+  let deferredPrompt: any; // Allows to show the install prompt
+  // const installButton = document.getElementById("install_button");
+
+  if (typeof window !== "undefined") {
+    window.addEventListener("beforeinstallprompt", (e) => {
+      console.log("beforeinstallprompt fired");
+      // Prevent Chrome 76 and earlier from automatically showing a prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      deferredPrompt = e;
+      // Show the install button
+      // installButton.hidden = false;
+      // installButton.addEventListener("click", installApp);
+    });
+  }
+
   const typeArabic: { [key: string]: string } = {
     buying: "شراء",
     selling: "بيع",
@@ -98,6 +116,34 @@ export default function Page({
             maxWidth: "400px",
           }}
         >
+          <Box
+            sx={{
+              display: installb,
+            }}
+          >
+            <Button
+              onClick={() => {
+                // Show the prompt
+                deferredPrompt.prompt();
+                // installButton.disabled = true;
+
+                // Wait for the user to respond to the prompt
+                deferredPrompt.userChoice.then((choiceResult) => {
+                  if (choiceResult.outcome === "accepted") {
+                    console.log("PWA setup accepted");
+                    // installButton.hidden = true;
+                    setInstallb("block");
+                  } else {
+                    console.log("PWA setup rejected");
+                  }
+                  // installButton.disabled = false;
+                  deferredPrompt = null;
+                });
+              }}
+            >
+              install
+            </Button>
+          </Box>
           {postsOb.map((post, i) => {
             const image = post.images[0];
 
