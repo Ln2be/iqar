@@ -13,6 +13,7 @@ import WhatsappButton from "../components/whatsapp";
 import NumberFormat from "react-number-format";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ShareIcon from "@mui/icons-material/Share";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 import {
   Button,
@@ -121,6 +122,7 @@ export default function Page({
             sx={{
               display: installb,
               justifyContent: "center",
+              flexDirection: "column",
             }}
           >
             <Button
@@ -150,6 +152,7 @@ export default function Page({
             >
               تثبيت التطبيق
             </Button>
+            <ArrowDownwardIcon></ArrowDownwardIcon>
           </Box>
           {postsOb.map((post, i) => {
             const image = post.images[0];

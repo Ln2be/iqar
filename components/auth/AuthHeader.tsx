@@ -96,7 +96,8 @@ export default function AuthHeader() {
                 justifyContent: "space-between",
                 backgroundColor: (theme) => theme.palette.primary.light,
                 color: "white",
-                p: { sx: 1, md: 1 },
+                pl: 2,
+                pr: 2,
               }}
             >
               <Box
