@@ -5,7 +5,6 @@ export default function Document() {
   return (
     <Html>
       <Head />
-
       {/* the next pwa head  */}
       <meta name="application-name" content="عقار نواكشوط" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -24,7 +23,6 @@ export default function Document() {
       <meta name="msapplication-TileColor" content="#2B5797" />
       <meta name="msapplication-tap-highlight" content="no" />
       {/* <meta name="theme-color" content="#000000" /> */}
-
       <link rel="apple-touch-icon" href="/icons/ios/icon-152.png" />
       <link
         rel="apple-touch-icon"
@@ -41,12 +39,23 @@ export default function Document() {
         sizes="167x167"
         href="/icons/ios/icon-167.png"
       />
-
       <link
         rel="icon"
         type="image/png"
         sizes="32x32"
         href="/icons/ios/icon-32.png"
+      />
+      <link
+        rel="icon"
+        type="image/png"
+        sizes="192x192"
+        href="/icons/ios/icon-192.png"
+      />{" "}
+      <link
+        rel="icon"
+        type="image/png"
+        sizes="512x512"
+        href="/icons/ios/icon-512.png"
       />
       <link
         rel="icon"
@@ -65,7 +74,6 @@ export default function Document() {
         rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
       />
-
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:url" content="https://iqar.store" />
       <meta name="twitter:title" content="عقار نواكشوط" />
@@ -88,12 +96,10 @@ export default function Document() {
       <meta property="og:url" content="https://iqar.store" />
       <meta
         property="og:image"
-        content="https://yourdomain.com/icons/ios/icon-152.png"
+        content="https://iqar.store/icons/ios/icon-152.png"
       />
-
       {/* The next pwa heads */}
       <meta name="theme-color" content="#ccc"></meta>
-
       {/*  Global site tag (gtag.js) - Google Analytics */}
       {/* <script
         async
@@ -104,7 +110,6 @@ export default function Document() {
         {dataLayer.push(arguments)}
         gtag('js', new Date()); gtag('config', 'G-PNYH0CJWN6');
       </script> */}
-
       {/* Global Site Tag (gtag.js) - Google Analytics */}
       <script
         async
@@ -122,7 +127,6 @@ export default function Document() {
           `,
         }}
       />
-
       <body dir="rtl">
         <Main />
         <NextScript />
