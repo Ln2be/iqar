@@ -121,7 +121,7 @@ export default function Page({
             sx={{
               display: installb,
               justifyContent: "center",
-              color: "green",
+              backgroundColor: "green",
             }}
           >
             <Button
