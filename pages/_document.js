@@ -23,46 +23,19 @@ export default function Document() {
       <meta name="msapplication-TileColor" content="#2B5797" />
       <meta name="msapplication-tap-highlight" content="no" />
       {/* <meta name="theme-color" content="#000000" /> */}
-      <link rel="apple-touch-icon" href="/icons/ios/icon-152.png" />
-      <link
-        rel="apple-touch-icon"
-        sizes="152x152"
-        href="/icons/ios/icon-152.png"
-      />
-      <link
-        rel="apple-touch-icon"
-        sizes="180x180"
-        href="/icons/ios/icon-180.png"
-      />
-      <link
-        rel="apple-touch-icon"
-        sizes="167x167"
-        href="/icons/ios/icon-167.png"
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="32x32"
-        href="/icons/ios/icon-32.png"
-      />
+      <link rel="apple-touch-icon" href="/icon-152.png" />
+      <link rel="apple-touch-icon" sizes="152x152" href="/icon-152.png" />
+      <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png" />
+      <link rel="apple-touch-icon" sizes="167x167" href="/icon-167.png" />
+      <link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png" />
       <link
         rel="icon"
         type="image/png"
         sizes="192x192"
-        href="/icons/ios/icon-192.png"
+        href="/icon-192.png"
       />{" "}
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="512x512"
-        href="/icons/ios/icon-512.png"
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="16x16"
-        href="/icons/ios/icon-16.png"
-      />
+      <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+      <link rel="icon" type="image/png" sizes="16x16" href="/icon-16.png" />
       <link rel="manifest" href="/manifest.json" />
       <link
         rel="mask-icon"
@@ -94,10 +67,7 @@ export default function Document() {
       />
       <meta property="og:site_name" content="عقار نواكشوط" />
       <meta property="og:url" content="https://iqar.store" />
-      <meta
-        property="og:image"
-        content="https://iqar.store/icons/ios/icon-152.png"
-      />
+      <meta property="og:image" content="https://iqar.store/icon-152.png" />
       {/* The next pwa heads */}
       <meta name="theme-color" content="#ccc"></meta>
       {/*  Global site tag (gtag.js) - Google Analytics */}
