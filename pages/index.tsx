@@ -132,11 +132,12 @@ export default function Page({
                   if (choiceResult.outcome === "accepted") {
                     console.log("PWA setup accepted");
                     // installButton.hidden = true;
-                    setInstallb("block");
+                    setInstallb("none");
                   } else {
                     console.log("PWA setup rejected");
                   }
                   // installButton.disabled = false;
+
                   deferredPrompt = null;
                 });
               }}
