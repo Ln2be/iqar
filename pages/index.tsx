@@ -121,10 +121,12 @@ export default function Page({
             sx={{
               display: installb,
               justifyContent: "center",
-              backgroundColor: "green",
             }}
           >
             <Button
+              style={{
+                backgroundColor: "green",
+              }}
               variant="contained"
               onClick={() => {
                 // Show the prompt
