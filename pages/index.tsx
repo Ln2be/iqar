@@ -128,7 +128,7 @@ export default function Page({
                 // installButton.disabled = true;
 
                 // Wait for the user to respond to the prompt
-                deferredPrompt.userChoice.then((choiceResult) => {
+                deferredPrompt.userChoice.then((choiceResult: any) => {
                   if (choiceResult.outcome === "accepted") {
                     console.log("PWA setup accepted");
                     // installButton.hidden = true;
