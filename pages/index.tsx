@@ -120,10 +120,11 @@ export default function Page({
           <Box
             sx={{
               display: installb,
-              alignItems: "center",
+              justifyContent: "center",
             }}
           >
             <Button
+              variant="contained"
               onClick={() => {
                 // Show the prompt
                 deferredPrompt.prompt();
