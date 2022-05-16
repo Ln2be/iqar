@@ -49,7 +49,7 @@ export default function Page({
       // Stash the event so it can be triggered later.
       deferredPrompt = e;
       // Show the install button
-      setInstallb("block");
+      setInstallb("flex");
       // installButton.hidden = false;
       // installButton.addEventListener("click", installApp);
     });
@@ -120,6 +120,7 @@ export default function Page({
           <Box
             sx={{
               display: installb,
+              alignItems: "center",
             }}
           >
             <Button
@@ -143,7 +144,7 @@ export default function Page({
                 });
               }}
             >
-              install
+              تثبيت التطبيق
             </Button>
           </Box>
           {postsOb.map((post, i) => {
