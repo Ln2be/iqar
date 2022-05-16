@@ -48,6 +48,7 @@ export default function Page({
       // Stash the event so it can be triggered later.
       deferredPrompt = e;
       // Show the install button
+      setInstallb("block");
       // installButton.hidden = false;
       // installButton.addEventListener("click", installApp);
     });
