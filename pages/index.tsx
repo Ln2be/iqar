@@ -24,6 +24,8 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 
+let deferredPrompt: any; // Allows to show the install prompt
+
 export default function Page({
   posts,
   tour,
@@ -37,7 +39,6 @@ export default function Page({
 
   const [installb, setInstallb] = useState("none");
   // install pwa
-  let deferredPrompt: any; // Allows to show the install prompt
   // const installButton = document.getElementById("install_button");
 
   if (typeof window !== "undefined") {
