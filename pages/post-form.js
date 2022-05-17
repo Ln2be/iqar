@@ -217,7 +217,7 @@ export default function Page() {
                 post.type == "stay";
               setNeedPictures(bool);
 
-              boolSub = post.type != "stay";
+              const boolSub = post.type != "stay";
               setNeedSub(boolSub);
             }}
           >
