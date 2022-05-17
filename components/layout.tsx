@@ -48,7 +48,7 @@ export default function Layout({ children }: { children: JSX.Element }) {
           {children}
         </Box>
 
-        <Footer></Footer>
+        {/* <Footer></Footer> */}
       </ThemeProvider>
     </CacheProvider>
   );
