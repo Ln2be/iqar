@@ -399,6 +399,10 @@ export async function getServerSideProps({
       type: query.type,
       departement: query.departement,
     }).sort({ createdAt: -1 });
+  } else if (query.type) {
+    postsObject = await DBPost.find({
+      type: query.type,
+    }).sort({ createdAt: -1 });
   } else if (query.user && query.departement) {
     postsObject = await DBPost.find({
       departement: query.departement,

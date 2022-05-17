@@ -69,6 +69,9 @@ export default function Page() {
                 width: "100%",
                 height: "80%",
               }}
+              onClick={() => {
+                router.push("/feeds?type=stay");
+              }}
             ></LocalHotelIcon>
             <Box
               sx={{
@@ -95,6 +98,9 @@ export default function Page() {
               style={{
                 width: "100%",
                 height: "80%",
+              }}
+              onClick={() => {
+                router.push("/feeds?type=offerRent");
               }}
             ></KeyIcon>
             <Box
@@ -124,6 +130,9 @@ export default function Page() {
                 width: "100%",
                 height: "80%",
               }}
+              onClick={() => {
+                router.push("/feeds?type=demandRent");
+              }}
             ></KeyOffIcon>
             <Box
               sx={{
@@ -152,6 +161,9 @@ export default function Page() {
                 width: "100%",
                 height: "80%",
               }}
+              onClick={() => {
+                router.push("/feeds?type=selling");
+              }}
             ></SellIcon>
             <Box
               sx={{
@@ -179,6 +191,9 @@ export default function Page() {
               style={{
                 width: "100%",
                 height: "80%",
+              }}
+              onClick={() => {
+                router.push("/feeds?type=buying");
               }}
             ></ShoppingCart>
             <Box
