@@ -37,37 +37,6 @@ export default function Layout({ children }: { children: JSX.Element }) {
       <ThemeProvider theme={theme}>
         <GHeader></GHeader>
         <AuthHeader></AuthHeader>
-        {router.pathname != "/" && (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              // backgroundColor: "#bbb",
-            }}
-          >
-            <Box
-              sx={{
-                backgroundColor: (theme) => {
-                  return theme.palette.primary.light;
-                },
-                color: "white",
-                // maxWidth: "80px",
-              }}
-            >
-              <Button
-                onClick={() => {
-                  router.back();
-                }}
-                size="small"
-                style={{
-                  color: "white",
-                }}
-              >
-                <ArrowForwardIosIcon></ArrowForwardIosIcon>
-              </Button>
-            </Box>
-          </Box>
-        )}
         <Box
           sx={{
             p: 2,

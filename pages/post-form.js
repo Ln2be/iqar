@@ -131,6 +131,7 @@ export default function Page() {
 
   const [needPictures, setNeedPictures] = useState(false);
   const [needSub, setNeedSub] = useState(true);
+  const [type, setType] = useState("");
 
   const handleSubmitToServer = function () {
     fetch("/api/post", {
@@ -203,6 +204,16 @@ export default function Page() {
             maxWidth: "400px",
           }}
         >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              // flexDirection: "column",
+              pb: 2,
+            }}
+          >
+            انشر إعلان
+          </Box>
           <TextField
             id="type"
             select
@@ -211,14 +222,15 @@ export default function Page() {
             // value={currency}
             onChange={(event) => {
               post.type = event.target.value;
-              const bool =
-                post.type == "selling" ||
-                post.type == "offerRent" ||
-                post.type == "stay";
-              setNeedPictures(bool);
+              // const bool =
+              //   post.type == "selling" ||
+              //   post.type == "offerRent" ||
+              //   post.type == "stay";
+              // setNeedPictures(bool);
 
-              const boolSub = post.type != "stay";
-              setNeedSub(boolSub);
+              // const boolSub = post.type != "stay";
+              // setNeedSub(boolSub);
+              setType(event.target.value);
             }}
           >
             {adtypes.map((option) => (
@@ -237,30 +249,34 @@ export default function Page() {
             </small>
           )}
 
-          <TextField
-            id="type"
-            select
-            label="اختيار فرعي"
-            {...register("subtype", { required: true })}
-            // value={currency}
-            onChange={(event) => {
-              post.subtype = event.target.value;
-            }}
-          >
-            {subtypes.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-          {errors.subtype && (
-            <small
-              style={{
-                color: "red",
-              }}
-            >
-              ادخل الاختيار الفرعي
-            </small>
+          {type != "stay" && (
+            <>
+              <TextField
+                id="type"
+                select
+                label="اختيار فرعي"
+                {...register("subtype", { required: true })}
+                // value={currency}
+                onChange={(event) => {
+                  post.subtype = event.target.value;
+                }}
+              >
+                {subtypes.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              {errors.subtype && (
+                <small
+                  style={{
+                    color: "red",
+                  }}
+                >
+                  ادخل الاختيار الفرعي
+                </small>
+              )}
+            </>
           )}
 
           <TextField
@@ -353,7 +369,10 @@ export default function Page() {
 
           <Box
             sx={{
-              display: needPictures ? "flex" : "none",
+              display:
+                type == "stay" || type == "selling" || type == "offerRent"
+                  ? "flex"
+                  : "none",
               // alignItem: "right",
               flexDirection: "row",
             }}
