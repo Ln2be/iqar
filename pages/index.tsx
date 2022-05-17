@@ -7,8 +7,10 @@ import KeyOffIcon from "@mui/icons-material/KeyOff";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import SellIcon from "@mui/icons-material/Sell";
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
+import { useRouter } from "next/router";
 
 export default function Page() {
+  const router = useRouter();
   return (
     <Layout>
       <Box
@@ -36,6 +38,9 @@ export default function Page() {
               style={{
                 width: "100%",
                 height: "80%",
+              }}
+              onClick={() => {
+                router.push("/feeds");
               }}
             ></DynamicFeedIcon>
             <Box
