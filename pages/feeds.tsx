@@ -57,6 +57,7 @@ export default function Page({
   }
 
   const typeArabic: { [key: string]: string } = {
+    stay: "إقامة",
     buying: "شراء",
     selling: "بيع",
     demandRent: "طلب ايجار",

@@ -1,0 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo&display=swap");
+
+/* @font-face {
+  font-family: cairo;
+  src: url("https://fonts.googleapis.com/css2?family=Cairo&display=swap");
+} */
+
+.cairofont {
+  font-family: Cairo;
+  font-weight: bold;
+}

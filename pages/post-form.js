@@ -85,6 +85,10 @@ export default function Page() {
 
   const adtypes = [
     {
+      value: "stay",
+      label: "إقامة",
+    },
+    {
       value: "selling",
       label: "بيع",
     },
@@ -126,6 +130,7 @@ export default function Page() {
   ];
 
   const [needPictures, setNeedPictures] = useState(false);
+  const [needSub, setNeedSub] = useState(true);
 
   const handleSubmitToServer = function () {
     fetch("/api/post", {
@@ -206,8 +211,14 @@ export default function Page() {
             // value={currency}
             onChange={(event) => {
               post.type = event.target.value;
-              const bool = post.type == "selling" || post.type == "offerRent";
+              const bool =
+                post.type == "selling" ||
+                post.type == "offerRent" ||
+                post.type == "stay";
               setNeedPictures(bool);
+
+              boolSub = post.type != "stay";
+              setNeedSub(boolSub);
             }}
           >
             {adtypes.map((option) => (
