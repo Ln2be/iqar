@@ -151,8 +151,8 @@ export default function Page({
               }}
             >
               تثبيت التطبيق
+              <ArrowDownwardIcon></ArrowDownwardIcon>
             </Button>
-            <ArrowDownwardIcon></ArrowDownwardIcon>
           </Box>
           {postsOb.map((post, i) => {
             const image = post.images[0];
