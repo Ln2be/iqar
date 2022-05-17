@@ -1,19 +1,19 @@
 import React from "react";
-import LoginIcon from "@mui/icons-material/Login";
-import HomeIcon from "@mui/icons-material/Home";
-import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import LogoutIcon from "@mui/icons-material/Logout";
 import { useUser } from "../lib/auth/hooks";
-import MenuIcon from "@mui/icons-material/Menu";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
-import WhatsappOutlinedIcon from "@mui/icons-material/WhatsappOutlined";
+import MenuIcon from "@mui/icons-material/Menu";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
+import LoginIcon from "@mui/icons-material/Login";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import styles from "../styles/Home.module.css";
+import HomeIcon from "@mui/icons-material/Home";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import CreateIcon from "@mui/icons-material/Create";
+import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
+import CallIcon from "@mui/icons-material/Call";
+import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
 
 export default function GHeader() {
   const router = useRouter();
@@ -29,8 +29,9 @@ export default function GHeader() {
       <Box>
         <Box
           sx={{
-            color: (theme) => theme.palette.primary.main,
+            bgcolor: (theme) => theme.palette.primary.main,
             p: 1,
+            color: "white",
           }}
         >
           <p></p>
@@ -45,31 +46,126 @@ export default function GHeader() {
           p: 1,
         }}
       >
-        <HomeOutlinedIcon
-          onClick={() => {
-            router.push("/");
-          }}
-        ></HomeOutlinedIcon>
-        <PostAddOutlinedIcon
-          onClick={() => {
-            router.push("/post-form");
-          }}
-        ></PostAddOutlinedIcon>
-        <WhatsappOutlinedIcon
-          onClick={() => {
-            router.push("/contactUs");
-          }}
-        ></WhatsappOutlinedIcon>
-        <LoginOutlinedIcon
-          onClick={() => {
-            router.push("/auth/login");
-          }}
-        ></LoginOutlinedIcon>
-        <MenuOutlinedIcon
-          onClick={() => {
-            router.push("/menu");
-          }}
-        ></MenuOutlinedIcon>
+        {router.pathname == "/" ? (
+          <Box
+            sx={{
+              borderBottom: "3px solid",
+              borderColor: (theme) => theme.palette.primary.main,
+              // color: "#0039e6",
+              color: (theme) => theme.palette.primary.main,
+              // width: "100%",
+            }}
+          >
+            <HomeIcon
+              onClick={() => {
+                router.push("/");
+              }}
+              style={{}}
+            ></HomeIcon>
+          </Box>
+        ) : (
+          <HomeOutlinedIcon
+            onClick={() => {
+              router.push("/");
+            }}
+          ></HomeOutlinedIcon>
+        )}
+
+        {router.pathname == "/post-form" ? (
+          <Box
+            sx={{
+              borderBottom: "3px solid",
+              borderColor: (theme) => theme.palette.primary.main,
+              // color: "#0039e6",
+              color: (theme) => theme.palette.primary.main,
+              // width: "100%",
+            }}
+          >
+            <CreateIcon
+              onClick={() => {
+                router.push("/post-form");
+              }}
+            ></CreateIcon>
+          </Box>
+        ) : (
+          <CreateOutlinedIcon
+            onClick={() => {
+              router.push("/post-form");
+            }}
+          ></CreateOutlinedIcon>
+        )}
+
+        {router.pathname == "/contactUs" ? (
+          <Box
+            sx={{
+              borderBottom: "3px solid",
+              borderColor: (theme) => theme.palette.primary.main,
+              // color: "#0039e6",
+              color: (theme) => theme.palette.primary.main,
+              // width: "100%",
+            }}
+          >
+            <CallIcon
+              onClick={() => {
+                router.push("/contactUs");
+              }}
+              style={{}}
+            ></CallIcon>
+          </Box>
+        ) : (
+          <CallOutlinedIcon
+            onClick={() => {
+              router.push("/contactUs");
+            }}
+          ></CallOutlinedIcon>
+        )}
+
+        {router.pathname ==
+        "/auth/login                                                                                                                                                                                " ? (
+          <Box
+            sx={{
+              borderBottom: "3px solid",
+              borderColor: (theme) => theme.palette.primary.main,
+              // color: "#0039e6",
+              color: (theme) => theme.palette.primary.main,
+              // width: "100%",
+            }}
+          >
+            <LoginIcon></LoginIcon>
+          </Box>
+        ) : user ? (
+          <LogoutOutlinedIcon
+            onClick={() => {
+              router.push("/api/auth/logout");
+            }}
+          ></LogoutOutlinedIcon>
+        ) : (
+          <LoginOutlinedIcon
+            onClick={() => {
+              router.push("/auth/login");
+            }}
+          ></LoginOutlinedIcon>
+        )}
+
+        {router.pathname == "/menu" ? (
+          <Box
+            sx={{
+              borderBottom: "3px solid",
+              borderColor: (theme) => theme.palette.primary.main,
+              // color: "#0039e6",
+              color: (theme) => theme.palette.primary.main,
+              // width: "100%",
+            }}
+          >
+            <MenuIcon></MenuIcon>
+          </Box>
+        ) : (
+          <MenuOutlinedIcon
+            onClick={() => {
+              router.push("/menu");
+            }}
+          ></MenuOutlinedIcon>
+        )}
       </Box>
     </Box>
 
