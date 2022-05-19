@@ -21,7 +21,8 @@
     "**/*.tsx",
     "pages/post.tsx",
     "lib/Roboto-normal.js",
-    "pages/post-form.js"
-, "components/search.js"  ],
+    "pages/post-form.js",
+    "components/search.tsx"
+  ],
   "exclude": ["node_modules"]
 }
