@@ -41,27 +41,6 @@ export default function Page() {
             <Box>أخر الاعلانات</Box>
           </Box>
         </Link>
-        <Link href="/search">
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              p: 1,
-              cursor: "pointer",
-              backgroundColor: (theme) => theme.palette.primary.main,
-              color: "white",
-            }}
-          >
-            <Box
-              sx={{
-                pr: 1,
-              }}
-            >
-              <SearchIcon></SearchIcon>
-            </Box>
-            <Box>بحث</Box>
-          </Box>
-        </Link>
 
         <Link href="/post-form">
           <Box

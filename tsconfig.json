@@ -22,6 +22,6 @@
     "pages/post.tsx",
     "lib/Roboto-normal.js",
     "pages/post-form.js"
-  ],
+, "components/search.js"  ],
   "exclude": ["node_modules"]
 }

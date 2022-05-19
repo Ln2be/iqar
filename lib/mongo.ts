@@ -19,6 +19,7 @@ const userSchema = new Schema<UserType>({
   password: String,
   role: String,
   departement: String,
+  departements: [String],
   region: String,
   tel: String,
   code: String,
@@ -36,6 +37,7 @@ const postSchema = new Schema<Post>({
   type: String,
   subtype: String,
   departement: String,
+  departements: [String],
   region: String,
   details: String,
   images: [

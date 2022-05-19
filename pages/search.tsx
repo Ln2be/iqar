@@ -10,6 +10,7 @@ import { Box } from "@mui/system";
 import Layout from "../components/layout";
 import { Button } from "@mui/material";
 import Router, { useRouter } from "next/router";
+import Departement from "../components/search";
 
 const departements = [
   {
@@ -54,133 +55,15 @@ const search: { [key: string]: string } = {
   type: "",
   departement: "",
 };
-export default function Page({ queryjson }: { queryjson: string }) {
+export default function Page() {
   // const router = useRouter();
-  const query = JSON.parse(queryjson);
 
-  function handleSearch() {
-    if (query.userTel) {
-      // nothing
-      Router.push(
-        "/samsar?userTel=" +
-          query.userTel +
-          "&type=" +
-          search.type +
-          "&departement=" +
-          search.departement
-      );
-    } else {
-      Router.push(
-        "/?type=" + search.type + "&departement=" + search.departement
-      );
-    }
+  function handleDepChange(dep: any) {
+    console.log(dep);
   }
   return (
     <Layout>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          maxWidth: "400px",
-          p: 2,
-        }}
-      >
-        <FormControl>
-          <FormLabel id="demo-radio-buttons-group-label">النوعية</FormLabel>
-          <RadioGroup
-            aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue="female"
-            name="radio-buttons-group"
-            onChange={(event) => {
-              const value = event.target.value;
-              search.type = value;
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                pb: 2,
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-              >
-                <FormControlLabel
-                  value="buying"
-                  control={<Radio />}
-                  label="شراء"
-                />
-                <FormControlLabel
-                  value="selling"
-                  control={<Radio />}
-                  label="بيع"
-                />
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-              >
-                <FormControlLabel
-                  value="demandRent"
-                  control={<Radio />}
-                  label="طلب ايجار"
-                />
-                <FormControlLabel
-                  value="offerRent"
-                  control={<Radio />}
-                  label="عرض ايجار"
-                />
-              </Box>
-            </Box>
-          </RadioGroup>
-        </FormControl>
-        <TextField
-          id="outlined-select-currency"
-          select
-          label="المقاطعة"
-          // value={currency}
-          onChange={(event) => {
-            search.departement = event.target.value;
-          }}
-          helperText="اختر المقاطعة"
-        >
-          {departements.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-        <Box
-          sx={{
-            alignItem: "right",
-            mt: 4,
-          }}
-        >
-          <Button variant="contained" onClick={handleSearch}>
-            ارسال
-          </Button>
-        </Box>
-      </Box>
+      <Departement onChangeDep={handleDepChange}></Departement>
     </Layout>
   );
-}
-
-export async function getServerSideProps({
-  query,
-}: {
-  query: { [key: string]: string };
-}) {
-  const queryjson = JSON.stringify(query);
-
-  return {
-    props: {
-      queryjson,
-    },
-  };
 }

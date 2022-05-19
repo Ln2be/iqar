@@ -5,18 +5,24 @@ import Button from "@mui/material/Button";
 import Resizer from "react-image-file-resizer";
 import { useState } from "react";
 import Layout from "../components/layout";
-import { Box } from "@mui/system";
 import Router from "next/router";
 import { useUser } from "../lib/auth/hooks";
 import { useForm } from "react-hook-form";
 import CircularProgress from "@mui/material/CircularProgress";
 import imageCompression from "browser-image-compression";
-import { Buffer } from "buffer";
+import Box from "@mui/material/Box";
+import FormLabel from "@mui/material/FormLabel";
+import FormControl from "@mui/material/FormControl";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormHelperText from "@mui/material/FormHelperText";
+import Checkbox from "@mui/material/Checkbox";
 
-var post = {
+const post = {
   type: "",
   subtype: "",
   departement: "",
+  departements: [],
   region: "",
   details: "",
   images: [],
@@ -32,6 +38,7 @@ var pathFiles = [];
 export default function Page() {
   const user = useUser();
 
+  // console.log(post.departements);
   post.user = user?.username;
   post.userTel = user?.tel;
   const {
@@ -41,8 +48,25 @@ export default function Page() {
     formState: { errors },
   } = useForm();
 
+  // initialize the departements checkboxes
+  const inicheck = {
+    Tayaret: false,
+    Ksar: false,
+    DarNaim: false,
+    TevreghZeina: false,
+    Sebkha: false,
+    Elmina: false,
+    Arafat: false,
+    Toujounine: false,
+    Riyadh: false,
+  };
+
   const [imagesUrl, setImagesUrl] = useState([]);
   const [spinner, setSpinner] = useState(false);
+  const [depcheck, setdepcheck] = useState(inicheck);
+
+  // If is there two departements no needs for the region
+  const [depa, setDepa] = useState([]);
 
   const departements = [
     {
@@ -129,8 +153,6 @@ export default function Page() {
     },
   ];
 
-  const [needPictures, setNeedPictures] = useState(false);
-  const [needSub, setNeedSub] = useState(true);
   const [type, setType] = useState("");
 
   const handleSubmitToServer = function () {
@@ -188,6 +210,31 @@ export default function Page() {
     });
   };
 
+  function handleChange(e) {
+    const name = e.target.name;
+
+    setdepcheck((prev) => {
+      let prevdep = { ...prev };
+      prevdep[name] = !prevdep[name];
+      return prevdep;
+    });
+
+    if (!e.target.checked) {
+      const index = post.departements.indexOf(name);
+      if (index > -1) {
+        post.departements.splice(index, 1); // 2nd parameter means remove one item only
+      }
+    } else {
+      post.departements.push(name);
+    }
+    console.log(post.departements);
+
+    setDepa(post.departements);
+  }
+
+  // function show() {
+  //   console.log(post.departements);
+  // }
   return (
     <Layout>
       {spinner ? (
@@ -222,15 +269,9 @@ export default function Page() {
             // value={currency}
             onChange={(event) => {
               post.type = event.target.value;
-              // const bool =
-              //   post.type == "selling" ||
-              //   post.type == "offerRent" ||
-              //   post.type == "stay";
-              // setNeedPictures(bool);
-
-              // const boolSub = post.type != "stay";
-              // setNeedSub(boolSub);
+              post.departements = [];
               setType(event.target.value);
+              setdepcheck(inicheck);
             }}
           >
             {adtypes.map((option) => (
@@ -261,8 +302,8 @@ export default function Page() {
                   post.subtype = event.target.value;
                 }}
               >
-                {subtypes.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
+                {subtypes.map((option, i) => (
+                  <MenuItem key={i} value={option.value}>
                     {option.label}
                   </MenuItem>
                 ))}
@@ -279,24 +320,98 @@ export default function Page() {
             </>
           )}
 
-          <TextField
-            id="outlined-select-currency"
-            select
-            label="المقاطعة"
-            {...register("departement", { required: true })}
-            // value={currency}
-            onChange={(event) => {
-              post.departement = event.target.value;
-            }}
-            helperText="اختر المقاطعة"
-            required
-          >
-            {departements.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
+          {(type == "buying" || type == "demandRent") && (
+            <Box sx={{ display: "flex" }}>
+              <FormControl
+                sx={{ m: 3 }}
+                component="fieldset"
+                variant="standard"
+              >
+                <FormLabel component="legend">اختر المقاطعات</FormLabel>
+                <FormGroup>
+                  <Box>
+                    {departements.slice(0, 3).map((departement, i) => {
+                      return (
+                        <FormControlLabel
+                          key={i}
+                          control={
+                            <Checkbox
+                              checked={depcheck[departement.value]}
+                              onChange={handleChange}
+                              name={departement.value}
+                            />
+                          }
+                          label={departement.label}
+                        />
+                      );
+                    })}
+                  </Box>
+                  <Box>
+                    {departements.slice(3, 6).map((departement, i) => {
+                      return (
+                        <FormControlLabel
+                          key={i}
+                          control={
+                            <Checkbox
+                              checked={depcheck[departement.value]}
+                              onChange={handleChange}
+                              name={departement.value}
+                            />
+                          }
+                          label={departement.label}
+                        />
+                      );
+                    })}
+                  </Box>
+                  <Box>
+                    {departements.slice(6, 9).map((departement, i) => {
+                      return (
+                        <FormControlLabel
+                          key={i}
+                          control={
+                            <Checkbox
+                              checked={depcheck[departement.value]}
+                              onChange={handleChange}
+                              name={departement.value}
+                            />
+                          }
+                          label={departement.label}
+                        />
+                      );
+                    })}
+                  </Box>
+                </FormGroup>
+                <FormHelperText>Be careful</FormHelperText>
+              </FormControl>
+            </Box>
+          )}
+
+          {/* <button name="Tayaret" onClick={show}>
+            show
+          </button> */}
+
+          {(type == "selling" || type == "offerRent" || type == "stay") && (
+            <TextField
+              id="outlined-select-currency"
+              select
+              label="المقاطعة"
+              {...register("departement", { required: true })}
+              onChange={(event) => {
+                const value = event.target.value;
+                post.departements = [];
+                post.departements.push(value);
+              }}
+              helperText="اختر المقاطعة"
+              required
+            >
+              {departements.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          )}
+
           {errors.departement && (
             <small
               style={{
@@ -307,16 +422,19 @@ export default function Page() {
             </small>
           )}
 
-          <TextField
-            id="outlined-basic"
-            label="المنطقة"
-            {...register("region", { required: true })}
-            variant="outlined"
-            onChange={(event) => {
-              post.region = event.target.value;
-            }}
-            required
-          />
+          {depa.length < 2 && (
+            <TextField
+              id="outlined-basic"
+              label="المنطقة"
+              {...register("region", { required: true })}
+              variant="outlined"
+              onChange={(event) => {
+                post.region = event.target.value;
+              }}
+              required
+            />
+          )}
+
           {errors.region && (
             <small
               style={{

@@ -24,8 +24,10 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
+import Departement from "../components/search";
 
 let deferredPrompt: any; // Allows to show the install prompt
+let dep: any = [];
 
 export default function Page({
   posts,
@@ -74,6 +76,20 @@ export default function Page({
 
   const date = Date.now();
   const options = { year: "numeric", month: "long", day: "numeric" };
+
+  // save the departements
+  function handleDepChange(depchange: any) {
+    console.log(depchange);
+    dep = depchange;
+  }
+
+  // search
+  function submit() {
+    if (dep.length > 1) {
+      router.push("/feeds?departements=" + JSON.stringify(dep));
+    }
+  }
+
   return (
     <>
       <Head>
@@ -155,6 +171,12 @@ export default function Page({
               <ArrowDownwardIcon></ArrowDownwardIcon>
             </Button>
           </Box>
+          <Box>
+            <Departement onChangeDep={handleDepChange}></Departement>
+            <Button variant="contained" onClick={submit}>
+              بحث
+            </Button>
+          </Box>
           {postsOb.map((post, i) => {
             const image = post.images[0];
 
@@ -232,15 +254,31 @@ export default function Page({
                           {subtypeArabic[post.subtype]}
                         </Typography>
                       </Box>
-                      <Box>
-                        <Typography gutterBottom variant="h5">
-                          {post.departement &&
-                            post.region &&
-                            DEPARTEMENTS[post.departement] +
-                              " - " +
-                              post.region}
-                        </Typography>
-                      </Box>
+                      {post.departements.length == 1 && (
+                        <Box>
+                          <Typography gutterBottom variant="h5">
+                            {post.departement &&
+                              post.region &&
+                              DEPARTEMENTS[post.departement] +
+                                " - " +
+                                post.region}
+                          </Typography>
+                        </Box>
+                      )}
+                      {post.departements.length > 1 && (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                          }}
+                        >
+                          {post.departements.map((departement, i) => (
+                            <Typography key={i} variant="h5">
+                              {DEPARTEMENTS[departement]}
+                            </Typography>
+                          ))}
+                        </Box>
+                      )}
                     </Box>
                     <Typography
                       gutterBottom
@@ -395,24 +433,52 @@ export async function getServerSideProps({
 }) {
   const tour = query.tour ? true : false;
   let postsObject = [];
-  if (query.type && query.departement) {
-    postsObject = await DBPost.find({
+  if (query.type && query.departements) {
+    const departements = query.departements;
+    const postsdb = await DBPost.find({
       type: query.type,
-      departement: query.departement,
     }).sort({ createdAt: -1 });
+
+    postsObject = postsdb.filter((value) => {
+      const cross = value.departements.filter((value2: any) =>
+        departements.includes(value2)
+      );
+      return cross.length > 0;
+    });
   } else if (query.type) {
     postsObject = await DBPost.find({
       type: query.type,
     }).sort({ createdAt: -1 });
-  } else if (query.user && query.departement) {
-    postsObject = await DBPost.find({
-      departement: query.departement,
+  } else if (query.user && query.departements) {
+    // send the user the demands in his departements. intersect the user departement with
+    // the demanded depatrements
+    const departements = query.departements;
+    const postsdb = await DBPost.find({
       $or: [{ type: "buying" }, { type: "demandRent" }],
     }).sort({ createdAt: -1 });
+
+    // function tool to intersect the two departement and send the post if the intersection
+    // exist
+    postsObject = postsdb.filter((value) => {
+      const cross = value.departements.filter((value2: any) =>
+        departements.includes(value2)
+      );
+      return cross.length > 0;
+    });
   } else if (query.user) {
     postsObject = await DBPost.find({
       user: query.user,
     }).sort({ createdAt: -1 });
+  } else if (query.departements) {
+    const departements = query.departements;
+    const postsdb = await DBPost.find({}).sort({ createdAt: -1 });
+
+    postsObject = postsdb.filter((value) => {
+      const cross = value.departements.filter((value2: any) =>
+        departements.includes(value2)
+      );
+      return cross.length > 0;
+    });
   } else {
     postsObject = await DBPost.find({}).sort({ createdAt: -1 });
   }

@@ -97,14 +97,29 @@ export default function Page({ postjson }: { postjson: string }) {
                     </Typography>
                   </Box>
 
-                  <Box></Box>
-                  <Box>
-                    <Typography gutterBottom variant="h5">
-                      {post.departement &&
-                        post.region &&
-                        DEPARTEMENTS[post.departement] + " - " + post.region}
-                    </Typography>
-                  </Box>
+                  {post.departements.length == 1 && (
+                    <Box>
+                      <Typography gutterBottom variant="h5">
+                        {post.departement &&
+                          post.region &&
+                          DEPARTEMENTS[post.departement] + " - " + post.region}
+                      </Typography>
+                    </Box>
+                  )}
+                  {post.departements.length > 1 && (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      {post.departements.map((departement, i) => (
+                        <Typography key={i} variant="h5">
+                          {DEPARTEMENTS[departement]}
+                        </Typography>
+                      ))}
+                    </Box>
+                  )}
                 </Box>
                 <Typography gutterBottom variant="h6" color="text.secondary">
                   {post.details}

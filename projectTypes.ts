@@ -3,6 +3,7 @@ export interface UserType {
   password: string;
   role: string;
   departement: string;
+  departements: string[];
   region: string;
   tel: string;
   code: string;
@@ -19,6 +20,7 @@ export interface Post {
   type: string;
   subtype: string;
   departement: string;
+  departements: string[];
   region: string;
   details: string;
   images: [
