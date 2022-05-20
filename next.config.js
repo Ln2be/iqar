@@ -19,5 +19,5 @@ module.exports = withPWA({
 });
 
 module.exports = {
-  basePath: "/iqartest/",
+  basePath: "/iqartest",
 };
