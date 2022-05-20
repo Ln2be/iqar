@@ -90,7 +90,7 @@ export default function Page({
 
       if (type) {
         router.push(
-          "/feeds?type=" + type + "departements=" + JSON.stringify(dep)
+          "/feeds?type=" + type + "&departements=" + JSON.stringify(dep)
         );
       } else {
         router.push("/feeds?departements=" + JSON.stringify(dep));
