@@ -458,7 +458,7 @@ export default function Page() {
             id="outlined-basic"
             label="الهاتف"
             {...register("tel", { required: true })}
-            type="number"
+            type="tel"
             variant="outlined"
             onChange={(event) => {
               post.tel = event.target.value;

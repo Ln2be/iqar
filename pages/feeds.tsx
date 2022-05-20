@@ -143,42 +143,6 @@ export default function Page({
             maxWidth: "400px",
           }}
         >
-          {/* <Box
-            sx={{
-              display: installb,
-              justifyContent: "center",
-              flexDirection: "column",
-            }}
-          >
-            <Button
-              style={{
-                backgroundColor: "#32CD32",
-              }}
-              variant="contained"
-              onClick={() => {
-                // Show the prompt
-                deferredPrompt.prompt();
-                // installButton.disabled = true;
-
-                // Wait for the user to respond to the prompt
-                deferredPrompt.userChoice.then((choiceResult: any) => {
-                  if (choiceResult.outcome === "accepted") {
-                    console.log("PWA setup accepted");
-                    // installButton.hidden = true;
-                    setInstallb("none");
-                  } else {
-                    console.log("PWA setup rejected");
-                  }
-                  // installButton.disabled = false;
-
-                  deferredPrompt = null;
-                });
-              }}
-            >
-              تثبيت التطبيق
-              <ArrowDownwardIcon></ArrowDownwardIcon>
-            </Button>
-          </Box> */}
           <Box>
             <Departement onChangeDep={handleDepChange}></Departement>
             <Button variant="contained" onClick={submit}>
@@ -187,7 +151,9 @@ export default function Page({
           </Box>
           {postsOb.map((post, i) => {
             const image = post.images[0];
-
+            const phone = post.tel.startsWith("+")
+              ? post.tel
+              : "+222" + post.tel;
             return (
               <Card key={i} sx={{ maxWidth: 345 }}>
                 {image && (
@@ -253,6 +219,7 @@ export default function Page({
                         sx={{
                           display: "flex",
                           flexDirection: "column",
+                          pl: 2,
                         }}
                       >
                         <Typography variant="h5">
@@ -319,7 +286,7 @@ export default function Page({
                           }}
                         >
                           <WhatsappButton
-                            phone={"+222" + post.tel}
+                            phone={phone}
                             message={"https://iqar.store/post?id=" + post._id}
                           >
                             <Button variant="contained">واتساب</Button>
