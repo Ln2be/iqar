@@ -85,7 +85,7 @@ export default function Page({
 
   // search
   function submit() {
-    if (dep.length > 1) {
+    if (dep.length > 0) {
       router.push("/feeds?departements=" + JSON.stringify(dep));
     }
   }
