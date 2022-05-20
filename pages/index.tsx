@@ -1,4 +1,4 @@
-import { Box } from "@mui/system";
+import { Box } from "@mui/material";
 import React from "react";
 import Layout from "../components/layout";
 import LocalHotelIcon from "@mui/icons-material/LocalHotel";
@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import Link from "next/link";
 
 let deferredPrompt: any; // Allows to show the install prompt
 
@@ -88,192 +89,194 @@ export default function Page() {
             maxWidth: "500px",
           }}
         >
-          <Box
-            sx={{
-              bgColor: "#fff",
-              border: "1px solid",
-              width: "100%",
-              height: "100%",
-            }}
-          >
-            <DynamicFeedIcon
-              style={{
-                width: "100%",
-                height: "80%",
-              }}
-              onClick={() => {
-                router.push("/feeds");
-              }}
-            ></DynamicFeedIcon>
+          <Link href="/feeds">
             <Box
               sx={{
+                bgColor: "#fff",
+                border: "1px solid",
                 width: "100%",
-                height: "20%",
-                // textAlign: "center",
-                backgroundColor: (theme) => theme.palette.primary.main,
-                color: "white",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                height: "100%",
               }}
             >
-              <Box>جميع الاعلانات</Box>
+              <DynamicFeedIcon
+                style={{
+                  width: "100%",
+                  height: "80%",
+                }}
+              ></DynamicFeedIcon>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "20%",
+                  // textAlign: "center",
+                  backgroundColor: (theme) => theme.palette.primary.main,
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Box>جميع الاعلانات</Box>
+              </Box>
             </Box>
-          </Box>
-          <Box
-            sx={{
-              bgColor: "#fff",
-              border: "1px solid",
-            }}
-          >
-            <LocalHotelIcon
-              style={{
-                width: "100%",
-                height: "80%",
-              }}
-              onClick={() => {
-                router.push("/feeds?type=stay");
-              }}
-            ></LocalHotelIcon>
-            <Box
-              sx={{
-                width: "100%",
-                height: "20%",
-                // textAlign: "center",
-                backgroundColor: (theme) => theme.palette.primary.main,
-                color: "white",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Box>إقامة</Box>
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              bgColor: "#fff",
-              border: "1px solid",
-            }}
-          >
-            <KeyIcon
-              style={{
-                width: "100%",
-                height: "80%",
-              }}
-              onClick={() => {
-                router.push("/feeds?type=offerRent");
-              }}
-            ></KeyIcon>
-            <Box
-              sx={{
-                width: "100%",
-                height: "20%",
-                // textAlign: "center",
-                backgroundColor: (theme) => theme.palette.primary.main,
+          </Link>
 
-                color: "white",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Box>عروض الايجار</Box>
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              bgColor: "#fff",
-              border: "1px solid",
-            }}
-          >
-            <KeyOffIcon
-              style={{
-                width: "100%",
-                height: "80%",
-              }}
-              onClick={() => {
-                router.push("/feeds?type=demandRent");
-              }}
-            ></KeyOffIcon>
+          <Link href="/feeds?type=stay">
             <Box
               sx={{
-                width: "100%",
-                height: "20%",
-                // textAlign: "center",
-                backgroundColor: (theme) => theme.palette.primary.main,
-
-                color: "white",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                bgColor: "#fff",
+                border: "1px solid",
               }}
             >
-              <Box>طلبات الايجار</Box>
+              <LocalHotelIcon
+                style={{
+                  width: "100%",
+                  height: "80%",
+                }}
+              ></LocalHotelIcon>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "20%",
+                  // textAlign: "center",
+                  backgroundColor: (theme) => theme.palette.primary.main,
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Box>إقامة</Box>
+              </Box>
             </Box>
-          </Box>
-          <Box
-            sx={{
-              bgColor: "#fff",
-              border: "1px solid",
-            }}
-          >
-            <SellIcon
-              style={{
-                width: "100%",
-                height: "80%",
-              }}
-              onClick={() => {
-                router.push("/feeds?type=selling");
-              }}
-            ></SellIcon>
+          </Link>
+
+          <Link href="/feeds?type=offerRent">
             <Box
               sx={{
-                width: "100%",
-                height: "20%",
-                // textAlign: "center",
-                backgroundColor: (theme) => theme.palette.primary.main,
-
-                color: "white",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                bgColor: "#fff",
+                border: "1px solid",
               }}
             >
-              <Box>عروض البيع</Box>
+              <KeyIcon
+                style={{
+                  width: "100%",
+                  height: "80%",
+                }}
+              ></KeyIcon>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "20%",
+                  // textAlign: "center",
+                  backgroundColor: (theme) => theme.palette.primary.main,
+
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Box>عروض الايجار</Box>
+              </Box>
             </Box>
-          </Box>
-          <Box
-            sx={{
-              bgColor: "#fff",
-              border: "1px solid",
-            }}
-          >
-            <ShoppingCart
-              style={{
-                width: "100%",
-                height: "80%",
-              }}
-              onClick={() => {
-                router.push("/feeds?type=buying");
-              }}
-            ></ShoppingCart>
+          </Link>
+
+          <Link href="feeds?type=demandRent">
             <Box
               sx={{
-                width: "100%",
-                height: "20%",
-                // textAlign: "center",
-                backgroundColor: (theme) => theme.palette.primary.main,
-
-                color: "white",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                bgColor: "#fff",
+                border: "1px solid",
               }}
             >
-              <Box>طلبات الشراء</Box>
+              <KeyOffIcon
+                style={{
+                  width: "100%",
+                  height: "80%",
+                }}
+                onClick={() => {
+                  router.push("/feeds?type=demandRent");
+                }}
+              ></KeyOffIcon>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "20%",
+                  // textAlign: "center",
+                  backgroundColor: (theme) => theme.palette.primary.main,
+
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Box>طلبات الايجار</Box>
+              </Box>
             </Box>
-          </Box>
+          </Link>
+
+          <Link href="/feeds?type=selling">
+            <Box
+              sx={{
+                bgColor: "#fff",
+                border: "1px solid",
+              }}
+            >
+              <SellIcon
+                style={{
+                  width: "100%",
+                  height: "80%",
+                }}
+              ></SellIcon>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "20%",
+                  // textAlign: "center",
+                  backgroundColor: (theme) => theme.palette.primary.main,
+
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Box>عروض البيع</Box>
+              </Box>
+            </Box>
+          </Link>
+
+          <Link href="/feeds?type=buying">
+            <Box
+              sx={{
+                bgColor: "#fff",
+                border: "1px solid",
+              }}
+            >
+              <ShoppingCart
+                style={{
+                  width: "100%",
+                  height: "80%",
+                }}
+              ></ShoppingCart>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "20%",
+                  // textAlign: "center",
+                  backgroundColor: (theme) => theme.palette.primary.main,
+
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Box>طلبات الشراء</Box>
+              </Box>
+            </Box>
+          </Link>
         </Box>
       </Box>
     </Layout>
