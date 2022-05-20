@@ -17,7 +17,3 @@ module.exports = withPWA({
     dest: "public",
   },
 });
-
-module.exports = {
-  basePath: "/iqartest",
-};
