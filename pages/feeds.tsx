@@ -86,7 +86,15 @@ export default function Page({
   // search
   function submit() {
     if (dep.length > 0) {
-      router.push("/feeds?departements=" + JSON.stringify(dep));
+      const { type } = router.query;
+
+      if (type) {
+        router.push(
+          "/feeds?type=" + type + "departements=" + JSON.stringify(dep)
+        );
+      } else {
+        router.push("/feeds?departements=" + JSON.stringify(dep));
+      }
     }
   }
 
