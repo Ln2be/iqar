@@ -46,6 +46,9 @@ export default function Page() {
             display: installb,
             justifyContent: "center",
             flexDirection: "column",
+
+            maxWidth: "500px",
+            p: 2,
           }}
         >
           <Button
