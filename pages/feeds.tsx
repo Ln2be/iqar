@@ -151,10 +151,18 @@ export default function Page({
           </Box>
           {postsOb.map((post, i) => {
             const image = post.images[0];
-            const phone =
-              post.tel.startsWith("+") || post.tel.startsWith("00")
-                ? post.tel
-                : "+222" + post.tel;
+            let phone = "";
+
+            if (post.tel.endsWith("+")) {
+              phone = "+" + post.tel.replace("+", "");
+            } else if (post.tel.startsWith("00")) {
+              phone = "+" + post.tel.replace("00", "");
+            } else if (post.tel.startsWith("+")) {
+              phone = post.tel;
+            } else {
+              phone = "+222" + post.tel;
+            }
+
             console.log(phone);
             return (
               <Card key={i} sx={{ maxWidth: 345 }}>
