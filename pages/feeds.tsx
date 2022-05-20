@@ -155,6 +155,7 @@ export default function Page({
               post.tel.startsWith("+") || post.tel.startsWith("00")
                 ? post.tel
                 : "+222" + post.tel;
+            console.log(phone);
             return (
               <Card key={i} sx={{ maxWidth: 345 }}>
                 {image && (
