@@ -26,7 +26,7 @@ import {
 import Link from "next/link";
 import Departement from "../components/search";
 
-let deferredPrompt: any; // Allows to show the install prompt
+// let deferredPrompt: any; // Allows to show the install prompt
 let dep: any = [];
 
 export default function Page({
@@ -40,23 +40,23 @@ export default function Page({
   const router = useRouter();
   const postsOb = JSON.parse(posts) as [Post];
 
-  const [installb, setInstallb] = useState("none");
+  // const [installb, setInstallb] = useState("none");
   // install pwa
   // const installButton = document.getElementById("install_button");
 
-  if (typeof window !== "undefined") {
-    window.addEventListener("beforeinstallprompt", (e) => {
-      console.log("beforeinstallprompt fired");
-      // Prevent Chrome 76 and earlier from automatically showing a prompt
-      e.preventDefault();
-      // Stash the event so it can be triggered later.
-      deferredPrompt = e;
-      // Show the install button
-      setInstallb("flex");
-      // installButton.hidden = false;
-      // installButton.addEventListener("click", installApp);
-    });
-  }
+  // if (typeof window !== "undefined") {
+  //   window.addEventListener("beforeinstallprompt", (e) => {
+  //     console.log("beforeinstallprompt fired");
+  //     // Prevent Chrome 76 and earlier from automatically showing a prompt
+  //     e.preventDefault();
+  //     // Stash the event so it can be triggered later.
+  //     deferredPrompt = e;
+  //     // Show the install button
+  //     setInstallb("flex");
+  //     // installButton.hidden = false;
+  //     // installButton.addEventListener("click", installApp);
+  //   });
+  // }
 
   const typeArabic: { [key: string]: string } = {
     stay: "إقامة",
@@ -143,7 +143,7 @@ export default function Page({
             maxWidth: "400px",
           }}
         >
-          <Box
+          {/* <Box
             sx={{
               display: installb,
               justifyContent: "center",
@@ -178,7 +178,7 @@ export default function Page({
               تثبيت التطبيق
               <ArrowDownwardIcon></ArrowDownwardIcon>
             </Button>
-          </Box>
+          </Box> */}
           <Box>
             <Departement onChangeDep={handleDepChange}></Departement>
             <Button variant="contained" onClick={submit}>

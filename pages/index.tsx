@@ -8,8 +8,31 @@ import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import SellIcon from "@mui/icons-material/Sell";
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import Button from "@mui/material/Button";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+
+let deferredPrompt: any; // Allows to show the install prompt
 
 export default function Page() {
+  const [installb, setInstallb] = useState("none");
+  // install pwa
+  // const installButton = document.getElementById("install_button");
+
+  if (typeof window !== "undefined") {
+    window.addEventListener("beforeinstallprompt", (e) => {
+      console.log("beforeinstallprompt fired");
+      // Prevent Chrome 76 and earlier from automatically showing a prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      deferredPrompt = e;
+      // Show the install button
+      setInstallb("flex");
+      // installButton.hidden = false;
+      // installButton.addEventListener("click", installApp);
+    });
+  }
+
   const router = useRouter();
   return (
     <Layout>
@@ -18,6 +41,42 @@ export default function Page() {
           width: "100%",
         }}
       >
+        <Box
+          sx={{
+            display: installb,
+            justifyContent: "center",
+            flexDirection: "column",
+          }}
+        >
+          <Button
+            style={{
+              backgroundColor: "#32CD32",
+            }}
+            variant="contained"
+            onClick={() => {
+              // Show the prompt
+              deferredPrompt.prompt();
+              // installButton.disabled = true;
+
+              // Wait for the user to respond to the prompt
+              deferredPrompt.userChoice.then((choiceResult: any) => {
+                if (choiceResult.outcome === "accepted") {
+                  console.log("PWA setup accepted");
+                  // installButton.hidden = true;
+                  setInstallb("none");
+                } else {
+                  console.log("PWA setup rejected");
+                }
+                // installButton.disabled = false;
+
+                deferredPrompt = null;
+              });
+            }}
+          >
+            تثبيت التطبيق
+            <ArrowDownwardIcon></ArrowDownwardIcon>
+          </Button>
+        </Box>
         <Box
           sx={{
             display: "grid",
