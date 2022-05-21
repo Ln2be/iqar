@@ -168,27 +168,16 @@ export default function Page({
                       }}
                     >
                       <WhatsappButton
-                        phone={"+22248692007"}
+                        phone={"+222" + post.tel}
                         message={"https://iqar.store/post?id=" + post._id}
                       >
                         <Button variant="contained">واتساب</Button>
                       </WhatsappButton>
                       <Typography variant="body1" color="text.secondary">
-                        {48692007}
+                        {post.tel}
                       </Typography>
                     </Box>
                   </Box>
-                  {user?.role == "admin" && (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      {"هاتف الزبون : " + post.tel}
-                    </Box>
-                  )}
                 </CardContent>
                 {post.images?.map((image, i) => (
                   <Box
