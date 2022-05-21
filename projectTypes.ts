@@ -37,4 +37,5 @@ export interface Post {
   count: number;
   user: string;
   userTel: string;
+  comparedTo: string[];
 }

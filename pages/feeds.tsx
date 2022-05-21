@@ -40,24 +40,6 @@ export default function Page({
   const router = useRouter();
   const postsOb = JSON.parse(posts) as [Post];
 
-  // const [installb, setInstallb] = useState("none");
-  // install pwa
-  // const installButton = document.getElementById("install_button");
-
-  // if (typeof window !== "undefined") {
-  //   window.addEventListener("beforeinstallprompt", (e) => {
-  //     console.log("beforeinstallprompt fired");
-  //     // Prevent Chrome 76 and earlier from automatically showing a prompt
-  //     e.preventDefault();
-  //     // Stash the event so it can be triggered later.
-  //     deferredPrompt = e;
-  //     // Show the install button
-  //     setInstallb("flex");
-  //     // installButton.hidden = false;
-  //     // installButton.addEventListener("click", installApp);
-  //   });
-  // }
-
   const typeArabic: { [key: string]: string } = {
     stay: "إقامة",
     buying: "شراء",
@@ -381,6 +363,9 @@ export default function Page({
                           </Link>
                         </Box>
                       </Box>
+                    )}
+                    {user && user?.role == "admin" && (
+                      <Link href={"/compare?id=" + post._id}>مقارنة</Link>
                     )}
                   </Box>
                 </CardContent>

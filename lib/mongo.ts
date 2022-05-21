@@ -54,6 +54,7 @@ const postSchema = new Schema<Post>({
   createdAt: Date,
   user: String,
   userTel: String,
+  comparedTo: [String],
 });
 
 export const DBPost =
