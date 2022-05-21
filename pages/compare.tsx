@@ -58,7 +58,9 @@ export default function Page({
 
   // add the post or the user as already compared to
   function compared(url: string) {
-    fetch(url).then(() => {});
+    fetch(url).then((v) => {
+      console.log(v);
+    });
   }
   return (
     <>
