@@ -238,7 +238,10 @@ export default function Page({
                         flexDirection: "column",
                       }}
                     >
-                      <WhatsappButton phone={"+222" + user.tel} message={""}>
+                      <WhatsappButton
+                        phone={"+222" + user.tel}
+                        message={"https://iqar.store/post?id=" + post._id}
+                      >
                         <Button
                           onClick={() => {
                             compared(
