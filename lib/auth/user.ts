@@ -50,14 +50,8 @@ export async function createUser(newUser: UserType) {
       }
     }
   } else {
-    const codeCorrect = await DBUserCode.findOne({ code: newUser.code });
-    if (!codeCorrect) {
-      return false;
-    } else {
-      const savedUser = await new DBUser(user).save();
-      await DBUserCode.deleteOne({ code: codeCorrect.code });
-      return true;
-    }
+    const savedUser = await new DBUser(user).save();
+    return true;
   }
 }
 

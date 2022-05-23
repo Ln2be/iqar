@@ -24,7 +24,7 @@ const Signup = ({ queryjson }: { queryjson: string }) => {
 
     const body = {
       username: e.currentTarget.repName.value,
-      departement: e.currentTarget.departement.value,
+      departements: [e.currentTarget.departement.value],
       region: e.currentTarget.region.value,
       code: code,
       tel: e.currentTarget.tel.value,

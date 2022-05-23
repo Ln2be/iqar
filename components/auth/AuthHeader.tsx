@@ -4,6 +4,8 @@ import { Box } from "@mui/system";
 import { useUser } from "../../lib/auth/hooks";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Link from "next/link";
+import WhatsappButton from "../components/whatsapp";
+import { WhatsappShareButton } from "react-share";
 
 export default function AuthHeader() {
   const user = useUser();
@@ -41,7 +43,27 @@ export default function AuthHeader() {
                 cursor: "pointer",
               }}
             >
-              <Link href="/reps?role=rep">الممثلين</Link>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <Link href="/reps?role=rep">الممثلين</Link>
+
+                <WhatsappShareButton
+                  url={"https://iqar.store/auth/signup?space=rep"}
+                >
+                  <Box
+                    sx={{
+                      color: "blue",
+                      fontSize: "small",
+                    }}
+                  >
+                    ممثل جديد
+                  </Box>
+                </WhatsappShareButton>
+              </Box>
             </Box>
             <Box
               sx={{
