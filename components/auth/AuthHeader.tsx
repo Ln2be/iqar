@@ -4,7 +4,6 @@ import { Box } from "@mui/system";
 import { useUser } from "../../lib/auth/hooks";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Link from "next/link";
-import WhatsappButton from "../components/whatsapp";
 import { WhatsappShareButton } from "react-share";
 
 export default function AuthHeader() {
