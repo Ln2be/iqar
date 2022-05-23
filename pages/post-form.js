@@ -428,6 +428,7 @@ export default function Page() {
               label="المنطقة"
               {...register("region", { required: true })}
               variant="outlined"
+              inputProps={{ maxLength: 12 }}
               onChange={(event) => {
                 post.region = event.target.value;
               }}

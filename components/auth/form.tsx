@@ -3,8 +3,6 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { Box } from "@mui/system";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
 
 interface formType {
   isLogin: boolean;
@@ -122,7 +120,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }: formType) => {
             }}
           >
             <Button type="submit" variant="contained">
-              ارسال
+              الدخول
             </Button>
           </Box>
         </Box>
@@ -175,7 +173,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }: formType) => {
               </p>
             )}
             <Button type="submit" variant="contained">
-              ارسال
+              التسجيل
             </Button>
           </Box>
         </Box>
