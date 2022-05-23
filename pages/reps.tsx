@@ -67,7 +67,7 @@ export default function Page({ usersJson }: { usersJson: string }) {
                         <Button variant="contained">واتساب</Button>
                       </WhatsappButton>
                       <Typography variant="body1" color="text.secondary">
-                        {phone}
+                        {user.tel}
                       </Typography>
                     </Box>
                   </td>

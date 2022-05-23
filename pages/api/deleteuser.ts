@@ -7,6 +7,6 @@ export default async function helper(
 ) {
   const post = await DBUser.deleteOne({ _id: req.query.id });
 
-  //   res.writeHead(302, { Location: "/code/user" });
+  res.writeHead(302, { Location: "/reps" });
   res.json({});
 }
