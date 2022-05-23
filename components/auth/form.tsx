@@ -112,7 +112,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }: formType) => {
           >
             الدخول
           </Box>
-          <TextField name="tel" label="الهاتف"></TextField>
+          <TextField name="tel" label="واتساب"></TextField>
           <TextField name="password" label="كلمة المرور"></TextField>
           <Box
             sx={{
