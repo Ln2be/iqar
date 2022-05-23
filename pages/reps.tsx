@@ -19,41 +19,64 @@ export default function Page({ usersJson }: { usersJson: string }) {
 
   return (
     <Layout>
-      <table>
-        <thead></thead>
-        <tbody>
-          {users.map((user, i) => (
-            <tr key={i}>
-              <td>{user.count}</td>
-              <td>
-                <Button
-                  onClick={() => {
-                    fetch("/api/deleteuser?id=" + user._id);
-                  }}
-                ></Button>
-              </td>
-              <td>{user.username}</td>
-              <td>{DEPARTEMENTS[user.departement]}</td>
-              <td>{user.region}</td>
-              <td>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <WhatsappButton phone={"+222" + user.tel} message={""}>
-                    <Button variant="contained">واتساب</Button>
-                  </WhatsappButton>
-                  <Typography variant="body1" color="text.secondary">
-                    {user.tel}
-                  </Typography>
-                </Box>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Box
+        sx={{
+          overflow: "scroll",
+        }}
+      >
+        <table>
+          <thead></thead>
+          <tbody>
+            {users.map((user, i) => {
+              let phone = "";
+
+              if (user.tel.endsWith("+")) {
+                phone = "+" + user.tel.replace("+", "");
+              } else if (user.tel.startsWith("00")) {
+                phone = "+" + user.tel.replace("00", "");
+              } else if (user.tel.startsWith("+")) {
+                phone = user.tel;
+              } else {
+                phone = "+222" + user.tel;
+              }
+
+              return (
+                <tr key={i}>
+                  <td>{user.count}</td>
+                  <td>
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        fetch("/api/deleteuser?id=" + user._id);
+                      }}
+                    >
+                      حذف
+                    </Button>
+                  </td>
+                  <td>{user.username}</td>
+                  <td>{DEPARTEMENTS[user.departement]}</td>
+                  <td>{user.region}</td>
+                  <td>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <WhatsappButton phone={phone} message={""}>
+                        <Button variant="contained">واتساب</Button>
+                      </WhatsappButton>
+                      <Typography variant="body1" color="text.secondary">
+                        {phone}
+                      </Typography>
+                    </Box>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </Box>
     </Layout>
   );
 }
