@@ -24,6 +24,7 @@ export default function Page({ usersJson }: { usersJson: string }) {
         <tbody>
           {users.map((user, i) => (
             <tr key={i}>
+              <td>{user.count}</td>
               <td>{user.username}</td>
               <td>{DEPARTEMENTS[user.departement]}</td>
               <td>{user.region}</td>
@@ -46,53 +47,6 @@ export default function Page({ usersJson }: { usersJson: string }) {
           ))}
         </tbody>
       </table>
-      {/* <Box
-        sx={{
-          display: "grid",
-          gap: 2,
-          maxWidth: "400px",
-          p: 2,
-        }}
-      >
-        {users.map((user, i) => {
-          return (
-            <Box
-              key={i}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                overflow: "scroll",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Box>{user.username}</Box>
-
-                <Box>{DEPARTEMENTS[user.departement]}</Box>
-                <Box>{user.region}</Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <WhatsappButton phone={"+222" + user.tel} message={""}>
-                    <Button variant="contained">واتساب</Button>
-                  </WhatsappButton>
-                  <Typography variant="body1" color="text.secondary">
-                    {user.tel}
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
-          );
-        })}
-      </Box> */}
     </Layout>
   );
 }
