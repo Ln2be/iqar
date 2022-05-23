@@ -159,7 +159,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }: formType) => {
             ))}
           </TextField>
           <TextField name="region" label="المنطقة"></TextField>
-          <TextField name="tel" label="الهاتف"></TextField>
+          <TextField name="tel" label="واتساب"></TextField>
           <Box
             sx={{
               alignItem: "right",
