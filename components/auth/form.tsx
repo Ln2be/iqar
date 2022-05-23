@@ -113,7 +113,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }: formType) => {
             الدخول
           </Box>
           <TextField name="tel" label="الهاتف"></TextField>
-          <TextField name="password" label="الرقم السري"></TextField>
+          <TextField name="password" label="كلمة المرور"></TextField>
           <Box
             sx={{
               display: "flex",
@@ -143,8 +143,8 @@ const Form = ({ isLogin, errorMessage, onSubmit }: formType) => {
             التسجيل
           </Box>
           <TextField name="repName" label="الاسم"></TextField>
-          <TextField name="password" label="الرقم السري"></TextField>
-          <TextField name="rpassword" label="اعادة الرقم السري"></TextField>
+          <TextField name="password" label="كلمة المرور"></TextField>
+          <TextField name="rpassword" label="اعادة كلمة المرور"></TextField>
           <TextField
             id="outlined-select-currency"
             select
