@@ -56,7 +56,7 @@ export default function Page({ postjson }: { postjson: string }) {
             " \n" +
             subtypeArabic[post.subtype] +
             " \n" +
-            DEPARTEMENTS[post.departement] +
+            DEPARTEMENTS[post.departements[0]] +
             " \n" +
             post.region +
             " \n"
@@ -100,9 +100,10 @@ export default function Page({ postjson }: { postjson: string }) {
                   {post.departements.length == 1 && (
                     <Box>
                       <Typography gutterBottom variant="h5">
-                        {post.departement &&
-                          post.region &&
-                          DEPARTEMENTS[post.departement] + " - " + post.region}
+                        {DEPARTEMENTS[post.departements[0]]}
+                      </Typography>
+                      <Typography gutterBottom variant="h5">
+                        {post.region}
                       </Typography>
                     </Box>
                   )}
