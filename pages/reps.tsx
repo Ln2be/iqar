@@ -25,6 +25,13 @@ export default function Page({ usersJson }: { usersJson: string }) {
           {users.map((user, i) => (
             <tr key={i}>
               <td>{user.count}</td>
+              <td>
+                <Button
+                  onClick={() => {
+                    fetch("/api/deleteuser?id=" + user._id);
+                  }}
+                ></Button>
+              </td>
               <td>{user.username}</td>
               <td>{DEPARTEMENTS[user.departement]}</td>
               <td>{user.region}</td>
@@ -57,7 +64,7 @@ export async function getServerSideProps({
   query: { [key: string]: string };
 }) {
   const usersObject = await DBUser.find({ role: query.role }).sort({
-    departement: +1,
+    count: +1,
   });
   const usersJson = JSON.stringify(usersObject);
 
