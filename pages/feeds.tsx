@@ -224,11 +224,10 @@ export default function Page({
                       {post.departements.length == 1 && (
                         <Box>
                           <Typography gutterBottom variant="h5">
-                            {post.departement &&
-                              post.region &&
-                              DEPARTEMENTS[post.departement] +
-                                " - " +
-                                post.region}
+                            {DEPARTEMENTS[post.departements[0]]}
+                          </Typography>
+                          <Typography gutterBottom variant="h5">
+                            {post.region}
                           </Typography>
                         </Box>
                       )}
