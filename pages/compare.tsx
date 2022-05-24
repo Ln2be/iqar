@@ -450,9 +450,10 @@ export default function Page({
                       >
                         <Box>{"رقم الاعلان :  " + postc.count}</Box>
                         <Box>
-                          {new Date(postc.createdAt).toLocaleDateString(
-                            "ar-MA"
-                          )}
+                          {postc.createdAt &&
+                            new Date(postc.createdAt).toLocaleDateString(
+                              "ar-MA"
+                            )}
                         </Box>
                       </Box>
 

@@ -183,7 +183,7 @@ export default function Page({ postjson }: { postjson: string }) {
     const name: string = e.target.name as string;
 
     setdepcheck((prev) => {
-      let prevdep = { ...prev };
+      const prevdep = { ...prev };
       prevdep[name] = !prevdep[name];
       return prevdep;
     });
