@@ -8,6 +8,7 @@ import React from "react";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { useUser } from "../lib/auth/hooks";
 import StorageIcon from "@mui/icons-material/Storage";
+import Head from "next/head";
 
 export default function Page() {
   const user = useUser();
