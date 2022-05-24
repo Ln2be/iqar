@@ -242,7 +242,6 @@ export default function Page({ postjson }: { postjson: string }) {
             sx={{
               display: "flex",
               flexDirection: "column",
-              bgcolor: "red",
             }}
           >
             <WhatsappButton
