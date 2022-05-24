@@ -86,6 +86,19 @@ export default function Page({ postjson }: { postjson: string }) {
             maxWidth: "400px",
           }}
         >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <WhatsappButton
+              phone={"+22248692007"}
+              message={"اريد الغاء اشتراكي"}
+            >
+              <Button variant="contained">الغاء الاشتراك</Button>
+            </WhatsappButton>
+          </Box>
           {post ? (
             <Card sx={{ maxWidth: 345 }}>
               <CardContent>
