@@ -228,7 +228,7 @@ export default function Page({ postjson }: { postjson: string }) {
                     <ShareIcon></ShareIcon>
                   </Box>
                 </WhatsappShareButton>
-                {user && user?.username == post.user && (
+                {user && user.role != "admin" && user?.username == post.user && (
                   <Link href={"/api/delete?id=" + post._id}>
                     <Button style={{ color: "red" }}>حذف</Button>
                   </Link>
