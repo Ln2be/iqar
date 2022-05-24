@@ -44,6 +44,19 @@ export default function Page({ postjson }: { postjson: string }) {
     villa: "فيلا",
     other: "إخرى",
   };
+
+  let phone = "";
+
+  if (post.tel.endsWith("+")) {
+    phone = "+" + post.tel.replace("+", "");
+  } else if (post.tel.startsWith("00")) {
+    phone = "+" + post.tel.replace("00", "");
+  } else if (post.tel.startsWith("+")) {
+    phone = post.tel;
+  } else {
+    phone = "+222" + post.tel;
+  }
+
   return (
     <>
       <Head>
@@ -144,28 +157,43 @@ export default function Page({ postjson }: { postjson: string }) {
                       flexDirection: "column",
                     }}
                   >
-                    <WhatsappButton
-                      phone={"+22248692007"}
-                      message={"https://iqar.store/post?id=" + post._id}
-                    >
-                      <Button variant="contained">واتساب</Button>
-                    </WhatsappButton>
-                    <Typography variant="body1" color="text.secondary">
-                      {48692007}
-                    </Typography>
+                    {user?.role == "admin" ? (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <WhatsappButton
+                          phone={phone}
+                          message={"https://iqar.store/post?id=" + post._id}
+                        >
+                          <Button variant="contained">واتساب</Button>
+                        </WhatsappButton>
+                        <Typography variant="body1" color="text.secondary">
+                          {post.tel}
+                        </Typography>
+                      </Box>
+                    ) : (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <WhatsappButton
+                          phone={"+22248692007"}
+                          message={"https://iqar.store/post?id=" + post._id}
+                        >
+                          <Button variant="contained">واتساب</Button>
+                        </WhatsappButton>
+                        <Typography variant="body1" color="text.secondary">
+                          {48692007}
+                        </Typography>
+                      </Box>
+                    )}
                   </Box>
                 </Box>
-                {user?.role == "admin" && (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    {"هاتف الزبون : " + post.tel}
-                  </Box>
-                )}
               </CardContent>
               {post.images?.map((image, i) => (
                 <Box

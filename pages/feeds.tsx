@@ -315,7 +315,8 @@ export default function Page({
                     >
                       <Box>{"رقم الاعلان :  " + post.count}</Box>
                       <Box>
-                        {new Date(post.createdAt).toLocaleDateString("ar-MA")}
+                        {post.createdAt &&
+                          new Date(post.createdAt).toLocaleDateString("ar-MA")}
                       </Box>
                     </Box>
                     {user &&
@@ -342,6 +343,12 @@ export default function Page({
                           </Box>
                           <Box>
                             <Link href={"/api/delete?id=" + post._id}>
+                              <Button style={{ color: "green" }}>مقارنة</Button>
+                            </Link>
+                            <Link href={"/api/delete?id=" + post._id}>
+                              <Button style={{ color: "blue" }}>تعديل</Button>
+                            </Link>
+                            <Link href={"/api/delete?id=" + post._id}>
                               <Button style={{ color: "red" }}>حذف</Button>
                             </Link>
                           </Box>
@@ -356,15 +363,22 @@ export default function Page({
                           mt: 2,
                         }}
                       >
-                        <Box>
-                          <Link href={"/api/delete?id=" + post._id}>
-                            <Button style={{ color: "red" }}>حذف</Button>
-                          </Link>
-                        </Box>
+                        <Link href={"/compare?id=" + post._id}>
+                          <Button variant="outlined" style={{ color: "blue" }}>
+                            مقارنة
+                          </Button>
+                        </Link>
+                        <Link href={"/update?id=" + post._id}>
+                          <Button variant="outlined" style={{ color: "blue" }}>
+                            تعديل
+                          </Button>
+                        </Link>
+                        <Link href={"/api/delete?id=" + post._id}>
+                          <Button variant="outlined" style={{ color: "red" }}>
+                            حذف
+                          </Button>
+                        </Link>
                       </Box>
-                    )}
-                    {user && user?.role == "admin" && (
-                      <Link href={"/compare?id=" + post._id}>مقارنة</Link>
                     )}
                   </Box>
                 </CardContent>

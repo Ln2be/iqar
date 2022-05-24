@@ -16,26 +16,26 @@ export interface UserType {
 }
 
 export interface Post {
-  _id: string;
+  _id?: string;
   type: string;
   subtype: string;
   departement: string;
   departements: string[];
   region: string;
   details: string;
-  images: [
-    {
-      data: string;
-      width: number;
-      height: number;
-    }
-  ];
-  price: number;
+  images: Image[];
+  price: string;
   tel: string;
-  id: string;
-  createdAt: Date;
-  count: number;
+  id?: string;
+  createdAt?: Date;
+  count?: number;
   user: string;
   userTel: string;
-  comparedTo: string[];
+  comparedTo?: string[];
+}
+
+export interface Image {
+  data: string;
+  width: number;
+  height: number;
 }

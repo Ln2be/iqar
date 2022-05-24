@@ -65,16 +65,12 @@ export default function Page({ posts }: { posts: any }) {
               <td>{post.code}</td>
               <td>{post.used}</td>
               <td>
-                <Link
-                  href={urlbase + "auth/signup?space=user&code=" + post.code}
-                >
+                <Link href={"auth/signup?space=user&code=" + post.code}>
                   gosamsar
                 </Link>
               </td>
               <td>
-                <Link
-                  href={urlbase + "auth/signup?space=rep&code=" + post.code}
-                >
+                <Link href={"auth/signup?space=rep&code=" + post.code}>
                   gorep
                 </Link>
               </td>

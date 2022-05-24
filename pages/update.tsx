@@ -17,27 +17,49 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import Checkbox from "@mui/material/Checkbox";
+import { Post, Image } from "../projectTypes";
+import { DBPost } from "../lib/mongo";
 
-const post = {
-  type: "",
-  subtype: "",
-  departement: "",
-  departements: [],
-  region: "",
-  details: "",
-  images: [],
-  price: 0,
-  tel: "",
-  user: "",
-  userTel: "",
-  createdAt: Date.now(),
+let initialized = false;
+let post: Post;
+
+// initialize the departements checkboxes
+const inicheck: { [key: string]: boolean } = {
+  Tayaret: false,
+  Ksar: false,
+  DarNaim: false,
+  TevreghZeina: false,
+  Sebkha: false,
+  Elmina: false,
+  Arafat: false,
+  Toujounine: false,
+  Riyadh: false,
 };
 
-var pathFiles = [];
-
-export default function Page() {
+export default function Page({ postjson }: { postjson: string }) {
   const user = useUser();
+  const postq = JSON.parse(postjson) as Post;
 
+  // If is there two departements no needs for the region
+  const [depa, setDepa] = useState<string[]>([]);
+  const [depcheck, setdepcheck] = useState(inicheck);
+
+  if (!initialized) {
+    post = postq;
+    initialized = true;
+    setDepa(post.departements);
+    post.departements.map((value) => {
+      // setDepa
+      setdepcheck((prev) => {
+        const ob = {
+          ...prev,
+        };
+        ob[value] = true;
+
+        return ob;
+      });
+    });
+  }
   // console.log(post.departements);
   post.user = user?.username;
   post.userTel = user?.tel;
@@ -48,25 +70,8 @@ export default function Page() {
     formState: { errors },
   } = useForm();
 
-  // initialize the departements checkboxes
-  const inicheck = {
-    Tayaret: false,
-    Ksar: false,
-    DarNaim: false,
-    TevreghZeina: false,
-    Sebkha: false,
-    Elmina: false,
-    Arafat: false,
-    Toujounine: false,
-    Riyadh: false,
-  };
-
   const [imagesUrl, setImagesUrl] = useState([]);
   const [spinner, setSpinner] = useState(false);
-  const [depcheck, setdepcheck] = useState(inicheck);
-
-  // If is there two departements no needs for the region
-  const [depa, setDepa] = useState([]);
 
   const departements = [
     {
@@ -153,10 +158,10 @@ export default function Page() {
     },
   ];
 
-  const [type, setType] = useState("");
+  const [type, setType] = useState(post.type);
 
   const handleSubmitToServer = function () {
-    fetch("/api/post", {
+    fetch("/api/updatepost?id=" + post._id, {
       method: "POST",
       body: JSON.stringify(post),
       headers: {
@@ -164,54 +169,18 @@ export default function Page() {
       },
     }).then((data) => {
       data.json().then((d) => {
-        Router.push("/post?id=" + d._id);
+        Router.push("/post?id=" + post._id);
       });
     });
   };
 
   const handleSubmitThePost = async () => {
     setSpinner(true);
-    // const im = await resizeFile(post.images[0]);
-
-    // const imPromises = pathFiles.map((path) => resizeFile(path));
-
-    const imPromises = pathFiles.map((path) => handleImageUpload(path));
-
-    Promise.all(imPromises).then((values) => {
-      var hwPromises = [];
-      values.map((value) => {
-        var image = {
-          data: "",
-          width: 0,
-          height: 0,
-        };
-        image.data = value;
-
-        var imageWH = new Image();
-        imageWH.src = value;
-
-        var hwPromise = new Promise((resolve) => {
-          imageWH.onload = (event) => {
-            image.width = event.target.width;
-            image.height = event.target.height;
-
-            resolve(image);
-          };
-        });
-        hwPromises.push(hwPromise);
-      });
-      Promise.all(hwPromises).then((images) => {
-        post.images = [];
-        images.map((image) => {
-          post.images.push(image);
-        });
-        handleSubmitToServer();
-      });
-    });
+    handleSubmitToServer();
   };
 
-  function handleChange(e) {
-    const name = e.target.name;
+  function handleChange(e: any) {
+    const name: string = e.target.name as string;
 
     setdepcheck((prev) => {
       let prevdep = { ...prev };
@@ -265,6 +234,7 @@ export default function Page() {
             id="type"
             select
             label="نوع الاعلان"
+            defaultValue={post.type}
             {...register("typev", { required: true })}
             // value={currency}
             onChange={(event) => {
@@ -296,6 +266,7 @@ export default function Page() {
                 id="type"
                 select
                 label="اختيار فرعي"
+                defaultValue={post.subtype}
                 {...register("subtype", { required: true })}
                 // value={currency}
                 onChange={(event) => {
@@ -395,6 +366,7 @@ export default function Page() {
               id="outlined-select-currency"
               select
               label="المقاطعة"
+              defaultValue={post.departement}
               {...register("departement", { required: true })}
               onChange={(event) => {
                 const value = event.target.value;
@@ -426,6 +398,7 @@ export default function Page() {
             <TextField
               id="outlined-basic"
               label="المنطقة"
+              defaultValue={post.region}
               {...register("region", { required: true })}
               variant="outlined"
               inputProps={{ maxLength: 12 }}
@@ -449,6 +422,7 @@ export default function Page() {
             id="outlined-basic"
             multiline
             label="المواضقات"
+            defaultValue={post.details}
             variant="outlined"
             onChange={(event) => {
               post.details = event.target.value;
@@ -460,6 +434,7 @@ export default function Page() {
             label="الهاتف"
             {...register("tel", { required: true })}
             type="tel"
+            defaultValue={post.tel}
             variant="outlined"
             onChange={(event) => {
               post.tel = event.target.value;
@@ -480,6 +455,7 @@ export default function Page() {
             id="outlined-basic"
             label="السعر"
             type="number"
+            defaultValue={post.price}
             variant="outlined"
             onChange={(event) => {
               post.price = event.target.value;
@@ -495,32 +471,7 @@ export default function Page() {
               // alignItem: "right",
               flexDirection: "row",
             }}
-          >
-            <Button variant="outlined" component="label">
-              صور
-              <input
-                multiple
-                type="file"
-                onChange={(event) => {
-                  const files = event.target.files;
-
-                  // Only files are allowed
-                  const nf = files.length < 3 ? files.length : 3;
-                  pathFiles = [];
-
-                  pathFiles = [...new Array(nf)].map((file, i) =>
-                    files.item(i)
-                  );
-
-                  setImagesUrl(
-                    [...new Array(nf)].map((file, i) => files.item(i))
-                  );
-                }}
-                accept="image/*"
-                hidden
-              />
-            </Button>
-          </Box>
+          ></Box>
           <Box
             sx={{
               diplay: "flex",
@@ -552,7 +503,7 @@ export default function Page() {
               variant="contained"
               onClick={handleSubmit(handleSubmitThePost)}
             >
-              نشر
+              تعديل
             </Button>
           </Box>
         </Box>
@@ -561,55 +512,18 @@ export default function Page() {
   );
 }
 
-const resizeFile = (file) =>
-  new Promise((resolve) => {
-    Resizer.imageFileResizer(
-      file,
-      600,
-      600,
-      "JPEG",
-      100,
-      0,
-      (uri) => {
-        resolve(uri);
-      },
-      "base64"
-    );
-  });
+export async function getServerSideProps({
+  query,
+}: {
+  query: { [key: string]: string };
+}) {
+  const postObject = await DBPost.findOne({ _id: query.id });
 
-async function handleImageUpload(imageFile) {
-  console.log("originalFile instanceof Blob", imageFile instanceof Blob); // true
-  console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
+  const postjson = JSON.stringify(postObject);
 
-  const options = {
-    maxSizeMB: 1,
-    maxWidthOrHeight: 1920,
-    useWebWorker: true,
+  return {
+    props: {
+      postjson,
+    },
   };
-  try {
-    const compressedFile = await imageCompression(imageFile, options);
-    console.log(
-      "compressedFile instanceof Blob",
-      compressedFile instanceof Blob
-    ); // true
-    console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
-
-    // const arrayBuffer = await compressedFile.arrayBuffer();
-    // const image = Buffer.from(arrayBuffer).toString("base64");
-
-    const image = blobToBase64(compressedFile);
-    console.log(image);
-    return image;
-    // await uploadToServer(compressedFile); // write your own logic
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-function blobToBase64(blob) {
-  return new Promise((resolve, _) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result);
-    reader.readAsDataURL(blob);
-  });
 }
