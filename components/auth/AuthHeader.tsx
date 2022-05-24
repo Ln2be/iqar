@@ -51,19 +51,6 @@ export default function AuthHeader() {
                 }}
               >
                 <Link href="/reps?role=rep">الممثلين</Link>
-
-                <WhatsappShareButton
-                  url={"https://iqar.store/auth/signup?space=rep"}
-                >
-                  <Box
-                    sx={{
-                      color: "blue",
-                      fontSize: "small",
-                    }}
-                  >
-                    ممثل جديد
-                  </Box>
-                </WhatsappShareButton>
               </Box>
             </Box>
             <Box
