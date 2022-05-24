@@ -8,6 +8,7 @@ import { Post } from "../projectTypes";
 import Head from "next/head";
 import WhatsappButton from "../components/whatsapp";
 import NumberFormat from "react-number-format";
+import ShareIcon from "@mui/icons-material/Share";
 
 import {
   Card,
@@ -224,7 +225,7 @@ export default function Page({ postjson }: { postjson: string }) {
                       fontSize: "small",
                     }}
                   >
-                    مشاركة
+                    <ShareIcon></ShareIcon>
                   </Box>
                 </WhatsappShareButton>
                 {user && user?.username == post.user && (
