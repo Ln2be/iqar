@@ -236,328 +236,344 @@ export default function Page() {
   //   console.log(post.departements);
   // }
   return (
-    <Layout>
-      {spinner ? (
-        <Box sx={{ display: "flex" }}>
-          <CircularProgress />
-        </Box>
-      ) : (
-        <Box
-          component={"form"}
-          sx={{
-            display: "grid",
-            gap: 2,
-            p: { xs: 2, md: 4 },
-            maxWidth: "400px",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              // flexDirection: "column",
-              pb: 2,
-            }}
-          >
-            انشر إعلان
+    <>
+      <Head>
+        <title>{"ضع اعلانك "}</title>
+        <meta
+          name="description"
+          content={"انشر اعلانك على موقع عقار نواكشوط"}
+          key="desc"
+        />
+        <meta property="og:title" content={"ضع اعلانك"} />
+        <meta
+          property="og:description"
+          content={"انشر اعلانك على موقع عقار نواكشوط"}
+        />
+        {/* <meta property="og:image" content={post.images[0]?.data} /> */}
+      </Head>
+      <Layout>
+        {spinner ? (
+          <Box sx={{ display: "flex" }}>
+            <CircularProgress />
           </Box>
-          <TextField
-            id="type"
-            select
-            label="نوع الاعلان"
-            {...register("typev", { required: true })}
-            // value={currency}
-            onChange={(event) => {
-              post.type = event.target.value;
-              post.departements = [];
-              setType(event.target.value);
-              setdepcheck(inicheck);
-            }}
-          >
-            {adtypes.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-          {errors.typev && (
-            <small
-              style={{
-                color: "red",
-              }}
-            >
-              ادخل الاعلان
-            </small>
-          )}
-
-          {type != "stay" && (
-            <>
-              <TextField
-                id="type"
-                select
-                label="اختيار فرعي"
-                {...register("subtype", { required: true })}
-                // value={currency}
-                onChange={(event) => {
-                  post.subtype = event.target.value;
-                }}
-              >
-                {subtypes.map((option, i) => (
-                  <MenuItem key={i} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              {errors.subtype && (
-                <small
-                  style={{
-                    color: "red",
-                  }}
-                >
-                  ادخل الاختيار الفرعي
-                </small>
-              )}
-            </>
-          )}
-
-          {(type == "buying" || type == "demandRent") && (
-            <Box sx={{ display: "flex" }}>
-              <FormControl
-                sx={{ m: 3 }}
-                component="fieldset"
-                variant="standard"
-              >
-                <FormLabel component="legend">اختر المقاطعات</FormLabel>
-                <FormGroup>
-                  <Box>
-                    {departements.slice(0, 3).map((departement, i) => {
-                      return (
-                        <FormControlLabel
-                          key={i}
-                          control={
-                            <Checkbox
-                              checked={depcheck[departement.value]}
-                              onChange={handleChange}
-                              name={departement.value}
-                            />
-                          }
-                          label={departement.label}
-                        />
-                      );
-                    })}
-                  </Box>
-                  <Box>
-                    {departements.slice(3, 6).map((departement, i) => {
-                      return (
-                        <FormControlLabel
-                          key={i}
-                          control={
-                            <Checkbox
-                              checked={depcheck[departement.value]}
-                              onChange={handleChange}
-                              name={departement.value}
-                            />
-                          }
-                          label={departement.label}
-                        />
-                      );
-                    })}
-                  </Box>
-                  <Box>
-                    {departements.slice(6, 9).map((departement, i) => {
-                      return (
-                        <FormControlLabel
-                          key={i}
-                          control={
-                            <Checkbox
-                              checked={depcheck[departement.value]}
-                              onChange={handleChange}
-                              name={departement.value}
-                            />
-                          }
-                          label={departement.label}
-                        />
-                      );
-                    })}
-                  </Box>
-                </FormGroup>
-                <FormHelperText>Be careful</FormHelperText>
-              </FormControl>
-            </Box>
-          )}
-
-          {/* <button name="Tayaret" onClick={show}>
-            show
-          </button> */}
-
-          {(type == "selling" || type == "offerRent" || type == "stay") && (
-            <TextField
-              id="outlined-select-currency"
-              select
-              label="المقاطعة"
-              {...register("departement", { required: true })}
-              onChange={(event) => {
-                const value = event.target.value;
-                post.departements = [];
-                post.departements.push(value);
-              }}
-              helperText="اختر المقاطعة"
-              required
-            >
-              {departements.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          )}
-
-          {errors.departement && (
-            <small
-              style={{
-                color: "red",
-              }}
-            >
-              ادخل المقاطعة
-            </small>
-          )}
-
-          {depa.length < 2 && (
-            <TextField
-              id="outlined-basic"
-              label="المنطقة"
-              {...register("region", { required: true })}
-              variant="outlined"
-              inputProps={{ maxLength: 12 }}
-              onChange={(event) => {
-                post.region = event.target.value;
-              }}
-              required
-            />
-          )}
-
-          {errors.region && (
-            <small
-              style={{
-                color: "red",
-              }}
-            >
-              ادخل المنطقة
-            </small>
-          )}
-          <TextField
-            id="outlined-basic"
-            multiline
-            label="المواضقات"
-            variant="outlined"
-            onChange={(event) => {
-              post.details = event.target.value;
-            }}
-            helperText="مساحة المنزل   الشارع  الخ"
-          />
-          <TextField
-            id="outlined-basic"
-            label="الهاتف"
-            {...register("tel", { required: true })}
-            type="tel"
-            variant="outlined"
-            onChange={(event) => {
-              post.tel = event.target.value;
-            }}
-            required
-          />
-          {errors.tel && (
-            <small
-              style={{
-                color: "red",
-              }}
-            >
-              ادخل الهاتف
-            </small>
-          )}
-
-          <TextField
-            id="outlined-basic"
-            label="السعر"
-            type="number"
-            variant="outlined"
-            onChange={(event) => {
-              post.price = event.target.value;
-            }}
-          />
-
+        ) : (
           <Box
+            component={"form"}
             sx={{
-              display:
-                type == "stay" || type == "selling" || type == "offerRent"
-                  ? "flex"
-                  : "none",
-              // alignItem: "right",
-              flexDirection: "row",
-            }}
-          >
-            <Button variant="outlined" component="label">
-              صور
-              <input
-                multiple
-                type="file"
-                onChange={(event) => {
-                  const files = event.target.files;
-
-                  // Only files are allowed
-                  const nf = files.length < 3 ? files.length : 3;
-                  pathFiles = [];
-
-                  pathFiles = [...new Array(nf)].map((file, i) =>
-                    files.item(i)
-                  );
-
-                  setImagesUrl(
-                    [...new Array(nf)].map((file, i) => files.item(i))
-                  );
-                }}
-                accept="image/*"
-                hidden
-              />
-            </Button>
-          </Box>
-          <Box
-            sx={{
-              diplay: "flex",
-              // alignItem: "right",
-              flexDirection: "row-reverse",
+              display: "grid",
+              gap: 2,
+              p: { xs: 2, md: 4 },
+              maxWidth: "400px",
             }}
           >
             <Box
               sx={{
                 display: "flex",
-                mb: 2,
-                overflow: "scroll",
+                justifyContent: "center",
+                // flexDirection: "column",
+                pb: 2,
               }}
             >
-              {imagesUrl.map((url, i) => (
-                <img
-                  style={{
-                    width: "100%",
-                    marginRight: "5px",
-                  }}
-                  key={i}
-                  src={URL.createObjectURL(url)}
-                ></img>
-              ))}
+              انشر إعلان
             </Box>
-            {/* This button needs to be viewed again */}
-            <Button
-              type="submit"
-              variant="contained"
-              onClick={handleSubmit(handleSubmitThePost)}
+            <TextField
+              id="type"
+              select
+              label="نوع الاعلان"
+              {...register("typev", { required: true })}
+              // value={currency}
+              onChange={(event) => {
+                post.type = event.target.value;
+                post.departements = [];
+                setType(event.target.value);
+                setdepcheck(inicheck);
+              }}
             >
-              نشر
-            </Button>
+              {adtypes.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+            {errors.typev && (
+              <small
+                style={{
+                  color: "red",
+                }}
+              >
+                ادخل الاعلان
+              </small>
+            )}
+
+            {type != "stay" && (
+              <>
+                <TextField
+                  id="type"
+                  select
+                  label="اختيار فرعي"
+                  {...register("subtype", { required: true })}
+                  // value={currency}
+                  onChange={(event) => {
+                    post.subtype = event.target.value;
+                  }}
+                >
+                  {subtypes.map((option, i) => (
+                    <MenuItem key={i} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                {errors.subtype && (
+                  <small
+                    style={{
+                      color: "red",
+                    }}
+                  >
+                    ادخل الاختيار الفرعي
+                  </small>
+                )}
+              </>
+            )}
+
+            {(type == "buying" || type == "demandRent") && (
+              <Box sx={{ display: "flex" }}>
+                <FormControl
+                  sx={{ m: 3 }}
+                  component="fieldset"
+                  variant="standard"
+                >
+                  <FormLabel component="legend">اختر المقاطعات</FormLabel>
+                  <FormGroup>
+                    <Box>
+                      {departements.slice(0, 3).map((departement, i) => {
+                        return (
+                          <FormControlLabel
+                            key={i}
+                            control={
+                              <Checkbox
+                                checked={depcheck[departement.value]}
+                                onChange={handleChange}
+                                name={departement.value}
+                              />
+                            }
+                            label={departement.label}
+                          />
+                        );
+                      })}
+                    </Box>
+                    <Box>
+                      {departements.slice(3, 6).map((departement, i) => {
+                        return (
+                          <FormControlLabel
+                            key={i}
+                            control={
+                              <Checkbox
+                                checked={depcheck[departement.value]}
+                                onChange={handleChange}
+                                name={departement.value}
+                              />
+                            }
+                            label={departement.label}
+                          />
+                        );
+                      })}
+                    </Box>
+                    <Box>
+                      {departements.slice(6, 9).map((departement, i) => {
+                        return (
+                          <FormControlLabel
+                            key={i}
+                            control={
+                              <Checkbox
+                                checked={depcheck[departement.value]}
+                                onChange={handleChange}
+                                name={departement.value}
+                              />
+                            }
+                            label={departement.label}
+                          />
+                        );
+                      })}
+                    </Box>
+                  </FormGroup>
+                  <FormHelperText>Be careful</FormHelperText>
+                </FormControl>
+              </Box>
+            )}
+
+            {/* <button name="Tayaret" onClick={show}>
+            show
+          </button> */}
+
+            {(type == "selling" || type == "offerRent" || type == "stay") && (
+              <TextField
+                id="outlined-select-currency"
+                select
+                label="المقاطعة"
+                {...register("departement", { required: true })}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  post.departements = [];
+                  post.departements.push(value);
+                }}
+                helperText="اختر المقاطعة"
+                required
+              >
+                {departements.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+
+            {errors.departement && (
+              <small
+                style={{
+                  color: "red",
+                }}
+              >
+                ادخل المقاطعة
+              </small>
+            )}
+
+            {depa.length < 2 && (
+              <TextField
+                id="outlined-basic"
+                label="المنطقة"
+                {...register("region", { required: true })}
+                variant="outlined"
+                inputProps={{ maxLength: 12 }}
+                onChange={(event) => {
+                  post.region = event.target.value;
+                }}
+                required
+              />
+            )}
+
+            {errors.region && (
+              <small
+                style={{
+                  color: "red",
+                }}
+              >
+                ادخل المنطقة
+              </small>
+            )}
+            <TextField
+              id="outlined-basic"
+              multiline
+              label="المواضقات"
+              variant="outlined"
+              onChange={(event) => {
+                post.details = event.target.value;
+              }}
+              helperText="مساحة المنزل   الشارع  الخ"
+            />
+            <TextField
+              id="outlined-basic"
+              label="الهاتف"
+              {...register("tel", { required: true })}
+              type="tel"
+              variant="outlined"
+              onChange={(event) => {
+                post.tel = event.target.value;
+              }}
+              required
+            />
+            {errors.tel && (
+              <small
+                style={{
+                  color: "red",
+                }}
+              >
+                ادخل الهاتف
+              </small>
+            )}
+
+            <TextField
+              id="outlined-basic"
+              label="السعر"
+              type="number"
+              variant="outlined"
+              onChange={(event) => {
+                post.price = event.target.value;
+              }}
+            />
+
+            <Box
+              sx={{
+                display:
+                  type == "stay" || type == "selling" || type == "offerRent"
+                    ? "flex"
+                    : "none",
+                // alignItem: "right",
+                flexDirection: "row",
+              }}
+            >
+              <Button variant="outlined" component="label">
+                صور
+                <input
+                  multiple
+                  type="file"
+                  onChange={(event) => {
+                    const files = event.target.files;
+
+                    // Only files are allowed
+                    const nf = files.length < 3 ? files.length : 3;
+                    pathFiles = [];
+
+                    pathFiles = [...new Array(nf)].map((file, i) =>
+                      files.item(i)
+                    );
+
+                    setImagesUrl(
+                      [...new Array(nf)].map((file, i) => files.item(i))
+                    );
+                  }}
+                  accept="image/*"
+                  hidden
+                />
+              </Button>
+            </Box>
+            <Box
+              sx={{
+                diplay: "flex",
+                // alignItem: "right",
+                flexDirection: "row-reverse",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  mb: 2,
+                  overflow: "scroll",
+                }}
+              >
+                {imagesUrl.map((url, i) => (
+                  <img
+                    style={{
+                      width: "100%",
+                      marginRight: "5px",
+                    }}
+                    key={i}
+                    src={URL.createObjectURL(url)}
+                  ></img>
+                ))}
+              </Box>
+              {/* This button needs to be viewed again */}
+              <Button
+                type="submit"
+                variant="contained"
+                onClick={handleSubmit(handleSubmitThePost)}
+              >
+                نشر
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      )}
-    </Layout>
+        )}
+      </Layout>
+    </>
   );
 }
 
