@@ -29,14 +29,16 @@ export default function AuthHeader() {
               }}
             >
               <Link href={"/profile"}>
-                <AccountCircleIcon></AccountCircleIcon>
-                <Box
-                  sx={{
-                    pl: 1,
-                  }}
-                >
-                  {user?.username}
-                </Box>
+                <>
+                  <AccountCircleIcon></AccountCircleIcon>
+                  <Box
+                    sx={{
+                      pl: 1,
+                    }}
+                  >
+                    {user?.username}
+                  </Box>
+                </>
               </Link>
             </Box>
             <Box
