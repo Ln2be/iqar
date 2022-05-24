@@ -215,6 +215,37 @@ export default function Page({ postjson }: { postjson: string }) {
                   />
                 </Box>
               ))}
+              {user && user.role != "admin" && user?.username == post.user && (
+                <Link href={"/api/delete?id=" + post._id}>
+                  <Button style={{ color: "red" }}>حذف</Button>
+                </Link>
+              )}
+              {user && user?.role == "admin" && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    mt: 2,
+                  }}
+                >
+                  <Link href={"/compare?id=" + post._id}>
+                    <Button variant="outlined" style={{ color: "blue" }}>
+                      مقارنة
+                    </Button>
+                  </Link>
+                  <Link href={"/update?id=" + post._id}>
+                    <Button variant="outlined" style={{ color: "blue" }}>
+                      تعديل
+                    </Button>
+                  </Link>
+                  <Link href={"/api/delete?id=" + post._id}>
+                    <Button variant="outlined" style={{ color: "red" }}>
+                      حذف
+                    </Button>
+                  </Link>
+                </Box>
+              )}
               <CardActions>
                 <WhatsappShareButton
                   url={"https://iqar.store/post?id=" + post._id}
@@ -228,37 +259,6 @@ export default function Page({ postjson }: { postjson: string }) {
                     <ShareIcon></ShareIcon>
                   </Box>
                 </WhatsappShareButton>
-                {user && user.role != "admin" && user?.username == post.user && (
-                  <Link href={"/api/delete?id=" + post._id}>
-                    <Button style={{ color: "red" }}>حذف</Button>
-                  </Link>
-                )}
-                {user && user?.role == "admin" && (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      mt: 2,
-                    }}
-                  >
-                    <Link href={"/compare?id=" + post._id}>
-                      <Button variant="outlined" style={{ color: "blue" }}>
-                        مقارنة
-                      </Button>
-                    </Link>
-                    <Link href={"/update?id=" + post._id}>
-                      <Button variant="outlined" style={{ color: "blue" }}>
-                        تعديل
-                      </Button>
-                    </Link>
-                    <Link href={"/api/delete?id=" + post._id}>
-                      <Button variant="outlined" style={{ color: "red" }}>
-                        حذف
-                      </Button>
-                    </Link>
-                  </Box>
-                )}
               </CardActions>
             </Card>
           ) : (
