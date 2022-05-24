@@ -366,7 +366,7 @@ export default function Page({ postjson }: { postjson: string }) {
               id="outlined-select-currency"
               select
               label="المقاطعة"
-              defaultValue={post.departement}
+              defaultValue={post.departements[0]}
               {...register("departement", { required: true })}
               onChange={(event) => {
                 const value = event.target.value;
