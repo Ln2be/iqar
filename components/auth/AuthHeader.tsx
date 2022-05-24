@@ -28,14 +28,16 @@ export default function AuthHeader() {
                 flexDirection: "row",
               }}
             >
-              <AccountCircleIcon></AccountCircleIcon>
-              <Box
-                sx={{
-                  pl: 1,
-                }}
-              >
-                {user?.username}
-              </Box>
+              <Link href={"/profile"}>
+                <AccountCircleIcon></AccountCircleIcon>
+                <Box
+                  sx={{
+                    pl: 1,
+                  }}
+                >
+                  {user?.username}
+                </Box>
+              </Link>
             </Box>
             <Box
               sx={{
