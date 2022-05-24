@@ -254,6 +254,7 @@ export default function Page({ postjson }: { postjson: string }) {
                     sx={{
                       color: "blue",
                       fontSize: "small",
+                      pt: 2,
                     }}
                   >
                     <ShareIcon></ShareIcon>
