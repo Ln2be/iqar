@@ -291,7 +291,11 @@ export async function getServerSideProps({
 }) {
   const postObject = await DBPost.findOne({ _id: query.id });
 
-  const postjson = JSON.stringify(postObject);
+  let postjson = "[]";
+
+  if (postObject._id) {
+    postjson = JSON.stringify(postObject);
+  }
 
   return {
     props: {
