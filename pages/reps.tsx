@@ -63,7 +63,7 @@ export default function Page({ usersJson }: { usersJson: string }) {
                       </Button>
                     </td>
                     <td>{user.username}</td>
-                    <td>{DEPARTEMENTS[user.departement]}</td>
+                    <td>{DEPARTEMENTS[user.departements[0]]}</td>
                     <td>{user.region}</td>
                     <td>
                       <Box

@@ -35,11 +35,13 @@ export default function Page({
   const user = useUser();
   const router = useRouter();
 
-  const post = JSON.parse(postjson) as Post;
+  const posto = JSON.parse(postjson) as Post;
   const reps = JSON.parse(repsjson) as UserType[];
   const posts = JSON.parse(opostsjson) as Post[];
   // const post = null;
 
+  const postoshow =
+    posto.type == "buying" || posto.type == "demandRent" ? true : false;
   const typeArabic: { [key: string]: string } = {
     stay: "إقامة",
     buying: "شراء",
@@ -65,23 +67,23 @@ export default function Page({
   return (
     <>
       <Head>
-        <title>{post.details + "انواكشوط موريتانيا   "}</title>
-        <meta name="description" content={post.details} key="desc" />
+        <title>{posto.details + "انواكشوط موريتانيا   "}</title>
+        <meta name="description" content={posto.details} key="desc" />
         <meta
           property="og:title"
           content={
-            typeArabic[post.type] +
+            typeArabic[posto.type] +
             " \n" +
-            subtypeArabic[post.subtype] +
+            subtypeArabic[posto.subtype] +
             " \n" +
-            DEPARTEMENTS[post.departement] +
+            DEPARTEMENTS[posto.departement] +
             " \n" +
-            post.region +
+            posto.region +
             " \n"
           }
         />
-        <meta property="og:description" content={post.details} />
-        <meta property="og:image" content={post.images[0]?.data} />
+        <meta property="og:description" content={posto.details} />
+        <meta property="og:image" content={posto.images[0]?.data} />
       </Head>
       <Layout>
         <>
@@ -92,7 +94,7 @@ export default function Page({
               maxWidth: "400px",
             }}
           >
-            {post ? (
+            {posto ? (
               <Card sx={{ maxWidth: 345 }}>
                 <CardContent>
                   <Box
@@ -109,32 +111,32 @@ export default function Page({
                       }}
                     >
                       <Typography variant="h5">
-                        {typeArabic[post.type]}
+                        {typeArabic[posto.type]}
                       </Typography>
                       <Typography gutterBottom variant="h5">
-                        {subtypeArabic[post.subtype]}
+                        {subtypeArabic[posto.subtype]}
                       </Typography>
                     </Box>
 
-                    {post.departements.length == 1 && (
+                    {posto.departements.length == 1 && (
                       <Box>
                         <Typography gutterBottom variant="h5">
-                          {post.departement &&
-                            post.region &&
-                            DEPARTEMENTS[post.departement] +
+                          {posto.departement &&
+                            posto.region &&
+                            DEPARTEMENTS[posto.departement] +
                               " - " +
-                              post.region}
+                              posto.region}
                         </Typography>
                       </Box>
                     )}
-                    {post.departements.length > 1 && (
+                    {posto.departements.length > 1 && (
                       <Box
                         sx={{
                           display: "flex",
                           flexDirection: "column",
                         }}
                       >
-                        {post.departements.map((departement, i) => (
+                        {posto.departements.map((departement, i) => (
                           <Typography key={i} variant="h5">
                             {DEPARTEMENTS[departement]}
                           </Typography>
@@ -143,7 +145,7 @@ export default function Page({
                     )}
                   </Box>
                   <Typography gutterBottom variant="h6" color="text.secondary">
-                    {post.details}
+                    {posto.details}
                   </Typography>
                   <Box
                     sx={{
@@ -157,7 +159,7 @@ export default function Page({
                         {"السعر :"}
                       </Typography>
                       <NumberFormat
-                        value={post.price}
+                        value={posto.price}
                         thousandSeparator={true}
                       />
                     </Box>
@@ -168,18 +170,18 @@ export default function Page({
                       }}
                     >
                       <WhatsappButton
-                        phone={"+222" + post.tel}
-                        message={"https://iqar.store/post?id=" + post._id}
+                        phone={"+222" + posto.tel}
+                        message={"https://iqar.store/post?id=" + posto._id}
                       >
                         <Button variant="contained">واتساب</Button>
                       </WhatsappButton>
                       <Typography variant="body1" color="text.secondary">
-                        {post.tel}
+                        {posto.tel}
                       </Typography>
                     </Box>
                   </Box>
                 </CardContent>
-                {post.images?.map((image, i) => (
+                {posto.images?.map((image, i) => (
                   <Box
                     key={i}
                     sx={{
@@ -200,7 +202,7 @@ export default function Page({
                 ))}
                 <CardActions>
                   <WhatsappShareButton
-                    url={"https://iqar.store/post?id=" + post._id}
+                    url={"https://iqar.store/post?id=" + posto._id}
                   >
                     <Box
                       sx={{
@@ -212,8 +214,8 @@ export default function Page({
                     </Box>
                   </WhatsappShareButton>
                   {(user?.role == "admin" ||
-                    (user && user?.username == post.user)) && (
-                    <Link href={"/api/delete?id=" + post._id}>
+                    (user && user?.username == posto.user)) && (
+                    <Link href={"/api/delete?id=" + posto._id}>
                       <Button style={{ color: "red" }}>حذف</Button>
                     </Link>
                   )}
@@ -240,13 +242,13 @@ export default function Page({
                     >
                       <WhatsappButton
                         phone={"+222" + user.tel}
-                        message={"https://iqar.store/post?id=" + post._id}
+                        message={"https://iqar.store/post?id=" + posto._id}
                       >
                         <Button
                           onClick={() => {
                             compared(
                               "api/compared?id=" +
-                                post._id +
+                                posto._id +
                                 "&user=" +
                                 user._id
                             );
@@ -286,6 +288,18 @@ export default function Page({
                 phone = "+222" + postc.tel;
               }
 
+              let phoneo = "";
+
+              if (posto.tel.endsWith("+")) {
+                phoneo = "+" + posto.tel.replace("+", "");
+              } else if (posto.tel.startsWith("00")) {
+                phoneo = "+" + posto.tel.replace("00", "");
+              } else if (posto.tel.startsWith("+")) {
+                phoneo = posto.tel;
+              } else {
+                phoneo = "+222" + posto.tel;
+              }
+
               console.log(phone);
               return (
                 <Card key={i} sx={{ maxWidth: 345 }}>
@@ -320,7 +334,7 @@ export default function Page({
                           >
                             <Button
                               onClick={() => {
-                                router.push("/post?id=" + post._id);
+                                router.push("/post?id=" + postc._id);
                               }}
                               size="small"
                               style={{
@@ -417,15 +431,20 @@ export default function Page({
                             flexDirection: "column",
                           }}
                         >
+                          {/* here whats matter in comparaison. we send the demand owner the message */}
                           <WhatsappButton
-                            phone={phone}
-                            message={"https://iqar.store/post?id=" + post._id}
+                            phone={postoshow ? phoneo : phone}
+                            message={
+                              postoshow
+                                ? "https://iqar.store/post?id=" + postc?._id
+                                : "https://iqar.store/post?id=" + posto?._id
+                            }
                           >
                             <Button
                               onClick={() => {
                                 compared(
                                   "api/compared?id=" +
-                                    post._id +
+                                    posto._id +
                                     "&post=" +
                                     postc._id
                                 );
