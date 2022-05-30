@@ -74,7 +74,7 @@ export async function getUser({ tel }: { tel: string }) {
     "_id",
     "role",
     "tel",
-    "departement",
+    "departements",
   ]);
 }
 
