@@ -940,12 +940,14 @@ export default function Departement() {
   }
 
   return (
-    <Box>
+    <Box
+      sx={{
+        mb: 4,
+      }}
+    >
       <Box
         sx={{
           display: "flex",
-
-          mb: 4,
         }}
       >
         <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">

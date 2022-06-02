@@ -99,7 +99,7 @@ export default function Page({ statisjson }: { statisjson: string }) {
             <Link href="/tracks?action=tracks"> المتابعات</Link>
           </tr>
           <tr>
-            <Link href="/chances?action=chances"> القرص</Link>
+            <Link href="/chances?action=chances"> الفرص</Link>
           </tr>
         </table>
       </Layout>
