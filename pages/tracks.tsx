@@ -93,8 +93,8 @@ export default function Page({ result }: { result: string }) {
           maxWidth: "400px",
         }}
       >
-        {(action == "track" || action == "archived") && <Box>{rTrack()}</Box>}
-        {action == "tracks" && <Box>{rTracks()}</Box>}
+        {action == "track" && <Box>{rTrack()}</Box>}
+        {(action == "tracks" || action == "archived") && <Box>{rTracks()}</Box>}
         {action == "form" && (
           <Box>
             <TrackForm onSubmit={handleSubmit}></TrackForm>
