@@ -121,7 +121,7 @@ export async function getServerSideProps({
 
   // if requesting all the tracks
   if (query.action == "tracks") {
-    const tracks = await DBTrack.find({});
+    const tracks = await DBTrack.find({ archived: false });
     for (let i = 0; i < tracks.length; i++) {
       const post = await DBPost.findOne({ _id: tracks[i].postid });
 
@@ -151,6 +151,21 @@ export async function getServerSideProps({
     injectObject = {
       result: query.action,
     };
+  } else if (query.action == "archived") {
+    const tracks = await DBTrack.find({ archived: true });
+    for (let i = 0; i < tracks.length; i++) {
+      const post = await DBPost.findOne({ _id: tracks[i].postid });
+
+      // add the post to the track
+      tracks[i]._doc.post = post;
+    }
+    const result = JSON.stringify(tracks);
+
+    injectObject = {
+      result,
+    };
+
+    // if requesting one track
   }
 
   return {

@@ -92,6 +92,7 @@ const TracksSchema = new Schema<Track>({
   tel1: String,
   name2: String,
   tel2: String,
+  archived: { type: Boolean, default: false },
 });
 
 export const DBTrack =

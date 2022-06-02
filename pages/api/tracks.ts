@@ -46,7 +46,7 @@ export default async function helper(
     const { postid } = track;
     const post = await DBPost.updateOne({ _id: postid }, { trackid: "" });
 
-    const response = await DBTrack.deleteOne({ _id: id });
+    const response = await DBTrack.updateOne({ _id: id }, { archived: true });
     res.writeHead(302, { Location: "/" }).end();
   } else if (action == "deleteall") {
     const dtracks = await DBTrack.deleteMany({});
