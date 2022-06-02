@@ -97,7 +97,11 @@ export function PostCard({
         </Box>
       )}
 
-      <CardContent>
+      <CardContent
+        style={{
+          backgroundColor: "#ccc",
+        }}
+      >
         <Box
           sx={{
             display: "flex",
