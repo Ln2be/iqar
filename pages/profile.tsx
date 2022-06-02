@@ -96,7 +96,10 @@ export default function Page({ statisjson }: { statisjson: string }) {
             </td>
           </tr>
           <tr>
-            <Link href="/tracks?action=archived"> المتابعات المأرشفة</Link>
+            <Link href="/tracks?action=tracks&type=archived">
+              {" "}
+              المتابعات المأرشفة
+            </Link>
           </tr>
           <tr>
             <Link href="/tracks?action=tracks"> المتابعات</Link>

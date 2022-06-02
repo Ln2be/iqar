@@ -37,7 +37,7 @@ export default async function helper(
       { updates: updates }
     );
     res.send({ id });
-  } else if (action == "delete") {
+  } else if (action == "archive") {
     const { id } = req.query;
 
     const track = await DBTrack.findOne({ _id: id });
@@ -47,6 +47,17 @@ export default async function helper(
     const post = await DBPost.updateOne({ _id: postid }, { trackid: "" });
 
     const response = await DBTrack.updateOne({ _id: id }, { archived: true });
+    res.writeHead(302, { Location: "/" }).end();
+  } else if (action == "delete") {
+    const { id } = req.query;
+
+    const track = await DBTrack.findOne({ _id: id });
+
+    // remove the trackid from the post
+    const { postid } = track;
+    const post = await DBPost.updateOne({ _id: postid }, { trackid: "" });
+
+    const response = await DBTrack.deleteOne({ _id: id });
     res.writeHead(302, { Location: "/" }).end();
   } else if (action == "deleteall") {
     const dtracks = await DBTrack.deleteMany({});

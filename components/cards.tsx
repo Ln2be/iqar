@@ -380,35 +380,48 @@ export function TrackCard({ track }: { track: Track }) {
       </Box>
 
       <PostCard post={track.post} type="min"></PostCard>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          mt: 2,
-        }}
-      >
-        {track.archived ? (
+
+      {track.archived ? (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            mt: 2,
+          }}
+        >
           <Link href={"/api/tracks?action=restore&id=" + track._id}>
             <Button variant="outlined" style={{ color: "red" }}>
               استعادة
             </Button>
           </Link>
-        ) : (
-          <Box>
-            <Link href={"/tracks?action=update&id=" + track._id}>
-              <Button variant="outlined" style={{ color: "blue" }}>
-                تحديث
-              </Button>
-            </Link>
-            <Link href={"/api/tracks?action=delete&id=" + track._id}>
-              <Button variant="outlined" style={{ color: "red" }}>
-                ارشفة
-              </Button>
-            </Link>
-          </Box>
-        )}
-      </Box>
+          <Link href={"/api/tracks?action=delete&id=" + track._id}>
+            <Button variant="outlined" style={{ color: "red" }}>
+              حذف
+            </Button>
+          </Link>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            mt: 2,
+          }}
+        >
+          <Link href={"/tracks?action=update&id=" + track._id}>
+            <Button variant="outlined" style={{ color: "blue" }}>
+              تحديث
+            </Button>
+          </Link>
+          <Link href={"/api/tracks?action=archive&id=" + track._id}>
+            <Button variant="outlined" style={{ color: "red" }}>
+              ارشفة
+            </Button>
+          </Link>
+        </Box>
+      )}
     </Box>
   );
 }

@@ -94,7 +94,7 @@ export default function Page({ result }: { result: string }) {
         }}
       >
         {action == "track" && <Box>{rTrack()}</Box>}
-        {(action == "tracks" || action == "archived") && <Box>{rTracks()}</Box>}
+        {action == "tracks" && <Box>{rTracks()}</Box>}
         {action == "form" && (
           <Box>
             <TrackForm onSubmit={handleSubmit}></TrackForm>
@@ -121,18 +121,35 @@ export async function getServerSideProps({
 
   // if requesting all the tracks
   if (query.action == "tracks") {
-    const tracks = await DBTrack.find({ archived: false });
-    for (let i = 0; i < tracks.length; i++) {
-      const post = await DBPost.findOne({ _id: tracks[i].postid });
+    if (!query.type) {
+      const tracks = await DBTrack.find({ archived: false });
+      for (let i = 0; i < tracks.length; i++) {
+        const post = await DBPost.findOne({ _id: tracks[i].postid });
 
-      // add the post to the track
-      tracks[i]._doc.post = post;
+        // add the post to the track
+        tracks[i]._doc.post = post;
+      }
+      const result = JSON.stringify(tracks);
+
+      injectObject = {
+        result,
+      };
+    } else if (query.type == "archived") {
+      const tracks = await DBTrack.find({ archived: true });
+      for (let i = 0; i < tracks.length; i++) {
+        const post = await DBPost.findOne({ _id: tracks[i].postid });
+
+        // add the post to the track
+        tracks[i]._doc.post = post;
+      }
+      const result = JSON.stringify(tracks);
+
+      injectObject = {
+        result,
+      };
+
+      // if requesting one track
     }
-    const result = JSON.stringify(tracks);
-
-    injectObject = {
-      result,
-    };
 
     // if requesting one track
   } else if (query.action == "track") {
@@ -151,21 +168,6 @@ export async function getServerSideProps({
     injectObject = {
       result: query.action,
     };
-  } else if (query.action == "archived") {
-    const tracks = await DBTrack.find({ archived: true });
-    for (let i = 0; i < tracks.length; i++) {
-      const post = await DBPost.findOne({ _id: tracks[i].postid });
-
-      // add the post to the track
-      tracks[i]._doc.post = post;
-    }
-    const result = JSON.stringify(tracks);
-
-    injectObject = {
-      result,
-    };
-
-    // if requesting one track
   }
 
   return {
