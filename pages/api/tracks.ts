@@ -51,5 +51,16 @@ export default async function helper(
   } else if (action == "deleteall") {
     const dtracks = await DBTrack.deleteMany({});
     res.send("Ok");
+  } else if (action == "restore") {
+    const { id } = req.query;
+
+    const track = await DBTrack.findOne({ _id: id });
+
+    // remove the trackid from the post
+    const { postid } = track;
+    const post = await DBPost.updateOne({ _id: postid }, { trackid: postid });
+
+    const response = await DBTrack.updateOne({ _id: id }, { archived: false });
+    res.writeHead(302, { Location: "/" }).end();
   }
 }

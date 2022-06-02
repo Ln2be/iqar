@@ -388,16 +388,26 @@ export function TrackCard({ track }: { track: Track }) {
           mt: 2,
         }}
       >
-        <Link href={"/tracks?action=update&id=" + track._id}>
-          <Button variant="outlined" style={{ color: "blue" }}>
-            تحديث
-          </Button>
-        </Link>
-        <Link href={"/api/tracks?action=delete&id=" + track._id}>
-          <Button variant="outlined" style={{ color: "red" }}>
-            حذف
-          </Button>
-        </Link>
+        {track.archived ? (
+          <Link href={"/api/tracks?action=restore&id=" + track._id}>
+            <Button variant="outlined" style={{ color: "red" }}>
+              استعادة
+            </Button>
+          </Link>
+        ) : (
+          <Box>
+            <Link href={"/tracks?action=update&id=" + track._id}>
+              <Button variant="outlined" style={{ color: "blue" }}>
+                تحديث
+              </Button>
+            </Link>
+            <Link href={"/api/tracks?action=delete&id=" + track._id}>
+              <Button variant="outlined" style={{ color: "red" }}>
+                ارشفة
+              </Button>
+            </Link>
+          </Box>
+        )}
       </Box>
     </Box>
   );
