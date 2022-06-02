@@ -71,7 +71,7 @@ export default function GHeader() {
           ></HomeOutlinedIcon>
         )}
 
-        {router.pathname == "/post-form" ? (
+        {router.pathname == "/posts?action=form" ? (
           <Box
             sx={{
               borderBottom: "3px solid",
@@ -83,14 +83,14 @@ export default function GHeader() {
           >
             <CreateIcon
               onClick={() => {
-                router.push("/post-form");
+                router.push("/posts?action=form");
               }}
             ></CreateIcon>
           </Box>
         ) : (
           <CreateOutlinedIcon
             onClick={() => {
-              router.push("/post-form");
+              router.push("/posts?action=form");
             }}
           ></CreateOutlinedIcon>
         )}
@@ -168,89 +168,5 @@ export default function GHeader() {
         )}
       </Box>
     </Box>
-
-    // <Box
-    //   sx={{
-    //     display: "flex",
-    //     justifyContent: "space-between",
-    //     backgroundColor: (theme) => {
-    //       return theme.palette.primary.main;
-    //     },
-    //     color: "white",
-    //     p: { xs: 2, md: 2 },
-    //   }}
-    // >
-    //   <Link href={"/menu"}>
-    //     <Box
-    //       sx={{
-    //         display: "inline-flex",
-    //         flexDirection: "row",
-    //         // justifyItems: "center",
-    //         alignItems: "center",
-    //         cursor: "pointer",
-    //       }}
-    //     >
-    //       <Box
-    //         sx={{
-    //           pr: 1,
-    //         }}
-    //       >
-    //         <MenuIcon></MenuIcon>
-    //       </Box>
-    //       <Box>القائمة</Box>
-    //     </Box>
-    //   </Link>
-
-    //   <img
-    //     style={{
-    //       height: "40px",
-    //     }}
-    //     src="/favicon.ico"
-    //   ></img>
-
-    //   {user ? (
-    //     <Link href={"/api/auth/logout"}>
-    //       <Box
-    //         sx={{
-    //           display: "inline-flex",
-    //           flexDirection: "row",
-    //           // justifyItems: "center",
-    //           alignItems: "center",
-    //           cursor: "pointer",
-    //         }}
-    //       >
-    //         <Box
-    //           sx={{
-    //             pr: 1,
-    //           }}
-    //         >
-    //           <LogoutIcon></LogoutIcon>
-    //         </Box>
-    //         <Box>الخروج</Box>
-    //       </Box>
-    //     </Link>
-    //   ) : (
-    //     <Link href={"/auth/login?space=user"}>
-    //       <Box
-    //         sx={{
-    //           display: "inline-flex",
-    //           flexDirection: "row",
-    //           // justifyItems: "center",
-    //           alignItems: "center",
-    //           cursor: "pointer",
-    //         }}
-    //       >
-    //         <Box
-    //           sx={{
-    //             pr: 1,
-    //           }}
-    //         >
-    //           <LoginIcon></LoginIcon>
-    //         </Box>
-    //         <Box>الدخول</Box>
-    //       </Box>
-    //     </Link>
-    //   )}
-    // </Box>
   );
 }
