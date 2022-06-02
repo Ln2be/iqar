@@ -93,7 +93,7 @@ export default function Page({ result }: { result: string }) {
           maxWidth: "400px",
         }}
       >
-        {action == "track" && <Box>{rTrack()}</Box>}
+        {action == "track" || (action == "archived" && <Box>{rTrack()}</Box>)}
         {action == "tracks" && <Box>{rTracks()}</Box>}
         {action == "form" && (
           <Box>
