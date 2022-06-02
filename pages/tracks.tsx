@@ -121,7 +121,7 @@ export async function getServerSideProps({
 
   // if requesting all the tracks
   if (query.action == "tracks") {
-    const tracks = await DBTrack.find({ archived: false | undefined });
+    const tracks = await DBTrack.find({ archived: false });
     for (let i = 0; i < tracks.length; i++) {
       const post = await DBPost.findOne({ _id: tracks[i].postid });
 
