@@ -454,7 +454,7 @@ export function TrackForm({
           <TextField
             id="outlined-basic"
             label="النص"
-            type="tel"
+            // type="tel"
             variant="outlined"
             onChange={(event) => {
               track.text = event.target.value;
@@ -490,7 +490,7 @@ export function TrackForm({
           <TextField
             id="outlined-basic"
             label="النص"
-            type="tel"
+            // type="tel"
             variant="outlined"
             onChange={(event) => {
               updatebody.text = event.target.value;
@@ -941,7 +941,13 @@ export default function Departement() {
 
   return (
     <Box>
-      <Box sx={{ display: "flex" }}>
+      <Box
+        sx={{
+          display: "flex",
+
+          mb: 4,
+        }}
+      >
         <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
           <FormLabel component="legend">اختر المقاطعات</FormLabel>
           <FormGroup>
@@ -1070,7 +1076,7 @@ export function ChanceForm() {
       <TextField
         id="outlined-basic"
         label="النص"
-        type="tel"
+        // type="tel"
         variant="outlined"
         onChange={(event) => {
           chance.text = event.target.value;
