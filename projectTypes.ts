@@ -58,6 +58,7 @@ export interface Track {
   name2?: string;
   tel2?: string;
   text: string;
+  archived: boolean;
 }
 
 // A type Chance
