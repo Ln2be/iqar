@@ -471,7 +471,7 @@ export function TrackForm({
           <TextField
             id="outlined-basic"
             label="الاسم"
-            type="tel"
+            // type="tel"
             variant="outlined"
             onChange={(event) => {
               track.name1 = event.target.value;
@@ -491,7 +491,7 @@ export function TrackForm({
           <TextField
             id="outlined-basic"
             label="الاسم"
-            type="tel"
+            // type="tel"
             variant="outlined"
             onChange={(event) => {
               track.name2 = event.target.value;
