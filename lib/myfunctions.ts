@@ -178,7 +178,7 @@ export const subtypes = [
   },
   {
     value: "house",
-    label: "منزل",
+    label: "دار",
   },
   {
     value: "villa",

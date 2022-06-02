@@ -95,6 +95,12 @@ export default function Page({ statisjson }: { statisjson: string }) {
               </Box>
             </td>
           </tr>
+          <tr>
+            <Link href="/tracks?action=tracks"> المتابعات</Link>
+          </tr>
+          <tr>
+            <Link href="/chances?action=chances"> القرص</Link>
+          </tr>
         </table>
       </Layout>
     </>
