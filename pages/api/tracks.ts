@@ -69,7 +69,7 @@ export default async function helper(
 
     // remove the trackid from the post
     const { postid } = track;
-    const post = await DBPost.updateOne({ _id: postid }, { trackid: postid });
+    const post = await DBPost.updateOne({ _id: postid }, { trackid: id });
 
     const response = await DBTrack.updateOne({ _id: id }, { archived: false });
     res.writeHead(302, { Location: "/" }).end();
