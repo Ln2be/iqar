@@ -126,7 +126,7 @@ export default function Page() {
               maxWidth: "500px",
             }}
           >
-            <Link href="/feeds">
+            <Link href="/posts?action=posts">
               <Box
                 sx={{
                   bgColor: "#fff",
@@ -158,7 +158,7 @@ export default function Page() {
               </Box>
             </Link>
 
-            <Link href="/feeds?type=stay">
+            <Link href="/posts?action=posts&type=stay">
               <Box
                 sx={{
                   bgColor: "#fff",
@@ -188,7 +188,7 @@ export default function Page() {
               </Box>
             </Link>
 
-            <Link href="/feeds?type=offerRent">
+            <Link href="/posts?action=posts&type=offerRent">
               <Box
                 sx={{
                   bgColor: "#fff",
@@ -219,7 +219,7 @@ export default function Page() {
               </Box>
             </Link>
 
-            <Link href="feeds?type=demandRent">
+            <Link href="/posts?action=posts&type=demandRent">
               <Box
                 sx={{
                   bgColor: "#fff",
@@ -230,9 +230,6 @@ export default function Page() {
                   style={{
                     width: "100%",
                     height: "80%",
-                  }}
-                  onClick={() => {
-                    router.push("/feeds?type=demandRent");
                   }}
                 ></KeyOffIcon>
                 <Box
@@ -253,7 +250,7 @@ export default function Page() {
               </Box>
             </Link>
 
-            <Link href="/feeds?type=selling">
+            <Link href="/posts?action=posts&type=selling">
               <Box
                 sx={{
                   bgColor: "#fff",
@@ -284,7 +281,7 @@ export default function Page() {
               </Box>
             </Link>
 
-            <Link href="/feeds?type=buying">
+            <Link href="/posts?action=posts&type=buying">
               <Box
                 sx={{
                   bgColor: "#fff",

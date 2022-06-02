@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { UserType, Post } from "../projectTypes";
+import { UserType, Post, Track, Chance } from "../projectTypes";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -55,6 +55,8 @@ const postSchema = new Schema<Post>({
   user: String,
   userTel: String,
   comparedTo: [String],
+  trackid: String,
+  chanceid: String,
 });
 
 export const DBPost =
@@ -76,3 +78,28 @@ const adminCodesSchema = new Schema({
 export const DBAdminCode =
   mongoose.models.DBAdminCode ||
   mongoose.model("DBAdminCode", adminCodesSchema);
+
+const TracksSchema = new Schema<Track>({
+  postid: String,
+  updates: [
+    {
+      date: Date,
+      text: String,
+    },
+  ],
+  text: String,
+  tel1: String,
+  tel2: String,
+});
+
+export const DBTrack =
+  mongoose.models.DBTrack || mongoose.model("DBTrack", TracksSchema);
+
+// a model for the chance crud
+const ChancesSchema = new Schema<Chance>({
+  postid: String,
+  text: String,
+});
+
+export const DBChance =
+  mongoose.models.DBChance || mongoose.model("DBChance", ChancesSchema);

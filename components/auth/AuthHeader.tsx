@@ -126,7 +126,7 @@ export default function AuthHeader() {
                 </Box>
               </Box>
               <Box>
-                <Link href={"/?user=rep&departement=" + user.departement}>
+                <Link href={"/feeds?user=rep&departement=" + user.departement}>
                   الطلبات
                 </Link>
               </Box>

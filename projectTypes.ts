@@ -32,10 +32,36 @@ export interface Post {
   user: string;
   userTel: string;
   comparedTo?: string[];
+  trackid?: string;
+  chanceid?: string;
 }
 
 export interface Image {
   data: string;
   width: number;
   height: number;
+}
+
+// the track type
+export interface Track {
+  _id?: string;
+  postid: string;
+  updates: [
+    {
+      date: Date;
+      text: string;
+    }
+  ];
+  post: Post;
+  tel1: string;
+  tel2: string;
+  text: string;
+}
+
+// A type Chance
+export interface Chance {
+  _id?: string;
+  postid: string;
+  text: string;
+  post: Post;
 }
