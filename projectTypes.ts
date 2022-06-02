@@ -53,8 +53,10 @@ export interface Track {
     }
   ];
   post: Post;
+  name1: string;
   tel1: string;
-  tel2: string;
+  name2?: string;
+  tel2?: string;
   text: string;
 }
 

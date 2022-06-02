@@ -88,7 +88,9 @@ const TracksSchema = new Schema<Track>({
     },
   ],
   text: String,
+  name1: String,
   tel1: String,
+  name2: String,
   tel2: String,
 });
 

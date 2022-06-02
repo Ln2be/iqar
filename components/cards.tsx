@@ -323,7 +323,12 @@ export function PostCard({
 export function TrackCard({ track }: { track: Track }) {
   const options = { year: "numeric", month: "long", day: "numeric" };
   return (
-    <Box>
+    <Box
+      sx={{
+        display: "grid",
+        gap: 3,
+      }}
+    >
       <Box>
         {track.updates
           .slice(0)
@@ -341,7 +346,7 @@ export function TrackCard({ track }: { track: Track }) {
         sx={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-around",
+          justifyContent: "space-between",
         }}
       >
         <Box
@@ -354,7 +359,7 @@ export function TrackCard({ track }: { track: Track }) {
             <Button variant="contained">واتساب</Button>
           </WhatsappButton>
           <Typography variant="body1" color="text.secondary">
-            {correctPhone(track.tel1)}
+            {track.name1}
           </Typography>
         </Box>
         {track.tel2 && (
@@ -368,7 +373,7 @@ export function TrackCard({ track }: { track: Track }) {
               <Button variant="contained">واتساب</Button>
             </WhatsappButton>
             <Typography variant="body1" color="text.secondary">
-              {correctPhone(track.tel1)}
+              {track.name2}
             </Typography>
           </Box>
         )}
@@ -404,7 +409,9 @@ export function TrackCard({ track }: { track: Track }) {
 const track = {
   text: "",
   postid: "",
+  name1: "",
   tel1: "",
+  name2: "",
   tel2: "",
 };
 // an update to a tracked post
@@ -463,13 +470,32 @@ export function TrackForm({
           />
           <TextField
             id="outlined-basic"
-            label="الهاتف 1"
+            label="الاسم"
+            type="tel"
+            variant="outlined"
+            onChange={(event) => {
+              track.name1 = event.target.value;
+            }}
+            required
+          />
+          <TextField
+            id="outlined-basic"
+            label="الهاتف "
             type="tel"
             variant="outlined"
             onChange={(event) => {
               track.tel1 = event.target.value;
             }}
             required
+          />
+          <TextField
+            id="outlined-basic"
+            label="الاسم"
+            type="tel"
+            variant="outlined"
+            onChange={(event) => {
+              track.name2 = event.target.value;
+            }}
           />
           <TextField
             id="outlined-basic"
