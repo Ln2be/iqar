@@ -97,7 +97,6 @@ export default function Page({ statisjson }: { statisjson: string }) {
           </tr>
           <tr>
             <Link href="/tracks?action=tracks&type=archived">
-              {" "}
               المتابعات المأرشفة
             </Link>
           </tr>
