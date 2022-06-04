@@ -305,7 +305,7 @@ export function PostCard({
       )}
 
       <CardActions>
-        {!type && (
+        {
           <WhatsappShareButton url={"https://iqar.store/post?id=" + post._id}>
             <Box
               sx={{
@@ -317,7 +317,7 @@ export function PostCard({
               <ShareIcon></ShareIcon>
             </Box>
           </WhatsappShareButton>
-        )}
+        }
       </CardActions>
     </Card>
   );
