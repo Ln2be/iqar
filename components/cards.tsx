@@ -859,7 +859,13 @@ export function PostForm({
         }}
         required
       />
-      <small>{messagen}</small>
+      <small
+        style={{
+          color: "red",
+        }}
+      >
+        {messagen}
+      </small>
       {errors.tel && (
         <small
           style={{
