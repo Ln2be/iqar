@@ -631,12 +631,12 @@ export function PostForm({
     setDepa(post.departements);
   }
 
-  // force the user to enter a valid number
-  const [correctThenumber, setCTN] = useState("");
+  // remind the user to enter a valid number
 
+  const [messagen, setmn] = useState("");
   function handleSubmitThePost() {
-    if (post.tel.toString().length != 6 && !user) {
-      setCTN("ادخل رقم صحيح");
+    if (post.tel.length != 8 && !user) {
+      setmn("ادخل رقم صحيح");
     } else {
       onSubmit(post);
     }
@@ -859,15 +859,7 @@ export function PostForm({
         }}
         required
       />
-
-      <small
-        style={{
-          color: "red",
-        }}
-      >
-        {correctThenumber}
-      </small>
-
+      <small>{messagen}</small>
       {errors.tel && (
         <small
           style={{
