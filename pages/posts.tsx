@@ -34,7 +34,12 @@ export default function Page({ result }: { result: string }) {
     const posts = JSON.parse(result) as Post[];
 
     return (
-      <Box>
+      <Box
+      sx={{
+        display:"grid",
+        gap:2
+      }}
+      >
         <Departement></Departement>
         {posts.map((post, i) => (
           <PostCard key={i} post={post} type="feed"></PostCard>

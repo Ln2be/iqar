@@ -50,7 +50,7 @@ export function PostCard({
 
   const image = post.images[0];
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345, backgroundColor: "#ccc" }}>
       {type != "full" && image && (
         <Box
           sx={{
