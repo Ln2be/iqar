@@ -507,7 +507,7 @@ export function TrackForm({
           />
           <TextField
             id="outlined-basic"
-            label="الهاتف "
+            label="واتساب "
             type="tel"
             variant="outlined"
             onChange={(event) => {
@@ -526,7 +526,7 @@ export function TrackForm({
           />
           <TextField
             id="outlined-basic"
-            label="الهاتف 2"
+            label="واتساب 2"
             type="tel"
             variant="outlined"
             onChange={(event) => {
@@ -586,6 +586,7 @@ export function PostForm({
   onSubmit: any;
   update?: boolean;
 }) {
+  const user = useUser();
   // the type is important and many other fields depend on this type, so we will update according to t
   // this value
   const [type, setType] = useState("");
@@ -630,8 +631,15 @@ export function PostForm({
     setDepa(post.departements);
   }
 
+  // force the user to enter a valid number
+  const [correctThenumber, setCTN] = useState("");
+
   function handleSubmitThePost() {
-    onSubmit(post);
+    if (post.tel.toString().length != 6 && !user) {
+      setCTN("ادخل رقم صحيح");
+    } else {
+      onSubmit(post);
+    }
   }
 
   return (
@@ -775,10 +783,6 @@ export function PostForm({
         </Box>
       )}
 
-      {/* <button name="Tayaret" onClick={show}>
-  show
-</button> */}
-
       {(type == "selling" || type == "offerRent" || type == "stay") && (
         <TextField
           id="outlined-select-currency"
@@ -846,7 +850,7 @@ export function PostForm({
       />
       <TextField
         id="outlined-basic"
-        label="الهاتف"
+        label="واتساب"
         {...register("tel", { required: true })}
         type="tel"
         variant="outlined"
@@ -855,13 +859,22 @@ export function PostForm({
         }}
         required
       />
+
+      <small
+        style={{
+          color: "red",
+        }}
+      >
+        {correctThenumber}
+      </small>
+
       {errors.tel && (
         <small
           style={{
             color: "red",
           }}
         >
-          ادخل الهاتف
+          ادخل واتساب
         </small>
       )}
 
