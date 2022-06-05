@@ -148,7 +148,7 @@ export default function Page({
             }}
           >
             {posts.map((postc, i) => {
-              return <PostCard post={postc} type="min"></PostCard>;
+              return <PostCard key={i} post={postc} type="min"></PostCard>;
             })}
           </Box>
         </>
