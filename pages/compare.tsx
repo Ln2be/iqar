@@ -93,7 +93,7 @@ export default function Page({
               display: "grid",
               gap: 2,
               maxWidth: "400px",
-              mb:2
+              mb: 2,
             }}
           >
             {posto && <PostCard post={posto} type="min"></PostCard>}
