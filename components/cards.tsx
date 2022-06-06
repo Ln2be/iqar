@@ -267,7 +267,7 @@ export function PostCard({
                 تعديل
               </Button>
             </Link>
-            <Link href={"/api/posts?id=" + post._id}>
+            <Link href={"/posts?id=" + post._id}>
               <Button variant="outlined" style={{ color: "red" }}>
                 حذف
               </Button>
