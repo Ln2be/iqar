@@ -153,10 +153,8 @@ export default function Page({
                 postc.type == "buying" || postc.type == "demandRent";
               let url = "";
               if (posto._id && postc._id) {
-                url =
-                  "https://iqar.store/posts?action=post&id=" + isdemand
-                    ? posto._id
-                    : postc._id;
+                const id = isdemand ? posto._id : postc._id;
+                url = "https://iqar.store/posts?action=post&id=" + id;
               }
               const tel = isdemand
                 ? correctPhone(postc.tel)
