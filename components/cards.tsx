@@ -262,14 +262,14 @@ export function PostCard({
                 مقارنة
               </Button>
             </Link>{" "}
-            <Link href={"/update?id=" + post._id}>
-              <Button variant="outlined" style={{ color: "blue" }}>
-                تعديل
-              </Button>
-            </Link>
             <Link href={"/posts?id=" + post._id}>
               <Button variant="outlined" style={{ color: "red" }}>
                 حذف
+              </Button>
+            </Link>
+            <Link href={"/update?id=" + post._id}>
+              <Button variant="outlined" style={{ color: "blue" }}>
+                تعديل
               </Button>
             </Link>
           </Box>
