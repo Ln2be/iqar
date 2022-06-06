@@ -189,7 +189,7 @@ export function PostCard({
                   <Button variant="contained">واتساب</Button>
                 </WhatsappButton>
                 <Typography variant="body1" color="text.secondary">
-                  {post.tel}
+                  {goto.url}
                 </Typography>
               </Box>
             ) : (
