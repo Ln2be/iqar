@@ -8,6 +8,12 @@ import Head from "next/head";
 
 import { PostCard, PostForm } from "../components/cards";
 import Departement from "../components/cards";
+import {
+  DEPARTEMENTS,
+  subtypeArabic,
+  subtypes,
+  typeArabic,
+} from "../lib/myfunctions";
 
 export default function Page({ result }: { result: string }) {
   const router = useRouter();
@@ -35,10 +41,10 @@ export default function Page({ result }: { result: string }) {
 
     return (
       <Box
-      sx={{
-        display:"grid",
-        gap:2
-      }}
+        sx={{
+          display: "grid",
+          gap: 2,
+        }}
       >
         <Departement></Departement>
         {posts.map((post, i) => (
@@ -53,6 +59,25 @@ export default function Page({ result }: { result: string }) {
 
     return (
       <Box>
+        <Head>
+          <title>{post.details + "انواكشوط موريتانيا   "}</title>
+          <meta name="description" content={post.details} key="desc" />
+          <meta
+            property="og:title"
+            content={
+              typeArabic[post.type] +
+              " \n" +
+              subtypeArabic[post.subtype] +
+              " \n" +
+              DEPARTEMENTS[post.departements[0]] +
+              " \n" +
+              post.region +
+              " \n"
+            }
+          />
+          <meta property="og:description" content={post.details} />
+          <meta property="og:image" content={post.images[0]?.data} />
+        </Head>
         <PostCard post={post} type="full"></PostCard>
       </Box>
     );

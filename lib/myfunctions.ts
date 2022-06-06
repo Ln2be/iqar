@@ -31,6 +31,7 @@ export const subtypeArabic: { [key: string]: string } = {
   land: "قطعة ارضية",
   appartment: "شقق",
   house: "دار",
+  shop: "بوتيك",
   villa: "فيلا",
   other: "إخرى",
 };

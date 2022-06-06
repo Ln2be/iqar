@@ -23,6 +23,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { PostCard } from "../components/cards";
+import { correctPhone } from "../lib/myfunctions";
 
 export default function Page({
   postjson,
@@ -148,7 +149,15 @@ export default function Page({
             }}
           >
             {posts.map((postc, i) => {
-              return <PostCard key={i} post={postc} type="min"></PostCard>;
+              const isdemand = postc.type == 'buying' || postc.type == 'demandRent'
+              const url = "https://iqar.store/posts?action=post&id=" + isdemand? posto._id : postc._id 
+              const tel = isdemand? correctPhone(postc.tel) : correctPhone(posto.tel)
+              return <PostCard goto={
+              {
+                url:url,
+                tel:tel
+              }
+              } key={i} post={postc} type="min"></PostCard>;
             })}
           </Box>
         </>

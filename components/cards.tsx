@@ -41,14 +41,24 @@ import { useRouter } from "next/router";
 export function PostCard({
   post,
   type = "feed",
+  goto = {
+    url: "https://iqar.store/posts?action=post&id=" + post._id,
+    tel: correctPhone(post.tel),
+  },
 }: {
   post: Post;
   type: string;
+  goto?: {
+    url: string;
+    tel: string;
+  };
 }) {
   const user = useUser();
   const router = useRouter();
 
   const image = post.images[0];
+
+  //
   return (
     <Card sx={{ maxWidth: 345, backgroundColor: "#ccc" }}>
       {type != "full" && image && (
@@ -175,10 +185,7 @@ export function PostCard({
                   flexDirection: "column",
                 }}
               >
-                <WhatsappButton
-                  phone={correctPhone(post.tel)}
-                  message={"https://iqar.store/post?id=" + post._id}
-                >
+                <WhatsappButton phone={goto.tel} message={goto.url}>
                   <Button variant="contained">واتساب</Button>
                 </WhatsappButton>
                 <Typography variant="body1" color="text.secondary">
@@ -306,7 +313,9 @@ export function PostCard({
 
       <CardActions>
         {
-          <WhatsappShareButton url={"https://iqar.store/post?id=" + post._id}>
+          <WhatsappShareButton
+            url={"https://iqar.store/posts?action=post&id=" + post._id}
+          >
             <Box
               sx={{
                 color: "blue",
