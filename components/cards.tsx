@@ -42,7 +42,7 @@ export function PostCard({
   post,
   type = "feed",
   goto = {
-    url: "https://iqar.store/posts?action=post&id=" + post._id,
+    url: "https://iqar.store/posts?action=postid=" + post._id,
     tel: correctPhone(post.tel),
   },
 }: {
