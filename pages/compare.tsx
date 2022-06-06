@@ -154,7 +154,7 @@ export default function Page({
               let url = "";
               if (posto._id && postc._id) {
                 const id = isdemand ? posto._id : postc._id;
-                url = "https://iqar.store/posts?action=post&id=" + id;
+                url = "https://iqar.store/posts?id=" + id;
               }
               const tel = isdemand
                 ? correctPhone(postc.tel)

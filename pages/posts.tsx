@@ -85,7 +85,6 @@ export default function Page({ result }: { result: string }) {
   return (
     <Layout>
       <Box>
-        {action == "post" && <Box>{rPost()}</Box>}
         {action == "posts" && <Box>{rPosts()}</Box>}
         {action == "form" && (
           <Box>
@@ -97,6 +96,7 @@ export default function Page({ result }: { result: string }) {
             <PostForm onSubmit={handleSubmit} update></PostForm>
           </Box>
         )}
+        {!action && <Box>{rPost()}</Box>}
       </Box>
     </Layout>
   );
@@ -144,9 +144,13 @@ export async function getServerSideProps({
     injectObject = {
       result,
     };
+  } else if (query.action == "form" || query.action == "update") {
+    injectObject = {
+      result: query.action,
+    };
 
     // if requesting one post
-  } else if (query.action == "post") {
+  } else {
     const post = await DBPost.findOne({ _id: query.id });
 
     const result = JSON.stringify(post);
@@ -156,10 +160,6 @@ export async function getServerSideProps({
     };
 
     // if requesting the form to add new post, no is injected
-  } else if (query.action == "form" || query.action == "update") {
-    injectObject = {
-      result: query.action,
-    };
   }
 
   return {
