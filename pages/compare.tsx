@@ -149,15 +149,29 @@ export default function Page({
             }}
           >
             {posts.map((postc, i) => {
-              const isdemand = postc.type == 'buying' || postc.type == 'demandRent'
-              const url = "https://iqar.store/posts?action=post&id=" + isdemand? posto._id : postc._id 
-              const tel = isdemand? correctPhone(postc.tel) : correctPhone(posto.tel)
-              return <PostCard goto={
-              {
-                url:url,
-                tel:tel
+              const isdemand =
+                postc.type == "buying" || postc.type == "demandRent";
+              let url = "";
+              if (posto._id && postc._id) {
+                url =
+                  "https://iqar.store/posts?action=post&id=" + isdemand
+                    ? posto._id
+                    : postc._id;
               }
-              } key={i} post={postc} type="min"></PostCard>;
+              const tel = isdemand
+                ? correctPhone(postc.tel)
+                : correctPhone(posto.tel);
+              return (
+                <PostCard
+                  goto={{
+                    url: url,
+                    tel: tel,
+                  }}
+                  key={i}
+                  post={postc}
+                  type="min"
+                ></PostCard>
+              );
             })}
           </Box>
         </>
