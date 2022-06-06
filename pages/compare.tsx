@@ -148,6 +148,34 @@ export default function Page({
               maxWidth: "400px",
             }}
           >
+            {reps.map((rep) => (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box>{rep.username}</Box>
+                <Box>{rep.departements[0]}</Box>
+                <Box>{rep.region}</Box>
+                <WhatsappButton
+                  phone={rep.tel}
+                  message={"https://iqar.store/posts?id=" + posto._id}
+                >
+                  <Button
+                    onClick={() => {
+                      router.push(
+                        "/api/compared?id=" + posto._id + "&user=" + rep._id
+                      );
+                    }}
+                    variant="contained"
+                  >
+                    واتساب
+                  </Button>
+                </WhatsappButton>
+              </Box>
+            ))}
             {posts.map((postc, i) => {
               const isdemand =
                 postc.type == "buying" || postc.type == "demandRent";
@@ -164,6 +192,8 @@ export default function Page({
                   goto={{
                     url: url,
                     tel: tel,
+                    ido: posto._id,
+                    idc: postc._id,
                   }}
                   key={i}
                   post={postc}

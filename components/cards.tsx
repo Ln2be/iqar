@@ -35,7 +35,7 @@ import WhatsappButton from "./whatsapp";
 import ShareIcon from "@mui/icons-material/Share";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 
 // the post card. How the post is showed
 export function PostCard({
@@ -51,6 +51,8 @@ export function PostCard({
   goto?: {
     url: string;
     tel: string;
+    ido?: string;
+    idc?: string;
   };
 }) {
   const user = useUser();
@@ -186,7 +188,18 @@ export function PostCard({
                 }}
               >
                 <WhatsappButton phone={goto.tel} message={goto.url}>
-                  <Button variant="contained">واتساب</Button>
+                  <Button
+                    onClick={() => {
+                      if (goto.ido && goto.idc) {
+                        router.push(
+                          "/api/compared?id=" + goto.ido + "&post=" + goto.idc
+                        );
+                      }
+                    }}
+                    variant="contained"
+                  >
+                    واتساب
+                  </Button>
                 </WhatsappButton>
                 <Typography variant="body1" color="text.secondary">
                   {post.tel}
@@ -1189,6 +1202,214 @@ export function ChanceForm() {
       >
         اضافة
       </Button>
+    </Box>
+  );
+}
+
+const userbody: { [key: string]: string | string[] } = {
+  username: "",
+  departements: [],
+  region: "",
+  code: "",
+  tel: "",
+  password: "",
+  rpassword: "",
+  role: "",
+};
+
+const userlogin: { [key: string]: string } = {
+  tel: "",
+  password: "",
+};
+// The user form
+export function UserForm({
+  isLogin = false,
+  isAdmin = false,
+}: {
+  isLogin?: boolean;
+  isAdmin?: boolean;
+}) {
+  const router = useRouter();
+  const { role } = router.query;
+  const [errorMsg, setErrorMsg] = useState("");
+
+  function handleChangeLogin(e: any) {
+    const name = e.target.name;
+    const value = e.target.value;
+    userlogin[name] = value;
+  }
+
+  function submitLogin() {
+    console.log(userlogin);
+
+    fetch("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify(userlogin),
+      headers: {
+        "Content-type": "application/json",
+      },
+    }).then((data) => {
+      data.json().then((response) => {
+        router.push("/");
+      });
+    });
+  }
+  function submitSignup() {
+    console.log(userbody);
+
+    userbody.role = role ? role : "";
+    fetch("/api/auth/signup", {
+      method: "POST",
+      body: JSON.stringify(userbody),
+      headers: {
+        "Content-type": "application/json",
+      },
+    }).then((data) => {
+      data.json().then((response) => {
+        router.push("/sign?action=login&role=" + role);
+      });
+    });
+  }
+  //
+  function handleChangeSignup(e: any) {
+    if (errorMsg) setErrorMsg("");
+
+    if (userbody.password !== userbody.rpassword) {
+      setErrorMsg(`The passwords don't match`);
+      return;
+    }
+
+    const name = e.target.name;
+    const value = e.target.value;
+    if (name == "departements") {
+      userbody.departements = [];
+      userbody.departements.push(value);
+    } else {
+      userbody[name] = value;
+    }
+  }
+
+  return (
+    <Box>
+      {isLogin ? (
+        <Box
+          sx={{
+            maxWidth: "400px",
+            p: 2,
+            display: "grid",
+            gap: 2,
+          }}
+        >
+          <Box
+            sx={{
+              fontSize: "25px",
+            }}
+          >
+            الدخول
+          </Box>
+          <TextField
+            onChange={handleChangeLogin}
+            name="tel"
+            label="واتساب"
+          ></TextField>
+          <TextField
+            onChange={handleChangeLogin}
+            name="password"
+            label="كلمة المرور"
+          ></TextField>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              // alignItem: "right",
+            }}
+          >
+            <Button onClick={submitLogin} variant="contained">
+              الدخول
+            </Button>
+          </Box>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            maxWidth: "400px",
+            p: 2,
+            display: "grid",
+            gap: 2,
+          }}
+        >
+          <Box
+            sx={{
+              fontSize: "25px",
+            }}
+          >
+            التسجيل
+          </Box>
+          <TextField
+            onChange={handleChangeSignup}
+            name="username"
+            label="الاسم"
+          ></TextField>
+          <TextField
+            onChange={handleChangeSignup}
+            name="password"
+            label="كلمة المرور"
+          ></TextField>
+
+          <TextField
+            onChange={handleChangeSignup}
+            name="rpassword"
+            label="اعادة كلمة المرور"
+          ></TextField>
+
+          {!isAdmin && (
+            <Box>
+              <TextField
+                onChange={handleChangeSignup}
+                id="outlined-select-currency"
+                select
+                label="المقاطعة"
+                helperText="اختر المقاطعة"
+                name="departements"
+              >
+                {departements.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+
+              <TextField
+                onChange={handleChangeSignup}
+                name="region"
+                label="المنطقة"
+              ></TextField>
+            </Box>
+          )}
+
+          <TextField
+            onChange={handleChangeSignup}
+            name="tel"
+            label="واتساب"
+          ></TextField>
+          <Box
+            sx={{
+              alignItem: "right",
+            }}
+          >
+            <Button onClick={submitSignup} variant="contained">
+              التسجيل
+            </Button>
+          </Box>
+        </Box>
+      )}
+      <Box
+        sx={{
+          color: "red",
+        }}
+      >
+        {<p className="error">{errorMsg}</p>}
+      </Box>
     </Box>
   );
 }

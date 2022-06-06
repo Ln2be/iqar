@@ -13,7 +13,6 @@ export default async function helper(
     ar.push(req.query.user);
     const update = await DBPost.updateOne({ _id: id }, { comparedTo: ar });
 
-    console.log(update);
     res.send(update);
   } else if (req.query.post) {
     const idc = req.query.post;
