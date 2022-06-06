@@ -185,11 +185,11 @@ export function PostCard({
                   flexDirection: "column",
                 }}
               >
-                <WhatsappButton phone={goto.tel} message={goto.url + "&here"}>
+                <WhatsappButton phone={goto.tel} message={goto.url}>
                   <Button variant="contained">واتساب</Button>
                 </WhatsappButton>
                 <Typography variant="body1" color="text.secondary">
-                  {goto.tel}
+                  {post.tel}
                 </Typography>
               </Box>
             ) : (
@@ -201,7 +201,7 @@ export function PostCard({
               >
                 <WhatsappButton
                   phone={"+22248692007"}
-                  message={"https://iqar.store/post?id=" + post._id}
+                  message={"https://iqar.store/posts?id=" + post._id}
                 >
                   <Button variant="contained">واتساب</Button>
                 </WhatsappButton>
@@ -313,9 +313,7 @@ export function PostCard({
 
       <CardActions>
         {
-          <WhatsappShareButton
-            url={"https://iqar.store/posts?action=post&id=" + post._id}
-          >
+          <WhatsappShareButton url={"https://iqar.store/posts?id=" + post._id}>
             <Box
               sx={{
                 color: "blue",
