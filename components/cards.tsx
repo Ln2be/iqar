@@ -267,11 +267,13 @@ export function PostCard({
                 تعديل
               </Button>
             </Link>
-            <Link href={"/api/delete?id=" + post._id}>
-              <Button variant="outlined" style={{ color: "red" }}>
-                حذف
-              </Button>
-            </Link>
+            {type == "post" && (
+              <Link href={"/api/delete?id=" + post._id}>
+                <Button variant="outlined" style={{ color: "red" }}>
+                  حذف
+                </Button>
+              </Link>
+            )}
           </Box>
           <Box
             sx={{

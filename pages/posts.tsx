@@ -78,7 +78,7 @@ export default function Page({ result }: { result: string }) {
           <meta property="og:description" content={post.details} />
           <meta property="og:image" content={post.images[0]?.data} />
         </Head>
-        <PostCard post={post} type="full"></PostCard>
+        <PostCard post={post} type="post"></PostCard>
       </Box>
     );
   }
