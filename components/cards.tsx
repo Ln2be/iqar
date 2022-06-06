@@ -261,12 +261,21 @@ export function PostCard({
               <Button variant="outlined" style={{ color: "blue" }}>
                 مقارنة
               </Button>
-            </Link>{" "}
-            <Link href={"/posts?id=" + post._id}>
-              <Button variant="outlined" style={{ color: "red" }}>
-                حذف
-              </Button>
             </Link>
+            {type == "post" ? (
+              <Link href={"/api/posts?action=delete&id=" + post._id}>
+                <Button variant="outlined" style={{ color: "red" }}>
+                  حذف
+                </Button>
+              </Link>
+            ) : (
+              <Link href={"/posts?id=" + post._id}>
+                <Button variant="outlined" style={{ color: "red" }}>
+                  حذف
+                </Button>
+              </Link>
+            )}
+
             <Link href={"/update?id=" + post._id}>
               <Button variant="outlined" style={{ color: "blue" }}>
                 تعديل
