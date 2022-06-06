@@ -185,11 +185,11 @@ export function PostCard({
                   flexDirection: "column",
                 }}
               >
-                <WhatsappButton phone={goto.tel} message={goto.url}>
+                <WhatsappButton phone={goto.tel} message={goto.url + "&here"}>
                   <Button variant="contained">واتساب</Button>
                 </WhatsappButton>
                 <Typography variant="body1" color="text.secondary">
-                  {goto.url}
+                  {goto.tel}
                 </Typography>
               </Box>
             ) : (
