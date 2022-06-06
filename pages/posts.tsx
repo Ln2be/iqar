@@ -30,7 +30,23 @@ export default function Page({ result }: { result: string }) {
       },
     }).then((data) => {
       data.json().then((rpost) => {
-        router.push("/posts?action=post&id=" + rpost.id);
+        router.push("/posts?id=" + rpost.id);
+      });
+    });
+  }
+
+  // save the post to the database
+  function handleUpdate(result: any) {
+    console.log(result);
+    fetch("/api/posts?action=update", {
+      method: "POST",
+      body: JSON.stringify(result),
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((data) => {
+      data.json().then((rpost) => {
+        router.push("/posts?id=" + rpost.id);
       });
     });
   }
@@ -54,6 +70,15 @@ export default function Page({ result }: { result: string }) {
     );
   }
 
+  function rUpdate() {
+    const post = JSON.parse(result) as Post;
+
+    return (
+      <Box>
+        <PostForm upost={post} onSubmit={handleUpdate}></PostForm>
+      </Box>
+    );
+  }
   function rPost() {
     const post = JSON.parse(result) as Post;
 
@@ -78,7 +103,7 @@ export default function Page({ result }: { result: string }) {
           <meta property="og:description" content={post.details} />
           <meta property="og:image" content={post.images[0]?.data} />
         </Head>
-        <PostCard post={post} type="full"></PostCard>
+        <PostCard post={post} type="post"></PostCard>
       </Box>
     );
   }
@@ -91,11 +116,7 @@ export default function Page({ result }: { result: string }) {
             <PostForm onSubmit={handleSubmit}></PostForm>
           </Box>
         )}
-        {action == "update" && (
-          <Box>
-            <PostForm onSubmit={handleSubmit} update></PostForm>
-          </Box>
-        )}
+        {action == "update" && <Box>{rUpdate()}</Box>}
         {!action && <Box>{rPost()}</Box>}
       </Box>
     </Layout>
@@ -144,12 +165,20 @@ export async function getServerSideProps({
     injectObject = {
       result,
     };
-  } else if (query.action == "form" || query.action == "update") {
+  } else if (query.action == "form") {
     injectObject = {
       result: query.action,
     };
+  } else if (query.action == "update") {
+    const post = await DBPost.findOne({ _id: query.id });
 
-    // if requesting one post
+    const result = JSON.stringify(post);
+
+    injectObject = {
+      result,
+    };
+
+    // if requesting one post, whatsapp api contraint prevented me from using an action query here
   } else {
     const post = await DBPost.findOne({ _id: query.id });
 

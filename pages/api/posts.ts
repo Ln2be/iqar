@@ -34,10 +34,13 @@ export default async function helper(
         saveimage(data, async (name) => {
           // save the url of the image
           post.images[i].data = site + name;
-          const rpost = await new DBPost(req.body).save();
-          res.json({
-            id: rpost._id,
-          });
+          if (i == images.length - 1) {
+            const rpost = await new DBPost(req.body).save();
+
+            res.json({
+              id: rpost._id,
+            });
+          }
         });
       });
     } else {
@@ -47,6 +50,33 @@ export default async function helper(
       });
     }
   } else if (action == "update") {
+    const post = req.body as Post;
+    const id = post._id;
+    delete post._id;
+    const images = post.images;
+    if (images.length > 0 && images[0].data.startsWith(site)) {
+      images.map((image, i) => {
+        const data = image.data;
+
+        saveimage(data, async (name) => {
+          // save the url of the image
+          post.images[i].data = site + name;
+
+          if (i == images.length - 1) {
+            const rpost = await DBPost.updateOne({ _id: id }, post);
+
+            res.json({
+              id: id,
+            });
+          }
+        });
+      });
+    } else {
+      const rpost = await DBPost.updateOne({ _id: id }, post);
+      res.json({
+        id: id,
+      });
+    }
     console.log(action);
   } else if (action == "delete") {
     const { id } = req.query;

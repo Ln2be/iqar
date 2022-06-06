@@ -276,7 +276,7 @@ export function PostCard({
               </Link>
             )}
 
-            <Link href={"/update?id=" + post._id}>
+            <Link href={"/posts?action=update&id=" + post._id}>
               <Button variant="outlined" style={{ color: "blue" }}>
                 تعديل
               </Button>
@@ -576,7 +576,7 @@ export function TrackForm({
 
 // The post form here.
 
-const post: Post = {
+let post: Post = {
   type: "",
   subtype: "",
   departement: "",
@@ -602,13 +602,22 @@ export function PostForm({
   onSubmit: any;
   update?: boolean;
 }) {
+  // update post is provided
+  if (upost._id) {
+    post = upost;
+  }
   const user = useUser();
   // the type is important and many other fields depend on this type, so we will update according to t
   // this value
-  const [type, setType] = useState("");
+  const [type, setType] = useState(upost.type);
 
   // also know the departements checked, they also important for the checkboxes
 
+  if (upost.departements.length > 0) {
+    upost.departements.map((departement) => {
+      inicheck[departement] = true;
+    });
+  }
   const [depcheck, setdepcheck] = useState(inicheck);
 
   // show thumbnails of the images being uplaoded
@@ -683,7 +692,7 @@ export function PostForm({
         select
         label="نوع الاعلان"
         {...register("typev", { required: true })}
-        // value={currency}
+        defaultValue={upost.type}
         onChange={(event) => {
           post.type = event.target.value;
           post.departements = [];
@@ -713,6 +722,7 @@ export function PostForm({
             id="type"
             select
             label="اختيار فرعي"
+            defaultValue={upost.subtype}
             {...register("subtype", { required: true })}
             // value={currency}
             onChange={(event) => {
@@ -804,6 +814,7 @@ export function PostForm({
           id="outlined-select-currency"
           select
           label="المقاطعة"
+          defaultValue={upost.departements[0]}
           {...register("departement", { required: true })}
           onChange={(event) => {
             const value = event.target.value;
@@ -835,6 +846,7 @@ export function PostForm({
         <TextField
           id="outlined-basic"
           label="المنطقة"
+          defaultValue={upost.region}
           {...register("region", { required: true })}
           variant="outlined"
           inputProps={{ maxLength: 12 }}
@@ -858,6 +870,7 @@ export function PostForm({
         id="outlined-basic"
         multiline
         label="المواضقات"
+        defaultValue={upost.details}
         variant="outlined"
         onChange={(event) => {
           post.details = event.target.value;
@@ -867,6 +880,7 @@ export function PostForm({
       <TextField
         id="outlined-basic"
         label="واتساب"
+        defaultValue={upost.tel}
         {...register("tel", { required: true })}
         type="tel"
         variant="outlined"
@@ -896,6 +910,7 @@ export function PostForm({
         id="outlined-basic"
         label="السعر"
         type="number"
+        defaultValue={upost.price}
         variant="outlined"
         onChange={(event) => {
           post.price = event.target.value;
