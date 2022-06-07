@@ -142,7 +142,7 @@ export default function GHeader() {
         ) : (
           <LoginOutlinedIcon
             onClick={() => {
-              router.push("/auth/login");
+              router.push("/sign?action=login");
             }}
           ></LoginOutlinedIcon>
         )}

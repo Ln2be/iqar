@@ -1218,7 +1218,7 @@ const userbody: { [key: string]: string | string[] } = {
 };
 
 const userlogin: { [key: string]: string } = {
-  tel: "",
+  username: "",
   password: "",
 };
 // The user form
@@ -1246,7 +1246,7 @@ export function UserForm({
       method: "POST",
       body: JSON.stringify(userlogin),
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
       },
     }).then((data) => {
       data.json().then((response) => {
@@ -1256,13 +1256,18 @@ export function UserForm({
   }
   function submitSignup() {
     console.log(userbody);
+    if (errorMsg) setErrorMsg("");
 
+    if (userbody.password !== userbody.rpassword) {
+      setErrorMsg(`The passwords don't match`);
+      return;
+    }
     userbody.role = role ? role : "";
     fetch("/api/auth/signup", {
       method: "POST",
       body: JSON.stringify(userbody),
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
       },
     }).then((data) => {
       data.json().then((response) => {
@@ -1272,13 +1277,6 @@ export function UserForm({
   }
   //
   function handleChangeSignup(e: any) {
-    if (errorMsg) setErrorMsg("");
-
-    if (userbody.password !== userbody.rpassword) {
-      setErrorMsg(`The passwords don't match`);
-      return;
-    }
-
     const name = e.target.name;
     const value = e.target.value;
     if (name == "departements") {
@@ -1309,7 +1307,7 @@ export function UserForm({
           </Box>
           <TextField
             onChange={handleChangeLogin}
-            name="tel"
+            name="username"
             label="واتساب"
           ></TextField>
           <TextField
@@ -1348,16 +1346,19 @@ export function UserForm({
           <TextField
             onChange={handleChangeSignup}
             name="username"
+            defaultValue={userbody.username}
             label="الاسم"
           ></TextField>
           <TextField
             onChange={handleChangeSignup}
             name="password"
+            defaultValue={userbody.password}
             label="كلمة المرور"
           ></TextField>
 
           <TextField
             onChange={handleChangeSignup}
+            defaultValue={userbody.rpassword}
             name="rpassword"
             label="اعادة كلمة المرور"
           ></TextField>
@@ -1366,6 +1367,7 @@ export function UserForm({
             <Box>
               <TextField
                 onChange={handleChangeSignup}
+                defaultValue={userbody.departements[0]}
                 id="outlined-select-currency"
                 select
                 label="المقاطعة"
@@ -1381,6 +1383,7 @@ export function UserForm({
 
               <TextField
                 onChange={handleChangeSignup}
+                defaultValue={userbody.region}
                 name="region"
                 label="المنطقة"
               ></TextField>
@@ -1389,6 +1392,7 @@ export function UserForm({
 
           <TextField
             onChange={handleChangeSignup}
+            defaultValue={userbody.tel}
             name="tel"
             label="واتساب"
           ></TextField>

@@ -8,6 +8,7 @@ export default async function signup(
   try {
     const done = await createUser(req.body);
 
+    console.log(done);
     res.status(200).send({ done: done });
   } catch (error: any) {
     res.status(500).end(error.message);

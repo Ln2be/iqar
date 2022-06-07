@@ -19,7 +19,7 @@ export default function Page({ statisjson }: { statisjson: string }) {
             </td>
             <td>
               <WhatsappShareButton
-                url={"https://iqar.store/auth/signup?space=rep"}
+                url={"https://iqar.store/sign?action=signup&role=rep"}
               >
                 <Box
                   sx={{
