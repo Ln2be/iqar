@@ -68,25 +68,6 @@ export default function Page({
   }
   return (
     <>
-      <Head>
-        <title>{posto.details + "انواكشوط موريتانيا   "}</title>
-        <meta name="description" content={posto.details} key="desc" />
-        <meta
-          property="og:title"
-          content={
-            typeArabic[posto.type] +
-            " \n" +
-            subtypeArabic[posto.subtype] +
-            " \n" +
-            DEPARTEMENTS[posto.departements[0]] +
-            " \n" +
-            posto.region +
-            " \n"
-          }
-        />
-        <meta property="og:description" content={posto.details} />
-        <meta property="og:image" content={posto.images[0]?.data} />
-      </Head>
       <Layout>
         <>
           <Box
@@ -99,48 +80,6 @@ export default function Page({
           >
             {posto && <PostCard post={posto} type="min"></PostCard>}
           </Box>
-          <table>
-            <thead></thead>
-            <tbody>
-              {reps.map((user, i) => (
-                <tr key={i}>
-                  <td>{user.username}</td>
-                  <td>{DEPARTEMENTS[user.departement]}</td>
-                  <td>{user.region}</td>
-                  <td>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                      }}
-                    >
-                      <WhatsappButton
-                        phone={"+222" + user.tel}
-                        message={"https://iqar.store/post?id=" + posto._id}
-                      >
-                        <Button
-                          onClick={() => {
-                            compared(
-                              "api/compared?id=" +
-                                posto._id +
-                                "&user=" +
-                                user._id
-                            );
-                          }}
-                          variant="contained"
-                        >
-                          واتساب
-                        </Button>
-                      </WhatsappButton>
-                      <Typography variant="body1" color="text.secondary">
-                        {user.tel}
-                      </Typography>
-                    </Box>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
           <Box
             sx={{
               display: "grid",
@@ -148,8 +87,9 @@ export default function Page({
               maxWidth: "400px",
             }}
           >
-            {reps.map((rep) => (
+            {reps.map((rep, i) => (
               <Box
+                key={i}
                 sx={{
                   display: "flex",
                   flexDirection: "row",
