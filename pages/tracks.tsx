@@ -5,25 +5,8 @@ import { useRouter } from "next/router";
 import Layout from "../components/layout";
 import { DBTrack } from "../lib/mongo";
 import React from "react";
-import Image from "next/image";
 import { DBPost } from "../lib/mongo";
-import { useUser } from "../lib/auth/hooks";
-import { Post, Track } from "../projectTypes";
-import Head from "next/head";
-import WhatsappButton from "../components/whatsapp";
-import NumberFormat from "react-number-format";
-import ShareIcon from "@mui/icons-material/Share";
-import { WhatsappShareButton } from "react-share";
-import { DEPARTEMENTS } from "../lib/translate";
-import Link from "next/link";
-
-import {
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
-  CardActions,
-} from "@mui/material";
+import { Track } from "../projectTypes";
 import { TrackCard, TrackForm } from "../components/cards";
 
 export default function Page({ result }: { result: string }) {

@@ -100,7 +100,7 @@ export default function Page({
                 <Box>{rep.departements[0]}</Box>
                 <Box>{rep.region}</Box>
                 <WhatsappButton
-                  phone={rep.tel}
+                  phone={correctPhone(rep.tel)}
                   message={"https://iqar.store/posts?id=" + posto._id}
                 >
                   <Button

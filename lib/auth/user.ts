@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { v4 as uuidv4 } from "uuid";
 import { UserType } from "../../projectTypes";
-import { DBAdminCode, DBCount, DBUser, DBUserCode } from "../mongo";
+import { DBCount, DBUser } from "../mongo";
 
 /**
  * User methods. The example doesn't contain a DB, but for real applications you must use a
@@ -39,16 +39,15 @@ export async function createUser(newUser: UserType) {
   user.count = userCounter.count + 1;
 
   if (newUser.role == "admin") {
-    {
-      const codeCorrect = await DBAdminCode.findOne({ code: newUser.code });
-      if (!codeCorrect || codeCorrect.used == 1) {
-        return false;
-      } else {
-        const savedUser = await new DBUser(user).save();
-        await DBAdminCode.deleteOne({ code: codeCorrect.code });
-        return true;
-      }
-    }
+    // const codeCorrect = await DBAdminCode.findOne({ code: newUser.code });
+    // if (!codeCorrect || codeCorrect.used == 1) {
+    //   return false;
+    // } else {
+    // await DBAdminCode.deleteOne({ code: codeCorrect.code });
+
+    const savedUser = await new DBUser(user).save();
+    return true;
+    // }
   } else {
     const savedUser = await new DBUser(user).save();
     return true;

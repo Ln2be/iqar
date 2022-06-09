@@ -488,6 +488,19 @@ const inicheck: { [key: string]: boolean } = {
   Toujounine: false,
   Riyadh: false,
 };
+
+// initialize the departements checkboxes
+const inicheckD: { [key: string]: boolean } = {
+  Tayaret: false,
+  Ksar: false,
+  DarNaim: false,
+  TevreghZeina: false,
+  Sebkha: false,
+  Elmina: false,
+  Arafat: false,
+  Toujounine: false,
+  Riyadh: false,
+};
 export function TrackForm({
   onSubmit,
   update = false,
@@ -1011,7 +1024,7 @@ const depvalues: any = [];
 export default function Departement() {
   const router = useRouter();
 
-  const [depcheck, setdepcheck] = useState(inicheck);
+  const [depcheck, setdepcheck] = useState(inicheckD);
 
   function handleChange(e: any) {
     const name = e.target.name;
