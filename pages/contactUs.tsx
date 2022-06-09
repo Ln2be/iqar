@@ -17,6 +17,10 @@ export default function Page() {
           نواكشوط موريتانيا
         </title>
         <meta
+          name="keywords"
+          content="شقق للايجار نواكشوط, منزل للشراء نواكشوط, دار للبيع نواكشوط, منزل للسكن نواكشوط, منزل للشراء نواكشوط, شراء منزل نواكشوط"
+        />
+        <meta
           name="description"
           content="احصل اعل المنزل او الشقة التي تبحث عنها"
           key="desc"

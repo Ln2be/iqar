@@ -63,6 +63,7 @@ export default function Page({ postjson }: { postjson: string }) {
       <Head>
         <title>{post.details + "انواكشوط موريتانيا   "}</title>
         <meta name="description" content={post.details} key="desc" />
+        <meta name="keywords" content={post.details.split(" ").join(",")} />
         <meta
           property="og:title"
           content={

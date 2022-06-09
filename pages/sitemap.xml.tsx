@@ -3,7 +3,7 @@ import { NextApiResponse } from "next";
 import { DBPost } from "../lib/mongo";
 import fs from "fs";
 
-const EXTERNAL_DATA_URL = "https://iqar.store/post";
+const EXTERNAL_DATA_URL = "https://iqar.store/posts";
 
 function generateSiteMap(posts: [{ [key: string]: string }]) {
   return `<?xml version="1.0" encoding="UTF-8"?>
