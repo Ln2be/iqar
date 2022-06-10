@@ -166,6 +166,8 @@ export default function Page() {
             <Link href="/posts?action=posts&type=stay">
               <Box
                 sx={{
+                  bgColor: "#fff",
+                  border: "1px solid",
                   width: "100%",
                   height: "100%",
                 }}
