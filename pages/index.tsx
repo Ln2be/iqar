@@ -139,12 +139,23 @@ export default function Page() {
                   height: "100%",
                 }}
               >
-                <DynamicFeedIcon
-                  style={{
+                <Box
+                  sx={{
                     width: "100%",
                     height: "80%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
-                ></DynamicFeedIcon>
+                >
+                  <DynamicFeedIcon
+                    style={{
+                      width: "40%",
+                      height: "40%",
+                    }}
+                  ></DynamicFeedIcon>
+                </Box>
+
                 <Box
                   sx={{
                     width: "100%",
@@ -163,33 +174,7 @@ export default function Page() {
             </Link>
 
             <Link href="/posts?action=posts&type=stay">
-              <Box
-                sx={{
-                  bgColor: "#fff",
-                  border: "1px solid",
-                }}
-              >
-                <LocalHotelIcon
-                  style={{
-                    width: "100%",
-                    height: "80%",
-                  }}
-                ></LocalHotelIcon>
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "20%",
-                    // textAlign: "center",
-                    backgroundColor: (theme) => theme.palette.primary.main,
-                    color: "white",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Box>إقامة</Box>
-                </Box>
-              </Box>
+        
             </Link>
 
             <Link href="/posts?action=posts&type=offerRent">
