@@ -32,7 +32,7 @@ export default function Page({ statisjson }: { statisjson: string }) {
               </WhatsappShareButton>
             </td>
           </tr>
-          <tr>
+          {/* <tr>
             <td>
               <Link href="/reps?role=admin">المدراء</Link>
             </td>
@@ -50,7 +50,7 @@ export default function Page({ statisjson }: { statisjson: string }) {
                 </Box>
               </WhatsappShareButton>
             </td>
-          </tr>
+          </tr> */}
           <tr>
             <td>
               <Box
