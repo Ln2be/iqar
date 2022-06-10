@@ -32,25 +32,6 @@ export default function Page({ statisjson }: { statisjson: string }) {
               </WhatsappShareButton>
             </td>
           </tr>
-          {/* <tr>
-            <td>
-              <Link href="/reps?role=admin">المدراء</Link>
-            </td>
-            <td>
-              <WhatsappShareButton
-                url={"https://iqar.store/sign?action=signup&role=admin"}
-              >
-                <Box
-                  sx={{
-                    color: "blue",
-                    fontSize: "small",
-                  }}
-                >
-                  مدير جديد
-                </Box>
-              </WhatsappShareButton>
-            </td>
-          </tr> */}
           <tr>
             <td>
               <Box
