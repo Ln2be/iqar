@@ -139,18 +139,7 @@ export default function Page() {
                   height: "100%",
                 }}
               >
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "80%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <DynamicFeedIcon
-                  ></DynamicFeedIcon>
-                </Box>
+                <DynamicFeedIcon></DynamicFeedIcon>
 
                 <Box
                   sx={{
@@ -170,25 +159,16 @@ export default function Page() {
             </Link>
 
             <Link href="/posts?action=posts&type=stay">
-            <Box
+              <Box
                 sx={{
-                  bgColor: "#fff",
-                  border: "1px solid",
                   width: "100%",
-                  height: "100%",
+                  height: "80%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "80%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <LocalHotelIcon />
-                </Box>
+                <LocalHotelIcon />
 
                 <Box
                   sx={{
