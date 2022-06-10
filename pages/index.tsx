@@ -139,7 +139,12 @@ export default function Page() {
                   height: "100%",
                 }}
               >
-                <DynamicFeedIcon></DynamicFeedIcon>
+                <DynamicFeedIcon
+                  style={{
+                    width: "100%",
+                    height: "80%",
+                  }}
+                ></DynamicFeedIcon>
 
                 <Box
                   sx={{
@@ -162,13 +167,15 @@ export default function Page() {
               <Box
                 sx={{
                   width: "100%",
-                  height: "80%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  height: "100%",
                 }}
               >
-                <LocalHotelIcon />
+                <LocalHotelIcon
+                  style={{
+                    width: "100%",
+                    height: "80%",
+                  }}
+                ></LocalHotelIcon>
 
                 <Box
                   sx={{
