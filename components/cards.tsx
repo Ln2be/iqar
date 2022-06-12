@@ -230,16 +230,16 @@ export function PostCard({
               </Box>
             )}
           </Box>
-          {post.createdAt && (
-            <Box
-              sx={{
-                display: "flex",
-              }}
-            >
-              {new Date(post.createdAt).toLocaleDateString("ar-MA")}
-            </Box>
-          )}
         </Box>
+        {post.createdAt && (
+          <Box
+            sx={{
+              display: "flex",
+            }}
+          >
+            {new Date(post.createdAt).toLocaleDateString("ar-MA")}
+          </Box>
+        )}
       </CardContent>
 
       {/* if to show the full post */}
