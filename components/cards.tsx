@@ -146,7 +146,7 @@ export function PostCard({
           {post.departements.length > 1 && (
             <Box
               sx={{
-                display: "flex",  
+                display: "flex",
                 flexDirection: "column",
               }}
             >
@@ -229,6 +229,7 @@ export function PostCard({
                 </Typography>
               </Box>
             )}
+            <Box>{new Date(post.createdAt).toLocaleDateString("ar-MA")}</Box>
           </Box>
         </Box>
       </CardContent>
