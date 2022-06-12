@@ -4,24 +4,13 @@ import { Box } from "@mui/system";
 import { DBPost, DBUser } from "../lib/mongo";
 import { useUser } from "../lib/auth/hooks";
 import { Post, UserType } from "../projectTypes";
-import Head from "next/head";
 import WhatsappButton from "../components/whatsapp";
-import NumberFormat from "react-number-format";
-import ShareIcon from "@mui/icons-material/Share";
+
 
 import {
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
   Button,
-  CardActions,
 } from "@mui/material";
-import { WhatsappShareButton } from "react-share";
-import { DEPARTEMENTS } from "../lib/translate";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { PostCard } from "../components/cards";
 import { correctPhone } from "../lib/myfunctions";
 
@@ -99,15 +88,17 @@ export default function Page({
                 <Box>{rep.username}</Box>
                 <Box>{rep.departements[0]}</Box>
                 <Box>{rep.region}</Box>
+
                 <WhatsappButton
                   phone={correctPhone(rep.tel)}
                   message={"https://iqar.store/posts?id=" + posto._id}
                 >
                   <Button
                     onClick={() => {
-                      router.push(
-                        "/api/compared?id=" + posto._id + "&user=" + rep._id
-                      );
+                      fetch("/api/compared?id=" + posto._id + "&user=" + rep._id)
+                      // router.push(
+                      //   "/api/compared?id=" + posto._id + "&user=" + rep._id
+                      // );
                     }}
                     variant="contained"
                   >

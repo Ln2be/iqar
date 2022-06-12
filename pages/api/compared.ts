@@ -8,6 +8,7 @@ export default async function helper(
   const { id } = req.query;
   const post = await DBPost.findOne({ _id: id });
 
+  console.log("here compared");
   if (req.query.user) {
     const ar = post.comparedTo;
     ar.push(req.query.user);

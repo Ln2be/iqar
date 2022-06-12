@@ -191,9 +191,13 @@ export function PostCard({
                   <Button
                     onClick={() => {
                       if (goto.ido && goto.idc) {
-                        router.push(
+                        fetch(
                           "/api/compared?id=" + goto.ido + "&post=" + goto.idc
                         );
+
+                        // router.push(
+                        //   "/api/compared?id=" + goto.ido + "&post=" + goto.idc
+                        // );
                       }
                     }}
                     variant="contained"
