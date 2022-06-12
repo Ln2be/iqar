@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
 import Layout from "../components/layout";
 import { DBPost } from "../lib/mongo";
-import React from "react";
+import React, { useState } from "react";
 import { Post } from "../projectTypes";
 import Head from "next/head";
 
@@ -18,6 +18,9 @@ import {
 export default function Page({ result }: { result: string }) {
   const router = useRouter();
   const { action } = router.query;
+
+  // spin if the post is submitted
+  const [spin, setSpin] = useState(false);
 
   // save the post to the database
   function handleSubmit(result: any) {
@@ -38,6 +41,7 @@ export default function Page({ result }: { result: string }) {
   // save the post to the database
   function handleUpdate(result: any) {
     console.log(result);
+    setSpin(true);
     fetch("/api/posts?action=update", {
       method: "POST",
       body: JSON.stringify(result),
@@ -114,7 +118,11 @@ export default function Page({ result }: { result: string }) {
         {action == "posts" && <Box>{rPosts()}</Box>}
         {action == "form" && (
           <Box>
-            <PostForm onSubmit={handleSubmit}></PostForm>
+            {spin ? (
+              <Box>{"...جاري رفع المنشور"}</Box>
+            ) : (
+              <PostForm onSubmit={handleSubmit}></PostForm>
+            )}
           </Box>
         )}
         {action == "update" && <Box>{rUpdate()}</Box>}
