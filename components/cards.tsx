@@ -193,7 +193,9 @@ export function PostCard({
                       if (goto.ido && goto.idc) {
                         fetch(
                           "/api/compared?id=" + goto.ido + "&post=" + goto.idc
-                        );
+                        ).then(() => {
+                          router.reload();
+                        });
 
                         // router.push(
                         //   "/api/compared?id=" + goto.ido + "&post=" + goto.idc

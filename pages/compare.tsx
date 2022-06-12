@@ -6,10 +6,7 @@ import { useUser } from "../lib/auth/hooks";
 import { Post, UserType } from "../projectTypes";
 import WhatsappButton from "../components/whatsapp";
 
-
-import {
-  Button,
-} from "@mui/material";
+import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import { PostCard } from "../components/cards";
 import { correctPhone } from "../lib/myfunctions";
@@ -95,7 +92,11 @@ export default function Page({
                 >
                   <Button
                     onClick={() => {
-                      fetch("/api/compared?id=" + posto._id + "&user=" + rep._id)
+                      fetch(
+                        "/api/compared?id=" + posto._id + "&user=" + rep._id
+                      ).then(() => {
+                        router.reload();
+                      });
                       // router.push(
                       //   "/api/compared?id=" + posto._id + "&user=" + rep._id
                       // );
