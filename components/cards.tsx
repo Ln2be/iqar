@@ -229,10 +229,16 @@ export function PostCard({
                 </Typography>
               </Box>
             )}
-            {post.createdAt && (
-              <Box>{new Date(post.createdAt).toLocaleDateString("ar-MA")}</Box>
-            )}
           </Box>
+          {post.createdAt && (
+            <Box
+              sx={{
+                display: "flex",
+              }}
+            >
+              {new Date(post.createdAt).toLocaleDateString("ar-MA")}
+            </Box>
+          )}
         </Box>
       </CardContent>
 
