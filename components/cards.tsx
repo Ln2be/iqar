@@ -229,7 +229,9 @@ export function PostCard({
                 </Typography>
               </Box>
             )}
-            <Box>{new Date(post.createdAt).toLocaleDateString("ar-MA")}</Box>
+            {post.createdAt && (
+              <Box>{new Date(post.createdAt).toLocaleDateString("ar-MA")}</Box>
+            )}
           </Box>
         </Box>
       </CardContent>
