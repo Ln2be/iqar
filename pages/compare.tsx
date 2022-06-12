@@ -10,6 +10,7 @@ import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import { PostCard } from "../components/cards";
 import { correctPhone } from "../lib/myfunctions";
+import { DEPARTEMENTS } from "../lib/translate";
 
 export default function Page({
   postjson,
@@ -83,7 +84,7 @@ export default function Page({
                 }}
               >
                 <Box>{rep.username}</Box>
-                <Box>{rep.departements[0]}</Box>
+                <Box>{DEPARTEMENTS[rep.departements[0]]}</Box>
                 <Box>{rep.region}</Box>
 
                 <WhatsappButton

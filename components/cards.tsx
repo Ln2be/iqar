@@ -146,7 +146,7 @@ export function PostCard({
           {post.departements.length > 1 && (
             <Box
               sx={{
-                display: "flex",
+                display: "flex",  
                 flexDirection: "column",
               }}
             >
