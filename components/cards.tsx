@@ -36,6 +36,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { Router, useRouter } from "next/router";
+import Switch from "@mui/material/Switch";
 
 // the post card. How the post is showed
 export function PostCard({
@@ -630,6 +631,7 @@ let post: Post = {
   user: "",
   userTel: "",
   createdAt: new Date(Date.now()),
+  hidden: false,
 };
 
 let pathFiles = [];
@@ -1021,7 +1023,21 @@ export function PostForm({
               )
           )}
         </Box>
-        {/* This button needs to be viewed again */}
+      </Box>
+      {user && user.role == "admin" && (
+        <FormControlLabel
+          label="اخفاء"
+          control={
+            <Switch
+              onChange={() => {
+                post.hidden = true;
+              }}
+            />
+          }
+        ></FormControlLabel>
+      )}
+      {/* This button needs to be viewed again */}
+      <Box>
         <Button
           type="submit"
           variant="contained"

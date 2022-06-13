@@ -60,16 +60,42 @@ export default function Page({ result }: { result: string }) {
     const posts = JSON.parse(result) as Post[];
 
     return (
-      <Box
-        sx={{
-          display: "grid",
-          gap: 2,
-        }}
-      >
-        <Departement></Departement>
-        {posts.map((post, i) => (
-          <PostCard key={i} post={post} type="feed"></PostCard>
-        ))}
+      <Box>
+        <Head>
+          <title>
+            مؤسسة وسيطة لبيع و شراء و ايجار المنازل و الشقق و العقارات بشكل عام
+            في نواكشوط موريتانيا
+          </title>
+          <meta
+            name="keywords"
+            content="شقق للايجار نواكشوط, منزل للشراء نواكشوط, دار للبيع نواكشوط, منزل للسكن نواكشوط, منزل للشراء نواكشوط, شراء منزل نواكشوط"
+          />
+          <meta
+            name="description"
+            content="احصل اعل المنزل او الشقة التي تبحث عنها"
+            key="desc"
+          />
+          <meta property="og:title" content="وسيط بيع و شراء العقارات" />
+          <meta
+            property="og:description"
+            content="تتوفر عقار نواكشوط على الكثير من عروض بيع و شراء و ايجار العقارات"
+          />
+          <meta
+            property="og:image"
+            content="https://example.com/images/cool-page.jpg"
+          />
+        </Head>
+        <Box
+          sx={{
+            display: "grid",
+            gap: 2,
+          }}
+        >
+          <Departement></Departement>
+          {posts.map((post, i) => (
+            <PostCard key={i} post={post} type="feed"></PostCard>
+          ))}
+        </Box>
       </Box>
     );
   }
@@ -150,6 +176,7 @@ export async function getServerSideProps({
       const departements = query.departements as unknown as string[];
       const postsdb = await DBPost.find({
         type: query.type,
+        hidden: false,
       }).sort({ createdAt: -1 });
 
       // get the crossed departements posts
@@ -157,16 +184,20 @@ export async function getServerSideProps({
 
       // get posts searched for type
     } else if (query.type) {
-      posts = await DBPost.find({ type: query.type }).sort({ createdAt: -1 });
+      posts = await DBPost.find({ type: query.type, hidden: false }).sort({
+        createdAt: -1,
+      });
 
       // get posts searched for departements
     } else if (query.departements) {
-      const allposts = await DBPost.find({}).sort({ createdAt: -1 });
+      const allposts = await DBPost.find({ hidden: false }).sort({
+        createdAt: -1,
+      });
 
       const departements = query.departements as unknown as string[];
       posts = crossedDep(allposts, departements);
     } else {
-      posts = await DBPost.find({}).sort({ createdAt: -1 });
+      posts = await DBPost.find({ hidden: false }).sort({ createdAt: -1 });
     }
 
     const result = JSON.stringify(posts);

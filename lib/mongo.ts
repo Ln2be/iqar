@@ -57,6 +57,8 @@ const postSchema = new Schema<Post>({
   comparedTo: [String],
   trackid: String,
   chanceid: String,
+  hidden: { type: Boolean, default: false },
+  archived: Boolean,
 });
 
 export const DBPost =

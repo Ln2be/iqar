@@ -34,6 +34,8 @@ export interface Post {
   comparedTo?: string[];
   trackid?: string;
   chanceid?: string;
+  hidden?: boolean;
+  archived?: boolean;
 }
 
 export interface Image {
