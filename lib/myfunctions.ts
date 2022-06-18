@@ -172,7 +172,7 @@ export function translate(
   value: string,
   object: { value: string; label: string }[]
 ) {
-  for (let subtype of object) {
+  for (const subtype of object) {
     if (subtype.value == value) {
       return subtype.label;
     }
