@@ -29,4 +29,11 @@ export default async function helper(
     console.log([update, updateC]);
     res.send([update, updateC]);
   }
+
+  // if the post finished comparaison with others posts
+  else if (req.query.finished) {
+    const ar = post.comparedTo;
+    ar.push("finished");
+    const update = await DBPost.updateOne({ _id: id }, { comparedTo: ar });
+  }
 }

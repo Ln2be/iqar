@@ -53,6 +53,13 @@ export default function Page({
       console.log(v);
     });
   }
+
+  // if no reps or posts to compare to than this post finished
+  if (reps.length == 0 && posts.length == 0) {
+    fetch("/api/compared?id=" + posto._id + "&finished=true").then(() => {
+      router.push("/");
+    });
+  }
   return (
     <>
       <Layout>

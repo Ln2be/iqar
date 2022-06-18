@@ -17,39 +17,6 @@ export function correctPhone(tel: string) {
   return phone;
 }
 
-// translate the nature to arabic
-export const typeArabic: { [key: string]: string } = {
-  stay: "إقامة",
-  buying: "شراء",
-  selling: "بيع",
-  demandRent: "طلب ايجار",
-  offerRent: "عرض ايجار",
-};
-
-// translate subtype
-export const subtypeArabic: { [key: string]: string } = {
-  land: "قطعة ارضية",
-  appartment: "شقق",
-  house: "دار",
-  incompletHouse: "شانتية",
-  shop: "بوتيك",
-  villa: "فيلا",
-  other: "إخرى",
-};
-
-// translate departements
-export const DEPARTEMENTS: { [key: string]: string } = {
-  Tayaret: "تيارت",
-  Ksar: "لكصر",
-  DarNaim: "دار النعيم",
-  TevreghZeina: "تفرغ زينة",
-  Sebkha: "السبخة",
-  Elmina: "الميناء",
-  Arafat: "عرفات",
-  Toujounine: "توجنين",
-  Riyadh: "الرياض",
-};
-
 // a function to reduce the size of the image uploaded
 export const resizeFile = (file: File) =>
   new Promise((resolve) => {
@@ -187,7 +154,27 @@ export const subtypes = [
     label: "فيلا",
   },
   {
+    value: "invest",
+    label: "إستثمار",
+  },
+  {
+    value: "store",
+    label: "مخزن",
+  },
+  {
     value: "other",
     label: "اخرى",
   },
 ];
+
+// show label in the interface but not the value
+export function translate(
+  value: string,
+  object: { value: string; label: string }[]
+) {
+  for (let subtype of object) {
+    if (subtype.value == value) {
+      return subtype.label;
+    }
+  }
+}

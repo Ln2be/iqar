@@ -23,12 +23,10 @@ import { useUser } from "../lib/auth/hooks";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import {
   correctPhone,
-  DEPARTEMENTS,
-  subtypeArabic,
-  typeArabic,
   adtypes,
   departements,
   subtypes,
+  translate,
 } from "../lib/myfunctions";
 import { Chance, Post, Track } from "../projectTypes";
 import WhatsappButton from "./whatsapp";
@@ -128,16 +126,18 @@ export function PostCard({
               flexDirection: "column",
             }}
           >
-            <Typography variant="h5">{typeArabic[post.type]}</Typography>
+            <Typography variant="h5">
+              {translate(post.type, adtypes)}
+            </Typography>
             <Typography gutterBottom variant="h5">
-              {subtypeArabic[post.subtype]}
+              {translate(post.subtype, subtypes)}
             </Typography>
           </Box>
 
           {post.departements.length == 1 && (
             <Box>
               <Typography gutterBottom variant="h5">
-                {DEPARTEMENTS[post.departements[0]]}
+                {translate(post.departements[0], departements)}
               </Typography>
               <Typography gutterBottom variant="h5">
                 {post.region}
@@ -153,7 +153,7 @@ export function PostCard({
             >
               {post.departements.map((departement, i) => (
                 <Typography key={i} variant="h5">
-                  {DEPARTEMENTS[departement]}
+                  {translate(departement, departements)}
                 </Typography>
               ))}
             </Box>
@@ -286,11 +286,15 @@ export function PostCard({
               mt: 2,
             }}
           >
-            <Link href={"/compare?id=" + post._id}>
-              <Button variant="outlined" style={{ color: "blue" }}>
-                مقارنة
-              </Button>
-            </Link>
+            {/* only show comparison if the comparaison is not finished */}
+            {!post.comparedTo?.includes("finished") && (
+              <Link href={"/compare?id=" + post._id}>
+                <Button variant="outlined" style={{ color: "blue" }}>
+                  مقارنة
+                </Button>
+              </Link>
+            )}
+
             {type == "post" ? (
               <Link href={"/api/posts?action=delete&id=" + post._id}>
                 <Button variant="outlined" style={{ color: "red" }}>
