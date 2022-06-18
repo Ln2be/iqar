@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../components/layout";
 import { Box } from "@mui/system";
 import { DBPost, DBUser } from "../lib/mongo";
@@ -55,11 +55,14 @@ export default function Page({
   }
 
   // if no reps or posts to compare to than this post finished
-  if (reps.length == 0 && posts.length == 0) {
-    fetch("/api/compared?id=" + posto._id + "&finished=true").then(() => {
-      router.push("/");
-    });
-  }
+  useEffect(() => {
+    if (reps.length == 0 && posts.length == 0) {
+      fetch("/api/compared?id=" + posto._id + "&finished=true").then(() => {
+        router.back();
+      });
+    }
+  }, []);
+
   return (
     <>
       <Layout>

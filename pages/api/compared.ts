@@ -35,5 +35,6 @@ export default async function helper(
     const ar = post.comparedTo;
     ar.push("finished");
     const update = await DBPost.updateOne({ _id: id }, { comparedTo: ar });
+    res.send("finish");
   }
 }
