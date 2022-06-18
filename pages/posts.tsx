@@ -8,12 +8,7 @@ import Head from "next/head";
 
 import { PostCard, PostForm } from "../components/cards";
 import Departement from "../components/cards";
-import {
-  DEPARTEMENTS,
-  subtypeArabic,
-  subtypes,
-  typeArabic,
-} from "../lib/myfunctions";
+import { adtypes, departements, subtypes, translate } from "../lib/myfunctions";
 
 export default function Page({ result }: { result: string }) {
   const router = useRouter();
@@ -121,11 +116,11 @@ export default function Page({ result }: { result: string }) {
           <meta
             property="og:title"
             content={
-              typeArabic[post.type] +
+              translate(post.type, adtypes) +
               " \n" +
-              subtypeArabic[post.subtype] +
+              translate(post.subtype, subtypes) +
               " \n" +
-              DEPARTEMENTS[post.departements[0]] +
+              translate(post.departements[0], departements) +
               " \n" +
               post.region +
               " \n"
