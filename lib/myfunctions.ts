@@ -178,3 +178,10 @@ export function translate(
     }
   }
 }
+
+// the base path
+const isProduction = process.env.NODE_ENV === "production";
+
+export const basepath = isProduction
+  ? "https://mr.iqar.store"
+  : "http://localhost:3000";
