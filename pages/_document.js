@@ -1,5 +1,6 @@
 import React from "react";
 import { Html, Head, Main, NextScript } from "next/document";
+import { basepath } from "../lib/myfunctions";
 
 export default function Document() {
   return (
@@ -48,10 +49,10 @@ export default function Document() {
         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
       />
       <meta name="twitter:card" content="summary" />
-      <meta name="twitter:url" content="https://iqar.store" />
+      <meta name="twitter:url" content={basepath} />
       <meta name="twitter:title" content="عقار نواكشوط" />
       <meta name="twitter:description" content="عقار نواكشوط" />
-      <meta name="twitter:image" content="https://iqar.store/Icon-192.png" />
+      <meta name="twitter:image" content={basepath + "/Icon-192.png"} />
       {/* <meta name="twitter:creator" content="@DavidWShadow" /> */}
       <meta property="og:type" content="website" />
       <meta
@@ -63,8 +64,8 @@ export default function Document() {
         content="عقار نواكشوط شركة للوساطة العقارية. ايجار و بيع الشقق و المنازل"
       />
       <meta property="og:site_name" content="عقار نواكشوط" />
-      <meta property="og:url" content="https://iqar.store" />
-      <meta property="og:image" content="https://iqar.store/Icon-152.png" />
+      <meta property="og:url" content={basepath} />
+      <meta property="og:image" content={basepath + "/Icon-152.png"} />
       {/* The next pwa heads */}
       <meta name="theme-color" content="#ccc"></meta>
       {/*  Global site tag (gtag.js) - Google Analytics */}

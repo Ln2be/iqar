@@ -2,18 +2,19 @@ import React from "react";
 import { NextApiResponse } from "next";
 import { DBPost } from "../lib/mongo";
 import fs from "fs";
+import { basepath } from "../lib/myfunctions";
 
-const EXTERNAL_DATA_URL = "https://iqar.store/posts";
+const EXTERNAL_DATA_URL = basepath + "/posts";
 
 function generateSiteMap(posts: [{ [key: string]: string }]) {
   return `<?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
      <!--We manually set the two URLs we know already-->
      <url>
-       <loc>https://iqar.store</loc>
+       <loc>${basepath}</loc>
      </url>
      <url>
-       <loc>https://iqar.store/contactUs</loc>
+       <loc>${basepath + "/contactUs"}</loc>
      </url>
      ${posts
        .map(({ _id }) => {

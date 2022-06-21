@@ -9,7 +9,7 @@ import WhatsappButton from "../components/whatsapp";
 import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import { PostCard } from "../components/cards";
-import { correctPhone } from "../lib/myfunctions";
+import { basepath, correctPhone } from "../lib/myfunctions";
 import { DEPARTEMENTS } from "../lib/translate";
 
 export default function Page({
@@ -99,7 +99,7 @@ export default function Page({
 
                 <WhatsappButton
                   phone={correctPhone(rep.tel)}
-                  message={"https://iqar.store/posts?id=" + posto._id}
+                  message={basepath + "/posts?id=" + posto._id}
                 >
                   <Button
                     onClick={() => {
@@ -125,7 +125,7 @@ export default function Page({
               let url = "";
               if (posto._id && postc._id) {
                 const id = isdemand ? posto._id : postc._id;
-                url = "https://iqar.store/posts?id=" + id;
+                url = basepath + "/posts?id=" + id;
               }
               const tel = isdemand
                 ? correctPhone(postc.tel)

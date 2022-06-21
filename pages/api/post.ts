@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { DBCount, DBPost } from "../../lib/mongo";
 import fs from "fs";
 import { Buffer } from "buffer";
+import { basepath } from "../../lib/myfunctions";
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,7 +17,7 @@ export default async function handler(
   const devSite = "http://localhost/images/";
 
   const prodUrl = "/var/www/iqar/images/";
-  const prodSite = "https://iqar.store/images/";
+  const prodSite = basepath + "/images/";
 
   const url = isProduction ? prodUrl : devUrl;
   const site = isProduction ? prodSite : devSite;

@@ -27,6 +27,7 @@ import {
   departements,
   subtypes,
   translate,
+  basepath,
 } from "../lib/myfunctions";
 import { Chance, Post, Track } from "../projectTypes";
 import WhatsappButton from "./whatsapp";
@@ -41,7 +42,7 @@ export function PostCard({
   post,
   type = "feed",
   goto = {
-    url: "https://iqar.store/posts?id=" + post._id,
+    url: basepath + "/posts?id=" + post._id,
     tel: correctPhone(post.tel),
   },
 }: {
@@ -221,7 +222,7 @@ export function PostCard({
               >
                 <WhatsappButton
                   phone={"+22248692007"}
-                  message={"https://iqar.store/posts?id=" + post._id}
+                  message={basepath + "/posts?id=" + post._id}
                 >
                   <Button variant="contained">واتساب</Button>
                 </WhatsappButton>
@@ -355,7 +356,7 @@ export function PostCard({
 
       <CardActions>
         {
-          <WhatsappShareButton url={"https://iqar.store/posts?id=" + post._id}>
+          <WhatsappShareButton url={basepath+"/posts?id=" + post._id}>
             <Box
               sx={{
                 color: "blue",

@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Link from "next/link";
 import Head from "next/head";
+import { basepath } from "../lib/myfunctions";
 
 let deferredPrompt: any; // Allows to show the install prompt
 
@@ -60,7 +61,7 @@ export default function Page() {
         />
         <meta
           property="og:image"
-          content={"https://iqar.store/images/favicon.ico"}
+          content={basepath+"/images/favicon.ico"}
         />
         <meta
           name="description"
