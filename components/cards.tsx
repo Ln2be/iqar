@@ -27,6 +27,7 @@ import {
   departements,
   subtypes,
   translate,
+  basepath,
 } from "../lib/myfunctions";
 import { Chance, Post, Track } from "../projectTypes";
 import WhatsappButton from "./whatsapp";
@@ -41,7 +42,7 @@ export function PostCard({
   post,
   type = "feed",
   goto = {
-    url: "https://iqar.store/posts?id=" + post._id,
+    url: basepath + "/posts?id=" + post._id,
     tel: correctPhone(post.tel),
   },
 }: {
@@ -58,6 +59,8 @@ export function PostCard({
   const router = useRouter();
 
   const image = post.images[0];
+
+  // be able to content the user when the post is compared
 
   //
   return (
@@ -175,6 +178,7 @@ export function PostCard({
             </Typography>
             <NumberFormat value={post.price} thousandSeparator={true} />
           </Box>
+
           <Box
             sx={{
               display: "flex",
@@ -182,35 +186,33 @@ export function PostCard({
             }}
           >
             {user?.role == "admin" ? (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <WhatsappButton phone={goto.tel} message={goto.url}>
-                  <Button
-                    onClick={() => {
-                      if (goto.ido && goto.idc) {
-                        fetch(
-                          "/api/compared?id=" + goto.ido + "&post=" + goto.idc
-                        ).then(() => {
-                          router.reload();
-                        });
-
-                        // router.push(
-                        //   "/api/compared?id=" + goto.ido + "&post=" + goto.idc
-                        // );
-                      }
-                    }}
-                    variant="contained"
-                  >
-                    واتساب
-                  </Button>
-                </WhatsappButton>
-                <Typography variant="body1" color="text.secondary">
-                  {post.tel}
-                </Typography>
+              <Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <WhatsappButton phone={goto.tel} message={goto.url}>
+                    <Button
+                      onClick={() => {
+                        if (goto.ido && goto.idc) {
+                          fetch(
+                            "/api/compared?id=" + goto.ido + "&post=" + goto.idc
+                          ).then(() => {
+                            router.reload();
+                          });
+                        }
+                      }}
+                      variant="contained"
+                    >
+                      واتساب
+                    </Button>
+                  </WhatsappButton>
+                  <Typography variant="body1" color="text.secondary">
+                    {post.tel}
+                  </Typography>
+                </Box>
               </Box>
             ) : (
               <Box
@@ -221,7 +223,7 @@ export function PostCard({
               >
                 <WhatsappButton
                   phone={"+22248692007"}
-                  message={"https://iqar.store/posts?id=" + post._id}
+                  message={basepath + "/posts?id=" + post._id}
                 >
                   <Button variant="contained">واتساب</Button>
                 </WhatsappButton>
@@ -236,9 +238,45 @@ export function PostCard({
           <Box
             sx={{
               display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
             }}
           >
             {new Date(post.createdAt).toLocaleDateString("ar-MA")}
+
+            
+            {/* contact the user for more information about the post before send if to the intersted guy */}
+            {goto.idc && user?.role == "admin" && (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <WhatsappButton
+                  phone={post.tel}
+                  message={basepath + "/posts?id=" + post._id}
+                >
+                  <Button
+                    onClick={() => {
+                      if (goto.ido && goto.idc) {
+                        fetch(
+                          "/api/compared?id=" + goto.ido + "&post=" + goto.idc
+                        ).then(() => {
+                          router.reload();
+                        });
+                      }
+                    }}
+                    variant="contained"
+                  >
+                    استفسار
+                  </Button>
+                </WhatsappButton>
+                <Typography variant="body1" color="text.secondary">
+                    {post.tel}
+                  </Typography>
+              </Box>
+            )}
           </Box>
         )}
       </CardContent>
@@ -355,7 +393,7 @@ export function PostCard({
 
       <CardActions>
         {
-          <WhatsappShareButton url={"https://iqar.store/posts?id=" + post._id}>
+          <WhatsappShareButton url={basepath + "/posts?id=" + post._id}>
             <Box
               sx={{
                 color: "blue",
