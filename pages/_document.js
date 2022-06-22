@@ -1,6 +1,7 @@
 import React from "react";
 import { Html, Head, Main, NextScript } from "next/document";
 import { basepath } from "../lib/myfunctions";
+import { GA_TRACKING_ID } from "../lib/gtag";
 
 export default function Document() {
   return (
@@ -68,20 +69,10 @@ export default function Document() {
       <meta property="og:image" content={basepath + "/Icon-152.png"} />
       {/* The next pwa heads */}
       <meta name="theme-color" content="#ccc"></meta>
-      {/*  Global site tag (gtag.js) - Google Analytics */}
-      {/* <script
-        async
-        src="https://www.googletagmanager.com/gtag/js?id=G-PNYH0CJWN6"
-      ></script>
-      <script>
-        window.dataLayer = window.dataLayer || []; function gtag()
-        {dataLayer.push(arguments)}
-        gtag('js', new Date()); gtag('config', 'G-PNYH0CJWN6');
-      </script> */}
       {/* Global Site Tag (gtag.js) - Google Analytics */}
       <script
         async
-        src={`https://www.googletagmanager.com/gtag/js?id=${"G-PNYH0CJWN6"}`}
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
       />
       <script
         dangerouslySetInnerHTML={{
@@ -89,7 +80,7 @@ export default function Document() {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${"G-PNYH0CJWN6"}', {
+            gtag('config', '${GA_TRACKING_ID}', {
               page_path: window.location.pathname,
             });
           `,
