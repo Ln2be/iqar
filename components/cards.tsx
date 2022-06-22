@@ -356,7 +356,7 @@ export function PostCard({
 
       <CardActions>
         {
-          <WhatsappShareButton url={basepath+"/posts?id=" + post._id}>
+          <WhatsappShareButton url={basepath + "/posts?id=" + post._id}>
             <Box
               sx={{
                 color: "blue",
@@ -631,7 +631,7 @@ let post: Post = {
   region: "",
   details: "",
   images: [],
-  price: "0",
+  price: "",
   tel: "",
   user: "",
   userTel: "",
@@ -708,12 +708,63 @@ export function PostForm({
 
   const [messagen, setmn] = useState("");
   function handleSubmitThePost() {
+    setDisable(true);
+    // validate
+    // const nvalidations = [
+    //   {
+    //     condition: post.tel.length != 8 && !user,
+    //     message: "ادخل رقم واتساب صحيح",
+    //   },
+    //   {
+    //     condition: post.price == "0" || post.price == "",
+    //     message: "ادخل السعر بالالاف و بالعملة القديمة",
+    //   },
+    //   {
+    //     condition: post.departements.length == 0,
+    //     message: "اختر مقاطعات",
+    //   },
+    //   {
+    //     condition: post.departements.length == 1 && post.region == "",
+    //     message: "اختر المنطقة",
+    //   },
+    //   {
+    //     condition: post.type == "",
+    //     message: "اختر نوع الاعلان",
+    //   },
+    //   {
+    //     condition: post.subtype == "",
+    //     message: "ادخل اعلان فرعي ",
+    //   },
+    //   {
+    //     condition: post.details == "",
+    //     message: "ادخل تفاصيل ",
+    //   },
+    // ];
+
+    // function validate() {
+    //   return nvalidations.map((nvalidation) => {
+    //     if (nvalidation.condition) {
+    //       return nvalidation.message;
+    //     }
+    //   });
+    // }
+
+    // if (validate().length > 0) {
+    //   setmn(validate().join(" \n  "));
+    //   setDisable(false);
+    // } else {
+    //   onSubmit(post);
+    // }
+
     if (post.tel.length != 8 && !user) {
-      setmn("ادخل رقم صحيح");
+      setmn("ادخل رقم هاتف صحيح");
     } else {
       onSubmit(post);
     }
   }
+
+  // disable the submit button once clicked
+  const [disable, setDisable] = useState(false);
 
   return (
     <Box
@@ -958,12 +1009,22 @@ export function PostForm({
         id="outlined-basic"
         label="السعر"
         type="number"
+        {...register("price", { required: true })}
         defaultValue={upost.price}
         variant="outlined"
         onChange={(event) => {
           post.price = event.target.value;
         }}
       />
+      {errors.price && (
+        <small
+          style={{
+            color: "red",
+          }}
+        >
+          ادخل السعر بالالاف و بالعملة القديمة
+        </small>
+      )}
 
       <Box
         sx={{
@@ -1042,9 +1103,12 @@ export function PostForm({
         ></FormControlLabel>
       )}
       {/* This button needs to be viewed again */}
+      {/* show the message of validation */}
+      {/* <p>{messagen}</p> */}
       <Box>
         <Button
           type="submit"
+          disabled={disable}
           variant="contained"
           onClick={handleSubmit(handleSubmitThePost)}
         >
