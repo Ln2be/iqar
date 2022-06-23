@@ -271,10 +271,9 @@ export function PostCard({
         )}
 
         {/* give the user the opportinuty to find customers */}
-        {!user ||
-          (user.role != "admin" && (
-            <Link href={"/compare?id=" + post._id}>إجاد زبون</Link>
-          ))}
+        {(!user || user.role != "admin") && (
+          <Link href={"/compare?id=" + post._id}>إجاد زبون</Link>
+        )}
       </CardContent>
 
       {/* if to show the full post */}
