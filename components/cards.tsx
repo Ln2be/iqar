@@ -275,7 +275,13 @@ export function PostCard({
           user?.role == "guest" &&
           user.tel == post.tel &&
           type != "min" && (
-            <Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
               <Link href={"/compare?id=" + post._id}>
                 <Button
                   style={{
@@ -289,9 +295,13 @@ export function PostCard({
                 </Button>
               </Link>
               <Link href={"/api/posts?action=delete&id=" + post._id}>
-                <Button style={{ color: "red" }}>حذف</Button>
+                <Button variant="outlined" style={{ color: "red" }}>
+                  حذف
+                </Button>
               </Link>
-              <Link href={"/posts?action=posts&tel=" + post.tel}>منشوراتي</Link>
+              <Link href={"/posts?action=posts&tel=" + post.tel}>
+                <Button variant="outlined">منشوراتي</Button>
+              </Link>
             </Box>
           )}
       </CardContent>
