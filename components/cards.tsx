@@ -276,6 +276,7 @@ export function PostCard({
             <Button
               style={{
                 margin: "4px",
+                color: "cyan",
               }}
               variant="outlined"
             >
