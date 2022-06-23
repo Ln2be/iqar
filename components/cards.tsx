@@ -246,23 +246,14 @@ export function PostCard({
               sx={{
                 display: "flex",
                 flexDirection: "column",
+                m:1
               }}
             >
-              <WhatsappButton phone={goto.tel} message={goto.url}>
-                <Button
-                  onClick={() => {
-                    if (goto.ido && goto.idc) {
-                      fetch(
-                        "/api/compared?id=" + goto.ido + "&post=" + goto.idc
-                      ).then(() => {
-                        router.reload();
-                      });
-                    }
-                  }}
-                  variant="contained"
-                >
-                  واتساب
-                </Button>
+              <WhatsappButton
+                phone={post.tel}
+                message={basepath + "/posts?id=" + post._id}
+              >
+                <Button variant="contained">استفسار</Button>
               </WhatsappButton>
               <Typography variant="body1" color="text.secondary">
                 {post.tel}
