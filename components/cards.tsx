@@ -271,19 +271,25 @@ export function PostCard({
         )}
 
         {/* give the user the opportinuty to find customers */}
-        {user.role == "guest" && type != "min" && (
-          <Link href={"/compare?id=" + post._id}>
-            <Button
-              style={{
-                margin: "4px",
-                backgroundColor: "#ADD8E6",
-                color: "black",
-              }}
-              variant="contained"
-            >
-              إجاد زبون
-            </Button>
-          </Link>
+        {user?.role == "guest" && type != "min" && (
+          <Box>
+            <Link href={"/compare?id=" + post._id}>
+              <Button
+                style={{
+                  margin: "4px",
+                  backgroundColor: "#ADD8E6",
+                  color: "black",
+                }}
+                variant="contained"
+              >
+                إجاد زبون
+              </Button>
+            </Link>
+            <Link href={"/api/posts?action=delete&id=" + post._id}>
+              <Button style={{ color: "red" }}>حذف</Button>
+            </Link>
+            <Link href={"/posts?action=posts&tel=" + post.tel}>منشوراتي</Link>
+          </Box>
         )}
       </CardContent>
 
