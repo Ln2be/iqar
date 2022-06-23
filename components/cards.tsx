@@ -271,7 +271,7 @@ export function PostCard({
         )}
 
         {/* give the user the opportinuty to find customers */}
-        {/* {user &&
+        {user &&
           user?.role == "guest" &&
           user.tel == post.tel &&
           type != "min" && (
@@ -293,7 +293,7 @@ export function PostCard({
               </Link>
               <Link href={"/posts?action=posts&tel=" + post.tel}>منشوراتي</Link>
             </Box>
-          )} */}
+          )}
       </CardContent>
 
       {/* if to show the full post */}
