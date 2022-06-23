@@ -277,7 +277,7 @@ export function PostCard({
               style={{
                 margin: "4px",
               }}
-              variant="contained"
+              variant="outlined"
             >
               إجاد زبون
             </Button>
