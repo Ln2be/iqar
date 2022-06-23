@@ -9,17 +9,50 @@ import Head from "next/head";
 import { PostCard, PostForm } from "../components/cards";
 import Departement from "../components/cards";
 import { adtypes, departements, subtypes, translate } from "../lib/myfunctions";
+import { useUser } from "../lib/auth/hooks";
 
 export default function Page({ result }: { result: string }) {
   const router = useRouter();
+  const user = useUser();
   const { action } = router.query;
 
   // spin if the post is submitted
   const [spin, setSpin] = useState(false);
 
   // save the post to the database
-  function handleSubmit(result: any) {
+  async function handleSubmit(result: any) {
     console.log(result);
+    if (!user) {
+      const userbody = {
+        username: "guest",
+        password: "1212",
+        tel: result.tel,
+        role: "guest",
+      };
+      await fetch("/api/auth/signup", {
+        method: "POST",
+        body: JSON.stringify(userbody),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
+    //
+
+    const userlogin = {
+      username: result.tel,
+      password: "1212",
+    };
+
+    await fetch("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify(userlogin),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    // save the post
     fetch("/api/posts?action=save", {
       method: "POST",
       body: JSON.stringify(result),

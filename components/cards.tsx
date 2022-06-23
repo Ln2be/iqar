@@ -271,20 +271,20 @@ export function PostCard({
         )}
 
         {/* give the user the opportinuty to find customers */}
-        {/* {(!user || user.role != "admin") && type != "min" && (
+        {user.role == "guest" && type != "min" && (
           <Link href={"/compare?id=" + post._id}>
             <Button
               style={{
                 margin: "4px",
                 backgroundColor: "#ADD8E6",
-                color:"black"
+                color: "black",
               }}
               variant="contained"
             >
               إجاد زبون
             </Button>
           </Link>
-        )} */}
+        )}
       </CardContent>
 
       {/* if to show the full post */}
