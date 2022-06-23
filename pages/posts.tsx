@@ -22,36 +22,39 @@ export default function Page({ result }: { result: string }) {
   // save the post to the database
   async function handleSubmit(result: any) {
     console.log(result);
-    if (!user) {
-      const userbody = {
-        username: "guest",
-        password: "1212",
-        tel: result.tel,
-        role: "guest",
-      };
-      await fetch("/api/auth/signup", {
-        method: "POST",
-        body: JSON.stringify(userbody),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    }
+    // if (!user) {
+    //   const userbody = {
+    //     username: "guest",
+    //     password: "1212",
+    //     tel: result.tel,
+    //     role: "guest",
+    //   };
+    //   const login = await fetch("/api/auth/signup", {
+    //     method: "POST",
+    //     body: JSON.stringify(userbody),
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   });
 
-    //
+    //   console.log(login);
 
-    const userlogin = {
-      username: result.tel,
-      password: "1212",
-    };
+    //   //
 
-    await fetch("/api/auth/login", {
-      method: "POST",
-      body: JSON.stringify(userlogin),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    //   const userlogin = {
+    //     username: result.tel,
+    //     password: "1212",
+    //   };
+
+    //   await fetch("/api/auth/login", {
+    //     method: "POST",
+    //     body: JSON.stringify(userlogin),
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   });
+    // }
+
     // save the post
     fetch("/api/posts?action=save", {
       method: "POST",
