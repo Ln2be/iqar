@@ -198,10 +198,6 @@ export function PostCard({
                         ).then(() => {
                           router.reload();
                         });
-
-                        // router.push(
-                        //   "/api/compared?id=" + goto.ido + "&post=" + goto.idc
-                        // );
                       }
                     }}
                     variant="contained"
@@ -241,6 +237,45 @@ export function PostCard({
           >
             {new Date(post.createdAt).toLocaleDateString("ar-MA")}
           </Box>
+        )}
+
+        {/* the possiblity to contact the owner for more information while comparing */}
+        <Box>
+          {goto.idc && user?.role == "admin" && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <WhatsappButton phone={goto.tel} message={goto.url}>
+                <Button
+                  onClick={() => {
+                    if (goto.ido && goto.idc) {
+                      fetch(
+                        "/api/compared?id=" + goto.ido + "&post=" + goto.idc
+                      ).then(() => {
+                        router.reload();
+                      });
+                    }
+                  }}
+                  variant="contained"
+                >
+                  واتساب
+                </Button>
+              </WhatsappButton>
+              <Typography variant="body1" color="text.secondary">
+                {post.tel}
+              </Typography>
+            </Box>
+          )}
+        </Box>
+
+        {/* see all this phone posts */}
+        {user?.role == "admin" && (
+          <Link href={"/posts?action=posts&tel=" + post.tel}>
+            منشورات الرقم
+          </Link>
         )}
       </CardContent>
 

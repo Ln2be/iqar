@@ -1,5 +1,6 @@
-const str = "hello world yeah";
+const price = 4;
+const deprice = 5;
 
-const str2 = str.split(" ").join(",");
+const bool = price - price * 0.3 <= deprice && deprice <= price + price * 0.3;
 
-console.log(str2);
+console.log(bool);

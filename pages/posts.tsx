@@ -191,6 +191,9 @@ export async function getServerSideProps({
 
       const departements = query.departements as unknown as string[];
       posts = crossedDep(allposts, departements);
+    } else if (query.tel) {
+      const tel = query.tel;
+      posts = await DBPost.find({ tel: tel }).sort({ createdAt: -1 });
     } else {
       posts = await DBPost.find({ hidden: false }).sort({ createdAt: -1 });
     }

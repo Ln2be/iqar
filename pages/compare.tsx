@@ -160,6 +160,7 @@ export async function getServerSideProps({
 
   const departements = postObject.departements;
   const type = postObject.type;
+  const price = postObject.price;
 
   // send reps who are working in the departement
   const reps = await DBUser.find({ role: "rep" });
@@ -198,8 +199,14 @@ export async function getServerSideProps({
     return cross.length > 0;
   });
 
+  // the posts should be in the range of the price given by the client
+  const pposts = deposts.filter((depost) => {
+    const deprice = depost.price;
+    return price - price * 0.3 <= deprice && deprice <= price + price * 0.3;
+  });
+
   const postjson = JSON.stringify(postObject);
-  const opostsjson = JSON.stringify(deposts);
+  const opostsjson = JSON.stringify(pposts);
   const repsjson =
     type == "buying" || type == "demandRent"
       ? JSON.stringify(repsObject)
