@@ -28,6 +28,7 @@ import {
   subtypes,
   translate,
   basepath,
+  correctPrice,
 } from "../lib/myfunctions";
 import { Chance, Post, Track } from "../projectTypes";
 import WhatsappButton from "./whatsapp";
@@ -657,7 +658,7 @@ let post: Post = {
   region: "",
   details: "",
   images: [],
-  price: "",
+  price: 0,
   tel: "",
   user: "",
   userTel: "",
@@ -1035,11 +1036,12 @@ export function PostForm({
         id="outlined-basic"
         label="السعر"
         type="number"
-        {...register("price", { required: true })}
+        {...register("price", { required: true, min: 1 })}
         defaultValue={upost.price}
         variant="outlined"
         onChange={(event) => {
-          post.price = event.target.value;
+          const iprice = event.target.value as unknown as number;
+          post.price = correctPrice(iprice);
         }}
       />
       {errors.price && (

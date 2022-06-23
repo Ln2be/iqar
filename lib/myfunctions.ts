@@ -17,6 +17,17 @@ export function correctPhone(tel: string) {
   return phone;
 }
 
+// correct the price
+export function correctPrice(price: number) {
+  if (price < 100) {
+    return price * 1000;
+  } else if (price > 50000) {
+    return price / 1000;
+  } else {
+    return price;
+  }
+}
+
 // a function to reduce the size of the image uploaded
 export const resizeFile = (file: File) =>
   new Promise((resolve) => {

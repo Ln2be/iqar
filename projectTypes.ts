@@ -24,7 +24,7 @@ export interface Post {
   region: string;
   details: string;
   images: Image[];
-  price: string;
+  price: number;
   tel: string;
   id?: string;
   createdAt?: Date;
