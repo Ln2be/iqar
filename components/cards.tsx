@@ -246,11 +246,11 @@ export function PostCard({
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                m:1
+                m: 1,
               }}
             >
               <WhatsappButton
-                phone={post.tel}
+                phone={correctPhone(post.tel)}
                 message={basepath + "/posts?id=" + post._id}
               >
                 <Button variant="contained">استفسار</Button>
