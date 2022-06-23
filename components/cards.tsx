@@ -276,9 +276,10 @@ export function PostCard({
             <Button
               style={{
                 margin: "4px",
-                color: "cyan",
+                backgroundColor: "#ADD8E6",
+                color:"black"
               }}
-              variant="outlined"
+              variant="contained"
             >
               إجاد زبون
             </Button>
