@@ -84,41 +84,42 @@ export default function Page({
               maxWidth: "400px",
             }}
           >
-            {reps.map((rep, i) => (
-              <Box
-                key={i}
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Box>{rep.username}</Box>
-                <Box>{DEPARTEMENTS[rep.departements[0]]}</Box>
-                <Box>{rep.region}</Box>
-
-                <WhatsappButton
-                  phone={correctPhone(rep.tel)}
-                  message={basepath + "/posts?id=" + posto._id}
+            {user?.role == "admin" &&
+              reps.map((rep, i) => (
+                <Box
+                  key={i}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
                 >
-                  <Button
-                    onClick={() => {
-                      fetch(
-                        "/api/compared?id=" + posto._id + "&user=" + rep._id
-                      ).then(() => {
-                        router.reload();
-                      });
-                      // router.push(
-                      //   "/api/compared?id=" + posto._id + "&user=" + rep._id
-                      // );
-                    }}
-                    variant="contained"
+                  <Box>{rep.username}</Box>
+                  <Box>{DEPARTEMENTS[rep.departements[0]]}</Box>
+                  <Box>{rep.region}</Box>
+
+                  <WhatsappButton
+                    phone={correctPhone(rep.tel)}
+                    message={basepath + "/posts?id=" + posto._id}
                   >
-                    واتساب
-                  </Button>
-                </WhatsappButton>
-              </Box>
-            ))}
+                    <Button
+                      onClick={() => {
+                        fetch(
+                          "/api/compared?id=" + posto._id + "&user=" + rep._id
+                        ).then(() => {
+                          router.reload();
+                        });
+                        // router.push(
+                        //   "/api/compared?id=" + posto._id + "&user=" + rep._id
+                        // );
+                      }}
+                      variant="contained"
+                    >
+                      واتساب
+                    </Button>
+                  </WhatsappButton>
+                </Box>
+              ))}
             {posts.map((postc, i) => {
               const isdemand =
                 postc.type == "buying" || postc.type == "demandRent";
