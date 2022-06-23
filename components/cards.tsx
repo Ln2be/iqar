@@ -271,20 +271,18 @@ export function PostCard({
         )}
 
         {/* give the user the opportinuty to find customers */}
-        {(!user || user.role != "admin") &&
-          type !=
-            "min"(
-              <Link href={"/compare?id=" + post._id}>
-                <Button
-                  style={{
-                    margin: "4px",
-                  }}
-                  variant="outlined"
-                >
-                  إجاد زبون
-                </Button>
-              </Link>
-            )}
+        {(!user || user.role != "admin") && type != "min" && (
+          <Link href={"/compare?id=" + post._id}>
+            <Button
+              style={{
+                margin: "4px",
+              }}
+              variant="outlined"
+            >
+              إجاد زبون
+            </Button>
+          </Link>
+        )}
       </CardContent>
 
       {/* if to show the full post */}
