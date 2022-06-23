@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { DBAdminCode, DBPost, DBUserCode } from "../../lib/mongo";
+import { DBPost } from "../../lib/mongo";
 
 export default async function helper(
   req: NextApiRequest,
@@ -34,7 +34,7 @@ export default async function helper(
   else if (req.query.finished) {
     const ar = post.comparedTo;
     ar.push("finished");
-    const update = await DBPost.updateOne({ _id: id }, { comparedTo: ar });
+    await DBPost.updateOne({ _id: id }, { comparedTo: ar });
     res.send("finish");
   }
 }

@@ -272,7 +272,16 @@ export function PostCard({
 
         {/* give the user the opportinuty to find customers */}
         {(!user || user.role != "admin") && (
-          <Link href={"/compare?id=" + post._id}>إجاد زبون</Link>
+          <Link href={"/compare?id=" + post._id}>
+            <Button
+              style={{
+                margin: "4px",
+              }}
+              variant="contained"
+            >
+              إجاد زبون
+            </Button>
+          </Link>
         )}
       </CardContent>
 
