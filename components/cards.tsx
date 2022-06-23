@@ -1056,19 +1056,21 @@ export function PostForm({
           ادخل واتساب
         </small>
       )}
+      {post.type && (
+        <TextField
+          id="outlined-basic"
+          label="السعر"
+          type="number"
+          {...register("price", { required: true, min: 1 })}
+          defaultValue={upost.price}
+          variant="outlined"
+          onChange={(event) => {
+            const iprice = event.target.value as unknown as number;
+            post.price = correctPrice(iprice, post.type);
+          }}
+        />
+      )}
 
-      <TextField
-        id="outlined-basic"
-        label="السعر"
-        type="number"
-        {...register("price", { required: true, min: 1 })}
-        defaultValue={upost.price}
-        variant="outlined"
-        onChange={(event) => {
-          const iprice = event.target.value as unknown as number;
-          post.price = correctPrice(iprice);
-        }}
-      />
       {errors.price && (
         <small
           style={{

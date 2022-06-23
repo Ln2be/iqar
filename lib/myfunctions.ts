@@ -18,13 +18,21 @@ export function correctPhone(tel: string) {
 }
 
 // correct the price
-export function correctPrice(price: number) {
-  if (price < 100) {
-    return price * 1000;
-  } else if (price > 50000) {
-    return price / 1000;
+export function correctPrice(price: number, type: string) {
+  if (type == "selling" || type == "buying") {
+    if (price < 100) {
+      return price * 1000;
+    } else if (price > 200000) {
+      return price / 1000;
+    } else {
+      return price;
+    }
   } else {
-    return price;
+    if (price > 10000) {
+      return price / 1000;
+    } else {
+      return price;
+    }
   }
 }
 
