@@ -1094,9 +1094,9 @@ export function PostForm({
 
       <Box
         sx={{
-          display:
-            // type == "stay" || type == "selling" || type == "offerRent"
-            false ? "flex" : "none",
+          display: "none",
+          // type == "stay" || type == "selling" || type == "offerRent"
+          // false ? "flex" : "none",
           // alignItem: "right",
           flexDirection: "row",
         }}
