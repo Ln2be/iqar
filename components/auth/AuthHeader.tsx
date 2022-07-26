@@ -50,7 +50,7 @@ export default function AuthHeader() {
                   flexDirection: "column",
                 }}
               >
-                <Link href="/workboard">الغمل</Link>
+                <Link href="/workboard">العمل</Link>
               </Box>
             </Box>
           </Box>
