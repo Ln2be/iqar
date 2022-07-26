@@ -73,7 +73,7 @@ export default function Page({ result }: { result: string }) {
       },
     }).then((data) => {
       data.json().then((rpost) => {
-        router.push("/posts?id=" + rpost.id);
+        router.push("/posts?action=posts&tel=" + rpost.tel);
       });
     });
   }
