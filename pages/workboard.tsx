@@ -393,7 +393,7 @@ export async function getServerSideProps({
 
   for (const location in Nktt) {
     const posts = crossedDep(postsrent, Nktt[location]);
-    for (let post of posts) {
+    for (const post of posts) {
       metadata.rent[location].total++;
       post.comparedTo &&
         post.comparedTo[0] == "finished" &&
@@ -404,7 +404,7 @@ export async function getServerSideProps({
     }
   }
 
-  for (let intervall of [
+  for (const intervall of [
     "lowprice",
     "mediumprice",
     "highprice",
@@ -431,7 +431,7 @@ export async function getServerSideProps({
     }).sort({ createdAt: -1 });
     for (const location in Nktt) {
       const posts = crossedDep(postsintervall, Nktt[location]);
-      for (let post of posts) {
+      for (const post of posts) {
         metadata[intervall][location].total++;
         post.comparedTo &&
           post.comparedTo[0] == "finished" &&
