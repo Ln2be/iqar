@@ -50,15 +50,8 @@ export default function AuthHeader() {
                   flexDirection: "column",
                 }}
               >
-                <Link href="/reps?role=rep">الممثلين</Link>
+                <Link href="/workboard">الغمل</Link>
               </Box>
-            </Box>
-            <Box
-              sx={{
-                cursor: "pointer",
-              }}
-            >
-              <Link href="/reps?role=user">الصمصارة</Link>
             </Box>
           </Box>
         )}

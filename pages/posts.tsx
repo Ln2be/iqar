@@ -8,13 +8,21 @@ import Head from "next/head";
 
 import { PostCard, PostForm } from "../components/cards";
 import Departement from "../components/cards";
-import { adtypes, departements, subtypes, translate } from "../lib/myfunctions";
+import {
+  adtypes,
+  departements,
+  gtypes,
+  Nktt,
+  priceCat,
+  subtypes,
+  translate,
+} from "../lib/myfunctions";
 import { useUser } from "../lib/auth/hooks";
 
 export default function Page({ result }: { result: string }) {
   const router = useRouter();
   const user = useUser();
-  const { action } = router.query;
+  const { action, location } = router.query;
 
   // spin if the post is submitted
   const [spin, setSpin] = useState(false);
@@ -117,13 +125,14 @@ export default function Page({ result }: { result: string }) {
             content="https://example.com/images/cool-page.jpg"
           />
         </Head>
+
         <Box
           sx={{
             display: "grid",
             gap: 2,
           }}
         >
-          <Departement></Departement>
+          {!location && <Departement></Departement>}
           {posts.map((post, i) => (
             <PostCard key={i} post={post} type="feed"></PostCard>
           ))}
@@ -215,6 +224,52 @@ export async function getServerSideProps({
       posts = crossedDep(postsdb, departements);
 
       // get posts searched for type
+    } else if (query.type && query.location) {
+      const wlocation = Nktt[query.location];
+
+      if (query.type == "rent") {
+        const postsdb = await DBPost.find({
+          $or: [
+            {
+              type: "demandRent",
+            },
+
+            {
+              type: "offerRent",
+            },
+
+            {
+              type: "stay",
+            },
+          ],
+          hidden: false,
+        }).sort({ createdAt: -1 });
+
+        // send the posts if they are in the region
+        posts = crossedDep(postsdb, wlocation);
+      } else {
+        const lowHigh = priceCat[query.type];
+        const postsdb = await DBPost.find({
+          $or: [
+            {
+              type: "buying",
+            },
+
+            {
+              type: "selling",
+            },
+          ],
+          $and: [
+            {
+              price: { $gt: lowHigh.low },
+            },
+            { price: { $lte: lowHigh.high } },
+          ],
+          hidden: false,
+        }).sort({ createdAt: -1 });
+
+        posts = crossedDep(postsdb, wlocation);
+      }
     } else if (query.type) {
       posts = await DBPost.find({ type: query.type, hidden: false }).sort({
         createdAt: -1,

@@ -19,20 +19,28 @@ export function correctPhone(tel: string) {
 
 // correct the price
 export function correctPrice(price: number, type: string) {
-  if (type == "selling" || type == "buying") {
-    if (price < 100) {
-      return price * 1000;
-    } else if (price > 200000) {
-      return price / 1000;
+  let newPrice = 0;
+  if (type == "demandRent" || type == "offerRent" || type == "stay") {
+    if (price > 1000) {
+      newPrice = price / 1000;
     } else {
-      return price;
+      newPrice = price;
     }
+  }
+
+  if (type == "buying" || type == "selling") {
+    if (price < 200000 && price > 200) {
+      newPrice = price / 1000;
+    } else if (price > 1000000) {
+      newPrice = price / 1000000;
+    } else {
+      newPrice = price;
+    }
+  }
+  if (newPrice) {
+    return newPrice;
   } else {
-    if (price > 10000) {
-      return price / 1000;
-    } else {
-      return price;
-    }
+    return 0;
   }
 }
 
@@ -204,3 +212,41 @@ const isProduction = process.env.NODE_ENV === "production";
 export const basepath = isProduction
   ? "https://mr.iqar.store"
   : "http://localhost:3000";
+
+// Nouakchott districts
+
+export const Nktt: { [key: string]: string[] } = {
+  nn: ["Tayaret", "TevreghZeina", "Ksar"],
+  ns: ["Arafat", "DarNaim", "Toujounine"],
+  nw: ["Sebkha", "Elmina", "Riyadh"],
+};
+
+// global types
+
+export const gtypes: { [key: string]: string[] } = {
+  rent: ["DemandRent", "OfferRent", "stay"],
+  lowprice: ["Buying", "Selling"],
+  mediumprice: ["Buying", "Selling"],
+  highprice: ["Buying", "Selling"],
+};
+
+// prices catagories intervall
+
+export const priceCat: { [key: string]: { low: number; high: number } } = {
+  lowprice: {
+    low: 0.0001,
+    high: 4,
+  },
+  mediumprice: {
+    low: 4,
+    high: 10,
+  },
+  highprice: {
+    low: 10,
+    high: 20,
+  },
+  veryhighprice: {
+    low: 20,
+    high: 200,
+  },
+};

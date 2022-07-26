@@ -1077,6 +1077,7 @@ export function PostForm({
           onChange={(event) => {
             const iprice = event.target.value as unknown as number;
             post.price = correctPrice(iprice, post.type);
+            // post.price = iprice;
           }}
         />
       )}
