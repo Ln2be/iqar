@@ -9,7 +9,7 @@ import WhatsappButton from "../components/whatsapp";
 import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import { PostCard } from "../components/cards";
-import { basepath, correctPhone } from "../lib/myfunctions";
+import { basepath, correctPhone, Nktt } from "../lib/myfunctions";
 import { DEPARTEMENTS } from "../lib/translate";
 
 export default function Page({
@@ -159,7 +159,18 @@ export async function getServerSideProps({
 }) {
   const postObject = await DBPost.findOne({ _id: query.id });
 
+  // which Nouakchott district the post belong to
+  const nn = Nktt["nn"];
+  const ns = Nktt["ns"];
+  const nw = Nktt["nw"];
+
   const departements = postObject.departements;
+  const inNN = departements.filter((value2: any) => nn.includes(value2));
+  const inNS = departements.filter((value2: any) => ns.includes(value2));
+  const inNW = departements.filter((value2: any) => nw.includes(value2));
+
+  const wdep = inNN.concat(inNS).concat(inNW);
+
   const type = postObject.type;
   const price = postObject.price;
 
@@ -195,7 +206,7 @@ export async function getServerSideProps({
   // the posts should be in the same departement
   const deposts = ncposts.filter((value) => {
     const cross = value.departements.filter((value2: any) =>
-      departements.includes(value2)
+      wdep.includes(value2)
     );
     return cross.length > 0;
   });
@@ -203,7 +214,24 @@ export async function getServerSideProps({
   // the posts should be in the range of the price given by the client
   const pposts = deposts.filter((depost) => {
     const deprice = depost.price;
-    return price - price * 0.3 <= deprice && deprice <= price + price * 0.3;
+    if (postObject.type == "demandRent" || postObject.type == "demandRent") {
+      return true;
+    } else {
+      const lowprice = postObject.price > 0 && postObject.price <= 4;
+      const mediumprice = postObject.price > 4 && postObject.price <= 10;
+      const highprice = postObject.price > 10 && postObject.price <= 20;
+      const veryhighprice = postObject.price > 20 && postObject.price <= 200;
+
+      if (lowprice) {
+        return deprice > 0 && deprice <= 4;
+      } else if (mediumprice) {
+        return deprice > 4 && deprice <= 10;
+      } else if (highprice) {
+        return deprice > 10 && deprice <= 20;
+      } else if (veryhighprice) {
+        return deprice > 20 && deprice <= 200;
+      }
+    }
   });
 
   const postjson = JSON.stringify(postObject);
