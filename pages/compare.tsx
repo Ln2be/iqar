@@ -169,10 +169,15 @@ export async function getServerSideProps({
   const inNS = departements.filter((value2: any) => ns.includes(value2));
   const inNW = departements.filter((value2: any) => nw.includes(value2));
 
-  const wdep = inNN.concat(inNS).concat(inNW);
+  const cnn = inNN.length > 0 ? nn : [];
+  const cns = inNS.length > 0 ? ns : [];
+  const cnw = inNW.length > 0 ? nw : [];
 
+  const wdep = cnn.concat(cns).concat(cnw);
   const type = postObject.type;
   const price = postObject.price;
+
+  console.log(wdep);
 
   // send reps who are working in the departement
   const reps = await DBUser.find({ role: "rep" });
@@ -214,7 +219,11 @@ export async function getServerSideProps({
   // the posts should be in the range of the price given by the client
   const pposts = deposts.filter((depost) => {
     const deprice = depost.price;
-    if (postObject.type == "demandRent" || postObject.type == "demandRent") {
+    if (
+      postObject.type == "demandRent" ||
+      postObject.type == "demandRent" ||
+      postObject.type == "stay"
+    ) {
       return true;
     } else {
       const lowprice = postObject.price > 0 && postObject.price <= 4;
