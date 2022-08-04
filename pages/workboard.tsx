@@ -215,14 +215,14 @@ export default function Page({ metadata }: { metadata: string }) {
                           }}
                         >
                           {
-                            // metadatao[key][location].compared
-                            //   ? Math.floor(
-                            //       (metadatao[key][location].compared /
-                            //         metadatao[key][location].total) *
-                            //         100
-                            //     ) + "%"
-                            //   : "0%"
                             metadatao[key][location].compared
+                              ? Math.floor(
+                                  (metadatao[key][location].compared /
+                                    metadatao[key][location].total) *
+                                    100
+                                ) + "%"
+                              : "0%"
+                            // metadatao[key][location].compared
                           }
                         </Box>
                       </Box>
