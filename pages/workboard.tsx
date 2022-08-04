@@ -214,13 +214,16 @@ export default function Page({ metadata }: { metadata: string }) {
                             justifyContent: "space-around",
                           }}
                         >
-                          {metadatao[key][location].compared
-                            ? Math.floor(
-                                (metadatao[key][location].compared /
-                                  metadatao[key][location].total) *
-                                  100
-                              ) + "%"
-                            : "0%"}
+                          {
+                            // metadatao[key][location].compared
+                            //   ? Math.floor(
+                            //       (metadatao[key][location].compared /
+                            //         metadatao[key][location].total) *
+                            //         100
+                            //     ) + "%"
+                            //   : "0%"
+                            metadatao[key][location].compared
+                          }
                         </Box>
                       </Box>
                       <Box
