@@ -397,7 +397,7 @@ export async function getServerSideProps({
     const posts = crossedDep(postsrent, Nktt[location]);
     for (const post of posts) {
       metadata.rent[location].total++;
-      post.comparedTo?.length > 0 &&
+      post.comparedTo.length > 0 &&
         post.comparedTo[0] == "finished" &&
         metadata.rent[location].compared++;
       post.type == "demandRent"
