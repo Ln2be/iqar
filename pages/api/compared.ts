@@ -33,8 +33,9 @@ export default async function helper(
   // if the post finished comparaison with others posts
   else if (req.query.finished) {
     const ar = post.comparedTo;
-    ar.push("finished");
-    await DBPost.updateOne({ _id: id }, { comparedTo: ar });
+    // ar.push("finished");
+
+    await DBPost.updateOne({ _id: id }, { comparedTo: ["finished"] });
     res.send("finish");
   }
 }
