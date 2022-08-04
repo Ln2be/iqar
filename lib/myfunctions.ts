@@ -138,6 +138,18 @@ export const departements = [
     value: "Riyadh",
     label: "الرياض",
   },
+  {
+    value: "Surroundings",
+    label: "الضواحي",
+  },
+  {
+    value: "NDB",
+    label: "انواذيبو",
+  },
+  {
+    value: "Interior",
+    label: "الداخل",
+  },
 ];
 
 export const adtypes = [
