@@ -206,9 +206,28 @@ export function PostCard({
                     واتساب
                   </Button>
                 </WhatsappButton>
+
                 <Typography variant="body1" color="text.secondary">
                   {post.tel}
                 </Typography>
+
+                {goto.ido && goto.idc && (
+                  <Button
+                    style={{
+                      marginTop: "8px",
+                    }}
+                    onClick={() => {
+                      fetch(
+                        "/api/compared?id=" + goto.ido + "&post=" + goto.idc
+                      ).then(() => {
+                        router.reload();
+                      });
+                    }}
+                    variant="outlined"
+                  >
+                    غير مناسب
+                  </Button>
+                )}
               </Box>
             ) : (
               <Box
@@ -771,7 +790,7 @@ export function PostForm({
   const [messagen, setmn] = useState("");
   function handleSubmitThePost() {
     setDisable(true);
- 
+
     if (post.tel.length != 8 && !user) {
       setmn("ادخل رقم هاتف صحيح");
     } else {
