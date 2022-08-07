@@ -205,6 +205,8 @@ export async function getServerSideProps({
 }: {
   query: { [key: string]: string };
 }) {
+  // test if the user is coming with special code
+
   // the object to be injected in the post dom
   let injectObject;
 
@@ -286,6 +288,13 @@ export async function getServerSideProps({
     } else if (query.tel) {
       const tel = query.tel;
       posts = await DBPost.find({ tel: tel }).sort({ createdAt: -1 });
+    } else if (query.codeTel) {
+      const code = query.codeTel;
+      const allposts = await DBPost.find({}).sort({ createdAt: -1 });
+      posts = allposts.filter((post) => {
+        if (post.sendTo) return post.sendTo.includes(code);
+        else return false;
+      });
     } else {
       posts = await DBPost.find({ hidden: false }).sort({ createdAt: -1 });
     }

@@ -1,4 +1,5 @@
 export interface UserType {
+  activity: number;
   username: string;
   password: string;
   role: string;
@@ -13,6 +14,7 @@ export interface UserType {
   _id?: string;
   id?: string;
   createdAt?: number;
+  trust: number;
 }
 
 export interface Post {
@@ -36,6 +38,7 @@ export interface Post {
   chanceid?: string;
   hidden?: boolean;
   archived?: boolean;
+  sendTo: string[];
 }
 
 export interface Image {

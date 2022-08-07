@@ -121,13 +121,18 @@ export default function Page({
                 </Box>
               ))}
             {posts.map((postc, i) => {
+              // is the post a demand post so send him the offer. If not send it to the original post
               const isdemand =
                 postc.type == "buying" || postc.type == "demandRent";
               let url = "";
               if (posto._id && postc._id) {
+                // If it's a demand so this post will receive the original post link if not this
+                // post will be sent to the "original post" owner
                 const id = isdemand ? posto._id : postc._id;
                 url = basepath + "/posts?id=" + id;
               }
+
+              // if the nature is "demand" send the post to the owner of the "original post".
               const tel = isdemand
                 ? correctPhone(postc.tel)
                 : correctPhone(posto.tel);
@@ -201,7 +206,9 @@ export async function getServerSideProps({
     offerRent: "demandRent",
   };
   const oppositetype = opposite[type];
-  const oppositeposts = await DBPost.find({ type: oppositetype });
+  const oppositeposts = await DBPost.find({ type: oppositetype }).sort({
+    createdAt: -1,
+  });
 
   // the post shouldn't be already compared to this post
   const ncposts = oppositeposts.filter(

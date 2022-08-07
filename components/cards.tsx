@@ -30,14 +30,17 @@ import {
   basepath,
   correctPrice,
 } from "../lib/myfunctions";
-import { Chance, Post, Track } from "../projectTypes";
+import { Chance, Post, Track, UserType } from "../projectTypes";
 import WhatsappButton from "./whatsapp";
 import ShareIcon from "@mui/icons-material/Share";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { Router, useRouter } from "next/router";
 import Switch from "@mui/material/Switch";
-
+import Avatar from "@mui/material/Avatar";
+import { red } from "@mui/material/colors";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 // the post card. How the post is showed
 export function PostCard({
   post,
@@ -61,6 +64,10 @@ export function PostCard({
 
   const image = post.images[0];
 
+  // send the post to a user
+  const codeTelObject = {
+    codeTel: "0",
+  };
   //
   return (
     <Card sx={{ maxWidth: 345, backgroundColor: "#ccc" }}>
@@ -229,6 +236,23 @@ export function PostCard({
                   </Button>
                 )}
               </Box>
+            ) : router.query.codeTel ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <WhatsappButton
+                  phone={correctPhone(post.tel)}
+                  message={basepath + "/posts?id=" + post._id}
+                >
+                  <Button variant="contained">واتساب</Button>
+                </WhatsappButton>
+                <Typography variant="body1" color="text.secondary">
+                  {post.tel}
+                </Typography>
+              </Box>
             ) : (
               <Box
                 sx={{
@@ -247,6 +271,7 @@ export function PostCard({
                 </Typography>
               </Box>
             )}
+            {}
           </Box>
         </Box>
         {post.createdAt && (
@@ -431,6 +456,33 @@ export function PostCard({
                 </Button>
               </Link>
             )}
+          </Box>
+          <Box>
+            <TextField
+              id="codeTel"
+              label="الهاتف"
+              // type="tel"
+              variant="outlined"
+              onChange={(event) => {
+                codeTelObject.codeTel = event.target.value;
+              }}
+              required
+            />
+            <Button
+              variant="outlined"
+              onClick={() => {
+                fetch(
+                  "/api/sendto?action=sendTo&codeTel=" +
+                    codeTelObject.codeTel +
+                    "&id=" +
+                    post._id
+                ).then(() => {
+                  router.reload();
+                });
+              }}
+            >
+              احالة
+            </Button>
           </Box>
         </Box>
       )}
@@ -718,6 +770,7 @@ let post: Post = {
   userTel: "",
   createdAt: new Date(Date.now()),
   hidden: false,
+  sendTo: [],
 };
 
 let pathFiles = [];
@@ -1566,5 +1619,127 @@ export function UserForm({
         {<p className="error">{errorMsg}</p>}
       </Box>
     </Box>
+  );
+}
+
+// The user card
+export function UserCard({ user }: { user: UserType }) {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            // p: 2,
+          }}
+        >
+          <Avatar sx={{ bgcolor: red[500], m: 1 }} aria-label="recipe">
+            {user.username.charAt(0)}
+          </Avatar>
+          {user.username}
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            m: 1,
+          }}
+        >
+          <Box>{user.departement}</Box>
+          <Box>{user.region}</Box>
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          // justifyContent: "space-between",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            // justifyContent: "space-between",
+          }}
+        >
+          <Button
+            variant="outlined"
+            onClick={() => {
+              fetch("/usertrust?action=incrtrust");
+            }}
+          >
+            <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
+          </Button>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box>{"الثقة"}</Box>
+            <Box>{user.trust}</Box>
+          </Box>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              fetch("/usertrust?action=decrtrust");
+            }}
+          >
+            <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
+          </Button>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            // justifyContent: "space-between",
+          }}
+        >
+          <Button
+            variant="outlined"
+            onClick={() => {
+              fetch("/usertrust?action=incractivity");
+            }}
+          >
+            <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
+          </Button>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box>{"الحيوية"}</Box>
+            <Box>{user.activity}</Box>
+          </Box>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              fetch("/usertrust?action=decractivity");
+            }}
+          >
+            <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
+          </Button>
+        </Box>
+      </Box>
+    </Box>
+
+    // <Box></Box>
   );
 }

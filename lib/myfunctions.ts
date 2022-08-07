@@ -262,3 +262,15 @@ export const priceCat: { [key: string]: { low: number; high: number } } = {
     high: 200,
   },
 };
+
+// create special link that show the phones for some reps
+
+export async function isASpecialLink({
+  validCode,
+  type,
+}: {
+  validCode: boolean;
+  type: string;
+}) {
+  return validCode && type == "demandRent";
+}

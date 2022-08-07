@@ -28,6 +28,8 @@ const userSchema = new Schema<UserType>({
   salt: String,
   id: String,
   createdAt: Number,
+  trust: { type: Number, default: 1 },
+  activity: { type: Number, default: 1 },
 });
 
 export const DBUser =
@@ -59,6 +61,7 @@ const postSchema = new Schema<Post>({
   chanceid: String,
   hidden: { type: Boolean, default: false },
   archived: Boolean,
+  sendTo: [String],
 });
 
 export const DBPost =
