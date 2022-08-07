@@ -132,7 +132,7 @@ export default function Page({ result }: { result: string }) {
             gap: 2,
           }}
         >
-          {!location && <Departement></Departement>}
+          {!location && !router.query.codeTel && <Departement></Departement>}
           {posts.map((post, i) => (
             <PostCard key={i} post={post} type="feed"></PostCard>
           ))}
