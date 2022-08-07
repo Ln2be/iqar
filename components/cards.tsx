@@ -462,6 +462,9 @@ export function PostCard({
               id="codeTel"
               label="الهاتف"
               // type="tel"
+              style={{
+                backgroundColor: "white",
+              }}
               variant="outlined"
               onChange={(event) => {
                 codeTelObject.codeTel = event.target.value;
