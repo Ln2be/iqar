@@ -290,23 +290,6 @@ export async function getServerSideProps({
       const wlocation = Nktt[query.location];
 
       if (query.type == "rent") {
-        // const postsdb = await DBPost.find({
-        //   $or: [
-        //     {
-        //       type: "demandRent",
-        //     },
-
-        //     {
-        //       type: "offerRent",
-        //     },
-
-        //     {
-        //       type: "stay",
-        //     },
-        //   ],
-        //   hidden: false,
-        // }).sort({ createdAt: -1 });
-
         const postsdb = allposts.filter((post) => {
           return (
             post.type == "demandRent" ||
@@ -349,7 +332,7 @@ export async function getServerSideProps({
     } else if (query.tel) {
       const tel = query.tel;
       // posts = await DBPost.find({ tel: tel }).sort({ createdAt: -1 });
-      const postsdb = allposts.filter((post) => {
+      posts = allposts.filter((post) => {
         return post.tel == tel;
       });
     } else if (query.codeTel) {
