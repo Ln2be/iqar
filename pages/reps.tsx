@@ -36,6 +36,7 @@ export default function Page({ usersJson }: { usersJson: string }) {
             <Box
               sx={{
                 mt: 2,
+                backgroundColor: "#ccc",
               }}
               key={index}
             >
