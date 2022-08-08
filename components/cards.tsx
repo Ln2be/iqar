@@ -1706,7 +1706,7 @@ export function UserCard({ user }: { user: UserType }) {
           <Box
             sx={{
               display: "flex",
-              flexDirection: "row",
+              flexDirection: "column",
               justifyContent: "space-between",
             }}
           >
@@ -1748,7 +1748,7 @@ export function UserCard({ user }: { user: UserType }) {
           <Box
             sx={{
               display: "flex",
-              flexDirection: "row",
+              flexDirection: "column",
               justifyContent: "space-between",
             }}
           >
