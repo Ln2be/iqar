@@ -1687,12 +1687,12 @@ export function UserCard({ user }: { user: UserType }) {
         <Link href={"/api/deleteuser?id=" + user._id}>
           <Button variant="outlined">حذف</Button>
         </Link>
-        <WhatsappButton
+        {/* <WhatsappButton
           phone={correctPhone(user.tel ? user.tel : "no phone")}
           message={"السلام عليكم"}
         >
           <Button variant="contained">واتساب</Button>
-        </WhatsappButton>
+        </WhatsappButton> */}
       </Box>
       <Box
         sx={{

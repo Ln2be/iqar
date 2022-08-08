@@ -9,7 +9,6 @@ import AuthHeader from "./auth/AuthHeader";
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 
-
 const theme = createTheme({
   direction: "rtl", // Both here and <body dir="rtl">
 });
@@ -20,7 +19,7 @@ const cacheRtl = createCache({
 });
 
 export default function Layout({ children }: { children: JSX.Element }) {
-  const router = useRouter();
+  // const router = useRouter();
 
   // const [tooltipFooter, setTooltipFooter] = useState([false, false, false]);
   // const { tour } = router.query;

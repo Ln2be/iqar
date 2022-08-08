@@ -6,7 +6,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { useRouter } from "next/router";
-import { Tooltip } from "@mui/material";
 
 export default function Footer() {
   const [value, setValue] = React.useState(0);
