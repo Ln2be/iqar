@@ -22,7 +22,7 @@ export default function AuthHeader() {
               pr: 2,
             }}
           >
-            <Link href={"/profile"}>
+            <Link href={"/settings"}>
               <Box
                 sx={{
                   display: "flex",
