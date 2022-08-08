@@ -183,26 +183,29 @@ export default function Page({
 
     return (
       <Box>
-        <Head>
-          <title>{post.details + "انواكشوط موريتانيا   "}</title>
-          <meta name="description" content={post.details} key="desc" />
-          <meta name="keywords" content={post.details.split(" ").join(",")} />
-          <meta
-            property="og:title"
-            content={
-              translate(post.type, adtypes) +
-              " \n" +
-              translate(post.subtype, subtypes) +
-              " \n" +
-              translate(post.departements[0], departements) +
-              " \n" +
-              post.region +
-              " \n"
-            }
-          />
-          <meta property="og:description" content={post.details} />
-          <meta property="og:image" content={post.images[0]?.data} />
-        </Head>
+        {post && (
+          <Head>
+            <title>{post.details + "انواكشوط موريتانيا   "}</title>
+            <meta name="description" content={post.details} key="desc" />
+            <meta name="keywords" content={post.details.split(" ").join(",")} />
+            <meta
+              property="og:title"
+              content={
+                translate(post.type, adtypes) +
+                " \n" +
+                translate(post.subtype, subtypes) +
+                " \n" +
+                translate(post.departements[0], departements) +
+                " \n" +
+                post.region +
+                " \n"
+              }
+            />
+            <meta property="og:description" content={post.details} />
+            <meta property="og:image" content={post.images[0]?.data} />
+          </Head>
+        )}
+
         {post ? (
           <PostCard post={post} type="post"></PostCard>
         ) : (
@@ -316,24 +319,6 @@ export async function getServerSideProps({
         posts = crossedDep(postsdb, wlocation);
       } else {
         const lowHigh = priceCat[query.type];
-        // const postsdb = await DBPost.find({
-        //   $or: [
-        //     {
-        //       type: "buying",
-        //     },
-
-        //     {
-        //       type: "selling",
-        //     },
-        //   ],
-        //   $and: [
-        //     {
-        //       price: { $gt: lowHigh.low },
-        //     },
-        //     { price: { $lte: lowHigh.high } },
-        //   ],
-        //   hidden: false,
-        // }).sort({ createdAt: -1 });
 
         const postsdb = allposts.filter((post) => {
           const boolbuy = post.type == "buying" || post.type == "selling";
