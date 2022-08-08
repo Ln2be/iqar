@@ -7,6 +7,8 @@ import { DEPARTEMENTS } from "../lib/translate";
 import WhatsappButton from "../components/whatsapp";
 import { Button, Typography } from "@mui/material";
 import Head from "next/head";
+import { Nktt } from "../lib/myfunctions";
+import { UserCard } from "../components/cards";
 
 type JSONValue =
   | string
@@ -30,61 +32,18 @@ export default function Page({ usersJson }: { usersJson: string }) {
       <Layout>
         <Box
           sx={{
-            overflow: "scroll",
+            maxWidth: "345px",
           }}
         >
-          <table>
-            <thead></thead>
-            <tbody>
-              {users.map((user, i) => {
-                let phone = "";
-
-                if (user.tel.endsWith("+")) {
-                  phone = "+" + user.tel.replace("+", "");
-                } else if (user.tel.startsWith("00")) {
-                  phone = "+" + user.tel.replace("00", "");
-                } else if (user.tel.startsWith("+")) {
-                  phone = user.tel;
-                } else {
-                  phone = "+222" + user.tel;
-                }
-
-                return (
-                  <tr key={i}>
-                    <td>{user.count}</td>
-                    <td>
-                      <Button
-                        variant="outlined"
-                        onClick={() => {
-                          fetch("/api/deleteuser?id=" + user._id);
-                        }}
-                      >
-                        حذف
-                      </Button>
-                    </td>
-                    <td>{user.username}</td>
-                    <td>{DEPARTEMENTS[user.departements[0]]}</td>
-                    <td>{user.region}</td>
-                    <td>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                        }}
-                      >
-                        <WhatsappButton phone={phone} message={""}>
-                          <Button variant="contained">واتساب</Button>
-                        </WhatsappButton>
-                        <Typography variant="body1" color="text.secondary">
-                          {user.tel}
-                        </Typography>
-                      </Box>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          {users.map((user, index) => (
+            <Box
+              sx={{
+                mt: 2,
+              }}
+            >
+              <UserCard key={index} user={user}></UserCard>
+            </Box>
+          ))}
         </Box>
       </Layout>
     </>
@@ -96,14 +55,35 @@ export async function getServerSideProps({
 }: {
   query: { [key: string]: string };
 }) {
-  const usersObject = await DBUser.find({ role: query.role }).sort({
-    count: +1,
-  });
-  const usersJson = JSON.stringify(usersObject);
+  const usersObjectall = await DBUser.find({}).sort({});
+  const usersObject = usersObjectall.filter((user) => user.role != "admin");
+
+  let sreps: UserType[] = [];
+
+  if (query.type) {
+    const location = Nktt[query.location];
+    sreps = crossedDep(usersObject, location);
+  }
+  const usersJson = JSON.stringify(sreps);
 
   return {
     props: {
       usersJson,
     },
   };
+}
+
+// the return the posts where the departements cross
+function crossedDep(posts: UserType[], departements: string[]) {
+  console.log("/n new line");
+  return posts.filter((post) => {
+    console.log(posts.length);
+    // look for a cross between the departements
+    const cross = post.departements.filter((departement) =>
+      departements.includes(departement)
+    );
+    // return the post if there is cross
+    console.log([departements, post.departements, cross]);
+    return cross.length > 0;
+  });
 }

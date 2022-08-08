@@ -49,9 +49,7 @@ export default function Page({ metadata }: { metadata: string }) {
               (location, ilocation) => (
                 <Link
                   key={ilocation}
-                  href={
-                    "/posts?action=posts&type=" + key + "&location=" + location
-                  }
+                  href={"/reps?type=" + key + "&location=" + location}
                 >
                   <Box
                     sx={{
@@ -134,10 +132,11 @@ export async function getServerSideProps({
       },
     },
   };
-
-  const users = await DBUser.find({});
+  const usersObjectall = await DBUser.find({}).sort({});
+  const users = usersObjectall.filter((user) => user.role != "admin");
 
   for (const location in Nktt) {
+    console.log(users.length);
     const posts = crossedDep(users, Nktt[location]);
     for (const post of posts) {
       metadata.rep[location].total++;
@@ -158,6 +157,7 @@ function crossedDep(posts: UserType[], departements: string[]) {
       departements.includes(departement)
     );
     // return the post if there is cross
+    console.log([departements, post.departement, cross]);
     return cross.length > 0;
   });
 }

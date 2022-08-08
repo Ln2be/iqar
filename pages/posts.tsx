@@ -5,6 +5,7 @@ import { DBPost } from "../lib/mongo";
 import React, { useState } from "react";
 import { Post } from "../projectTypes";
 import Head from "next/head";
+import Pagination from "@mui/material/Pagination";
 
 import { PostCard, PostForm } from "../components/cards";
 import Departement from "../components/cards";
@@ -18,8 +19,16 @@ import {
   translate,
 } from "../lib/myfunctions";
 import { useUser } from "../lib/auth/hooks";
+import { PostAddSharp } from "@mui/icons-material";
+import { length } from "stylis";
 
-export default function Page({ result }: { result: string }) {
+export default function Page({
+  result,
+  length,
+}: {
+  result: string;
+  length: string;
+}) {
   const router = useRouter();
   const user = useUser();
   const { action, location } = router.query;
@@ -98,7 +107,7 @@ export default function Page({ result }: { result: string }) {
   // show the posts if they are what is requested
   function rPosts() {
     const posts = JSON.parse(result) as Post[];
-
+    const total = JSON.parse(length);
     return (
       <Box>
         <Head>
@@ -136,6 +145,25 @@ export default function Page({ result }: { result: string }) {
           {posts.map((post, i) => (
             <PostCard key={i} post={post} type="feed"></PostCard>
           ))}
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            mt: 2,
+          }}
+        >
+          <Pagination
+            count={Math.ceil(total / 10)}
+            variant="outlined"
+            color="secondary"
+            onChange={(event, value) => {
+              router.query.pagination = value.toString();
+              router.push(router);
+              // console.log(router.pathname);
+            }}
+          />
         </Box>
       </Box>
     );
@@ -175,7 +203,26 @@ export default function Page({ result }: { result: string }) {
           <meta property="og:description" content={post.details} />
           <meta property="og:image" content={post.images[0]?.data} />
         </Head>
-        <PostCard post={post} type="post"></PostCard>
+        {post ? (
+          <PostCard post={post} type="post"></PostCard>
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              تم حذف المنشور
+            </Box>
+          </Box>
+        )}
       </Box>
     );
   }
@@ -205,22 +252,32 @@ export async function getServerSideProps({
 }: {
   query: { [key: string]: string };
 }) {
+  const allposts = await DBPost.find({ hidden: false }).sort({
+    createdAt: -1,
+  });
   // test if the user is coming with special code
 
+  // const pagination = (query.pagination ? query.pagination : 1) as number;
+
+  // const allposts = allpostsdb.slice((pagination - 1) * 10, pagination * 10);
   // the object to be injected in the post dom
   let injectObject;
 
   // if requesting all the Posts
   if (query.action == "posts") {
-    let posts;
+    let posts: Post[] = [];
 
     // get posts searched for type and departements
     if (query.type && query.departements) {
       const departements = query.departements as unknown as string[];
-      const postsdb = await DBPost.find({
-        type: query.type,
-        hidden: false,
-      }).sort({ createdAt: -1 });
+      // const postsdb = await DBPost.find({
+      //   type: query.type,
+      //   hidden: false,
+      // }).sort({ createdAt: -1 });
+
+      const postsdb = allposts.filter((post) => {
+        return post.type == query.type;
+      });
 
       // get the crossed departements posts
       posts = crossedDep(postsdb, departements);
@@ -230,79 +287,108 @@ export async function getServerSideProps({
       const wlocation = Nktt[query.location];
 
       if (query.type == "rent") {
-        const postsdb = await DBPost.find({
-          $or: [
-            {
-              type: "demandRent",
-            },
+        // const postsdb = await DBPost.find({
+        //   $or: [
+        //     {
+        //       type: "demandRent",
+        //     },
 
-            {
-              type: "offerRent",
-            },
+        //     {
+        //       type: "offerRent",
+        //     },
 
-            {
-              type: "stay",
-            },
-          ],
-          hidden: false,
-        }).sort({ createdAt: -1 });
+        //     {
+        //       type: "stay",
+        //     },
+        //   ],
+        //   hidden: false,
+        // }).sort({ createdAt: -1 });
+
+        const postsdb = allposts.filter((post) => {
+          return (
+            post.type == "demandRent" ||
+            post.type == "offerRent" ||
+            post.type == "stay"
+          );
+        });
 
         // send the posts if they are in the region
         posts = crossedDep(postsdb, wlocation);
       } else {
         const lowHigh = priceCat[query.type];
-        const postsdb = await DBPost.find({
-          $or: [
-            {
-              type: "buying",
-            },
+        // const postsdb = await DBPost.find({
+        //   $or: [
+        //     {
+        //       type: "buying",
+        //     },
 
-            {
-              type: "selling",
-            },
-          ],
-          $and: [
-            {
-              price: { $gt: lowHigh.low },
-            },
-            { price: { $lte: lowHigh.high } },
-          ],
-          hidden: false,
-        }).sort({ createdAt: -1 });
+        //     {
+        //       type: "selling",
+        //     },
+        //   ],
+        //   $and: [
+        //     {
+        //       price: { $gt: lowHigh.low },
+        //     },
+        //     { price: { $lte: lowHigh.high } },
+        //   ],
+        //   hidden: false,
+        // }).sort({ createdAt: -1 });
+
+        const postsdb = allposts.filter((post) => {
+          const boolbuy = post.type == "buying" || post.type == "selling";
+          const withinprice =
+            lowHigh.low <= post.price && lowHigh.high >= post.price;
+          return boolbuy && withinprice;
+        });
 
         posts = crossedDep(postsdb, wlocation);
       }
     } else if (query.type) {
-      posts = await DBPost.find({ type: query.type, hidden: false }).sort({
-        createdAt: -1,
+      // posts = await DBPost.find({ type: query.type, hidden: false }).sort({
+      //   createdAt: -1,
+      // });
+
+      posts = allposts.filter((post) => {
+        return post.type == query.type;
       });
 
       // get posts searched for departements
     } else if (query.departements) {
-      const allposts = await DBPost.find({ hidden: false }).sort({
-        createdAt: -1,
-      });
+      // const allposts = await DBPost.find({ hidden: false }).sort({
+      //   createdAt: -1,
+      // });
 
       const departements = query.departements as unknown as string[];
       posts = crossedDep(allposts, departements);
     } else if (query.tel) {
       const tel = query.tel;
-      posts = await DBPost.find({ tel: tel }).sort({ createdAt: -1 });
+      // posts = await DBPost.find({ tel: tel }).sort({ createdAt: -1 });
+      const postsdb = allposts.filter((post) => {
+        return post.tel == tel;
+      });
     } else if (query.codeTel) {
       const code = query.codeTel;
-      const allposts = await DBPost.find({}).sort({ createdAt: -1 });
+      // const allposts = await DBPost.find({}).sort({ createdAt: -1 });
       posts = allposts.filter((post) => {
         if (post.sendTo) return post.sendTo.includes(code);
         else return false;
       });
     } else {
-      posts = await DBPost.find({ hidden: false }).sort({ createdAt: -1 });
+      posts = allposts;
     }
 
-    const result = JSON.stringify(posts);
+    // test if the user is coming with special code
+
+    const pagination = (query.pagination ? query.pagination : 1) as number;
+
+    const postsresult = posts.slice((pagination - 1) * 10, pagination * 10);
+    // the object to be injected in the post dom
+    const result = JSON.stringify(postsresult);
 
     injectObject = {
-      result,
+      result: result,
+      length: posts.length,
     };
   } else if (query.action == "form") {
     injectObject = {

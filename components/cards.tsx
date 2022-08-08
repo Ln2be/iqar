@@ -457,7 +457,15 @@ export function PostCard({
               </Link>
             )}
           </Box>
-          <Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              // justifyContent: "space-between",
+              alignItems: "end",
+              mt: 2,
+            }}
+          >
             <TextField
               id="codeTel"
               label="الهاتف"
@@ -1627,6 +1635,7 @@ export function UserForm({
 
 // The user card
 export function UserCard({ user }: { user: UserType }) {
+  const router = useRouter();
   return (
     <Box
       sx={{
@@ -1661,7 +1670,7 @@ export function UserCard({ user }: { user: UserType }) {
             m: 1,
           }}
         >
-          <Box>{user.departement}</Box>
+          <Box>{translate(user.departement, departements)}</Box>
           <Box>{user.region}</Box>
         </Box>
       </Box>
@@ -1669,7 +1678,8 @@ export function UserCard({ user }: { user: UserType }) {
         sx={{
           display: "flex",
           flexDirection: "row",
-          // justifyContent: "space-between",
+          justifyContent: "space-between",
+          mt: 1,
         }}
       >
         <Box
@@ -1682,7 +1692,11 @@ export function UserCard({ user }: { user: UserType }) {
           <Button
             variant="outlined"
             onClick={() => {
-              fetch("/usertrust?action=incrtrust");
+              fetch("/api/usertrust?action=incrtrust&id=" + user._id).then(
+                () => {
+                  router.reload();
+                }
+              );
             }}
           >
             <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
@@ -1700,7 +1714,11 @@ export function UserCard({ user }: { user: UserType }) {
           <Button
             variant="outlined"
             onClick={() => {
-              fetch("/usertrust?action=decrtrust");
+              fetch("/api/usertrust?action=decrtrust&id=" + user._id).then(
+                () => {
+                  router.reload();
+                }
+              );
             }}
           >
             <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
@@ -1716,7 +1734,11 @@ export function UserCard({ user }: { user: UserType }) {
           <Button
             variant="outlined"
             onClick={() => {
-              fetch("/usertrust?action=incractivity");
+              fetch("/api/usertrust?action=incractivity&id=" + user._id).then(
+                () => {
+                  router.reload();
+                }
+              );
             }}
           >
             <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
@@ -1734,7 +1756,11 @@ export function UserCard({ user }: { user: UserType }) {
           <Button
             variant="outlined"
             onClick={() => {
-              fetch("/usertrust?action=decractivity");
+              fetch("/api/usertrust?action=decractivity&id=" + user._id).then(
+                () => {
+                  router.reload();
+                }
+              );
             }}
           >
             <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
