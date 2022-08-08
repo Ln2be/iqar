@@ -1669,7 +1669,6 @@ export function UserCard({ user }: { user: UserType }) {
             flexDirection: "column",
             m: 1,
           }}
-          
         >
           <Box>
             {translate(user.departements && user.departements[0], departements)}
@@ -1688,7 +1687,7 @@ export function UserCard({ user }: { user: UserType }) {
         <Box
           sx={{
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "row",
             // justifyContent: "space-between",
           }}
         >
@@ -1730,7 +1729,7 @@ export function UserCard({ user }: { user: UserType }) {
         <Box
           sx={{
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "row",
             // justifyContent: "space-between",
           }}
         >
