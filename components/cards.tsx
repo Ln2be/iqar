@@ -1669,8 +1669,11 @@ export function UserCard({ user }: { user: UserType }) {
             flexDirection: "column",
             m: 1,
           }}
+          
         >
-          <Box>{translate(user.departements[0], departements)}</Box>
+          <Box>
+            {translate(user.departements && user.departements[0], departements)}
+          </Box>
           <Box>{user.region}</Box>
         </Box>
       </Box>
