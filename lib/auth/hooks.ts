@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import Router from "next/router";
 import useSWR from "swr";
 
-type userArgs = {
-  redirectTo: string;
-  redirectIfFound: boolean;
-};
+// type userArgs = {
+//   redirectTo: string;
+//   redirectIfFound: boolean;
+// };
 const fetcher = (url: string) =>
   fetch(url)
     .then((r) => r.json())

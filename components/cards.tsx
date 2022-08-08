@@ -1688,7 +1688,7 @@ export function UserCard({ user }: { user: UserType }) {
           <Button variant="outlined">حذف</Button>
         </Link>
         <WhatsappButton
-          phone={correctPhone(user.tel && user.tel)}
+          phone={correctPhone(user.tel ? user.tel : "no phone")}
           message={"السلام عليكم"}
         >
           <Button variant="contained">واتساب</Button>

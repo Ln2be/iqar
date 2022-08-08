@@ -45,11 +45,11 @@ export async function createUser(newUser: UserType) {
     // } else {
     // await DBAdminCode.deleteOne({ code: codeCorrect.code });
 
-    const savedUser = await new DBUser(user).save();
+    await new DBUser(user).save();
     return true;
     // }
   } else {
-    const savedUser = await new DBUser(user).save();
+    await new DBUser(user).save();
     return true;
   }
 }

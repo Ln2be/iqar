@@ -6,12 +6,9 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import GHeader from "./gHeader";
 import AuthHeader from "./auth/AuthHeader";
-import Footer from "./footer";
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
-import Button from "@mui/material/Button";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { useEffect, useState } from "react";
+
 
 const theme = createTheme({
   direction: "rtl", // Both here and <body dir="rtl">
