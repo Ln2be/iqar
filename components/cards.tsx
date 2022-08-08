@@ -1670,7 +1670,7 @@ export function UserCard({ user }: { user: UserType }) {
             m: 1,
           }}
         >
-          <Box>{translate(user.departement, departements)}</Box>
+          <Box>{translate(user.departement[0], departements)}</Box>
           <Box>{user.region}</Box>
         </Box>
       </Box>
