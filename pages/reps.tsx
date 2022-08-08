@@ -40,8 +40,9 @@ export default function Page({ usersJson }: { usersJson: string }) {
               sx={{
                 mt: 2,
               }}
+              key={index}
             >
-              <UserCard key={index} user={user}></UserCard>
+              <UserCard user={user}></UserCard>
             </Box>
           ))}
         </Box>
