@@ -344,10 +344,7 @@ export async function getServerSideProps({
       });
     } else if (query.hidden) {
       // const code = query.codeTel;
-      // const allposts = await DBPost.find({}).sort({ createdAt: -1 });
-      posts = allposts.filter((post) => {
-        return post.hidden;
-      });
+      posts = await DBPost.find({ hidden: true }).sort({ createdAt: -1 });
     } else {
       posts = allposts;
     }

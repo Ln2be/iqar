@@ -429,11 +429,17 @@ export function PostCard({
               </Link>
             )}
             {router.query.hidden && (
-              <Link href={"/posts?action=show&id=" + post._id}>
-                <Button variant="outlined" style={{ color: "red" }}>
-                  اظهار
-                </Button>
-              </Link>
+              <Button
+                variant="outlined"
+                style={{ color: "red" }}
+                onClick={() => {
+                  fetch("/posts?action=show&id=" + post._id).then(() => {
+                    router.reload();
+                  });
+                }}
+              >
+                اظهار
+              </Button>
             )}
             {type != "post" && !router.query.hidden && (
               <Link href={"/posts?id=" + post._id}>
