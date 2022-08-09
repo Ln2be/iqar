@@ -421,13 +421,21 @@ export function PostCard({
               </Link>
             )}
 
-            {type == "post" ? (
+            {type == "post" && (
               <Link href={"/api/posts?action=delete&id=" + post._id}>
                 <Button variant="outlined" style={{ color: "red" }}>
                   حذف
                 </Button>
               </Link>
-            ) : (
+            )}
+            {router.query.hidden && (
+              <Link href={"/posts?action=show&id=" + post._id}>
+                <Button variant="outlined" style={{ color: "red" }}>
+                  اظهار
+                </Button>
+              </Link>
+            )}
+            {type != "post" && !router.query.hidden && (
               <Link href={"/posts?id=" + post._id}>
                 <Button variant="outlined" style={{ color: "red" }}>
                   حذف
