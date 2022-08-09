@@ -342,6 +342,12 @@ export async function getServerSideProps({
         if (post.sendTo) return post.sendTo.includes(code);
         else return false;
       });
+    } else if (query.hidden) {
+      // const code = query.codeTel;
+      // const allposts = await DBPost.find({}).sort({ createdAt: -1 });
+      posts = allposts.filter((post) => {
+        return post.hidden;
+      });
     } else {
       posts = allposts;
     }

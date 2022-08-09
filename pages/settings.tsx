@@ -3,9 +3,10 @@ import FaceIcon from "@mui/icons-material/Face";
 import { Box } from "@mui/material";
 import Layout from "../components/layout";
 import Link from "next/link";
-import { DBUser } from "../lib/mongo";
+import { DBPost, DBUser } from "../lib/mongo";
 import { Nktt } from "../lib/myfunctions";
 import { UserType } from "../projectTypes";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 export default function Page({ metadata }: { metadata: string }) {
   const metadatao = JSON.parse(metadata);
@@ -103,6 +104,58 @@ export default function Page({ metadata }: { metadata: string }) {
               )
             )
           )}
+          {
+            <Link href={"/posts?action=posts&hidden=true"}>
+              <Box
+                sx={{
+                  bgColor: "#fff",
+                  border: "1px solid",
+                  width: "100%",
+                  height: "150px",
+                }}
+              >
+                <VisibilityOffIcon></VisibilityOffIcon>
+                <Box
+                  style={{
+                    width: "100%",
+                    height: "60%",
+                  }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-around",
+                    // alignItems: "center",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      // justifyContent: "space-around",
+                      alignItems: "center",
+                      fontSize: 40,
+                    }}
+                  >
+                    {metadatao.rep.hidden.total}
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "20%",
+                    // textAlign: "center",
+                    backgroundColor: (theme) => theme.palette.primary.main,
+                    color: "white",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Box>{"المخفية"}</Box>
+                </Box>
+              </Box>
+            </Link>
+          }
         </Box>
       </Box>
     </Layout>
@@ -130,10 +183,16 @@ export async function getServerSideProps({
       nw: {
         total: 0,
       },
+      hidden: {
+        total: 0,
+      },
     },
   };
   const usersObjectall = await DBUser.find({}).sort({});
   const users = usersObjectall.filter((user) => user.role != "admin");
+
+  const hiddenPosts = await DBPost.find({ hidden: true });
+  metadata.rep.hidden.total = hiddenPosts.length;
 
   for (const location in Nktt) {
     console.log(users.length);

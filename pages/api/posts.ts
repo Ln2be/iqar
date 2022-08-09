@@ -82,6 +82,14 @@ export default async function helper(
     const { id } = req.query;
     const rpost = await DBPost.deleteOne({ _id: id });
     res.writeHead(302, { Location: "/" }).end(rpost);
+  } else if (action == "hide") {
+    const { id } = req.query;
+    await DBPost.updateOne({ _id: id }, { hidden: true });
+    res.send("OK");
+  } else if (action == "show") {
+    const { id } = req.query;
+    await DBPost.updateOne({ _id: id }, { hidden: false });
+    res.send("OK");
   }
 }
 
