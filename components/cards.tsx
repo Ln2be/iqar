@@ -381,25 +381,27 @@ export function PostCard({
             <Button style={{ color: "red" }}>حذف</Button>
           </Link>
         )}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          mt: 2,
-        }}
-      >
-        <Link href={"/api/posts?action=hide&id=" + post._id}>
-          <Button variant="outlined" style={{ color: "red" }}>
-            حذف
-          </Button>
-        </Link>
-        <Link href={"/posts?action=update&id=" + post._id}>
-          <Button variant="outlined" style={{ color: "blue" }}>
-            تعديل
-          </Button>
-        </Link>
-      </Box>
+      {router.query.codeTel && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            mt: 2,
+          }}
+        >
+          <Link href={"/api/posts?action=hide&id=" + post._id}>
+            <Button variant="outlined" style={{ color: "red" }}>
+              حذف
+            </Button>
+          </Link>
+          <Link href={"/posts?action=update&id=" + post._id}>
+            <Button variant="outlined" style={{ color: "blue" }}>
+              تعديل
+            </Button>
+          </Link>
+        </Box>
+      )}
 
       {/* The admin control */}
       {type != "min" && user && user?.role == "admin" && (
@@ -433,7 +435,7 @@ export function PostCard({
                 variant="outlined"
                 style={{ color: "red" }}
                 onClick={() => {
-                  fetch("/posts?action=show&id=" + post._id).then(() => {
+                  fetch("/api/posts?action=show&id=" + post._id).then(() => {
                     router.reload();
                   });
                 }}
