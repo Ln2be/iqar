@@ -236,7 +236,7 @@ export function PostCard({
                   </Button>
                 )}
               </Box>
-            ) : router.query.codeTel ? (
+            ) : router.query.codeTel && user.role == "admin" ? (
               <Box
                 sx={{
                   display: "flex",
