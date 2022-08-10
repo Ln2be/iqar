@@ -350,6 +350,9 @@ export function PostCard({
           )}
       </CardContent>
 
+
+
+
       {/* if to show the full post */}
       {type == "full" &&
         post.images?.map((image, i) => (
@@ -372,6 +375,7 @@ export function PostCard({
           </Box>
         ))}
 
+
       {/* make the user able to delete his posts. */}
       {type != "min" &&
         user &&
@@ -381,7 +385,11 @@ export function PostCard({
             <Button style={{ color: "red" }}>حذف</Button>
           </Link>
         )}
-      {router.query.codeTel && (
+
+
+
+        {/* The special inviter able to edit and delete */}
+      {router.query.codeTel && !router.query.codeTel&& (
         <Box
           sx={{
             display: "flex",
@@ -403,6 +411,8 @@ export function PostCard({
         </Box>
       )}
 
+
+
       {/* The admin control */}
       {type != "min" && user && user?.role == "admin" && (
         <Box>
@@ -423,6 +433,7 @@ export function PostCard({
               </Link>
             )}
 
+{/* delete post only the post view */}
             {type == "post" && (
               <Link href={"/api/posts?action=delete&id=" + post._id}>
                 <Button variant="outlined" style={{ color: "red" }}>
@@ -430,6 +441,8 @@ export function PostCard({
                 </Button>
               </Link>
             )}
+
+
             {router.query.hidden && (
               <Button
                 variant="outlined"
@@ -532,6 +545,9 @@ export function PostCard({
           </Box>
         </Box>
       )}
+
+
+
 
       <CardActions>
         {
