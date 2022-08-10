@@ -38,7 +38,7 @@ export default async function helper(
             const rpost = await new DBPost(req.body).save();
 
             res.json({
-              tel: rpost.tel,
+              id: rpost._id,
             });
           }
         });
@@ -46,7 +46,7 @@ export default async function helper(
     } else {
       const rpost = await new DBPost(req.body).save();
       res.json({
-        tel: rpost.tel,
+        id: rpost._id,
       });
     }
   } else if (action == "update") {
