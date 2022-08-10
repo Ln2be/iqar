@@ -14,6 +14,14 @@ const countSchema = new Schema({
 export const DBCount =
   mongoose.models.DBCount || mongoose.model("DBCount", countSchema);
 
+// a counter for the database
+const counterSchema = new Schema({
+  name: String,
+  counter: { type: Number, default: 0 },
+});
+export const DBCounter =
+  mongoose.models.DBCounter || mongoose.model("DBCounter", counterSchema);
+
 const userSchema = new Schema<UserType>({
   username: String,
   password: String,
