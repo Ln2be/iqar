@@ -554,7 +554,13 @@ export function PostCard({
       )}
 
       {post.sendTo && (
-        <Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            mt: 1,
+          }}
+        >
           <Box>"تمت احالة المنشور الى"</Box>
           {post.sendTo.map((tel) => (
             <Link href={"/posts?action=posts&codeTel=" + tel}>
