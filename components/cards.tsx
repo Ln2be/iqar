@@ -553,6 +553,17 @@ export function PostCard({
         </Box>
       )}
 
+      {post.sendTo && (
+        <Box>
+          <Box>"تمت احالة المنشور الى"</Box>
+          {post.sendTo.map((tel) => (
+            <Link href={"/posts?action=posts&codeTel=" + tel}>
+              <Box>{tel}</Box>
+            </Link>
+          ))}
+        </Box>
+      )}
+
       <CardActions>
         {
           <WhatsappShareButton url={basepath + "/posts?id=" + post._id}>

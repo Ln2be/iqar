@@ -1,13 +1,13 @@
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
 import Layout from "../components/layout";
-import { DBPost } from "../lib/mongo";
+import { DBPost, DBUser } from "../lib/mongo";
 import React, { useState } from "react";
-import { Post } from "../projectTypes";
+import { Post, UserType } from "../projectTypes";
 import Head from "next/head";
 import Pagination from "@mui/material/Pagination";
 
-import { PostCard, PostForm } from "../components/cards";
+import { PostCard, PostForm, UserCard } from "../components/cards";
 import Departement from "../components/cards";
 import {
   adtypes,
@@ -25,9 +25,11 @@ import { length } from "stylis";
 export default function Page({
   result,
   length,
+  rep,
 }: {
   result: string;
   length: string;
+  rep: string;
 }) {
   const router = useRouter();
   const user = useUser();
@@ -108,6 +110,7 @@ export default function Page({
   function rPosts() {
     const posts = JSON.parse(result) as Post[];
     const total = JSON.parse(length);
+    const repo = JSON.parse(rep) as UserType[];
     return (
       <Box>
         <Head>
@@ -142,6 +145,7 @@ export default function Page({
           }}
         >
           {!location && !router.query.codeTel && <Departement></Departement>}
+          {router.query.codeTel && <UserCard user={repo[0]}></UserCard>}
           {posts.map((post, i) => (
             <PostCard key={i} post={post} type="feed"></PostCard>
           ))}
@@ -269,6 +273,7 @@ export async function getServerSideProps({
   // if requesting all the Posts
   if (query.action == "posts") {
     let posts: Post[] = [];
+    let rep: UserType[] = [];
 
     // get posts searched for type and departements
     if (query.type && query.departements) {
@@ -337,6 +342,8 @@ export async function getServerSideProps({
       });
     } else if (query.codeTel) {
       const code = query.codeTel;
+
+      rep = DBUser.find({ tel: code }) as unknown as UserType[];
       // const allposts = await DBPost.find({}).sort({ createdAt: -1 });
       posts = allposts.filter((post) => {
         if (post.sendTo) return post.sendTo.includes(code);
@@ -360,6 +367,7 @@ export async function getServerSideProps({
     injectObject = {
       result: result,
       length: posts.length,
+      rep: rep,
     };
   } else if (query.action == "form") {
     injectObject = {

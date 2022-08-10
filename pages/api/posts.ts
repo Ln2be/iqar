@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { DBTrack } from "../../lib/mongo";
 import fs from "fs";
-import { DBCount, DBPost } from "../../lib/mongo";
+import { DBCounter, DBPost } from "../../lib/mongo";
 import { Buffer } from "buffer";
 import { Post } from "../../projectTypes";
 
@@ -26,6 +26,12 @@ export default async function helper(
   if (action == "save") {
     const post = req.body as Post;
     const { images } = post;
+
+    // add the counter
+    const pCounter = await DBCounter.findOne({ name: "posts" });
+    const counter = pCounter + 1;
+
+    await DBCounter.updateOne({ name: "posts" }, { counter: counter });
 
     if (images.length > 0) {
       images.map((image, i) => {
