@@ -236,7 +236,8 @@ export function PostCard({
                   </Button>
                 )}
               </Box>
-            ) : router.query.codeTel && user.role == "admin" ? (
+            ) : (router.query.codeTel && user && user.role != "admin") ||
+              (router.query.codeTel && !user) ? (
               <Box
                 sx={{
                   display: "flex",
@@ -350,9 +351,6 @@ export function PostCard({
           )}
       </CardContent>
 
-
-
-
       {/* if to show the full post */}
       {type == "full" &&
         post.images?.map((image, i) => (
@@ -375,7 +373,6 @@ export function PostCard({
           </Box>
         ))}
 
-
       {/* make the user able to delete his posts. */}
       {type != "min" &&
         user &&
@@ -386,32 +383,35 @@ export function PostCard({
           </Link>
         )}
 
-
-
-        {/* The special inviter able to edit and delete */}
-      {router.query.codeTel && !router.query.codeTel&& (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            mt: 2,
-          }}
-        >
-          <Link href={"/api/posts?action=hide&id=" + post._id}>
-            <Button variant="outlined" style={{ color: "red" }}>
+      {/* The special inviter able to edit and delete */}
+      {(router.query.codeTel && user && user.role != "admin") ||
+        (router.query.codeTel && !user && (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              mt: 2,
+            }}
+          >
+            <Button
+              variant="outlined"
+              style={{ color: "red" }}
+              onClick={() => {
+                fetch("/api/posts?action=hide&id=" + post._id).then(() => {
+                  router.reload();
+                });
+              }}
+            >
               حذف
             </Button>
-          </Link>
-          <Link href={"/posts?action=update&id=" + post._id}>
-            <Button variant="outlined" style={{ color: "blue" }}>
-              تعديل
-            </Button>
-          </Link>
-        </Box>
-      )}
-
-
+            <Link href={"/posts?action=update&id=" + post._id}>
+              <Button variant="outlined" style={{ color: "blue" }}>
+                تعديل
+              </Button>
+            </Link>
+          </Box>
+        ))}
 
       {/* The admin control */}
       {type != "min" && user && user?.role == "admin" && (
@@ -425,15 +425,23 @@ export function PostCard({
             }}
           >
             {/* only show comparison if the comparaison is not finished */}
-            {!post.comparedTo?.includes("finished") && (
+            {!post.comparedTo?.includes("finished") && !router.query.hidden ? (
               <Link href={"/compare?id=" + post._id}>
                 <Button variant="outlined" style={{ color: "blue" }}>
                   مقارنة
                 </Button>
               </Link>
+            ) : (
+              router.query.hidden && (
+                <Link href={"/posts?id=" + post._id}>
+                  <Button variant="outlined" style={{ color: "red" }}>
+                    حذف
+                  </Button>
+                </Link>
+              )
             )}
 
-{/* delete post only the post view */}
+            {/* delete post only the post view */}
             {type == "post" && (
               <Link href={"/api/posts?action=delete&id=" + post._id}>
                 <Button variant="outlined" style={{ color: "red" }}>
@@ -442,11 +450,10 @@ export function PostCard({
               </Link>
             )}
 
-
             {router.query.hidden && (
               <Button
                 variant="outlined"
-                style={{ color: "red" }}
+                style={{ color: "green" }}
                 onClick={() => {
                   fetch("/api/posts?action=show&id=" + post._id).then(() => {
                     router.reload();
@@ -545,9 +552,6 @@ export function PostCard({
           </Box>
         </Box>
       )}
-
-
-
 
       <CardActions>
         {
