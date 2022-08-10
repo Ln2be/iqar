@@ -273,7 +273,7 @@ export async function getServerSideProps({
   // if requesting all the Posts
   if (query.action == "posts") {
     let posts: Post[] = [];
-    let rep: UserType[] = [];
+    let repuser: UserType[] = [];
 
     // get posts searched for type and departements
     if (query.type && query.departements) {
@@ -343,7 +343,7 @@ export async function getServerSideProps({
     } else if (query.codeTel) {
       const code = query.codeTel;
 
-      rep = DBUser.find({ tel: code }) as unknown as UserType[];
+      repuser = (await DBUser.find({ tel: code })) as unknown as UserType[];
       // const allposts = await DBPost.find({}).sort({ createdAt: -1 });
       posts = allposts.filter((post) => {
         if (post.sendTo) return post.sendTo.includes(code);
@@ -364,10 +364,12 @@ export async function getServerSideProps({
     // the object to be injected in the post dom
     const result = JSON.stringify(postsresult);
 
+    const repst = JSON.stringify(repuser);
+
     injectObject = {
       result: result,
       length: posts.length,
-      rep: rep,
+      rep: repst,
     };
   } else if (query.action == "form") {
     injectObject = {
