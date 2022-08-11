@@ -561,7 +561,7 @@ export function PostCard({
             mt: 1,
           }}
         >
-          <Box>تمت احالة المنشور الى</Box>
+          {post.sendTo.length > 0 && <Box>تمت احالة المنشور الى</Box>}
           {post.sendTo.map((tel, index) => (
             <Link key={index} href={"/posts?action=posts&codeTel=" + tel}>
               <Box>{tel}</Box>
