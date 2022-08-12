@@ -75,7 +75,7 @@ export default function Page({
         >
           {!location && !router.query.codeTel && <Departement></Departement>}
           {router.query.codeTel && repo[0] && (
-            <UserCard user={repo[0]}></UserCard>
+            <UserCard type="min" user={repo[0]}></UserCard>
           )}
           {posts.map((post, i) => (
             <PostCard key={i} post={post} type="feed"></PostCard>
