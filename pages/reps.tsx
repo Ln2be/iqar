@@ -40,7 +40,7 @@ export default function Page({ usersJson }: { usersJson: string }) {
               }}
               key={index}
             >
-              <UserCard user={user}></UserCard>
+              <UserCard type="full" user={user}></UserCard>
             </Box>
           ))}
         </Box>

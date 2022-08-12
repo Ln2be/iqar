@@ -1660,7 +1660,13 @@ export function UserForm({
 }
 
 // The user card
-export function UserCard({ user }: { user: UserType }) {
+export function UserCard({
+  user,
+  type = "min",
+}: {
+  user: UserType;
+  type: string;
+}) {
   const router = useRouter();
   return (
     <Box
@@ -1710,9 +1716,16 @@ export function UserCard({ user }: { user: UserType }) {
           mt: 1,
         }}
       >
-        <Link href={"/api/deleteuser?id=" + user._id}>
-          <Button variant="outlined">حذف</Button>
-        </Link>
+        <Button
+          onClick={() => {
+            fetch("/api/deleteuser?id=" + user._id).then(() => {
+              router.reload();
+            });
+          }}
+          variant="outlined"
+        >
+          حذف
+        </Button>
         <WhatsappButton
           phone={correctPhone(user.tel ? user.tel : "no phone")}
           message={"السلام عليكم"}
@@ -1720,99 +1733,101 @@ export function UserCard({ user }: { user: UserType }) {
           <Button variant="contained">واتساب</Button>
         </WhatsappButton>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          mt: 1,
-        }}
-      >
+      {type == "full" && (
         <Box
           sx={{
             display: "flex",
             flexDirection: "row",
-            // justifyContent: "space-between",
+            justifyContent: "space-between",
+            mt: 1,
           }}
         >
-          <Button
-            variant="outlined"
-            onClick={() => {
-              fetch("/api/usertrust?action=incrtrust&id=" + user._id).then(
-                () => {
-                  router.reload();
-                }
-              );
-            }}
-          >
-            <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
-          </Button>
           <Box
             sx={{
               display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
+              flexDirection: "row",
+              // justifyContent: "space-between",
             }}
           >
-            <Box>{"الثقة"}</Box>
-            <Box>{user.trust}</Box>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                fetch("/api/usertrust?action=incrtrust&id=" + user._id).then(
+                  () => {
+                    router.reload();
+                  }
+                );
+              }}
+            >
+              <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
+            </Button>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box>{"الثقة"}</Box>
+              <Box>{user.trust}</Box>
+            </Box>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                fetch("/api/usertrust?action=decrtrust&id=" + user._id).then(
+                  () => {
+                    router.reload();
+                  }
+                );
+              }}
+            >
+              <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
+            </Button>
           </Box>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              fetch("/api/usertrust?action=decrtrust&id=" + user._id).then(
-                () => {
-                  router.reload();
-                }
-              );
-            }}
-          >
-            <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
-          </Button>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            // justifyContent: "space-between",
-          }}
-        >
-          <Button
-            variant="outlined"
-            onClick={() => {
-              fetch("/api/usertrust?action=incractivity&id=" + user._id).then(
-                () => {
-                  router.reload();
-                }
-              );
-            }}
-          >
-            <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
-          </Button>
           <Box
             sx={{
               display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
+              flexDirection: "row",
+              // justifyContent: "space-between",
             }}
           >
-            <Box>{"الحيوية"}</Box>
-            <Box>{user.activity}</Box>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                fetch("/api/usertrust?action=incractivity&id=" + user._id).then(
+                  () => {
+                    router.reload();
+                  }
+                );
+              }}
+            >
+              <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
+            </Button>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box>{"الحيوية"}</Box>
+              <Box>{user.activity}</Box>
+            </Box>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                fetch("/api/usertrust?action=decractivity&id=" + user._id).then(
+                  () => {
+                    router.reload();
+                  }
+                );
+              }}
+            >
+              <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
+            </Button>
           </Box>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              fetch("/api/usertrust?action=decractivity&id=" + user._id).then(
-                () => {
-                  router.reload();
-                }
-              );
-            }}
-          >
-            <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
-          </Button>
         </Box>
-      </Box>
+      )}
     </Box>
 
     // <Box></Box>
