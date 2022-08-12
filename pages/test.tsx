@@ -7,7 +7,7 @@ export default function Departs({
   onDeparts,
   iniDeparts = [],
 }: {
-  onDeparts: (departs: string[]) => {};
+  onDeparts: (departs: string[]) => void;
   iniDeparts: string[];
 }) {
   const iniDepartsObject: { [key: string]: boolean } = {};
