@@ -12,15 +12,12 @@ import Departement from "../components/cards";
 import {
   adtypes,
   departements,
-  gtypes,
   Nktt,
   priceCat,
   subtypes,
   translate,
 } from "../lib/myfunctions";
 import { useUser } from "../lib/auth/hooks";
-import { PostAddSharp } from "@mui/icons-material";
-import { length } from "stylis";
 
 export default function Page({
   result,
@@ -37,74 +34,6 @@ export default function Page({
 
   // spin if the post is submitted
   const [spin, setSpin] = useState(false);
-
-  // save the post to the database
-  async function handleSubmit(result: any) {
-    console.log(result);
-    if (!user) {
-      const userbody = {
-        username: result.tel,
-        password: "1212",
-        tel: result.tel,
-        role: "guest",
-      };
-      const signup = await fetch("/api/auth/signup", {
-        method: "POST",
-        body: JSON.stringify(userbody),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      console.log(signup);
-
-      //
-
-      const userlogin = {
-        username: result.tel,
-        password: "1212",
-      };
-
-      const login = await fetch("/api/auth/login", {
-        method: "POST",
-        body: JSON.stringify(userlogin),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(login);
-    }
-
-    // save the post
-    fetch("/api/posts?action=save", {
-      method: "POST",
-      body: JSON.stringify(result),
-      headers: {
-        "content-type": "application/json",
-      },
-    }).then((data) => {
-      data.json().then((rpost) => {
-        router.push("/posts?id=" + rpost.id);
-      });
-    });
-  }
-
-  // save the post to the database
-  function handleUpdate(result: any) {
-    console.log(result);
-    setSpin(true);
-    fetch("/api/posts?action=update", {
-      method: "POST",
-      body: JSON.stringify(result),
-      headers: {
-        "content-type": "application/json",
-      },
-    }).then((data) => {
-      data.json().then((rpost) => {
-        router.push("/posts?id=" + rpost.id);
-      });
-    });
-  }
 
   // show the posts if they are what is requested
   function rPosts() {
@@ -180,7 +109,7 @@ export default function Page({
 
     return (
       <Box>
-        <PostForm upost={post} onSubmit={handleUpdate}></PostForm>
+        <PostForm upost={post}></PostForm>
       </Box>
     );
   }
@@ -241,11 +170,7 @@ export default function Page({
         {action == "posts" && <Box>{rPosts()}</Box>}
         {action == "form" && (
           <Box>
-            {spin ? (
-              <Box>{"...جاري رفع المنشور"}</Box>
-            ) : (
-              <PostForm onSubmit={handleSubmit}></PostForm>
-            )}
+            {spin ? <Box>{"...جاري رفع المنشور"}</Box> : <PostForm></PostForm>}
           </Box>
         )}
         {action == "update" && <Box>{rUpdate()}</Box>}

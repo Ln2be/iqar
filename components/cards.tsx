@@ -856,40 +856,33 @@ let post: Post = {
   sendTo: [],
 };
 
-let pathFiles = [];
+// let pathFiles = [];
 
-export function PostForm({
-  upost = post,
-  onSubmit,
-  update = false,
-}: {
-  upost?: Post;
-  onSubmit: any;
-  update?: boolean;
-}) {
-  // update post is provided
+export function PostForm({ upost = post }: { upost?: Post }) {
   if (upost._id) {
     post = upost;
   }
   const user = useUser();
+  const router = useRouter();
   // the type is important and many other fields depend on this type, so we will update according to t
   // this value
   const [type, setType] = useState(upost.type);
 
+  // check if it is an update
+  const isUpdate = upost._id ? true : false;
+
   // also know the departements checked, they also important for the checkboxes
 
-  if (upost.departements.length > 0) {
-    upost.departements.map((departement) => {
-      inicheck[departement] = true;
-    });
+  // the checked departements
+  const [depcheck, setdepcheck] = useState(upost.departements);
+  const [forceRen, setF] = useState(false);
+
+  // get the departements
+  function getDeparts(deps: string[]) {
+    post.departements = deps;
+    setdepcheck(deps);
+    setF(!forceRen);
   }
-  const [depcheck, setdepcheck] = useState(inicheck);
-
-  // show thumbnails of the images being uplaoded
-  const [imagesUrl, setImagesUrl] = useState<(File | null)[]>([]);
-
-  // If is there two departements no needs for the region
-  const [depa, setDepa] = useState<string[]>([]);
 
   const {
     register,
@@ -898,402 +891,342 @@ export function PostForm({
     formState: { errors },
   } = useForm();
 
-  // handle the change in fields
-  function handleChange(e: any) {
-    const name = e.target.name as string;
-
-    setdepcheck((prev) => {
-      const prevdep = { ...prev };
-      prevdep[name] = !prevdep[name];
-      return prevdep;
-    });
-
-    if (!e.target.checked) {
-      const index = post.departements.indexOf(name);
-      if (index > -1) {
-        post.departements.splice(index, 1); // 2nd parameter means remove one item only
-      }
-    } else {
-      post.departements.push(name);
-    }
-    console.log(post.departements);
-
-    setDepa(post.departements);
-  }
-
-  // remind the user to enter a valid number
-
-  const [messagen, setmn] = useState("");
-  function handleSubmitThePost() {
+  // sign up the user and save the post to the database
+  async function handleSubmitThePost() {
     setDisable(true);
+    const result = post;
 
-    if (post.tel.length != 8 && !user) {
-      setmn("ادخل رقم هاتف صحيح");
+    if (!isUpdate) {
+      // if not a user sign him
+      if (!user) {
+        const userbody = {
+          username: result.tel,
+          password: "1212",
+          tel: result.tel,
+          role: "guest",
+        };
+        const signup = await fetch("/api/auth/signup", {
+          method: "POST",
+          body: JSON.stringify(userbody),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        console.log(signup);
+
+        //
+
+        const userlogin = {
+          username: result.tel,
+          password: "1212",
+        };
+
+        const login = await fetch("/api/auth/login", {
+          method: "POST",
+          body: JSON.stringify(userlogin),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(login);
+      }
+
+      // save the post
+      fetch("/api/posts?action=save", {
+        method: "POST",
+        body: JSON.stringify(result),
+        headers: {
+          "content-type": "application/json",
+        },
+      }).then((data) => {
+        data.json().then((rpost) => {
+          router.push("/posts?id=" + rpost.id);
+        });
+      });
     } else {
-      onSubmit(post);
+      fetch("/api/posts?action=update", {
+        method: "POST",
+        body: JSON.stringify(result),
+        headers: {
+          "content-type": "application/json",
+        },
+      }).then((data) => {
+        data.json().then((rpost) => {
+          router.push("/posts?id=" + rpost.id);
+        });
+      });
     }
   }
 
-  // disable the submit button once clicked
   const [disable, setDisable] = useState(false);
 
   return (
-    <Box
-      component={"form"}
-      sx={{
-        display: "grid",
-        gap: 2,
-        p: { xs: 2, md: 4 },
-        maxWidth: "400px",
-      }}
-    >
+    <form>
       <Box
+        // component={"form"}
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          // flexDirection: "column",
-          pb: 2,
-        }}
-      >
-        انشر إعلان
-      </Box>
-      <TextField
-        id="type"
-        select
-        label="نوع الاعلان"
-        {...register("typev", { required: true })}
-        defaultValue={upost.type}
-        onChange={(event) => {
-          post.type = event.target.value;
-          post.departements = [];
-          setType(event.target.value);
-          setdepcheck(inicheck);
-        }}
-      >
-        {adtypes.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
-      {errors.typev && (
-        <small
-          style={{
-            color: "red",
-          }}
-        >
-          ادخل الاعلان
-        </small>
-      )}
-
-      {type != "stay" && (
-        <>
-          <TextField
-            id="type"
-            select
-            label="اختيار فرعي"
-            defaultValue={upost.subtype}
-            {...register("subtype", { required: true })}
-            // value={currency}
-            onChange={(event) => {
-              post.subtype = event.target.value;
-            }}
-          >
-            {subtypes.map((option, i) => (
-              <MenuItem key={i} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-          {errors.subtype && (
-            <small
-              style={{
-                color: "red",
-              }}
-            >
-              ادخل الاختيار الفرعي
-            </small>
-          )}
-        </>
-      )}
-
-      {(type == "buying" || type == "demandRent") && (
-        <Box sx={{ display: "flex" }}>
-          <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-            <FormLabel component="legend">اختر المقاطعات</FormLabel>
-            <FormGroup>
-              <Box>
-                {departements.slice(0, 3).map((departement, i) => {
-                  return (
-                    <FormControlLabel
-                      key={i}
-                      control={
-                        <Checkbox
-                          checked={depcheck[departement.value]}
-                          onChange={handleChange}
-                          name={departement.value}
-                        />
-                      }
-                      label={departement.label}
-                    />
-                  );
-                })}
-              </Box>
-              <Box>
-                {departements.slice(3, 6).map((departement, i) => {
-                  return (
-                    <FormControlLabel
-                      key={i}
-                      control={
-                        <Checkbox
-                          checked={depcheck[departement.value]}
-                          onChange={handleChange}
-                          name={departement.value}
-                        />
-                      }
-                      label={departement.label}
-                    />
-                  );
-                })}
-              </Box>
-              <Box>
-                {departements.slice(6, 9).map((departement, i) => {
-                  return (
-                    <FormControlLabel
-                      key={i}
-                      control={
-                        <Checkbox
-                          checked={depcheck[departement.value]}
-                          onChange={handleChange}
-                          name={departement.value}
-                        />
-                      }
-                      label={departement.label}
-                    />
-                  );
-                })}
-              </Box>
-            </FormGroup>
-            <FormHelperText>Be careful</FormHelperText>
-          </FormControl>
-        </Box>
-      )}
-
-      {(type == "selling" || type == "offerRent" || type == "stay") && (
-        <TextField
-          id="outlined-select-currency"
-          select
-          label="المقاطعة"
-          defaultValue={upost.departements[0]}
-          {...register("departement", { required: true })}
-          onChange={(event) => {
-            const value = event.target.value;
-            post.departements = [];
-            post.departements.push(value);
-          }}
-          helperText="اختر المقاطعة"
-          required
-        >
-          {departements.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-      )}
-
-      {errors.departement && (
-        <small
-          style={{
-            color: "red",
-          }}
-        >
-          ادخل المقاطعة
-        </small>
-      )}
-
-      {depa.length < 2 && (
-        <TextField
-          id="outlined-basic"
-          label="المنطقة"
-          defaultValue={upost.region}
-          {...register("region", { required: true })}
-          variant="outlined"
-          inputProps={{ maxLength: 12 }}
-          onChange={(event) => {
-            post.region = event.target.value;
-          }}
-          required
-        />
-      )}
-
-      {errors.region && (
-        <small
-          style={{
-            color: "red",
-          }}
-        >
-          ادخل المنطقة
-        </small>
-      )}
-      <TextField
-        id="outlined-basic"
-        multiline
-        label="المواضقات"
-        defaultValue={upost.details}
-        variant="outlined"
-        onChange={(event) => {
-          post.details = event.target.value;
-        }}
-        helperText="مساحة المنزل   الشارع  الخ"
-      />
-      <TextField
-        id="outlined-basic"
-        label="واتساب"
-        defaultValue={upost.tel}
-        {...register("tel", { required: true })}
-        type="tel"
-        variant="outlined"
-        onChange={(event) => {
-          post.tel = event.target.value;
-        }}
-        required
-      />
-      <small
-        style={{
-          color: "red",
-        }}
-      >
-        {messagen}
-      </small>
-      {errors.tel && (
-        <small
-          style={{
-            color: "red",
-          }}
-        >
-          ادخل واتساب
-        </small>
-      )}
-      {post.type && (
-        <TextField
-          id="outlined-basic"
-          label="السعر"
-          type="number"
-          {...register("price", { required: true, min: 1 })}
-          defaultValue={upost.price}
-          variant="outlined"
-          onChange={(event) => {
-            const iprice = event.target.value as unknown as number;
-            post.price = correctPrice(iprice, post.type);
-            // post.price = iprice;
-          }}
-        />
-      )}
-
-      {errors.price && (
-        <small
-          style={{
-            color: "red",
-          }}
-        >
-          ادخل السعر بالالاف و بالعملة القديمة
-        </small>
-      )}
-
-      <Box
-        sx={{
-          display: "none",
-          // type == "stay" || type == "selling" || type == "offerRent"
-          // false ? "flex" : "none",
-          // alignItem: "right",
-          flexDirection: "row",
-        }}
-      >
-        <Button variant="outlined" component="label">
-          صور
-          <input
-            multiple
-            type="file"
-            onChange={(event) => {
-              const files = event.target.files;
-
-              // Only files are allowed
-              if (files) {
-                const nf = files.length < 3 ? files.length : 3;
-                pathFiles = [];
-
-                pathFiles = [...new Array(nf)].map((file, i) => files.item(i));
-
-                setImagesUrl(
-                  [...new Array(nf)].map((file, i) => files.item(i))
-                );
-              }
-            }}
-            accept="image/*"
-            hidden
-          />
-        </Button>
-      </Box>
-      <Box
-        sx={{
-          diplay: "flex",
-          // alignItem: "right",
-          flexDirection: "row-reverse",
+          display: "grid",
+          gap: 2,
+          p: { xs: 2, md: 4 },
+          maxWidth: "400px",
         }}
       >
         <Box
           sx={{
             display: "flex",
-            mb: 2,
-            overflow: "scroll",
+            justifyContent: "center",
+            // flexDirection: "column",
+            pb: 2,
           }}
         >
-          {imagesUrl.map(
-            (url, i) =>
-              url && (
-                <img
-                  style={{
-                    width: "100%",
-                    marginRight: "5px",
-                  }}
-                  key={i}
-                  src={URL.createObjectURL(url)}
-                ></img>
-              )
-          )}
+          انشر إعلان
+        </Box>
+        <TextField
+          id="type"
+          select
+          label="نوع الاعلان"
+          {...register("typev", { required: true })}
+          defaultValue={upost.type}
+          onChange={(event) => {
+            post.type = event.target.value;
+            // post.departements = [];
+            setType(event.target.value);
+            setdepcheck([]);
+          }}
+          value={type}
+        >
+          {adtypes.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+        {errors.typev && (
+          <small
+            style={{
+              color: "red",
+            }}
+          >
+            ادخل الاعلان
+          </small>
+        )}
+
+        {type != "stay" && (
+          <>
+            <TextField
+              id="type"
+              select
+              label="اختيار فرعي"
+              defaultValue={upost.subtype}
+              {...register("subtype", { required: true })}
+              // value={currency}
+              onChange={(event) => {
+                post.subtype = event.target.value;
+              }}
+            >
+              {subtypes.map((option, i) => (
+                <MenuItem key={i} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+            {errors.subtype && (
+              <small
+                style={{
+                  color: "red",
+                }}
+              >
+                ادخل الاختيار الفرعي
+              </small>
+            )}
+          </>
+        )}
+
+        {(type == "buying" || type == "demandRent") && (
+          <Departs
+            onDeparts={getDeparts}
+            iniDeparts={upost.departements}
+          ></Departs>
+          // <Box
+          //   sx={{
+          //     display: "grid",
+          //     gridTemplateColumns: "repeat(3, 1fr)",
+          //     gap: { xs: 1, md: 2 },
+          //     maxWidth: "500px",
+          //   }}
+          // >
+          //   {departements.map((departement, i) => {
+          //     return (
+          //       <FormControlLabel
+          //         key={i}
+          //         control={
+          //           <Checkbox
+          //             value={depcheck.includes(departement.value)}
+          //             onChange={handleChange}
+          //             name={departement.value}
+          //           />
+          //         }
+          //         label={departement.label}
+          //       />
+          //     );
+          //   })}
+          // </Box>
+        )}
+
+        {(type == "selling" || type == "offerRent" || type == "stay") && (
+          <TextField
+            id="outlined-select-currency"
+            select
+            label="المقاطعة"
+            defaultValue={upost.departements[0]}
+            {...register("departement", { required: true })}
+            onChange={(event) => {
+              const value = event.target.value;
+              post.departements = [];
+              post.departements.push(value);
+            }}
+            helperText="اختر المقاطعة"
+            required
+          >
+            {departements.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        )}
+
+        {errors.departement && (
+          <small
+            style={{
+              color: "red",
+            }}
+          >
+            ادخل المقاطعة
+          </small>
+        )}
+
+        {depcheck.length < 2 && (
+          <TextField
+            id="outlined-basic"
+            label="المنطقة"
+            defaultValue={upost.region}
+            {...register("region", { required: true })}
+            variant="outlined"
+            inputProps={{ maxLength: 12 }}
+            onChange={(event) => {
+              post.region = event.target.value;
+            }}
+            required
+          />
+        )}
+
+        {errors.region && (
+          <small
+            style={{
+              color: "red",
+            }}
+          >
+            ادخل المنطقة
+          </small>
+        )}
+        <TextField
+          id="outlined-basic"
+          multiline
+          label="المواضقات"
+          defaultValue={upost.details}
+          variant="outlined"
+          onChange={(event) => {
+            post.details = event.target.value;
+          }}
+          helperText="مساحة المنزل   الشارع  الخ"
+        />
+        <TextField
+          id="outlined-basic"
+          label="واتساب"
+          defaultValue={upost.tel}
+          {...register("tel", { required: true })}
+          type="tel"
+          variant="outlined"
+          onChange={(event) => {
+            post.tel = event.target.value;
+          }}
+          required
+        />
+        {/* <small
+        style={{
+          color: "red",
+        }}
+      >
+        {messagen}
+      </small> */}
+        {errors.tel && (
+          <small
+            style={{
+              color: "red",
+            }}
+          >
+            ادخل واتساب
+          </small>
+        )}
+        {post.type && (
+          <TextField
+            id="outlined-basic"
+            label="السعر"
+            type="number"
+            {...register("price", { required: true, min: 1 })}
+            defaultValue={upost.price}
+            variant="outlined"
+            onChange={(event) => {
+              const iprice = event.target.value as unknown as number;
+              post.price = correctPrice(iprice, post.type);
+              // post.price = iprice;
+            }}
+          />
+        )}
+
+        {errors.price && (
+          <small
+            style={{
+              color: "red",
+            }}
+          >
+            ادخل السعر بالالاف و بالعملة القديمة
+          </small>
+        )}
+
+        {user && user.role == "admin" && (
+          <FormControlLabel
+            label="اخفاء"
+            control={
+              <Switch
+                onChange={() => {
+                  post.hidden = true;
+                }}
+              />
+            }
+          ></FormControlLabel>
+        )}
+        {/* This button needs to be viewed again */}
+        {/* show the message of validation */}
+        {/* <p>{messagen}</p> */}
+        <Box>
+          <Button
+            type="submit"
+            disabled={disable}
+            variant="contained"
+            onClick={handleSubmit(handleSubmitThePost)}
+          >
+            نشر
+          </Button>
         </Box>
       </Box>
-      {user && user.role == "admin" && (
-        <FormControlLabel
-          label="اخفاء"
-          control={
-            <Switch
-              onChange={() => {
-                post.hidden = true;
-              }}
-            />
-          }
-        ></FormControlLabel>
-      )}
-      {/* This button needs to be viewed again */}
-      {/* show the message of validation */}
-      {/* <p>{messagen}</p> */}
-      <Box>
-        <Button
-          type="submit"
-          disabled={disable}
-          variant="contained"
-          onClick={handleSubmit(handleSubmitThePost)}
-        >
-          نشر
-        </Button>
-      </Box>
-    </Box>
+    </form>
   );
 }
 
-const depvalues: any = [];
+let depvalues: string[] = [];
 
 export default function Departement() {
   const router = useRouter();
@@ -1337,78 +1270,91 @@ export default function Departement() {
   return (
     <Box
       sx={{
+        display: "flex",
+        flexDirection: "column",
         mb: 4,
+        maxWidth: "400px",
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
+      <Departs
+        onDeparts={(deps) => {
+          depvalues = deps;
+          console.log(depvalues);
         }}
-      >
-        <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-          <FormLabel component="legend">اختر المقاطعات</FormLabel>
-          <FormGroup>
-            <Box>
-              {departements.slice(0, 3).map((departement, i) => {
-                return (
-                  <FormControlLabel
-                    key={i}
-                    control={
-                      <Checkbox
-                        checked={depcheck[departement.value]}
-                        onChange={handleChange}
-                        name={departement.value}
-                      />
-                    }
-                    label={departement.label}
-                  />
-                );
-              })}
-            </Box>
-            <Box>
-              {departements.slice(3, 6).map((departement, i) => {
-                return (
-                  <FormControlLabel
-                    key={i}
-                    control={
-                      <Checkbox
-                        checked={depcheck[departement.value]}
-                        onChange={handleChange}
-                        name={departement.value}
-                      />
-                    }
-                    label={departement.label}
-                  />
-                );
-              })}
-            </Box>
-            <Box>
-              {departements.slice(6, 9).map((departement, i) => {
-                return (
-                  <FormControlLabel
-                    key={i}
-                    control={
-                      <Checkbox
-                        checked={depcheck[departement.value]}
-                        onChange={handleChange}
-                        name={departement.value}
-                      />
-                    }
-                    label={departement.label}
-                  />
-                );
-              })}
-            </Box>
-          </FormGroup>
-          <FormHelperText>
-            اختر بعض المقاطعات من اجل مزيد من التحديد
-          </FormHelperText>
-        </FormControl>
+        iniDeparts={[]}
+      ></Departs>
+      <Box>
+        <Button variant="contained" onClick={submit}>
+          بحث
+        </Button>
       </Box>
-      <Button variant="contained" onClick={submit}>
-        بحث
-      </Button>
     </Box>
+
+    //   <Box
+    //     sx={{
+    //       display: "flex",
+    //     }}
+    //   >
+    //     <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
+    //       <FormLabel component="legend">اختر المقاطعات</FormLabel>
+    //       <FormGroup>
+    //         <Box>
+    //           {departements.slice(0, 3).map((departement, i) => {
+    //             return (
+    //               <FormControlLabel
+    //                 key={i}
+    //                 control={
+    //                   <Checkbox
+    //                     checked={depcheck[departement.value]}
+    //                     onChange={handleChange}
+    //                     name={departement.value}
+    //                   />
+    //                 }
+    //                 label={departement.label}
+    //               />
+    //             );
+    //           })}
+    //         </Box>
+    //         <Box>
+    //           {departements.slice(3, 6).map((departement, i) => {
+    //             return (
+    //               <FormControlLabel
+    //                 key={i}
+    //                 control={
+    //                   <Checkbox
+    //                     checked={depcheck[departement.value]}
+    //                     onChange={handleChange}
+    //                     name={departement.value}
+    //                   />
+    //                 }
+    //                 label={departement.label}
+    //               />
+    //             );
+    //           })}
+    //         </Box>
+    //         <Box>
+    //           {departements.slice(6, 9).map((departement, i) => {
+    //             return (
+    //               <FormControlLabel
+    //                 key={i}
+    //                 control={
+    //                   <Checkbox
+    //                     checked={depcheck[departement.value]}
+    //                     onChange={handleChange}
+    //                     name={departement.value}
+    //                   />
+    //                 }
+    //                 label={departement.label}
+    //               />
+    //             );
+    //           })}
+    //         </Box>
+    //       </FormGroup>
+    //       <FormHelperText>
+    //         اختر بعض المقاطعات من اجل مزيد من التحديد
+    //       </FormHelperText>
+    //     </FormControl>
+    //   </Box>
   );
 }
 
@@ -1520,6 +1466,8 @@ export function UserForm({
   const { role } = router.query;
   const [errorMsg, setErrorMsg] = useState("");
 
+  const [disable, setDisable] = useState(false);
+
   function handleChangeLogin(e: any) {
     const name = e.target.name;
     const value = e.target.value;
@@ -1549,6 +1497,8 @@ export function UserForm({
       setErrorMsg(`The passwords don't match`);
       return;
     }
+
+    setDisable(true);
     userbody.role = role ? role : "";
     fetch("/api/auth/signup", {
       method: "POST",
@@ -1688,7 +1638,11 @@ export function UserForm({
               alignItem: "right",
             }}
           >
-            <Button onClick={submitSignup} variant="contained">
+            <Button
+              onClick={submitSignup}
+              variant="contained"
+              disabled={disable}
+            >
               التسجيل
             </Button>
           </Box>
@@ -1862,5 +1816,67 @@ export function UserCard({ user }: { user: UserType }) {
     </Box>
 
     // <Box></Box>
+  );
+}
+
+// The departements
+export function Departs({
+  onDeparts,
+  iniDeparts = [],
+}: {
+  onDeparts: (departs: string[]) => void;
+  iniDeparts: string[];
+}) {
+  const iniDepartsObject: { [key: string]: boolean } = {};
+  iniDeparts.map((dep) => {
+    iniDepartsObject[dep] = true;
+  });
+  const [depcheck, setdepcheck] = useState<{ [key: string]: boolean }>(
+    iniDepartsObject
+  );
+
+  function handleChange(e: any) {
+    const name = e.target.name as string;
+    const checked = e.target.checked;
+
+    if (checked) {
+      const temp = depcheck;
+      temp[name] = true;
+      setdepcheck(temp);
+    } else {
+      const temp = depcheck;
+      delete depcheck[name];
+      setdepcheck(temp);
+    }
+    onDeparts(Object.keys(depcheck));
+  }
+
+  return (
+    <Box>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: { xs: 1, md: 2 },
+          maxWidth: "500px",
+        }}
+      >
+        {departements.map((departement, i) => {
+          return (
+            <FormControlLabel
+              key={i}
+              control={
+                <Checkbox
+                  value={Object.keys(depcheck).includes(departement.value)}
+                  onChange={handleChange}
+                  name={departement.value}
+                />
+              }
+              label={departement.label}
+            />
+          );
+        })}
+      </Box>
+    </Box>
   );
 }

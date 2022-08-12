@@ -29,60 +29,64 @@ export default async function helper(
 
     // add the counter
     const pCounter = await DBCounter.findOne({ name: "posts" });
-    const counter = pCounter + 1;
+    const counter = pCounter.counter + 1;
 
     await DBCounter.updateOne({ name: "posts" }, { counter: counter });
 
-    if (images.length > 0) {
-      images.map((image, i) => {
-        const data = image.data;
+    post.count = counter;
 
-        saveimage(data, async (name) => {
-          // save the url of the image
-          post.images[i].data = site + name;
-          if (i == images.length - 1) {
-            const rpost = await new DBPost(req.body).save();
+    const rpost = await new DBPost(post).save();
+    res.json({
+      id: rpost._id,
+    });
 
-            res.json({
-              id: rpost._id,
-            });
-          }
-        });
-      });
-    } else {
-      const rpost = await new DBPost(req.body).save();
-      res.json({
-        id: rpost._id,
-      });
-    }
+    // if (images.length > 0) {
+    // images.map((image, i) => {
+    //   const data = image.data;
+
+    //   saveimage(data, async (name) => {
+    //     // save the url of the image
+    //     post.images[i].data = site + name;
+    //     if (i == images.length - 1) {
+    //       const rpost = await new DBPost(req.body).save();
+
+    //       res.json({
+    //         id: rpost._id,
+    //       });
+    //     }
+    //   });
+    // });
+    // } else {
+    // }
   } else if (action == "update") {
     const post = req.body as Post;
     const id = post._id;
     delete post._id;
     const images = post.images;
-    if (images.length > 0 && images[0].data.startsWith(site)) {
-      images.map((image, i) => {
-        const data = image.data;
+    const rpost = await DBPost.updateOne({ _id: id }, post);
+    res.json({
+      id: id,
+    });
+    // if (images.length > 0 && images[0].data.startsWith(site)) {
+    //   images.map((image, i) => {
+    //     const data = image.data;
 
-        saveimage(data, async (name) => {
-          // save the url of the image
-          post.images[i].data = site + name;
+    //     saveimage(data, async (name) => {
+    //       // save the url of the image
+    //       post.images[i].data = site + name;
 
-          if (i == images.length - 1) {
-            const rpost = await DBPost.updateOne({ _id: id }, post);
+    //       if (i == images.length - 1) {
+    //         const rpost = await DBPost.updateOne({ _id: id }, post);
 
-            res.json({
-              id: id,
-            });
-          }
-        });
-      });
-    } else {
-      const rpost = await DBPost.updateOne({ _id: id }, post);
-      res.json({
-        id: id,
-      });
-    }
+    //         res.json({
+    //           id: id,
+    //         });
+    //       }
+    //     });
+    //   });
+    // } else {
+
+    // }
     console.log(action);
   } else if (action == "delete") {
     const { id } = req.query;
