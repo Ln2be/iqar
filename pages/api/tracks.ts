@@ -9,50 +9,50 @@ export default async function helper(
 
   if (action == "save") {
     const track = req.body;
-    const { postid } = track;
+    const { postcount } = track;
     const tracksaved = await new DBTrack(track).save();
 
-    // add a trackid to the post
+    // add a trackcount to the post
     const post = await DBPost.updateOne(
-      { _id: postid },
-      { trackid: tracksaved._id }
+      { count: postcount },
+      { trackid: tracksaved.count }
     );
 
     res.send(tracksaved);
   } else if (action == "update") {
     const updatebody = req.body;
-    const { id } = req.query;
-    const track = await DBTrack.findOne({ _id: id });
+    const { count } = req.query;
+    const track = await DBTrack.findOne({ count: count });
     const updates = track.updates;
     updates.push(updatebody);
     const updatedtrack = await DBTrack.updateOne(
-      { _id: id },
+      { count: count },
       { updates: updates }
     );
-    res.send({ id });
+    res.send({ count });
   } else if (action == "archive") {
-    const { id } = req.query;
+    const { count } = req.query;
 
-    const track = await DBTrack.findOne({ _id: id });
+    const track = await DBTrack.findOne({ count: count });
 
-    // remove the trackid from the post
-    const { postid } = track;
-    const post = await DBPost.updateOne({ _id: postid }, { trackid: "" });
+    // remove the trackcount from the post
+    const { postcount } = track;
+    const post = await DBPost.updateOne({ count: postcount }, { trackcount: "" });
 
-    const response = await DBTrack.updateOne({ _id: id }, { archived: true });
+    const response = await DBTrack.updateOne({ count: count }, { archived: true });
     res
       .writeHead(302, { Location: "/tracks?action=tracks&type=archived" })
       .end();
   } else if (action == "delete") {
-    const { id } = req.query;
+    const { count } = req.query;
 
-    const track = await DBTrack.findOne({ _id: id });
+    const track = await DBTrack.findOne({ count: count });
 
-    // remove the trackid from the post
-    const { postid } = track;
-    const post = await DBPost.updateOne({ _id: postid }, { trackid: "" });
+    // remove the trackcount from the post
+    const { postcount } = track;
+    const post = await DBPost.updateOne({ count: postcount }, { trackcount: "" });
 
-    const response = await DBTrack.deleteOne({ _id: id });
+    const response = await DBTrack.deleteOne({ count: count });
     res
       .writeHead(302, { Location: "/tracks?action=tracks&type=archived" })
       .end();
@@ -60,15 +60,15 @@ export default async function helper(
     const dtracks = await DBTrack.deleteMany({});
     res.send("Ok");
   } else if (action == "restore") {
-    const { id } = req.query;
+    const { count } = req.query;
 
-    const track = await DBTrack.findOne({ _id: id });
+    const track = await DBTrack.findOne({ count: count });
 
-    // remove the trackid from the post
-    const { postid } = track;
-    const post = await DBPost.updateOne({ _id: postid }, { trackid: id });
+    // remove the trackcount from the post
+    const { postcount } = track;
+    const post = await DBPost.updateOne({ count: postcount }, { trackcount: count });
 
-    const response = await DBTrack.updateOne({ _id: id }, { archived: false });
+    const response = await DBTrack.updateOne({ count: count }, { archived: false });
     res.writeHead(302, { Location: "/tracks?action=tracks" }).end();
   }
 }

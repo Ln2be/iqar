@@ -37,7 +37,7 @@ export default async function helper(
 
     const rpost = await new DBPost(post).save();
     res.json({
-      id: rpost._id,
+      count: rpost.count,
     });
 
     // if (images.length > 0) {
@@ -51,7 +51,7 @@ export default async function helper(
     //       const rpost = await new DBPost(req.body).save();
 
     //       res.json({
-    //         id: rpost._id,
+    //         id: rpost.count,
     //       });
     //     }
     //   });
@@ -60,12 +60,12 @@ export default async function helper(
     // }
   } else if (action == "update") {
     const post = req.body as Post;
-    const id = post._id;
-    delete post._id;
+    const count = post.count;
+    delete post.count;
     const images = post.images;
-    const rpost = await DBPost.updateOne({ _id: id }, post);
+    const rpost = await DBPost.updateOne({ count: count }, post);
     res.json({
-      id: id,
+      count: post.count,
     });
     // if (images.length > 0 && images[0].data.startsWith(site)) {
     //   images.map((image, i) => {
@@ -76,7 +76,7 @@ export default async function helper(
     //       post.images[i].data = site + name;
 
     //       if (i == images.length - 1) {
-    //         const rpost = await DBPost.updateOne({ _id: id }, post);
+    //         const rpost = await DBPost.updateOne({ count: count }, post);
 
     //         res.json({
     //           id: id,
@@ -89,16 +89,16 @@ export default async function helper(
     // }
     console.log(action);
   } else if (action == "delete") {
-    const { id } = req.query;
-    const rpost = await DBPost.deleteOne({ _id: id });
+    const { count } = req.query;
+    const rpost = await DBPost.deleteOne({ count: count });
     res.writeHead(302, { Location: "/" }).end(rpost);
   } else if (action == "hide") {
-    const { id } = req.query;
-    await DBPost.updateOne({ _id: id }, { hidden: true });
+    const { count } = req.query;
+    await DBPost.updateOne({ count: count }, { hidden: true });
     res.send("OK");
   } else if (action == "show") {
-    const { id } = req.query;
-    await DBPost.updateOne({ _id: id }, { hidden: false });
+    const { count } = req.query;
+    await DBPost.updateOne({ count: count }, { hidden: false });
     res.send("OK");
   }
 }

@@ -19,6 +19,7 @@ const counterSchema = new Schema({
   name: String,
   counter: { type: Number, default: 0 },
 });
+
 export const DBCounter =
   mongoose.models.DBCounter || mongoose.model("DBCounter", counterSchema);
 
@@ -65,8 +66,8 @@ const postSchema = new Schema<Post>({
   user: String,
   userTel: String,
   comparedTo: [String],
-  trackid: String,
-  chanceid: String,
+  trackcount: String,
+  chancecount: String,
   hidden: { type: Boolean, default: false },
   archived: Boolean,
   sendTo: [String],
@@ -106,6 +107,7 @@ const TracksSchema = new Schema<Track>({
   name2: String,
   tel2: String,
   archived: { type: Boolean, default: false },
+  count: Number,
 });
 
 export const DBTrack =

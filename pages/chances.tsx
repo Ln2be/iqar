@@ -34,7 +34,7 @@ export default function Page({ result }: { result: string }) {
   function handleSubmit(result: any) {
     if (action == "form") {
       const chance = result;
-      chance.postid = router.query.postid as string;
+      chance.postcount = router.query.postcount as string;
 
       fetch("/api/chances?action=save", {
         method: "POST",
@@ -44,13 +44,13 @@ export default function Page({ result }: { result: string }) {
         },
       }).then((data) => {
         data.json().then((d) => {
-          router.push("/chances?action=chance&id=" + d._id);
+          router.push("/chances?action=chance&count=" + d.count);
         });
       });
     } else if (action == "update") {
       const updatebody = result;
-      const { id } = router.query;
-      fetch("/api/chances?action=update&id=" + id, {
+      const { count } = router.query;
+      fetch("/api/chances?action=update&count=" + count, {
         method: "POST",
         body: JSON.stringify(updatebody),
         headers: {
@@ -123,7 +123,7 @@ export async function getServerSideProps({
   if (query.action == "chances") {
     const chances = await DBChance.find({});
     for (let i = 0; i < chances.length; i++) {
-      const post = await DBPost.findOne({ _id: chances[i].postid });
+      const post = await DBPost.findOne({ count: chances[i].postcount });
 
       // add the post to the chance
       chances[i]._doc.post = post;
@@ -136,8 +136,8 @@ export async function getServerSideProps({
 
     // if requesting one chance
   } else if (query.action == "chance") {
-    const chance = await DBChance.findOne({ _id: query.id });
-    const post = await DBPost.findOne({ _id: chance.postid });
+    const chance = await DBChance.findOne({ count: query.count });
+    const post = await DBPost.findOne({ count: chance.postcount });
 
     chance._doc.post = post;
     const result = JSON.stringify(chance);

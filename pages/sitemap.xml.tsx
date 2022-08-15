@@ -17,10 +17,10 @@ function generateSiteMap(posts: [{ [key: string]: string }]) {
        <loc>${basepath + "/contactUs"}</loc>
      </url>
      ${posts
-       .map(({ _id }) => {
+       .map(({ count }) => {
          return `
        <url>
-           <loc>${`${EXTERNAL_DATA_URL}?id=${_id}`}</loc>
+           <loc>${`${EXTERNAL_DATA_URL}?count=${count}`}</loc>
        </url>
      `;
        })
@@ -34,7 +34,7 @@ function SiteMap() {
 }
 
 export async function getServerSideProps({ res }: { res: NextApiResponse }) {
-  const posts = (await DBPost.find({}).select(["_id"])) as [
+  const posts = (await DBPost.find({}).select(["count"])) as [
     { [key: string]: string }
   ];
   // const posts = JSON.stringify(postsObject);

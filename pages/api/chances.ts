@@ -9,25 +9,28 @@ export default async function helper(
 
   if (action == "save") {
     const chance = req.body;
-    const { postid } = chance;
+    const { postcount } = chance;
     const chancesaved = await new DBChance(chance).save();
 
-    // add a chanceid to the post
-    await DBPost.updateOne({ _id: postid }, { chanceid: chancesaved._id });
+    // add a chancecount to the post
+    await DBPost.updateOne(
+      { count: postcount },
+      { chanceid: chancesaved.count }
+    );
 
     res.send(chancesaved);
   } else if (action == "update") {
     console.log(action);
   } else if (action == "delete") {
-    const { id } = req.query;
+    const { count } = req.query;
 
-    const chance = await DBChance.findOne({ _id: id });
+    const chance = await DBChance.findOne({ count: count });
 
-    // remove the chanceid from the post
-    const { postid } = chance;
-    await DBPost.updateOne({ _id: postid }, { chanceid: "" });
+    // remove the chancecount from the post
+    const { postcount } = chance;
+    await DBPost.updateOne({ count: postcount }, { chancecount: "" });
 
-    await DBChance.deleteOne({ _id: id });
+    await DBChance.deleteOne({ count: count });
     res.writeHead(302, { Location: "/" }).end();
   } else if (action == "deleteall") {
     await DBChance.deleteMany({});

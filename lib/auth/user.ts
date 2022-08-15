@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { v4 as uuidv4 } from "uuid";
 import { UserType } from "../../projectTypes";
-import { DBCount, DBUser } from "../mongo";
+import { DBCounter, DBUser } from "../mongo";
 
 /**
  * User methods. The example doesn't contain a DB, but for real applications you must use a
@@ -30,10 +30,10 @@ export async function createUser(newUser: UserType) {
 
   // count the number of user
   const userCounter =
-    (await DBCount.findOne({ name: "user" })) ||
-    (await new DBCount({ name: "user" }).save());
+    (await DBCounter.findOne({ name: "users" })) ||
+    (await new DBCounter({ name: "users" }).save());
 
-  await DBCount.updateOne({ name: "user" }, { count: userCounter.count + 1 });
+  await DBCounter.updateOne({ name: "user" }, { count: userCounter.count + 1 });
   // using the database now
 
   user.count = userCounter.count + 1;
@@ -74,6 +74,7 @@ export async function getUser({ tel }: { tel: string }) {
     "role",
     "tel",
     "departements",
+    "count",
   ]);
 }
 

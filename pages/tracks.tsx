@@ -17,7 +17,7 @@ export default function Page({ result }: { result: string }) {
   function handleSubmit(result: any) {
     if (action == "form") {
       const track = result;
-      track.postid = router.query.postid as string;
+      track.postcount = router.query.postcount as string;
 
       fetch("/api/tracks?action=save", {
         method: "POST",
@@ -27,13 +27,13 @@ export default function Page({ result }: { result: string }) {
         },
       }).then((data) => {
         data.json().then((d) => {
-          router.push("/tracks?action=track&id=" + d._id);
+          router.push("/tracks?action=track&count=" + d.count);
         });
       });
     } else if (action == "update") {
       const updatebody = result;
-      const { id } = router.query;
-      fetch("/api/tracks?action=update&id=" + id, {
+      const { count } = router.query;
+      fetch("/api/tracks?action=update&count=" + count, {
         method: "POST",
         body: JSON.stringify(updatebody),
         headers: {
@@ -107,7 +107,7 @@ export async function getServerSideProps({
     if (!query.type) {
       const tracks = await DBTrack.find({ archived: false });
       for (let i = 0; i < tracks.length; i++) {
-        const post = await DBPost.findOne({ _id: tracks[i].postid });
+        const post = await DBPost.findOne({ count: tracks[i].postcount });
 
         // add the post to the track
         tracks[i]._doc.post = post;
@@ -120,7 +120,7 @@ export async function getServerSideProps({
     } else if (query.type == "archived") {
       const tracks = await DBTrack.find({ archived: true });
       for (let i = 0; i < tracks.length; i++) {
-        const post = await DBPost.findOne({ _id: tracks[i].postid });
+        const post = await DBPost.findOne({ count: tracks[i].postcount });
 
         // add the post to the track
         tracks[i]._doc.post = post;
@@ -136,8 +136,8 @@ export async function getServerSideProps({
 
     // if requesting one track
   } else if (query.action == "track") {
-    const track = await DBTrack.findOne({ _id: query.id });
-    const post = await DBPost.findOne({ _id: track.postid });
+    const track = await DBTrack.findOne({ count: query.count });
+    const post = await DBPost.findOne({ count: track.postcount });
 
     track._doc.post = post;
     const result = JSON.stringify(track);

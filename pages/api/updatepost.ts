@@ -5,11 +5,11 @@ export default async function helper(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { id } = req.query;
+  const { count } = req.query;
   const post = req.body;
   delete post._id;
-  const postr = await DBPost.updateOne({ _id: id }, post);
+  const postr = await DBPost.updateOne({ count: count }, post);
 
-  // res.writeHead(302, { Location: "/post?id=" + id });
+  // res.writeHead(302, { Location: "/post?count=" + count });
   res.json(postr);
 }

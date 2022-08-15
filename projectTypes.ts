@@ -34,8 +34,8 @@ export interface Post {
   user: string;
   userTel: string;
   comparedTo?: string[];
-  trackid?: string;
-  chanceid?: string;
+  trackcount?: string;
+  chancecount?: string;
   hidden?: boolean;
   archived?: boolean;
   sendTo: string[];
@@ -49,6 +49,7 @@ export interface Image {
 
 // the track type
 export interface Track {
+  count: string;
   _id?: string;
   postid: string;
   updates: [
@@ -68,6 +69,7 @@ export interface Track {
 
 // A type Chance
 export interface Chance {
+  count: string;
   _id?: string;
   postid: string;
   text: string;

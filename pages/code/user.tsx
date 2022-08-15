@@ -105,7 +105,7 @@ export default function Page({ posts }: { posts: any }) {
               <td>
                 <Button
                   onClick={() => {
-                    fetch("/api/useCode?id=" + post._id).then(() => {
+                    fetch("/api/useCode?count=" + post.count).then(() => {
                       router.reload();
                     });
                   }}

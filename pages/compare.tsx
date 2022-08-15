@@ -57,9 +57,11 @@ export default function Page({
   // if no reps or posts to compare to than this post finished
   useEffect(() => {
     if (reps.length == 0 && posts.length == 0) {
-      fetch("/api/compared?id=" + posto._id + "&finished=true").then(() => {
-        router.back();
-      });
+      fetch("/api/compared?count=" + posto.count + "&finished=true").then(
+        () => {
+          router.back();
+        }
+      );
     }
   }, []);
 
@@ -100,18 +102,18 @@ export default function Page({
 
                   <WhatsappButton
                     phone={correctPhone(rep.tel)}
-                    message={basepath + "/posts?id=" + posto._id}
+                    message={basepath + "/posts?count=" + posto.count}
                   >
                     <Button
                       onClick={() => {
                         fetch(
-                          "/api/compared?id=" + posto._id + "&user=" + rep._id
+                          "/api/compared?count=" +
+                            posto.count +
+                            "&user=" +
+                            rep.count
                         ).then(() => {
                           router.reload();
                         });
-                        // router.push(
-                        //   "/api/compared?id=" + posto._id + "&user=" + rep._id
-                        // );
                       }}
                       variant="contained"
                     >
@@ -125,11 +127,11 @@ export default function Page({
               const isdemand =
                 postc.type == "buying" || postc.type == "demandRent";
               let url = "";
-              if (posto._id && postc._id) {
+              if (posto.count && postc.count) {
                 // If it's a demand so this post will receive the original post link if not this
                 // post will be sent to the "original post" owner
-                const id = isdemand ? posto._id : postc._id;
-                url = basepath + "/posts?id=" + id;
+                const count = isdemand ? posto.count : postc.count;
+                url = basepath + "/posts?count=" + count;
               }
 
               // if the nature is "demand" send the post to the owner of the "original post".
@@ -141,8 +143,8 @@ export default function Page({
                   goto={{
                     url: url,
                     tel: tel,
-                    ido: posto._id,
-                    idc: postc._id,
+                    ido: posto.count,
+                    idc: postc.count,
                   }}
                   key={i}
                   post={postc}
@@ -162,7 +164,7 @@ export async function getServerSideProps({
 }: {
   query: { [key: string]: string };
 }) {
-  const postObject = await DBPost.findOne({ _id: query.id });
+  const postObject = await DBPost.findOne({ count: query.count });
 
   // which Nouakchott district the post belong to
   const nn = Nktt["nn"];
@@ -195,7 +197,7 @@ export async function getServerSideProps({
   });
 
   const repsObject = repsdep.filter(
-    (rep) => !postObject.comparedTo?.includes(rep._id)
+    (rep) => !postObject.comparedTo?.includes(rep.count)
   );
 
   // send the opposite posts: if selling the opposite is buying
@@ -212,7 +214,7 @@ export async function getServerSideProps({
 
   // the post shouldn't be already compared to this post
   const ncposts = oppositeposts.filter(
-    (post) => !postObject.comparedTo?.includes(post._id)
+    (post) => !postObject.comparedTo?.includes(post.count)
   );
 
   // the posts should be in the same departement

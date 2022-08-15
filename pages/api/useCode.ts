@@ -17,7 +17,7 @@ export default async function helper(
   res: NextApiResponse
 ) {
   const post = await DBUserCode.updateOne(
-    { _id: req.query.id },
+    { count: req.query.count },
     { $inc: { used: 1 } }
   );
 

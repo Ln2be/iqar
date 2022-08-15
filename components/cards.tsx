@@ -46,7 +46,7 @@ export function PostCard({
   post,
   type = "feed",
   goto = {
-    url: basepath + "/posts?id=" + post._id,
+    url: basepath + "/posts?count=" + post.count,
     tel: correctPhone(post.tel),
   },
 }: {
@@ -55,8 +55,8 @@ export function PostCard({
   goto?: {
     url: string;
     tel: string;
-    ido?: string;
-    idc?: string;
+    ido?: number;
+    idc?: number;
   };
 }) {
   const user = useUser();
@@ -102,7 +102,7 @@ export function PostCard({
               >
                 <Button
                   onClick={() => {
-                    router.push("/posts?action=post&id=" + post._id);
+                    router.push("/posts?action=post&count=" + post.count);
                   }}
                   size="small"
                   style={{
@@ -202,7 +202,10 @@ export function PostCard({
                     onClick={() => {
                       if (goto.ido && goto.idc) {
                         fetch(
-                          "/api/compared?id=" + goto.ido + "&post=" + goto.idc
+                          "/api/compared?count=" +
+                            goto.ido +
+                            "&post=" +
+                            goto.idc
                         ).then(() => {
                           router.reload();
                         });
@@ -225,7 +228,7 @@ export function PostCard({
                     }}
                     onClick={() => {
                       fetch(
-                        "/api/compared?id=" + goto.ido + "&post=" + goto.idc
+                        "/api/compared?count=" + goto.ido + "&post=" + goto.idc
                       ).then(() => {
                         router.reload();
                       });
@@ -246,7 +249,7 @@ export function PostCard({
               >
                 <WhatsappButton
                   phone={correctPhone(post.tel)}
-                  message={basepath + "/posts?id=" + post._id}
+                  message={basepath + "/posts?count=" + post.count}
                 >
                   <Button variant="contained">واتساب</Button>
                 </WhatsappButton>
@@ -263,7 +266,7 @@ export function PostCard({
               >
                 <WhatsappButton
                   phone={"+22248692007"}
-                  message={basepath + "/posts?id=" + post._id}
+                  message={basepath + "/posts?count=" + post.count}
                 >
                   <Button variant="contained">واتساب</Button>
                 </WhatsappButton>
@@ -297,7 +300,7 @@ export function PostCard({
             >
               <WhatsappButton
                 phone={correctPhone(post.tel)}
-                message={basepath + "/posts?id=" + post._id}
+                message={basepath + "/posts?count=" + post.count}
               >
                 <Button variant="contained">استفسار</Button>
               </WhatsappButton>
@@ -327,7 +330,7 @@ export function PostCard({
                 justifyContent: "space-between",
               }}
             >
-              <Link href={"/compare?id=" + post._id}>
+              <Link href={"/compare?count=" + post.count}>
                 <Button
                   style={{
                     margin: "4px",
@@ -339,7 +342,7 @@ export function PostCard({
                   إجاد زبون
                 </Button>
               </Link>
-              <Link href={"/api/posts?action=delete&id=" + post._id}>
+              <Link href={"/api/posts?action=delete&count=" + post.count}>
                 <Button variant="outlined" style={{ color: "red" }}>
                   حذف
                 </Button>
@@ -378,7 +381,7 @@ export function PostCard({
         user &&
         user.role != "admin" &&
         user?.username == post.user && (
-          <Link href={"/api/posts?action=delete&id=" + post._id}>
+          <Link href={"/api/posts?action=delete&count=" + post.count}>
             <Button style={{ color: "red" }}>حذف</Button>
           </Link>
         )}
@@ -398,14 +401,14 @@ export function PostCard({
               variant="outlined"
               style={{ color: "red" }}
               onClick={() => {
-                fetch("/api/posts?action=hide&id=" + post._id).then(() => {
+                fetch("/api/posts?action=hide&count=" + post.count).then(() => {
                   router.reload();
                 });
               }}
             >
               حذف
             </Button>
-            <Link href={"/posts?action=update&id=" + post._id}>
+            <Link href={"/posts?action=update&count=" + post.count}>
               <Button variant="outlined" style={{ color: "blue" }}>
                 تعديل
               </Button>
@@ -426,14 +429,14 @@ export function PostCard({
           >
             {/* only show comparison if the comparaison is not finished */}
             {!post.comparedTo?.includes("finished") && !router.query.hidden ? (
-              <Link href={"/compare?id=" + post._id}>
+              <Link href={"/compare?count=" + post.count}>
                 <Button variant="outlined" style={{ color: "blue" }}>
                   مقارنة
                 </Button>
               </Link>
             ) : (
               router.query.hidden && (
-                <Link href={"/posts?id=" + post._id}>
+                <Link href={"/posts?count=" + post.count}>
                   <Button variant="outlined" style={{ color: "red" }}>
                     حذف
                   </Button>
@@ -443,7 +446,7 @@ export function PostCard({
 
             {/* delete post only the post view */}
             {type == "post" && (
-              <Link href={"/api/posts?action=delete&id=" + post._id}>
+              <Link href={"/api/posts?action=delete&count=" + post.count}>
                 <Button variant="outlined" style={{ color: "red" }}>
                   حذف
                 </Button>
@@ -455,23 +458,25 @@ export function PostCard({
                 variant="outlined"
                 style={{ color: "green" }}
                 onClick={() => {
-                  fetch("/api/posts?action=show&id=" + post._id).then(() => {
-                    router.reload();
-                  });
+                  fetch("/api/posts?action=show&count=" + post.count).then(
+                    () => {
+                      router.reload();
+                    }
+                  );
                 }}
               >
                 اظهار
               </Button>
             )}
             {type != "post" && !router.query.hidden && (
-              <Link href={"/posts?id=" + post._id}>
+              <Link href={"/posts?count=" + post.count}>
                 <Button variant="outlined" style={{ color: "red" }}>
                   حذف
                 </Button>
               </Link>
             )}
 
-            <Link href={"/posts?action=update&id=" + post._id}>
+            <Link href={"/posts?action=update&count=" + post.count}>
               <Button variant="outlined" style={{ color: "blue" }}>
                 تعديل
               </Button>
@@ -485,27 +490,27 @@ export function PostCard({
               mt: 2,
             }}
           >
-            {post.trackid ? (
-              <Link href={"/tracks?action=track&id=" + post.trackid}>
+            {post.trackcount ? (
+              <Link href={"/tracks?action=track&count=" + post.trackcount}>
                 <Button variant="outlined" style={{ color: "blue" }}>
                   تحت المتابعة
                 </Button>
               </Link>
             ) : (
-              <Link href={"/tracks?action=form&postid=" + post._id}>
+              <Link href={"/tracks?action=form&postcount=" + post.count}>
                 <Button variant="outlined" style={{ color: "blue" }}>
                   متابعة
                 </Button>
               </Link>
             )}
-            {post.chanceid ? (
-              <Link href={"/chances?action=chance&id=" + post.chanceid}>
+            {post.chancecount ? (
+              <Link href={"/chances?action=chance&count=" + post.chancecount}>
                 <Button variant="outlined" style={{ color: "blue" }}>
                   تعتبر فرصة
                 </Button>
               </Link>
             ) : (
-              <Link href={"/chances?action=form&postid=" + post._id}>
+              <Link href={"/chances?action=form&postcount=" + post.count}>
                 <Button variant="outlined" style={{ color: "blue" }}>
                   فرصة
                 </Button>
@@ -540,8 +545,8 @@ export function PostCard({
                 fetch(
                   "/api/sendto?action=sendTo&codeTel=" +
                     codeTelObject.codeTel +
-                    "&id=" +
-                    post._id
+                    "&count=" +
+                    post.count
                 ).then(() => {
                   router.reload();
                 });
@@ -572,7 +577,7 @@ export function PostCard({
 
       <CardActions>
         {
-          <WhatsappShareButton url={basepath + "/posts?id=" + post._id}>
+          <WhatsappShareButton url={basepath + "/posts?count=" + post.count}>
             <Box
               sx={{
                 color: "blue",
@@ -660,12 +665,12 @@ export function TrackCard({ track }: { track: Track }) {
             mt: 2,
           }}
         >
-          <Link href={"/api/tracks?action=restore&id=" + track._id}>
+          <Link href={"/api/tracks?action=restore&count=" + track.count}>
             <Button variant="outlined" style={{ color: "red" }}>
               استعادة
             </Button>
           </Link>
-          <Link href={"/api/tracks?action=delete&id=" + track._id}>
+          <Link href={"/api/tracks?action=delete&count=" + track.count}>
             <Button variant="outlined" style={{ color: "red" }}>
               حذف
             </Button>
@@ -680,12 +685,12 @@ export function TrackCard({ track }: { track: Track }) {
             mt: 2,
           }}
         >
-          <Link href={"/tracks?action=update&id=" + track._id}>
+          <Link href={"/tracks?action=update&count=" + track.count}>
             <Button variant="outlined" style={{ color: "blue" }}>
               تحديث
             </Button>
           </Link>
-          <Link href={"/api/tracks?action=archive&id=" + track._id}>
+          <Link href={"/api/tracks?action=archive&count=" + track.count}>
             <Button variant="outlined" style={{ color: "red" }}>
               ارشفة
             </Button>
@@ -701,7 +706,7 @@ export function TrackCard({ track }: { track: Track }) {
 // new tracked post
 const track = {
   text: "",
-  postid: "",
+  postcount: "",
   name1: "",
   tel1: "",
   name2: "",
@@ -859,7 +864,7 @@ let post: Post = {
 // let pathFiles = [];
 
 export function PostForm({ upost = post }: { upost?: Post }) {
-  if (upost._id) {
+  if (upost.count) {
     post = upost;
   }
   const user = useUser();
@@ -869,7 +874,7 @@ export function PostForm({ upost = post }: { upost?: Post }) {
   const [type, setType] = useState(upost.type);
 
   // check if it is an update
-  const isUpdate = upost._id ? true : false;
+  const isUpdate = upost.count ? true : false;
 
   // also know the departements checked, they also important for the checkboxes
 
@@ -941,7 +946,7 @@ export function PostForm({ upost = post }: { upost?: Post }) {
         },
       }).then((data) => {
         data.json().then((rpost) => {
-          router.push("/posts?id=" + rpost.id);
+          router.push("/posts?count=" + rpost.count);
         });
       });
     } else {
@@ -953,7 +958,7 @@ export function PostForm({ upost = post }: { upost?: Post }) {
         },
       }).then((data) => {
         data.json().then((rpost) => {
-          router.push("/posts?id=" + rpost.id);
+          router.push("/posts?count=" + rpost.count);
         });
       });
     }
@@ -1377,7 +1382,7 @@ export function ChanceCard({ chance }: { chance: Chance }) {
           mt: 2,
         }}
       >
-        <Link href={"/api/chances?action=delete&id=" + chance._id}>
+        <Link href={"/api/chances?action=delete&count=" + chance.count}>
           <Button variant="outlined" style={{ color: "red" }}>
             حذف
           </Button>
@@ -1388,13 +1393,13 @@ export function ChanceCard({ chance }: { chance: Chance }) {
 }
 
 const chance = {
-  postid: "",
+  postcount: "",
   text: "",
 };
 export function ChanceForm() {
   const router = useRouter();
-  const postid = router.query.postid as unknown as string;
-  chance.postid = postid;
+  const postcount = router.query.postcount as unknown as string;
+  chance.postcount = postcount;
 
   function handleSubmit() {
     fetch("api/chances?action=save", {
@@ -1405,7 +1410,7 @@ export function ChanceForm() {
       },
     }).then((data) => {
       data.json().then((rchance) => {
-        router.push("/chances?action=chance&id=" + rchance._id);
+        router.push("/chances?action=chance&count=" + rchance.count);
       });
     });
   }
@@ -1718,7 +1723,7 @@ export function UserCard({
       >
         <Button
           onClick={() => {
-            fetch("/api/deleteuser?id=" + user._id).then(() => {
+            fetch("/api/deleteuser?count=" + user.count).then(() => {
               router.reload();
             });
           }}
@@ -1752,7 +1757,7 @@ export function UserCard({
             <Button
               variant="outlined"
               onClick={() => {
-                fetch("/api/usertrust?action=incrtrust&id=" + user._id).then(
+                fetch("/api/usertrust?action=incrtrust&count=" + user.count).then(
                   () => {
                     router.reload();
                   }
@@ -1774,7 +1779,7 @@ export function UserCard({
             <Button
               variant="outlined"
               onClick={() => {
-                fetch("/api/usertrust?action=decrtrust&id=" + user._id).then(
+                fetch("/api/usertrust?action=decrtrust&count=" + user.count).then(
                   () => {
                     router.reload();
                   }
@@ -1794,7 +1799,7 @@ export function UserCard({
             <Button
               variant="outlined"
               onClick={() => {
-                fetch("/api/usertrust?action=incractivity&id=" + user._id).then(
+                fetch("/api/usertrust?action=incractivity&count=" + user.count).then(
                   () => {
                     router.reload();
                   }
@@ -1816,7 +1821,7 @@ export function UserCard({
             <Button
               variant="outlined"
               onClick={() => {
-                fetch("/api/usertrust?action=decractivity&id=" + user._id).then(
+                fetch("/api/usertrust?action=decractivity&count=" + user.count).then(
                   () => {
                     router.reload();
                   }

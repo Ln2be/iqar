@@ -303,7 +303,7 @@ export async function getServerSideProps({
       result: query.action,
     };
   } else if (query.action == "update") {
-    const post = await DBPost.findOne({ _id: query.id });
+    const post = await DBPost.findOne({ count: query.count });
 
     const result = JSON.stringify(post);
 
@@ -312,8 +312,8 @@ export async function getServerSideProps({
     };
 
     // if requesting one post, whatsapp api contraint prevented me from using an action query here
-  } else {
-    const post = await DBPost.findOne({ _id: query.id });
+  } else if(query.count){
+    const post = await DBPost.findOne({ count: query.count });
 
     const result = JSON.stringify(post);
 
@@ -322,6 +322,14 @@ export async function getServerSideProps({
     };
 
     // if requesting the form to add new post, no is injected
+  }else if(query.count){
+    const post = await DBPost.findOne({ count: query.count });
+
+    const result = JSON.stringify(post);
+
+    injectObject = {
+      result,
+    };
   }
 
   return {

@@ -5,27 +5,32 @@ export default async function helper(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { id } = req.query;
-  const post = await DBPost.findOne({ _id: id });
+  const { count } = req.query;
+  const post = await DBPost.findOne({ count: count });
 
   if (req.query.user) {
     const ar = post.comparedTo;
     ar.push(req.query.user);
-    const update = await DBPost.updateOne({ _id: id }, { comparedTo: ar });
+    const update = await DBPost.updateOne({ count: count }, { comparedTo: ar });
 
     res.send(update);
   } else if (req.query.post) {
-    // this post is compared so add its id (idc) to the comparedTo of the main post
-    const idc = req.query.post;
+    // this post is compared so add its count (idc) to the comparedTo of the main post
+    const countc = req.query.post;
     const ar = post.comparedTo;
-    ar.push(idc);
-    const update = await DBPost.updateOne({ _id: id }, { comparedTo: ar });
+    ar.push(countc);
 
-    // add the main post id also to this post comparedTo array. Each one is compared to the other
-    const postc = await DBPost.findOne({ _id: idc });
+    console.log(req.query);
+    const update = await DBPost.updateOne({ count: count }, { comparedTo: ar });
+
+    // add the main post count also to this post comparedTo array. Each one is compared to the other
+    const postc = await DBPost.findOne({ count: countc });
     const ar2 = postc.comparedTo;
-    ar2.push(id);
-    const updateC = await DBPost.updateOne({ _id: idc }, { comparedTo: ar2 });
+    ar2.push(count);
+    const updateC = await DBPost.updateOne(
+      { count: countc },
+      { comparedTo: ar2 }
+    );
 
     console.log([update, updateC]);
     res.send([update, updateC]);
@@ -36,7 +41,7 @@ export default async function helper(
     const ar = post.comparedTo;
     // ar.push("finished");
 
-    await DBPost.updateOne({ _id: id }, { comparedTo: ["finished"] });
+    await DBPost.updateOne({ count: count }, { comparedTo: ["finished"] });
     res.send("finish");
   }
 }

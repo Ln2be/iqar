@@ -23,8 +23,8 @@ export default async function handler(
   const site = isProduction ? prodSite : devSite;
 
   if (
-    (images.length > 0 && !bodyPost._id) ||
-    (bodyPost._id && bodyPost.imageUpdated && images.length > 0)
+    (images.length > 0 && !bodyPost.count) ||
+    (bodyPost.count && bodyPost.imageUpdated && images.length > 0)
   ) {
     images.map((image: any, i: number) => {
       const name: string =
@@ -40,9 +40,9 @@ export default async function handler(
         async () => {
           bodyPost.images[i].data = site + name;
           if (images.length == i + 1) {
-            if (bodyPost._id) {
+            if (bodyPost.count) {
               const post = await DBPost.updateOne(
-                { _id: bodyPost._id },
+                { count: bodyPost.count },
                 bodyPost
               );
               res.json(post);
@@ -67,8 +67,8 @@ export default async function handler(
       );
     });
   } else {
-    if (bodyPost._id) {
-      const post = await DBPost.updateOne({ _id: bodyPost._id }, bodyPost);
+    if (bodyPost.count) {
+      const post = await DBPost.updateOne({ count: bodyPost.count }, bodyPost);
       res.json(post);
     } else {
       // count the number of posts

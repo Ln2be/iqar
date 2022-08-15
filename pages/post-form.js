@@ -165,7 +165,7 @@ export default function Page() {
       },
     }).then((data) => {
       data.json().then((d) => {
-        Router.push("/post?id=" + d._id);
+        Router.push("/post?count=" + d.count);
       });
     });
   };
