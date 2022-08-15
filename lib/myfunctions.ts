@@ -1,5 +1,6 @@
 import Resizer from "react-image-file-resizer";
 import imageCompression from "browser-image-compression";
+import { DBCounter } from "./mongo";
 
 // Correct the phone. The phone comes incorrect sometimes because of the arabic orientation.
 export function correctPhone(tel: string) {
@@ -273,4 +274,15 @@ export async function isASpecialLink({
   type: string;
 }) {
   return validCode && type == "demandRent";
+}
+
+export async function updateCounter(db: string): Promise<number> {
+  // add the counter
+  const pCounter =
+    (await DBCounter.findOne({ name: db })) ||
+    (await new DBCounter({ name: db }).save());
+  const counter = pCounter.counter + 1;
+
+  await DBCounter.updateOne({ name: "posts" }, { counter: counter });
+  return counter;
 }

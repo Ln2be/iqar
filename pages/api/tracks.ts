@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { DBPost, DBTrack } from "../../lib/mongo";
+import { updateCounter } from "../../lib/myfunctions";
 
 export default async function helper(
   req: NextApiRequest,
@@ -10,12 +11,15 @@ export default async function helper(
   if (action == "save") {
     const track = req.body;
     const { postcount } = track;
+
+    const counter = await updateCounter("tracks");
+    track.count = counter;
     const tracksaved = await new DBTrack(track).save();
 
     // add a trackcount to the post
     const post = await DBPost.updateOne(
       { count: postcount },
-      { trackid: tracksaved.count }
+      { trackcount: tracksaved.count }
     );
 
     res.send(tracksaved);
@@ -37,9 +41,15 @@ export default async function helper(
 
     // remove the trackcount from the post
     const { postcount } = track;
-    const post = await DBPost.updateOne({ count: postcount }, { trackcount: "" });
+    const post = await DBPost.updateOne(
+      { count: postcount },
+      { trackcount: "" }
+    );
 
-    const response = await DBTrack.updateOne({ count: count }, { archived: true });
+    const response = await DBTrack.updateOne(
+      { count: count },
+      { archived: true }
+    );
     res
       .writeHead(302, { Location: "/tracks?action=tracks&type=archived" })
       .end();
@@ -50,7 +60,10 @@ export default async function helper(
 
     // remove the trackcount from the post
     const { postcount } = track;
-    const post = await DBPost.updateOne({ count: postcount }, { trackcount: "" });
+    const post = await DBPost.updateOne(
+      { count: postcount },
+      { trackcount: "" }
+    );
 
     const response = await DBTrack.deleteOne({ count: count });
     res
@@ -66,9 +79,15 @@ export default async function helper(
 
     // remove the trackcount from the post
     const { postcount } = track;
-    const post = await DBPost.updateOne({ count: postcount }, { trackcount: count });
+    const post = await DBPost.updateOne(
+      { count: postcount },
+      { trackcount: count }
+    );
 
-    const response = await DBTrack.updateOne({ count: count }, { archived: false });
+    const response = await DBTrack.updateOne(
+      { count: count },
+      { archived: false }
+    );
     res.writeHead(302, { Location: "/tracks?action=tracks" }).end();
   }
 }

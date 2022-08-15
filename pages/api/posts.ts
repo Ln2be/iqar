@@ -4,6 +4,7 @@ import fs from "fs";
 import { DBCounter, DBPost } from "../../lib/mongo";
 import { Buffer } from "buffer";
 import { Post } from "../../projectTypes";
+import { updateCounter } from "../../lib/myfunctions";
 
 // see if we are in production or not
 const isProduction = process.env.NODE_ENV === "production";
@@ -28,65 +29,23 @@ export default async function helper(
     const { images } = post;
 
     // add the counter
-    const pCounter = await DBCounter.findOne({ name: "posts" });
-    const counter = pCounter.counter + 1;
+    const counter = await updateCounter("posts")
 
-    await DBCounter.updateOne({ name: "posts" }, { counter: counter });
-
-    post.count = counter;
-
+    post.count = counter
     const rpost = await new DBPost(post).save();
     res.json({
       count: rpost.count,
     });
-
-    // if (images.length > 0) {
-    // images.map((image, i) => {
-    //   const data = image.data;
-
-    //   saveimage(data, async (name) => {
-    //     // save the url of the image
-    //     post.images[i].data = site + name;
-    //     if (i == images.length - 1) {
-    //       const rpost = await new DBPost(req.body).save();
-
-    //       res.json({
-    //         id: rpost.count,
-    //       });
-    //     }
-    //   });
-    // });
-    // } else {
-    // }
   } else if (action == "update") {
     const post = req.body as Post;
     const count = post.count;
-    delete post.count;
+    delete post._id;
     const images = post.images;
     const rpost = await DBPost.updateOne({ count: count }, post);
     res.json({
       count: post.count,
     });
-    // if (images.length > 0 && images[0].data.startsWith(site)) {
-    //   images.map((image, i) => {
-    //     const data = image.data;
 
-    //     saveimage(data, async (name) => {
-    //       // save the url of the image
-    //       post.images[i].data = site + name;
-
-    //       if (i == images.length - 1) {
-    //         const rpost = await DBPost.updateOne({ count: count }, post);
-
-    //         res.json({
-    //           id: id,
-    //         });
-    //       }
-    //     });
-    //   });
-    // } else {
-
-    // }
     console.log(action);
   } else if (action == "delete") {
     const { count } = req.query;

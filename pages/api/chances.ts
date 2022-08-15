@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { DBPost, DBChance } from "../../lib/mongo";
+import { updateCounter } from "../../lib/myfunctions";
 
 export default async function helper(
   req: NextApiRequest,
@@ -10,6 +11,9 @@ export default async function helper(
   if (action == "save") {
     const chance = req.body;
     const { postcount } = chance;
+
+    const counter = await updateCounter("chances");
+    chance.count = counter;
     const chancesaved = await new DBChance(chance).save();
 
     // add a chancecount to the post

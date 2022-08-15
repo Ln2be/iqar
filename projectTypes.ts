@@ -8,7 +8,7 @@ export interface UserType {
   region: string;
   tel: string;
   code: string;
-  count: string;
+  count: number;
   hash?: string;
   salt: string | "";
   _id?: string;
@@ -30,7 +30,7 @@ export interface Post {
   tel: string;
   id?: string;
   createdAt?: Date;
-  count?: number;
+  count: number;
   user: string;
   userTel: string;
   comparedTo?: string[];
@@ -49,7 +49,7 @@ export interface Image {
 
 // the track type
 export interface Track {
-  count: string;
+  count: number;
   _id?: string;
   postid: string;
   updates: [
@@ -69,7 +69,7 @@ export interface Track {
 
 // A type Chance
 export interface Chance {
-  count: string;
+  count: number;
   _id?: string;
   postid: string;
   text: string;

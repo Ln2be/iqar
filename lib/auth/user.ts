@@ -2,6 +2,7 @@ import crypto from "crypto";
 import { v4 as uuidv4 } from "uuid";
 import { UserType } from "../../projectTypes";
 import { DBCounter, DBUser } from "../mongo";
+import { updateCounter } from "../myfunctions";
 
 /**
  * User methods. The example doesn't contain a DB, but for real applications you must use a
@@ -28,15 +29,9 @@ export async function createUser(newUser: UserType) {
   // This is an in memory store for users, there is no data persistence without a proper DB
   // users.push(user);
 
-  // count the number of user
-  const userCounter =
-    (await DBCounter.findOne({ name: "users" })) ||
-    (await new DBCounter({ name: "users" }).save());
 
-  await DBCounter.updateOne({ name: "user" }, { count: userCounter.count + 1 });
-  // using the database now
-
-  user.count = userCounter.count + 1;
+const counter = await updateCounter("users")
+  user.count = counter;
 
   if (newUser.role == "admin") {
     // const codeCorrect = await DBAdminCode.findOne({ code: newUser.code });

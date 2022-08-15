@@ -446,11 +446,19 @@ export function PostCard({
 
             {/* delete post only the post view */}
             {type == "post" && (
-              <Link href={"/api/posts?action=delete&count=" + post.count}>
-                <Button variant="outlined" style={{ color: "red" }}>
-                  حذف
-                </Button>
-              </Link>
+              <Button
+                variant="outlined"
+                style={{ color: "red" }}
+                onClick={() => {
+                  fetch("/api/posts?action=delete&count=" + post.count).then(
+                    () => {
+                      router.back();
+                    }
+                  );
+                }}
+              >
+                حذف
+              </Button>
             )}
 
             {router.query.hidden && (
@@ -1757,11 +1765,11 @@ export function UserCard({
             <Button
               variant="outlined"
               onClick={() => {
-                fetch("/api/usertrust?action=incrtrust&count=" + user.count).then(
-                  () => {
-                    router.reload();
-                  }
-                );
+                fetch(
+                  "/api/usertrust?action=incrtrust&count=" + user.count
+                ).then(() => {
+                  router.reload();
+                });
               }}
             >
               <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
@@ -1779,11 +1787,11 @@ export function UserCard({
             <Button
               variant="outlined"
               onClick={() => {
-                fetch("/api/usertrust?action=decrtrust&count=" + user.count).then(
-                  () => {
-                    router.reload();
-                  }
-                );
+                fetch(
+                  "/api/usertrust?action=decrtrust&count=" + user.count
+                ).then(() => {
+                  router.reload();
+                });
               }}
             >
               <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
@@ -1799,11 +1807,11 @@ export function UserCard({
             <Button
               variant="outlined"
               onClick={() => {
-                fetch("/api/usertrust?action=incractivity&count=" + user.count).then(
-                  () => {
-                    router.reload();
-                  }
-                );
+                fetch(
+                  "/api/usertrust?action=incractivity&count=" + user.count
+                ).then(() => {
+                  router.reload();
+                });
               }}
             >
               <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
@@ -1821,11 +1829,11 @@ export function UserCard({
             <Button
               variant="outlined"
               onClick={() => {
-                fetch("/api/usertrust?action=decractivity&count=" + user.count).then(
-                  () => {
-                    router.reload();
-                  }
-                );
+                fetch(
+                  "/api/usertrust?action=decractivity&count=" + user.count
+                ).then(() => {
+                  router.reload();
+                });
               }}
             >
               <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
