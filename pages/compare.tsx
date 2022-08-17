@@ -77,7 +77,7 @@ export default function Page({
               mb: 2,
             }}
           >
-            {posto && <PostCard post={posto} type="min"></PostCard>}
+            {posto && <PostCard position="main" post={posto} type="min"></PostCard>}
           </Box>
           <Box
             sx={{
@@ -86,7 +86,7 @@ export default function Page({
               maxWidth: "400px",
             }}
           >
-            {user?.role == "admin" &&
+            {/* {user?.role == "admin" &&
               reps.map((rep, i) => (
                 <Box
                   key={i}
@@ -121,7 +121,7 @@ export default function Page({
                     </Button>
                   </WhatsappButton>
                 </Box>
-              ))}
+              ))} */}
             {posts.map((postc, i) => {
               // is the post a demand post so send him the offer. If not send it to the original post
               const isdemand =

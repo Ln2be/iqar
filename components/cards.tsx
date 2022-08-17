@@ -49,6 +49,7 @@ export function PostCard({
     url: basepath + "/posts?count=" + post.count,
     tel: correctPhone(post.tel),
   },
+  position = "notmain",
 }: {
   post: Post;
   type: string;
@@ -58,6 +59,7 @@ export function PostCard({
     ido?: number;
     idc?: number;
   };
+  position?: string;
 }) {
   const user = useUser();
   const router = useRouter();
@@ -415,6 +417,32 @@ export function PostCard({
             </Link>
           </Box>
         ))}
+      {user && user?.role == "admin" && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            mt: 2,
+          }}
+        >
+          {position == "main" && (
+            <Button
+              variant="outlined"
+              style={{ color: "blue" }}
+              onClick={() => {
+                fetch("/api/compared?action=finished&count=" + post.count).then(
+                  () => {
+                    router.back();
+                  }
+                );
+              }}
+            >
+              انهاء المقارنة
+            </Button>
+          )}
+        </Box>
+      )}
 
       {/* The admin control */}
       {type != "min" && user && user?.role == "admin" && (
@@ -428,7 +456,9 @@ export function PostCard({
             }}
           >
             {/* only show comparison if the comparaison is not finished */}
-            {!post.comparedTo?.includes("finished") && !router.query.hidden ? (
+            {!post.comparedTo?.includes("finished") &&
+            !router.query.hidden &&
+            position != "main" ? (
               <Link href={"/compare?count=" + post.count}>
                 <Button variant="outlined" style={{ color: "blue" }}>
                   مقارنة
@@ -442,6 +472,22 @@ export function PostCard({
                   </Button>
                 </Link>
               )
+            )}
+
+            {position == "main" && (
+              <Button
+                variant="outlined"
+                style={{ color: "blue" }}
+                onClick={() => {
+                  fetch("/compare?action=finished&count=" + post.count).then(
+                    () => {
+                      router.back();
+                    }
+                  );
+                }}
+              >
+                انهاء المقارنة
+              </Button>
             )}
 
             {/* delete post only the post view */}

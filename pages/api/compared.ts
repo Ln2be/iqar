@@ -8,6 +8,14 @@ export default async function helper(
   const { count } = req.query;
   const post = await DBPost.findOne({ count: count });
 
+  if (req.query.action == "finished") {
+    const update = await DBPost.updateOne(
+      { count: count },
+      { comparedTo: ["finished"] }
+    );
+    console.log(update);
+    res.send(update);
+  }
   if (req.query.user) {
     const ar = post.comparedTo;
     ar.push(req.query.user);
