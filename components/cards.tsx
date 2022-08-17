@@ -1741,7 +1741,7 @@ export function UserCard({
         >
           حذف
         </Button>
-        {sendLink(user.lastNotified) && (
+        {sendLink(user.lastNotified) && true && (
           <WhatsappButton
             phone={correctPhone(user.tel ? user.tel : "no phone")}
             message={
