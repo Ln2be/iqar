@@ -1745,29 +1745,29 @@ export function UserCard({
           <WhatsappButton
             phone={correctPhone(user.tel ? user.tel : "no phone")}
             message={
-              basepath +
-              "/posts?action=posts&notifyuser=" +
-              user.count +
-              "&departements=[" +
-              user.departements[0] +
-              "]"
+              basepath + "/posts?notifyuser=" + user.count
+              // "/posts?action=posts&notifyuser=" +
+              // user.count +
+              // "&departements=[" +
+              // user.departements[0] +
+              // "]"
             }
           >
             <Button
               variant="contained"
               color="error"
-              onClick={() => {
-                // handleSentTo()
-                const now = Date.now();
-                fetch(
-                  "/api/usertrust?action=notification&now=" +
-                    now +
-                    "&count=" +
-                    user.count
-                ).then(() => {
-                  router.reload();
-                });
-              }}
+              // onClick={() => {
+              //   // handleSentTo()
+              //   const now = Date.now();
+              //   fetch(
+              //     "/api/usertrust?action=notification&now=" +
+              //       now +
+              //       "&count=" +
+              //       user.count
+              //   ).then(() => {
+              //     router.reload();
+              //   });
+              // }}
             >
               {"الرابط"}
             </Button>

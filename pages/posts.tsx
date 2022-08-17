@@ -18,6 +18,7 @@ import {
   translate,
 } from "../lib/myfunctions";
 import { useUser } from "../lib/auth/hooks";
+import { QueryBuilder } from "@mui/icons-material";
 
 export default function Page({
   result,
@@ -263,11 +264,6 @@ export async function getServerSideProps({
 
       const departements = query.departements as unknown as string[];
       posts = crossedDep(allposts, departements);
-
-      if (query.notifyuser) {
-        const user = await DBUser.findOne({ count: query.notifyuser });
-        repuser.push(user);
-      }
     } else if (query.tel) {
       const tel = query.tel;
       // posts = await DBPost.find({ tel: tel }).sort({ createdAt: -1 });
@@ -329,6 +325,29 @@ export async function getServerSideProps({
     };
 
     // if requesting the form to add new post, no is injected
+  } else if (query.notifyuser) {
+    const user = await DBUser.findOne({ count: query.notifyuser });
+
+    const departements = user.departements;
+    posts = crossedDep(allposts, departements);
+
+    repuser.push(user);
+
+    // test if the user is coming with special code
+
+    const pagination = (query.pagination ? query.pagination : 1) as number;
+
+    const postsresult = posts.slice((pagination - 1) * 10, pagination * 10);
+    // the object to be injected in the post dom
+    const result = JSON.stringify(postsresult);
+
+    const repst = JSON.stringify(repuser);
+
+    injectObject = {
+      result: result,
+      length: posts.length,
+      rep: repst,
+    };
   }
 
   return {
