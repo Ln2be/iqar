@@ -1672,7 +1672,7 @@ export function UserCard({
   type = "min",
   message = "السلام عليكم",
   actionlabel = "واتساب",
-  handleSentTo = () => {},
+  handleSentTo,
 }: {
   user: UserType;
   type: string;
@@ -1744,7 +1744,9 @@ export function UserCard({
             phone={correctPhone(user.tel ? user.tel : "no phone")}
             message={
               basepath +
-              "/posts?action=posts&notifyuser="+user.count+"&departements=[" +
+              "/posts?action=posts&notifyuser=" +
+              user.count +
+              "&departements=[" +
               user.departements[0] +
               "]"
             }

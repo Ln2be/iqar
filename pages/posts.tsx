@@ -329,14 +329,6 @@ export async function getServerSideProps({
     };
 
     // if requesting the form to add new post, no is injected
-  } else if (query.count) {
-    const post = await DBPost.findOne({ count: query.count });
-
-    const result = JSON.stringify(post);
-
-    injectObject = {
-      result,
-    };
   }
 
   return {

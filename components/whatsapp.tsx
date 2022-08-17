@@ -9,7 +9,11 @@ export default function whatsappButton({
   children: JSX.Element;
 }) {
   return (
-    <a target={"_blank"} href={"https://wa.me/" + phone + "/?text=" + message}>
+    <a
+      target={"_blank"}
+      ref="noreferrer"
+      href={"https://wa.me/" + phone + "/?text=" + message}
+    >
       {children}
     </a>
   );

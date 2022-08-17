@@ -24,6 +24,7 @@ export default async function helper(
 
     res.send(chancesaved);
   } else if (action == "update") {
+    const a = 1;
   } else if (action == "delete") {
     const { count } = req.query;
 

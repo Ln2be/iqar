@@ -64,7 +64,6 @@ export const resizeFile = (file: File) =>
 
 // a fuction to reduce the size of the image uploaded
 export async function handleImageUpload(imageFile: File) {
-
   const options = {
     maxSizeMB: 1,
     maxWidthOrHeight: 1920,
@@ -73,7 +72,6 @@ export async function handleImageUpload(imageFile: File) {
   try {
     const compressedFile = await imageCompression(imageFile, options);
 
-
     // const arrayBuffer = await compressedFile.arrayBuffer();
     // const image = Buffer.from(arrayBuffer).toString("base64");
 
@@ -81,6 +79,7 @@ export async function handleImageUpload(imageFile: File) {
     return image;
     // await uploadToServer(compressedFile); // write your own logic
   } catch (error) {
+    console.log(error);
   }
 }
 
@@ -267,5 +266,3 @@ export async function isASpecialLink({
 }) {
   return validCode && type == "demandRent";
 }
-
-

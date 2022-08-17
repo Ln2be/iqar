@@ -607,6 +607,7 @@ async function handleImageUpload(imageFile) {
     return image;
     // await uploadToServer(compressedFile); // write your own logic
   } catch (error) {
+    console.log(error);
   }
 }
 
