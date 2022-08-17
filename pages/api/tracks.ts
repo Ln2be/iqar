@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { DBPost, DBTrack } from "../../lib/mongo";
-import { updateCounter } from "../../lib/myfunctions";
+import { updateCounter } from "../../lib/mongo";
 
 export default async function helper(
   req: NextApiRequest,

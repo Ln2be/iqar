@@ -2,7 +2,7 @@ import crypto from "crypto";
 import { v4 as uuidv4 } from "uuid";
 import { UserType } from "../../projectTypes";
 import { DBCounter, DBUser } from "../mongo";
-import { updateCounter } from "../myfunctions";
+import { updateCounter } from "../mongo";
 
 /**
  * User methods. The example doesn't contain a DB, but for real applications you must use a
@@ -29,8 +29,7 @@ export async function createUser(newUser: UserType) {
   // This is an in memory store for users, there is no data persistence without a proper DB
   // users.push(user);
 
-
-const counter = await updateCounter("users")
+  const counter = await updateCounter("users");
   user.count = counter;
 
   if (newUser.role == "admin") {
@@ -81,6 +80,5 @@ export function validatePassword(user: UserType, inputPassword: string) {
     .toString("hex");
   const passwordsMatch = user.hash === inputHash;
   // const passwordsMatch = user.password === inputPassword;
-  console.log(passwordsMatch);
   return passwordsMatch;
 }

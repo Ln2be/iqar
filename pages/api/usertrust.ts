@@ -34,4 +34,16 @@ export default async function helper(
     await DBUser.updateOne({ count: count }, { activity: newactivity });
     res.send("Ok");
   }
+
+  if (action == "notification") {
+    const { now, count } = req.query;
+
+    const response = await DBUser.updateOne(
+      { count: count },
+      { lastNotified: now }
+    );
+
+    console.log(response);
+    res.send(response);
+  }
 }

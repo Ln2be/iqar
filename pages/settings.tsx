@@ -195,14 +195,12 @@ export async function getServerSideProps({
   metadata.rep.hidden.total = hiddenPosts.length;
 
   for (const location in Nktt) {
-    console.log(users.length);
     const posts = crossedDep(users, Nktt[location]);
     for (const post of posts) {
       metadata.rep[location].total++;
     }
   }
 
-  console.log(metadata);
 
   return {
     props: { metadata: JSON.stringify(metadata) },
@@ -216,7 +214,6 @@ function crossedDep(posts: UserType[], departements: string[]) {
       departements.includes(departement)
     );
     // return the post if there is cross
-    console.log([departements, post.departement, cross]);
     return cross.length > 0;
   });
 }

@@ -39,7 +39,6 @@ var pathFiles = [];
 export default function Page() {
   const user = useUser();
 
-  // console.log(post.departements);
   post.user = user?.username;
   post.userTel = user?.tel;
   const {
@@ -228,13 +227,11 @@ export default function Page() {
     } else {
       post.departements.push(name);
     }
-    console.log(post.departements);
 
     setDepa(post.departements);
   }
 
   // function show() {
-  //   console.log(post.departements);
   // }
   return (
     <>
@@ -595,9 +592,6 @@ const resizeFile = (file) =>
   });
 
 async function handleImageUpload(imageFile) {
-  console.log("originalFile instanceof Blob", imageFile instanceof Blob); // true
-  console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
-
   const options = {
     maxSizeMB: 1,
     maxWidthOrHeight: 1920,
@@ -605,21 +599,14 @@ async function handleImageUpload(imageFile) {
   };
   try {
     const compressedFile = await imageCompression(imageFile, options);
-    console.log(
-      "compressedFile instanceof Blob",
-      compressedFile instanceof Blob
-    ); // true
-    console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
 
     // const arrayBuffer = await compressedFile.arrayBuffer();
     // const image = Buffer.from(arrayBuffer).toString("base64");
 
     const image = blobToBase64(compressedFile);
-    console.log(image);
     return image;
     // await uploadToServer(compressedFile); // write your own logic
   } catch (error) {
-    console.log(error);
   }
 }
 

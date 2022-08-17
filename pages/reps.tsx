@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import Layout from "../components/layout";
 import { DBUser } from "../lib/mongo";
 import { Box } from "@mui/system";
@@ -6,6 +6,7 @@ import { UserType } from "../projectTypes";
 import Head from "next/head";
 import { Nktt } from "../lib/myfunctions";
 import { UserCard } from "../components/cards";
+import { Button, TextField } from "@mui/material";
 
 type JSONValue =
   | string
@@ -14,8 +15,15 @@ type JSONValue =
   | { [x: string]: JSONValue }
   | Array<JSONValue>;
 
+let messageToall = "";
 export default function Page({ usersJson }: { usersJson: string }) {
   const users: [UserType] = JSON.parse(usersJson);
+
+  // send message to all
+  const [message, setMessage] = useState(false);
+  const [text, setText] = useState("");
+  const [userSentTo, setUsers] = useState<{ [key: string]: boolean }>({});
+  const [render, setRender] = useState(false);
 
   return (
     <>
@@ -32,17 +40,79 @@ export default function Page({ usersJson }: { usersJson: string }) {
             maxWidth: "345px",
           }}
         >
-          {users.map((user, index) => (
-            <Box
-              sx={{
-                mt: 2,
-                backgroundColor: "#ccc",
-              }}
-              key={index}
-            >
-              <UserCard type="full" user={user}></UserCard>
+          {message && !text && (
+            <Box>
+              <TextField
+                id="outlined-basic"
+                multiline
+                label="الرسالة"
+                defaultValue={""}
+                variant="outlined"
+                onChange={(event) => {
+                  messageToall = event.target.value;
+                }}
+                helperText=""
+              />
             </Box>
-          ))}
+          )}
+          {!message && !text ? (
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setMessage(true);
+              }}
+            >
+              ارسل رسالة
+            </Button>
+          ) : (
+            !text && (
+              <Box>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    setMessage(false);
+                  }}
+                >
+                  اغلاق
+                </Button>{" "}
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    setText(messageToall);
+                  }}
+                >
+                  ارسال
+                </Button>
+              </Box>
+            )
+          )}
+
+          {users.map(
+            (user, index) =>
+              !Object.keys(userSentTo).includes(user.tel) && (
+                <Box
+                  sx={{
+                    mt: 2,
+                    backgroundColor: "#ccc",
+                  }}
+                  key={index}
+                >
+                  <UserCard
+                    handleSentTo={() => {
+                      setUsers((usersSentTo) => {
+                        userSentTo[user.tel] = true;
+                        return usersSentTo;
+                      });
+                      setRender(!render);
+                    }}
+                    type="full"
+                    actionlabel={text ? "ارسل" : "واتساب"}
+                    message={text ? text : "السلام عليكم"}
+                    user={user}
+                  ></UserCard>
+                </Box>
+              )
+          )}
         </Box>
       </Layout>
     </>
@@ -74,15 +144,12 @@ export async function getServerSideProps({
 
 // the return the posts where the departements cross
 function crossedDep(posts: UserType[], departements: string[]) {
-  console.log("/n new line");
   return posts.filter((post) => {
-    console.log(posts.length);
     // look for a cross between the departements
     const cross = post.departements.filter((departement) =>
       departements.includes(departement)
     );
     // return the post if there is cross
-    console.log([departements, post.departements, cross]);
     return cross.length > 0;
   });
 }

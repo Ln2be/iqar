@@ -15,6 +15,7 @@ export interface UserType {
   id?: string;
   createdAt?: number;
   trust: number;
+  lastNotified: number;
 }
 
 export interface Post {
@@ -51,7 +52,7 @@ export interface Image {
 export interface Track {
   count: number;
   _id?: string;
-  postid: string;
+  postcount: string;
   updates: [
     {
       date: Date;
@@ -71,7 +72,7 @@ export interface Track {
 export interface Chance {
   count: number;
   _id?: string;
-  postid: string;
+  postcount: string;
   text: string;
   post: Post;
 }

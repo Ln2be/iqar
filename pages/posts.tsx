@@ -42,30 +42,33 @@ export default function Page({
     const repo = JSON.parse(rep) as UserType[];
     return (
       <Box>
-        <Head>
-          <title>
-            مؤسسة وسيطة لبيع و شراء و ايجار المنازل و الشقق و العقارات بشكل عام
-            في نواكشوط موريتانيا
-          </title>
-          <meta
-            name="keywords"
-            content="شقق للايجار نواكشوط, منزل للشراء نواكشوط, دار للبيع نواكشوط, منزل للسكن نواكشوط, منزل للشراء نواكشوط, شراء منزل نواكشوط"
-          />
-          <meta
-            name="description"
-            content="احصل اعل المنزل او الشقة التي تبحث عنها"
-            key="desc"
-          />
-          <meta property="og:title" content="وسيط بيع و شراء العقارات" />
-          <meta
-            property="og:description"
-            content="تتوفر عقار نواكشوط على الكثير من عروض بيع و شراء و ايجار العقارات"
-          />
-          <meta
-            property="og:image"
-            content="https://example.com/images/cool-page.jpg"
-          />
-        </Head>
+        {router.query.notifyuser ? (
+          <Head>
+            <title>{repo[0].username}</title>
+            <meta property="og:title" content={repo[0].username} />
+            <meta property="og:description" content={getDateAr()} />
+            <meta
+              property="og:image"
+              content="https://example.com/images/cool-page.jpg"
+            />
+          </Head>
+        ) : (
+          <Head>
+            <title>
+              مؤسسة وسيطة لبيع و شراء و ايجار المنازل و الشقق و العقارات بشكل
+              عام في نواكشوط موريتانيا
+            </title>
+            <meta property="og:title" content="وسيط بيع و شراء العقارات" />
+            <meta
+              property="og:description"
+              content="تتوفر عقار نواكشوط على الكثير من عروض بيع و شراء و ايجار العقارات"
+            />
+            <meta
+              property="og:image"
+              content="https://example.com/images/cool-page.jpg"
+            />
+          </Head>
+        )}
 
         <Box
           sx={{
@@ -96,7 +99,6 @@ export default function Page({
             onChange={(event, value) => {
               router.query.pagination = value.toString();
               router.push(router);
-              // console.log(router.pathname);
             }}
           />
         </Box>
@@ -261,6 +263,11 @@ export async function getServerSideProps({
 
       const departements = query.departements as unknown as string[];
       posts = crossedDep(allposts, departements);
+
+      if (query.notifyuser) {
+        const user = await DBUser.findOne({ count: query.notifyuser });
+        repuser.push(user);
+      }
     } else if (query.tel) {
       const tel = query.tel;
       // posts = await DBPost.find({ tel: tel }).sort({ createdAt: -1 });
@@ -312,7 +319,7 @@ export async function getServerSideProps({
     };
 
     // if requesting one post, whatsapp api contraint prevented me from using an action query here
-  } else if(query.count){
+  } else if (query.count) {
     const post = await DBPost.findOne({ count: query.count });
 
     const result = JSON.stringify(post);
@@ -322,7 +329,7 @@ export async function getServerSideProps({
     };
 
     // if requesting the form to add new post, no is injected
-  }else if(query.count){
+  } else if (query.count) {
     const post = await DBPost.findOne({ count: query.count });
 
     const result = JSON.stringify(post);
@@ -347,4 +354,17 @@ function crossedDep(posts: Post[], departements: string[]) {
     // return the post if there is cross
     return cross.length > 0;
   });
+}
+
+// get the date in arabic
+function getDateAr() {
+  const options: { [key: string]: "long" | "short" | "2-digit" | undefined } = {
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    year: "2-digit",
+  };
+
+  const lastnotified = new Date(Date.now()).toLocaleString("Ar-ma", options);
+  return lastnotified;
 }

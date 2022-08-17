@@ -50,7 +50,6 @@ export default function Page({
   // add the post or the user as already compared to
   function compared(url: string) {
     fetch(url).then((v) => {
-      console.log(v);
     });
   }
 
@@ -184,7 +183,6 @@ export async function getServerSideProps({
   const type = postObject.type;
   const price = postObject.price;
 
-  console.log(wdep);
 
   // send reps who are working in the departement
   const reps = await DBUser.find({ role: "rep" });

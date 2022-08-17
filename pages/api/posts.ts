@@ -4,7 +4,7 @@ import fs from "fs";
 import { DBCounter, DBPost } from "../../lib/mongo";
 import { Buffer } from "buffer";
 import { Post } from "../../projectTypes";
-import { updateCounter } from "../../lib/myfunctions";
+import { updateCounter } from "../../lib/mongo";
 
 // see if we are in production or not
 const isProduction = process.env.NODE_ENV === "production";
@@ -29,9 +29,9 @@ export default async function helper(
     const { images } = post;
 
     // add the counter
-    const counter = await updateCounter("posts")
+    const counter = await updateCounter("posts");
 
-    post.count = counter
+    post.count = counter;
     const rpost = await new DBPost(post).save();
     res.json({
       count: rpost.count,
@@ -46,7 +46,6 @@ export default async function helper(
       count: post.count,
     });
 
-    console.log(action);
   } else if (action == "delete") {
     const { count } = req.query;
     const rpost = await DBPost.deleteOne({ count: count });

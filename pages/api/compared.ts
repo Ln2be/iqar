@@ -20,7 +20,6 @@ export default async function helper(
     const ar = post.comparedTo;
     ar.push(countc);
 
-    console.log(req.query);
     const update = await DBPost.updateOne({ count: count }, { comparedTo: ar });
 
     // add the main post count also to this post comparedTo array. Each one is compared to the other
@@ -32,7 +31,6 @@ export default async function helper(
       { comparedTo: ar2 }
     );
 
-    console.log([update, updateC]);
     res.send([update, updateC]);
   }
 

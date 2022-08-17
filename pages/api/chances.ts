@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { DBPost, DBChance } from "../../lib/mongo";
-import { updateCounter } from "../../lib/myfunctions";
+import { updateCounter } from "../../lib/mongo";
 
 export default async function helper(
   req: NextApiRequest,
@@ -19,12 +19,11 @@ export default async function helper(
     // add a chancecount to the post
     await DBPost.updateOne(
       { count: postcount },
-      { chanceid: chancesaved.count }
+      { chancecount: chancesaved.count }
     );
 
     res.send(chancesaved);
   } else if (action == "update") {
-    console.log(action);
   } else if (action == "delete") {
     const { count } = req.query;
 

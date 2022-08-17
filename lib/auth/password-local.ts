@@ -11,7 +11,6 @@ export const localStrategy = new Local.Strategy(function (tel, password, done) {
       }
     })
     .catch((error) => {
-      console.log("error local strategy", error);
       done(error);
     });
 });

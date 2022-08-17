@@ -39,6 +39,7 @@ const userSchema = new Schema<UserType>({
   createdAt: Number,
   trust: { type: Number, default: 1 },
   activity: { type: Number, default: 1 },
+  lastNotified: Number,
 });
 
 export const DBUser =
@@ -94,7 +95,7 @@ export const DBAdminCode =
   mongoose.model("DBAdminCode", adminCodesSchema);
 
 const TracksSchema = new Schema<Track>({
-  postid: String,
+  postcount: String,
   updates: [
     {
       date: Date,
@@ -115,9 +116,21 @@ export const DBTrack =
 
 // a model for the chance crud
 const ChancesSchema = new Schema<Chance>({
-  postid: String,
+  count: Number,
+  postcount: String,
   text: String,
 });
 
 export const DBChance =
   mongoose.models.DBChance || mongoose.model("DBChance", ChancesSchema);
+
+export async function updateCounter(nameCol: string): Promise<number> {
+  // add the counter
+  const pCounter =
+    (await DBCounter.findOne({ name: nameCol })) ||
+    (await new DBCounter({ name: nameCol }).save());
+  const counter = pCounter.counter + 1;
+
+  await DBCounter.updateOne({ name: nameCol }, { counter: counter });
+  return counter;
+}

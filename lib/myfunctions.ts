@@ -64,8 +64,6 @@ export const resizeFile = (file: File) =>
 
 // a fuction to reduce the size of the image uploaded
 export async function handleImageUpload(imageFile: File) {
-  console.log("originalFile instanceof Blob", imageFile instanceof Blob); // true
-  console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
 
   const options = {
     maxSizeMB: 1,
@@ -74,21 +72,15 @@ export async function handleImageUpload(imageFile: File) {
   };
   try {
     const compressedFile = await imageCompression(imageFile, options);
-    console.log(
-      "compressedFile instanceof Blob",
-      compressedFile instanceof Blob
-    ); // true
-    console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+
 
     // const arrayBuffer = await compressedFile.arrayBuffer();
     // const image = Buffer.from(arrayBuffer).toString("base64");
 
     const image = blobToBase64(compressedFile);
-    console.log(image);
     return image;
     // await uploadToServer(compressedFile); // write your own logic
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -276,13 +268,4 @@ export async function isASpecialLink({
   return validCode && type == "demandRent";
 }
 
-export async function updateCounter(db: string): Promise<number> {
-  // add the counter
-  const pCounter =
-    (await DBCounter.findOne({ name: db })) ||
-    (await new DBCounter({ name: db }).save());
-  const counter = pCounter.counter + 1;
 
-  await DBCounter.updateOne({ name: "posts" }, { counter: counter });
-  return counter;
-}

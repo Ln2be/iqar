@@ -34,7 +34,6 @@ export default function Page({ metadata }: { metadata: string }) {
 
   if (typeof window !== "undefined") {
     window.addEventListener("beforeinstallprompt", (e) => {
-      console.log("beforeinstallprompt fired");
       // Prevent Chrome 76 and earlier from automatically showing a prompt
       e.preventDefault();
       // Stash the event so it can be triggered later.
@@ -439,7 +438,6 @@ export async function getServerSideProps({
           post.comparedTo[0] == "finished" &&
           metadata[intervall][location].compared++;
         if (location == "nw")
-          console.log(metadata[intervall][location].compared);
         post.type == "buying"
           ? metadata[intervall][location].demands++
           : metadata[intervall][location].offers++;
@@ -447,7 +445,6 @@ export async function getServerSideProps({
     }
   }
 
-  console.log(metadata);
 
   return {
     props: { metadata: JSON.stringify(metadata) },

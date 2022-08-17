@@ -37,7 +37,6 @@ const Login = () => {
         Router.push("/");
       } else {
         const txt = await res.text();
-        console.log(["txt"]);
         // throw new Error(txt);
       }
     } catch (error: any) {

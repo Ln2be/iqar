@@ -863,6 +863,7 @@ let post: Post = {
   price: 0,
   tel: "",
   user: "",
+  count: 0,
   userTel: "",
   createdAt: new Date(Date.now()),
   hidden: false,
@@ -926,8 +927,6 @@ export function PostForm({ upost = post }: { upost?: Post }) {
           },
         });
 
-        console.log(signup);
-
         //
 
         const userlogin = {
@@ -942,7 +941,6 @@ export function PostForm({ upost = post }: { upost?: Post }) {
             "Content-Type": "application/json",
           },
         });
-        console.log(login);
       }
 
       // save the post
@@ -1292,7 +1290,6 @@ export default function Departement() {
       <Departs
         onDeparts={(deps) => {
           depvalues = deps;
-          console.log(depvalues);
         }}
         iniDeparts={[]}
       ></Departs>
@@ -1431,7 +1428,7 @@ export function ChanceForm() {
     >
       <TextField
         id="outlined-basic"
-        label="النص"
+        label="لماذا"
         // type="tel"
         variant="outlined"
         onChange={(event) => {
@@ -1488,8 +1485,6 @@ export function UserForm({
   }
 
   function submitLogin() {
-    console.log(userlogin);
-
     fetch("/api/auth/login", {
       method: "POST",
       body: JSON.stringify(userlogin),
@@ -1503,7 +1498,6 @@ export function UserForm({
     });
   }
   function submitSignup() {
-    console.log(userbody);
     if (errorMsg) setErrorMsg("");
 
     if (userbody.password !== userbody.rpassword) {
@@ -1676,9 +1670,15 @@ export function UserForm({
 export function UserCard({
   user,
   type = "min",
+  message = "السلام عليكم",
+  actionlabel = "واتساب",
+  handleSentTo = () => {},
 }: {
   user: UserType;
   type: string;
+  message?: string;
+  actionlabel?: string;
+  handleSentTo?: () => void;
 }) {
   const router = useRouter();
   return (
@@ -1739,11 +1739,49 @@ export function UserCard({
         >
           حذف
         </Button>
+        {sendLink(user.lastNotified) && (
+          <WhatsappButton
+            phone={correctPhone(user.tel ? user.tel : "no phone")}
+            message={
+              basepath +
+              "/posts?action=posts&notifyuser="+user.count+"&departements=[" +
+              user.departements[0] +
+              "]"
+            }
+          >
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => {
+                // handleSentTo()
+                const now = Date.now();
+                fetch(
+                  "/api/usertrust?action=notification&now=" +
+                    now +
+                    "&count=" +
+                    user.count
+                ).then(() => {
+                  router.reload();
+                });
+              }}
+            >
+              {"الرابط"}
+            </Button>
+          </WhatsappButton>
+        )}
+
         <WhatsappButton
           phone={correctPhone(user.tel ? user.tel : "no phone")}
-          message={"السلام عليكم"}
+          message={message}
         >
-          <Button variant="contained">واتساب</Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              handleSentTo();
+            }}
+          >
+            {actionlabel}
+          </Button>
         </WhatsappButton>
       </Box>
       {type == "full" && (
@@ -1907,4 +1945,19 @@ export function Departs({
       </Box>
     </Box>
   );
+}
+
+function sendLink(lastnotified: number) {
+  // throw new Error("Function not implemented.");
+
+  if (lastnotified) {
+    const now = Date.now();
+    const hours = (now - lastnotified) / 3600000;
+
+    const hoursFloored = Math.floor(hours);
+
+    return hoursFloored > 48;
+  } else {
+    return true;
+  }
 }

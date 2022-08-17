@@ -18,8 +18,6 @@ const Signup = ({ queryjson }: { queryjson: string }) => {
   async function handleSubmit(e: any) {
     e.preventDefault();
 
-    console.log("coming to the handleSubmit");
-
     if (errorMsg) setErrorMsg("");
 
     const body = {

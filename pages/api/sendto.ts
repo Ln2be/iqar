@@ -7,7 +7,6 @@ export default async function helper(
 ) {
   const { action, count, codeTel } = req.query;
 
-  console.log([action, count, codeTel]);
 
   const post = await DBPost.findOne({ count: count });
 

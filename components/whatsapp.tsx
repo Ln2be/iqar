@@ -9,6 +9,8 @@ export default function whatsappButton({
   children: JSX.Element;
 }) {
   return (
-    <a href={"https://wa.me/" + phone + "/?text=" + message}>{children}</a>
+    <a target={"_blank"} href={"https://wa.me/" + phone + "/?text=" + message}>
+      {children}
+    </a>
   );
 }
