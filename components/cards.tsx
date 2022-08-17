@@ -1672,7 +1672,9 @@ export function UserCard({
   type = "min",
   message = "السلام عليكم",
   actionlabel = "واتساب",
-  handleSentTo,
+  handleSentTo = () => {
+    console.log("empty");
+  },
 }: {
   user: UserType;
   type: string;
