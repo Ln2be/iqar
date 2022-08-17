@@ -503,7 +503,7 @@ export function PostCard({
                   );
                 }}
               >
-                حذف
+                حذف نهائيا
               </Button>
             )}
 
@@ -1777,16 +1777,28 @@ export function UserCard({
           mt: 1,
         }}
       >
-        <Button
-          onClick={() => {
-            fetch("/api/deleteuser?count=" + user.count).then(() => {
-              router.reload();
-            });
-          }}
-          variant="outlined"
-        >
-          حذف
-        </Button>
+        {type == "rep" ? (
+          <Button
+            onClick={() => {
+              fetch("/api/deleteuser?count=" + user.count).then(() => {
+                router.reload();
+              });
+            }}
+            variant="outlined"
+          >
+            حذف
+          </Button>
+        ) : (
+          <Button
+            onClick={() => {
+              router.push("/reps?count=" + user.count);
+            }}
+            variant="outlined"
+          >
+            حذف
+          </Button>
+        )}
+
         {sendLink(user.lastNotified) && (
           <WhatsappButton
             phone={correctPhone(user.tel ? user.tel : "no phone")}
@@ -1827,101 +1839,102 @@ export function UserCard({
           </Button>
         </WhatsappButton>
       </Box>
-      {type == "full" && (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            mt: 1,
-          }}
-        >
+      {type == "full" ||
+        (type == "rep" && (
           <Box
             sx={{
               display: "flex",
               flexDirection: "row",
-              // justifyContent: "space-between",
+              justifyContent: "space-between",
+              mt: 1,
             }}
           >
-            <Button
-              variant="outlined"
-              onClick={() => {
-                fetch(
-                  "/api/usertrust?action=incrtrust&count=" + user.count
-                ).then(() => {
-                  router.reload();
-                });
-              }}
-            >
-              <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
-            </Button>
             <Box
               sx={{
                 display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
+                flexDirection: "row",
+                // justifyContent: "space-between",
               }}
             >
-              <Box>{"الثقة"}</Box>
-              <Box>{user.trust}</Box>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  fetch(
+                    "/api/usertrust?action=incrtrust&count=" + user.count
+                  ).then(() => {
+                    router.reload();
+                  });
+                }}
+              >
+                <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
+              </Button>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box>{"الثقة"}</Box>
+                <Box>{user.trust}</Box>
+              </Box>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  fetch(
+                    "/api/usertrust?action=decrtrust&count=" + user.count
+                  ).then(() => {
+                    router.reload();
+                  });
+                }}
+              >
+                <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
+              </Button>
             </Box>
-            <Button
-              variant="outlined"
-              onClick={() => {
-                fetch(
-                  "/api/usertrust?action=decrtrust&count=" + user.count
-                ).then(() => {
-                  router.reload();
-                });
-              }}
-            >
-              <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
-            </Button>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              // justifyContent: "space-between",
-            }}
-          >
-            <Button
-              variant="outlined"
-              onClick={() => {
-                fetch(
-                  "/api/usertrust?action=incractivity&count=" + user.count
-                ).then(() => {
-                  router.reload();
-                });
-              }}
-            >
-              <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
-            </Button>
             <Box
               sx={{
                 display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
+                flexDirection: "row",
+                // justifyContent: "space-between",
               }}
             >
-              <Box>{"الحيوية"}</Box>
-              <Box>{user.activity}</Box>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  fetch(
+                    "/api/usertrust?action=incractivity&count=" + user.count
+                  ).then(() => {
+                    router.reload();
+                  });
+                }}
+              >
+                <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
+              </Button>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box>{"الحيوية"}</Box>
+                <Box>{user.activity}</Box>
+              </Box>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  fetch(
+                    "/api/usertrust?action=decractivity&count=" + user.count
+                  ).then(() => {
+                    router.reload();
+                  });
+                }}
+              >
+                <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
+              </Button>
             </Box>
-            <Button
-              variant="outlined"
-              onClick={() => {
-                fetch(
-                  "/api/usertrust?action=decractivity&count=" + user.count
-                ).then(() => {
-                  router.reload();
-                });
-              }}
-            >
-              <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
-            </Button>
           </Box>
-        </Box>
-      )}
+        ))}
     </Box>
 
     // <Box></Box>

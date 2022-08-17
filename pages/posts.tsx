@@ -53,6 +53,19 @@ export default function Page({
               content="https://example.com/images/cool-page.jpg"
             />
           </Head>
+        ) : router.query.codeTel ? (
+          <Head>
+            <title>{repo[0].username}</title>
+            <meta property="og:title" content={"منشوراتك"} />
+            <meta
+              property="og:description"
+              content={"الرجاء تعديل منشورات حسب المستجدات"}
+            />
+            <meta
+              property="og:image"
+              content="https://example.com/images/cool-page.jpg"
+            />
+          </Head>
         ) : (
           <Head>
             <title>
@@ -278,7 +291,7 @@ export async function getServerSideProps({
       repuser = (await DBUser.find({ tel: code })) as unknown as UserType[];
       // const allposts = await DBPost.find({}).sort({ createdAt: -1 });
       posts = allposts.filter((post) => {
-        if (post.sendTo) return post.sendTo.includes(code);
+        if (post.sendTo) return post.sendTo.includes(code) || post.tel == code;
         else return false;
       });
     } else if (query.hidden) {

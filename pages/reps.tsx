@@ -1,12 +1,13 @@
 import React, { Component, useState } from "react";
 import Layout from "../components/layout";
 import { DBUser } from "../lib/mongo";
-import { Box } from "@mui/system";
+// import { Box } from "@mui/material";
 import { UserType } from "../projectTypes";
 import Head from "next/head";
 import { Nktt } from "../lib/myfunctions";
 import { UserCard } from "../components/cards";
-import { Button, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
+import { useRouter } from "next/router";
 
 type JSONValue =
   | string
@@ -25,6 +26,94 @@ export default function Page({ usersJson }: { usersJson: string }) {
   const [userSentTo, setUsers] = useState<{ [key: string]: boolean }>({});
   const [render, setRender] = useState(false);
 
+  //
+  const query = useRouter().query;
+  // many users
+
+  function rReps() {
+    return (
+      <Box
+        sx={{
+          maxWidth: "345px",
+        }}
+      >
+        {message && !text && (
+          <Box>
+            <TextField
+              id="outlined-basic"
+              multiline
+              label="الرسالة"
+              defaultValue={""}
+              variant="outlined"
+              onChange={(event) => {
+                messageToall = event.target.value;
+              }}
+              helperText=""
+            />
+          </Box>
+        )}
+        {!message && !text ? (
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setMessage(true);
+            }}
+          >
+            ارسل رسالة
+          </Button>
+        ) : (
+          !text && (
+            <Box>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  setMessage(false);
+                }}
+              >
+                اغلاق
+              </Button>{" "}
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  setText(messageToall);
+                }}
+              >
+                ارسال
+              </Button>
+            </Box>
+          )
+        )}
+
+        {users.map(
+          (user, index) =>
+            !Object.keys(userSentTo).includes(user.tel) && (
+              <Box
+                sx={{
+                  mt: 2,
+                  backgroundColor: "#ccc",
+                }}
+                key={index}
+              >
+                <UserCard
+                  handleSentTo={() => {
+                    setUsers((usersSentTo) => {
+                      userSentTo[user.tel] = true;
+                      return usersSentTo;
+                    });
+                    setRender(!render);
+                  }}
+                  type="full"
+                  actionlabel={text ? "ارسل" : "واتساب"}
+                  message={text ? text : "السلام عليكم"}
+                  user={user}
+                ></UserCard>
+              </Box>
+            )
+        )}
+      </Box>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -35,84 +124,17 @@ export default function Page({ usersJson }: { usersJson: string }) {
         {/* <meta property="og:image" content={post.images[0]?.data} /> */}
       </Head>
       <Layout>
-        <Box
-          sx={{
-            maxWidth: "345px",
-          }}
-        >
-          {message && !text && (
-            <Box>
-              <TextField
-                id="outlined-basic"
-                multiline
-                label="الرسالة"
-                defaultValue={""}
-                variant="outlined"
-                onChange={(event) => {
-                  messageToall = event.target.value;
-                }}
-                helperText=""
-              />
-            </Box>
-          )}
-          {!message && !text ? (
-            <Button
-              variant="outlined"
-              onClick={() => {
-                setMessage(true);
+        <Box>
+          {query.count && (
+            <Box
+              sx={{
+                maxWidth: "345px",
               }}
             >
-              ارسل رسالة
-            </Button>
-          ) : (
-            !text && (
-              <Box>
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    setMessage(false);
-                  }}
-                >
-                  اغلاق
-                </Button>{" "}
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    setText(messageToall);
-                  }}
-                >
-                  ارسال
-                </Button>
-              </Box>
-            )
+              <UserCard type="rep" user={users[0]}></UserCard>
+            </Box>
           )}
-
-          {users.map(
-            (user, index) =>
-              !Object.keys(userSentTo).includes(user.tel) && (
-                <Box
-                  sx={{
-                    mt: 2,
-                    backgroundColor: "#ccc",
-                  }}
-                  key={index}
-                >
-                  <UserCard
-                    handleSentTo={() => {
-                      setUsers((usersSentTo) => {
-                        userSentTo[user.tel] = true;
-                        return usersSentTo;
-                      });
-                      setRender(!render);
-                    }}
-                    type="full"
-                    actionlabel={text ? "ارسل" : "واتساب"}
-                    message={text ? text : "السلام عليكم"}
-                    user={user}
-                  ></UserCard>
-                </Box>
-              )
-          )}
+          {query.type && rReps()}
         </Box>
       </Layout>
     </>
@@ -132,6 +154,9 @@ export async function getServerSideProps({
   if (query.type) {
     const location = Nktt[query.location];
     sreps = crossedDep(usersObject, location);
+  } else if (query.count) {
+    const user = await DBUser.findOne({ count: query.count });
+    sreps.push(user);
   }
   const usersJson = JSON.stringify(sreps);
 
