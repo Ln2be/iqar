@@ -1781,7 +1781,7 @@ export function UserCard({
           <Button
             onClick={() => {
               fetch("/api/deleteuser?count=" + user.count).then(() => {
-                router.reload();
+                router.back();
               });
             }}
             variant="outlined"
