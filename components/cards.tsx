@@ -1741,38 +1741,39 @@ export function UserCard({
         >
           حذف
         </Button>
-        {sendLink(user.lastNotified) && true && (
-          <WhatsappButton
-            phone={correctPhone(user.tel ? user.tel : "no phone")}
-            message={
-              basepath + "/posts?notifyuser=" + user.count
-              // "/posts?action=posts&notifyuser=" +
-              // user.count +
-              // "&departements=[" +
-              // user.departements[0] +
-              // "]"
-            }
-          >
-            <Button
-              variant="contained"
-              color="error"
-              // onClick={() => {
-              //   // handleSentTo()
-              //   const now = Date.now();
-              //   fetch(
-              //     "/api/usertrust?action=notification&now=" +
-              //       now +
-              //       "&count=" +
-              //       user.count
-              //   ).then(() => {
-              //     router.reload();
-              //   });
-              // }}
+        {sendLink(user.lastNotified) ||
+          (true && (
+            <WhatsappButton
+              phone={correctPhone(user.tel ? user.tel : "no phone")}
+              message={
+                basepath + "/posts?notifyuser=" + user.count
+                // "/posts?action=posts&notifyuser=" +
+                // user.count +
+                // "&departements=[" +
+                // user.departements[0] +
+                // "]"
+              }
             >
-              {"الرابط"}
-            </Button>
-          </WhatsappButton>
-        )}
+              <Button
+                variant="contained"
+                color="error"
+                // onClick={() => {
+                //   // handleSentTo()
+                //   const now = Date.now();
+                //   fetch(
+                //     "/api/usertrust?action=notification&now=" +
+                //       now +
+                //       "&count=" +
+                //       user.count
+                //   ).then(() => {
+                //     router.reload();
+                //   });
+                // }}
+              >
+                {"الرابط"}
+              </Button>
+            </WhatsappButton>
+          ))}
 
         <WhatsappButton
           phone={correctPhone(user.tel ? user.tel : "no phone")}
