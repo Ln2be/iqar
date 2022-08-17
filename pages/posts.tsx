@@ -170,14 +170,16 @@ export default function Page({
   return (
     <Layout>
       <Box>
-        {action == "posts" && <Box>{rPosts()}</Box>}
+        {(action == "posts" || router.query.notifyuser) && (
+          <Box>{rPosts()}</Box>
+        )}
         {action == "form" && (
           <Box>
             {spin ? <Box>{"...جاري رفع المنشور"}</Box> : <PostForm></PostForm>}
           </Box>
         )}
         {action == "update" && <Box>{rUpdate()}</Box>}
-        {!action && <Box>{rPost()}</Box>}
+        {!action && !router.query.notifyuser && <Box>{rPost()}</Box>}
       </Box>
     </Layout>
   );
@@ -329,23 +331,23 @@ export async function getServerSideProps({
     const user = await DBUser.findOne({ count: query.notifyuser });
 
     const departements = user.departements;
-    posts = crossedDep(allposts, departements);
+    const nposts = crossedDep(allposts, departements);
 
-    repuser.push(user);
+    // repuser.push(user);
 
     // test if the user is coming with special code
 
     const pagination = (query.pagination ? query.pagination : 1) as number;
 
-    const postsresult = posts.slice((pagination - 1) * 10, pagination * 10);
+    const postsresult = nposts.slice((pagination - 1) * 10, pagination * 10);
     // the object to be injected in the post dom
     const result = JSON.stringify(postsresult);
 
-    const repst = JSON.stringify(repuser);
+    const repst = JSON.stringify([user]);
 
     injectObject = {
       result: result,
-      length: posts.length,
+      length: nposts.length,
       rep: repst,
     };
   }
