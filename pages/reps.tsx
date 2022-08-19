@@ -125,15 +125,16 @@ export default function Page({ usersJson }: { usersJson: string }) {
       </Head>
       <Layout>
         <Box>
-          {query.count && (
-            <Box
-              sx={{
-                maxWidth: "345px",
-              }}
-            >
-              <UserCard type="rep" user={users[0]}></UserCard>
-            </Box>
-          )}
+          {query.count ||
+            (query.tel && (
+              <Box
+                sx={{
+                  maxWidth: "345px",
+                }}
+              >
+                <UserCard type="rep" user={users[0]}></UserCard>
+              </Box>
+            ))}
           {query.type && rReps()}
         </Box>
       </Layout>
@@ -146,7 +147,10 @@ export async function getServerSideProps({
 }: {
   query: { [key: string]: string };
 }) {
-  const usersObjectall = await DBUser.find({}).sort({});
+  const usersObjectall = await DBUser.find({}).sort({
+    trust: -1,
+    activity: -1,
+  });
   const usersObject = usersObjectall.filter((user) => user.role != "admin");
 
   let sreps: UserType[] = [];
@@ -156,6 +160,9 @@ export async function getServerSideProps({
     sreps = crossedDep(usersObject, location);
   } else if (query.count) {
     const user = await DBUser.findOne({ count: query.count });
+    sreps.push(user);
+  } else if (query.tel) {
+    const user = await DBUser.findOne({ tel: query.tel });
     sreps.push(user);
   }
   const usersJson = JSON.stringify(sreps);

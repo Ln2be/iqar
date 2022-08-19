@@ -19,6 +19,7 @@ export interface UserType {
 }
 
 export interface Post {
+  facelink: string;
   _id?: string;
   type: string;
   subtype: string;

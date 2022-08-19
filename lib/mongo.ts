@@ -72,6 +72,7 @@ const postSchema = new Schema<Post>({
   hidden: { type: Boolean, default: false },
   archived: Boolean,
   sendTo: [String],
+  facelink: String,
 });
 
 export const DBPost =

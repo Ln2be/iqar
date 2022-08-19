@@ -613,20 +613,31 @@ export function PostCard({
       )}
 
       {post.sendTo && (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            mt: 1,
-          }}
-        >
-          {post.sendTo.length > 0 && <Box>تمت احالة المنشور الى</Box>}
-          {post.sendTo.map((tel, index) => (
-            <Link key={index} href={"/posts?action=posts&codeTel=" + tel}>
-              <Box>{tel}</Box>
-            </Link>
-          ))}
+        <Box>
+          {post.sendTo.length > 0 && user && user.role == "admin" && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                mt: 1,
+              }}
+            >
+              <Box>تمت احالة المنشور الى</Box>
+              {post.sendTo.map((tel, index) => (
+                <Link key={index} href={"/posts?action=posts&codeTel=" + tel}>
+                  <Box>{tel}</Box>
+                </Link>
+              ))}
+            </Box>
+          )}
         </Box>
+      )}
+
+      {/* resources for this post from facebook */}
+      {post.facelink && user && user.role == "admin" && (
+        <a href={post.facelink} target="_blank" rel="noreferrer">
+          صور
+        </a>
       )}
 
       <CardActions>
@@ -914,6 +925,7 @@ let post: Post = {
   createdAt: new Date(Date.now()),
   hidden: false,
   sendTo: [],
+  facelink: "",
 };
 
 // let pathFiles = [];
@@ -1254,16 +1266,27 @@ export function PostForm({ upost = post }: { upost?: Post }) {
         )}
 
         {user && user.role == "admin" && (
-          <FormControlLabel
-            label="اخفاء"
-            control={
-              <Switch
-                onChange={() => {
-                  post.hidden = true;
-                }}
-              />
-            }
-          ></FormControlLabel>
+          <Box>
+            <FormControlLabel
+              label="اخفاء"
+              control={
+                <Switch
+                  onChange={() => {
+                    post.hidden = true;
+                  }}
+                />
+              }
+            ></FormControlLabel>
+            <TextField
+              id="outlined-basic"
+              label="صور"
+              defaultValue={upost.facelink}
+              variant="outlined"
+              onChange={(event) => {
+                post.facelink = event.target.value;
+              }}
+            />
+          </Box>
         )}
         {/* This button needs to be viewed again */}
         {/* show the message of validation */}
@@ -1839,8 +1862,8 @@ export function UserCard({
           </Button>
         </WhatsappButton>
       </Box>
-      {type == "full" ||
-        (type == "rep" && (
+      {(type == "full" ||
+        type == "rep") && (
           <Box
             sx={{
               display: "flex",
@@ -1934,7 +1957,7 @@ export function UserCard({
               </Button>
             </Box>
           </Box>
-        ))}
+        )}
     </Box>
 
     // <Box></Box>
