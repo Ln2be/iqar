@@ -125,16 +125,15 @@ export default function Page({ usersJson }: { usersJson: string }) {
       </Head>
       <Layout>
         <Box>
-          {query.count ||
-            (query.tel && (
-              <Box
-                sx={{
-                  maxWidth: "345px",
-                }}
-              >
-                <UserCard type="rep" user={users[0]}></UserCard>
-              </Box>
-            ))}
+          {(query.count || query.tel) && (
+            <Box
+              sx={{
+                maxWidth: "345px",
+              }}
+            >
+              <UserCard type="rep" user={users[0]}></UserCard>
+            </Box>
+          )}
           {query.type && rReps()}
         </Box>
       </Layout>

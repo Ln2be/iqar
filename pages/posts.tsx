@@ -53,7 +53,7 @@ export default function Page({
               content="https://example.com/images/cool-page.jpg"
             />
           </Head>
-        ) : router.query.codeTel ? (
+        ) : router.query.codeTel && repo[0] ? (
           <Head>
             <title>{repo[0].username}</title>
             <meta property="og:title" content={"منشوراتك"} />
