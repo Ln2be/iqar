@@ -7,8 +7,7 @@ import { Post, UserType } from "../projectTypes";
 import Head from "next/head";
 import Pagination from "@mui/material/Pagination";
 
-import { PostCard, PostForm, UserCard } from "../components/cards";
-import Departement from "../components/cards";
+import { PostCard, PostForm, UserCard, Departement } from "../components/cards";
 import {
   adtypes,
   departements,
