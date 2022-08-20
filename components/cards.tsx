@@ -1760,6 +1760,7 @@ export function UserCard({
         justifyContent: "space-between",
       }}
     >
+      {/* for all type demanding UserCard */}
       <Box
         sx={{
           display: "flex",
@@ -1792,175 +1793,217 @@ export function UserCard({
           <Box>{user.region}</Box>
         </Box>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          mt: 1,
-        }}
-      >
-        {type == "rep" ? (
-          <Button
-            onClick={() => {
-              fetch("/api/deleteuser?count=" + user.count).then(() => {
-                router.back();
-              });
-            }}
-            variant="outlined"
-          >
-            حذف
-          </Button>
-        ) : (
-          <Button
-            onClick={() => {
-              router.push("/reps?count=" + user.count);
-            }}
-            variant="outlined"
-          >
-            حذف
-          </Button>
-        )}
 
-        {sendLink(user.lastNotified) && (
+      {/* handle delete  */}
+      {type != "board" && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            mt: 1,
+          }}
+        >
+          {type == "rep" ? (
+            <Button
+              onClick={() => {
+                fetch("/api/deleteuser?count=" + user.count).then(() => {
+                  router.back();
+                });
+              }}
+              variant="outlined"
+            >
+              حذف
+            </Button>
+          ) : (
+            type != "board" && (
+              <Button
+                onClick={() => {
+                  router.push("/reps?count=" + user.count);
+                }}
+                variant="outlined"
+              >
+                حذف
+              </Button>
+            )
+          )}
+
+          {sendLink(user.lastNotified) && type != "board" && (
+            <WhatsappButton
+              phone={correctPhone(user.tel ? user.tel : "no phone")}
+              message={basepath + "/posts?notifyuser=" + user.count}
+            >
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => {
+                  // handleSentTo()
+                  const now = Date.now();
+                  fetch(
+                    "/api/usertrust?action=notification&now=" +
+                      now +
+                      "&count=" +
+                      user.count
+                  ).then(() => {
+                    router.reload();
+                  });
+                }}
+              >
+                {"الرابط"}
+              </Button>
+            </WhatsappButton>
+          )}
+
           <WhatsappButton
             phone={correctPhone(user.tel ? user.tel : "no phone")}
-            message={basepath + "/posts?notifyuser=" + user.count}
+            message={message}
           >
             <Button
               variant="contained"
-              color="error"
               onClick={() => {
-                // handleSentTo()
-                const now = Date.now();
+                handleSentTo();
+              }}
+            >
+              {actionlabel}
+            </Button>
+          </WhatsappButton>
+        </Box>
+      )}
+
+      {/* handle the trust */}
+      {(type == "full" || type == "rep") && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            mt: 1,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              // justifyContent: "space-between",
+            }}
+          >
+            <Button
+              variant="outlined"
+              onClick={() => {
                 fetch(
-                  "/api/usertrust?action=notification&now=" +
-                    now +
-                    "&count=" +
-                    user.count
+                  "/api/usertrust?action=incrtrust&count=" + user.count
                 ).then(() => {
                   router.reload();
                 });
               }}
             >
-              {"الرابط"}
+              <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
             </Button>
-          </WhatsappButton>
-        )}
-
-        <WhatsappButton
-          phone={correctPhone(user.tel ? user.tel : "no phone")}
-          message={message}
-        >
-          <Button
-            variant="contained"
-            onClick={() => {
-              handleSentTo();
-            }}
-          >
-            {actionlabel}
-          </Button>
-        </WhatsappButton>
-      </Box>
-      {(type == "full" ||
-        type == "rep") && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box>{"الثقة"}</Box>
+              <Box>{user.trust}</Box>
+            </Box>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                fetch(
+                  "/api/usertrust?action=decrtrust&count=" + user.count
+                ).then(() => {
+                  router.reload();
+                });
+              }}
+            >
+              <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
+            </Button>
+          </Box>
           <Box
             sx={{
               display: "flex",
               flexDirection: "row",
-              justifyContent: "space-between",
-              mt: 1,
+              // justifyContent: "space-between",
             }}
           >
+            <Button
+              variant="outlined"
+              onClick={() => {
+                fetch(
+                  "/api/usertrust?action=incractivity&count=" + user.count
+                ).then(() => {
+                  router.reload();
+                });
+              }}
+            >
+              <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
+            </Button>
             <Box
               sx={{
                 display: "flex",
-                flexDirection: "row",
-                // justifyContent: "space-between",
+                flexDirection: "column",
+                justifyContent: "space-between",
               }}
             >
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  fetch(
-                    "/api/usertrust?action=incrtrust&count=" + user.count
-                  ).then(() => {
-                    router.reload();
-                  });
-                }}
-              >
-                <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
-              </Button>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Box>{"الثقة"}</Box>
-                <Box>{user.trust}</Box>
-              </Box>
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  fetch(
-                    "/api/usertrust?action=decrtrust&count=" + user.count
-                  ).then(() => {
-                    router.reload();
-                  });
-                }}
-              >
-                <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
-              </Button>
+              <Box>{"الحيوية"}</Box>
+              <Box>{user.activity}</Box>
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                // justifyContent: "space-between",
+            <Button
+              variant="outlined"
+              onClick={() => {
+                fetch(
+                  "/api/usertrust?action=decractivity&count=" + user.count
+                ).then(() => {
+                  router.reload();
+                });
               }}
             >
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  fetch(
-                    "/api/usertrust?action=incractivity&count=" + user.count
-                  ).then(() => {
-                    router.reload();
-                  });
-                }}
-              >
-                <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
-              </Button>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Box>{"الحيوية"}</Box>
-                <Box>{user.activity}</Box>
-              </Box>
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  fetch(
-                    "/api/usertrust?action=decractivity&count=" + user.count
-                  ).then(() => {
-                    router.reload();
-                  });
-                }}
-              >
-                <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
-              </Button>
-            </Box>
+              <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
+            </Button>
           </Box>
-        )}
-    </Box>
+        </Box>
+      )}
 
-    // <Box></Box>
+      {/* handle the board for rep */}
+      {type == "board" && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            mt: 1,
+          }}
+        >
+          <Button
+            variant={!router.query.notifyuser ? "outlined" : "contained"}
+            onClick={() => {
+              router.push(basepath + "posts?notifyuser=" + user.count);
+            }}
+          >
+            {translate(user.departements[0], departements)}
+          </Button>
+          <Button
+            variant={router.query.notifyuser ? "outlined" : "contained"}
+            onClick={() => {
+              router.push(basepath + "/posts?action=posts&codeTel=" + user.tel);
+            }}
+          >
+            {"منشوراتي"}
+          </Button>
+          <WhatsappButton
+            phone={"+22248692007"}
+            message={"اريد الغاء الاشتراك" + user.count}
+          >
+            <Button variant="outlined" color="warning">
+              {"الغاء الاشتراك"}
+            </Button>
+          </WhatsappButton>
+        </Box>
+      )}
+    </Box>
   );
 }
 

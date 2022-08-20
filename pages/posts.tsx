@@ -43,7 +43,7 @@ export default function Page({
     const repo = JSON.parse(rep) as UserType[];
     return (
       <Box>
-        {router.query.notifyuser ? (
+        {router.query.notifyuser || router.query.codeTel ? (
           <Head>
             <title>{repo[0].username}</title>
             <meta property="og:title" content={repo[0].username} />
@@ -90,9 +90,11 @@ export default function Page({
             gap: 2,
           }}
         >
-          {!location && !router.query.codeTel && <Departement></Departement>}
-          {router.query.codeTel && repo[0] && (
-            <UserCard type="min" user={repo[0]}></UserCard>
+          {!location && !router.query.codeTel && !router.query.notifyuser && (
+            <Departement></Departement>
+          )}
+          {(router.query.codeTel || router.query.notifyuser) && repo[0] && (
+            <UserCard type="board" user={repo[0]}></UserCard>
           )}
           {posts.map((post, i) => (
             <PostCard key={i} post={post} type="feed"></PostCard>
