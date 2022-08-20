@@ -1996,7 +1996,8 @@ export function UserCard({
           <WhatsappButton
             phone={"+22248692007"}
             message={
-              "اريد الغاء الاشتراك   /n" +
+              "اريد الغاء الاشتراك" +
+              "\n" +
               basepath +
               "/reps?count=" +
               user.count
