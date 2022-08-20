@@ -1816,19 +1816,17 @@ export function UserCard({
               حذف
             </Button>
           ) : (
-            type != "board" && (
-              <Button
-                onClick={() => {
-                  router.push("/reps?count=" + user.count);
-                }}
-                variant="outlined"
-              >
-                حذف
-              </Button>
-            )
+            <Button
+              onClick={() => {
+                router.push("/reps?count=" + user.count);
+              }}
+              variant="outlined"
+            >
+              حذف
+            </Button>
           )}
 
-          {sendLink(user.lastNotified) && type != "board" && (
+          {sendLink(user.lastNotified) && (
             <WhatsappButton
               phone={correctPhone(user.tel ? user.tel : "no phone")}
               message={basepath + "/posts?notifyuser=" + user.count}
