@@ -1795,7 +1795,7 @@ export function UserCard({
       </Box>
 
       {/* handle delete  */}
-      {type != "board" && (
+      {type != "board" && user && user.role == "admin" && (
         <Box
           sx={{
             display: "flex",
@@ -1871,7 +1871,7 @@ export function UserCard({
       )}
 
       {/* handle the trust */}
-      {(type == "full" || type == "rep") && (
+      {(type == "full" || type == "rep") && user && user.role == "admin" && (
         <Box
           sx={{
             display: "flex",
