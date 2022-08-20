@@ -5,6 +5,7 @@ import { useUser } from "../../lib/auth/hooks";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Link from "next/link";
 import { WhatsappShareButton } from "react-share";
+import { basepath } from "../../lib/myfunctions";
 
 export default function AuthHeader() {
   const user = useUser();
@@ -119,7 +120,7 @@ export default function AuthHeader() {
                 </Box>
               </Box>
               <Box>
-                <Link href={"/feeds?user=rep&departement=" + user.departement}>
+                <Link href={basepath + "/posts?notifyuser=" + user.count}>
                   الطلبات
                 </Link>
               </Box>

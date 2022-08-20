@@ -41,6 +41,7 @@ import Avatar from "@mui/material/Avatar";
 import { red } from "@mui/material/colors";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+
 // the post card. How the post is showed
 export function PostCard({
   post,
@@ -766,8 +767,6 @@ export function TrackCard({ track }: { track: Track }) {
   );
 }
 
-// the track form
-
 // new tracked post
 const track = {
   text: "",
@@ -808,6 +807,7 @@ const inicheckD: { [key: string]: boolean } = {
   Toujounine: false,
   Riyadh: false,
 };
+
 export function TrackForm({
   onSubmit,
   update = false,
@@ -1308,7 +1308,7 @@ export function PostForm({ upost = post }: { upost?: Post }) {
 
 let depvalues: string[] = [];
 
-export default function Departement() {
+export function Departement() {
   const router = useRouter();
 
   const [depcheck, setdepcheck] = useState(inicheckD);
@@ -1518,6 +1518,7 @@ export function ChanceForm() {
   );
 }
 
+// User Model
 const userbody: { [key: string]: string | string[] } = {
   username: "",
   departements: [],
@@ -2074,6 +2075,7 @@ export function Departs({
   );
 }
 
+// verifiy how long the rep has get a notification
 function sendLink(lastnotified: number) {
   // throw new Error("Function not implemented.");
 
