@@ -1752,6 +1752,7 @@ export function UserCard({
   handleSentTo?: () => void;
 }) {
   const router = useRouter();
+  const admin = useUser();
   return (
     <Box
       sx={{
@@ -1795,7 +1796,7 @@ export function UserCard({
       </Box>
 
       {/* handle delete  */}
-      {type != "board" && user && user.role == "admin" && (
+      {type != "board" && admin && admin.role == "admin" && (
         <Box
           sx={{
             display: "flex",
@@ -1869,7 +1870,7 @@ export function UserCard({
       )}
 
       {/* handle the trust */}
-      {(type == "full" || type == "rep") && user && user.role == "admin" && (
+      {(type == "full" || type == "rep") && admin && admin.role == "admin" && (
         <Box
           sx={{
             display: "flex",
