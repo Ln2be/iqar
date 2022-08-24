@@ -642,14 +642,14 @@ export function PostCard({
                       variant="outlined"
                       onClick={() => {
                         fetch(
-                          "/api/posts?action=removeSend&count=" +
+                          "/api/posts?action=archiveSend&count=" +
                             post.count +
                             "&tel=" +
                             tel
                         );
                       }}
                     >
-                      سحب
+                      ارشفة
                     </Button>
                   </Box>
                 ))}
@@ -950,6 +950,7 @@ let post: Post = {
   createdAt: new Date(Date.now()),
   hidden: false,
   sendTo: [],
+  sendToArchive: [],
   facelink: "",
 };
 

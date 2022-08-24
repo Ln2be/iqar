@@ -54,7 +54,11 @@ export async function getServerSideProps() {
   );
 
   postsWithSendTo.map((post) => {
-    const postUsers = users.filter((user) => post.sendTo.includes(user.tel));
+    const postUsers = users.filter(
+      (user) =>
+        post.sendTo.includes(user.tel) &&
+        (!post.sendToArchive || !post.sendToArchive.includes(user.tel))
+    );
 
     sendUnits.push({ post, users: postUsers });
   });

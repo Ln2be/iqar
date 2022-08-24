@@ -57,13 +57,21 @@ export default async function helper(
     const { count } = req.query;
     await DBPost.updateOne({ count: count }, { hidden: false });
     res.send("OK");
-  } else if (action == "removeSend") {
-    const { count, tel } = req.query;
+  } else if (action == "archiveSend") {
+    const count = req.query.count;
+    const tel = req.query.tel as string;
     const post = (await DBPost.findOne({ count: count })) as Post;
 
-    const sendTo = post.sendTo.filter((sentTel) => sentTel != tel);
+    // const sendTo = post.sendTo.filter((sentTel) => sentTel != tel);
 
-    const update = await DBPost.updateOne({ count: count }, { sendTo: sendTo });
+    const sendToArchive = post.sendToArchive ? post.sendToArchive : [];
+
+    sendToArchive.push(tel);
+
+    const update = await DBPost.updateOne(
+      { count: count },
+      { sendToArchive: sendToArchive }
+    );
     res.send("OK");
   }
 }
