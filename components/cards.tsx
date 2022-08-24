@@ -616,41 +616,43 @@ export function PostCard({
       {post.sendTo && (
         <Box>
           {post.sendTo.length > 0 && user && user.role == "admin" && (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                mt: 1,
-              }}
-            >
+            <Box>
               <Box>تمت احالة المنشور الى</Box>
-              {post.sendTo.map((tel, index) => (
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                  key={index}
-                >
-                  <Link href={"/posts?action=posts&codeTel=" + tel}>
-                    <Box>{tel}</Box>
-                  </Link>
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      fetch(
-                        "/api/posts?action=removeSend&count=" +
-                          post.count +
-                          "&tel=" +
-                          tel
-                      );
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  mt: 1,
+                }}
+              >
+                {post.sendTo.map((tel, index) => (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
                     }}
+                    key={index}
                   >
-                    سحب
-                  </Button>
-                </Box>
-              ))}
+                    <Link href={"/posts?action=posts&codeTel=" + tel}>
+                      <Box>{tel}</Box>
+                    </Link>
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        fetch(
+                          "/api/posts?action=removeSend&count=" +
+                            post.count +
+                            "&tel=" +
+                            tel
+                        );
+                      }}
+                    >
+                      سحب
+                    </Button>
+                  </Box>
+                ))}
+              </Box>
             </Box>
           )}
         </Box>
