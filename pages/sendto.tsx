@@ -42,7 +42,7 @@ export async function getServerSideProps() {
   const sendUnits: SendUnit[] = [];
 
   const postsWithSendTo = posts.filter(
-    (post) => post.sendTo && post.sendTo.length > 1
+    (post) => post.sendTo && post.sendTo.length > 0
   );
 
   postsWithSendTo.map((post) => {
