@@ -73,6 +73,21 @@ export default async function helper(
       { sendToArchive: sendToArchive }
     );
     res.send("OK");
+  } else if (action == "restoreSend") {
+    const count = req.query.count;
+    const tel = req.query.tel as string;
+    const post = (await DBPost.findOne({ count: count })) as Post;
+
+    const sendToArchive = post.sendToArchive.filter(
+      (sentTel) => sentTel != tel
+    );
+
+    const update = await DBPost.updateOne(
+      { count: count },
+      { sendToArchive: sendToArchive }
+    );
+
+    res.send("OK");
   }
 }
 

@@ -638,21 +638,39 @@ export function PostCard({
                     <Link href={"/posts?action=posts&codeTel=" + tel}>
                       <Box>{tel}</Box>
                     </Link>
-                    <Button
-                      variant="outlined"
-                      onClick={() => {
-                        fetch(
-                          "/api/posts?action=archiveSend&count=" +
-                            post.count +
-                            "&tel=" +
-                            tel
-                        ).then(() => {
-                          router.reload();
-                        });
-                      }}
-                    >
-                      ارشفة
-                    </Button>
+                    {router.query.action == "archived" ? (
+                      <Button
+                        variant="outlined"
+                        onClick={() => {
+                          fetch(
+                            "/api/posts?action=restoreSend&count=" +
+                              post.count +
+                              "&tel=" +
+                              tel
+                          ).then(() => {
+                            router.reload();
+                          });
+                        }}
+                      >
+                        استعادة
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="outlined"
+                        onClick={() => {
+                          fetch(
+                            "/api/posts?action=archiveSend&count=" +
+                              post.count +
+                              "&tel=" +
+                              tel
+                          ).then(() => {
+                            router.reload();
+                          });
+                        }}
+                      >
+                        ارشفة
+                      </Button>
+                    )}
                   </Box>
                 ))}
               </Box>
