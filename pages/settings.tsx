@@ -5,7 +5,7 @@ import Layout from "../components/layout";
 import Link from "next/link";
 import { DBPost, DBUser } from "../lib/mongo";
 import { Nktt } from "../lib/myfunctions";
-import { Post, UserType } from "../projectTypes";
+import { Post, UserType, SendUnit } from "../projectTypes";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
 
@@ -301,7 +301,7 @@ export async function getServerSideProps({
       },
     },
   };
-  const usersObjectall = await DBUser.find({}).sort({});
+  const usersObjectall = (await DBUser.find({}).sort({})) as UserType[];
   const users = usersObjectall.filter((user) => user.role != "admin");
 
   const hiddenPosts = await DBPost.find({ hidden: true });
@@ -316,11 +316,25 @@ export async function getServerSideProps({
 
   const allPosts = (await DBPost.find({})) as Post[];
 
-  const postsSent = allPosts.filter(
+  const sendUnits: SendUnit[] = [];
+
+  const postsWithSendTo = allPosts.filter(
     (post) => post.sendTo && post.sendTo.length > 0
   );
 
-  metadata.rep.sendto.total = postsSent.length;
+  postsWithSendTo.map((post) => {
+    const postUsers = users.filter(
+      (user) =>
+        post.sendTo.includes(user.tel) &&
+        (!post.sendToArchive || !post.sendToArchive.includes(user.tel))
+    );
+
+    if (postUsers.length > 0) {
+      sendUnits.push({ post, users: postUsers });
+    }
+  });
+
+  metadata.rep.sendto.total = sendUnits.length;
 
   const postsSentArchive = allPosts.filter(
     (post) => post.sendToArchive && post.sendToArchive.length > 0

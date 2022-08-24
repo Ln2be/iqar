@@ -69,6 +69,8 @@ export async function getServerSideProps({
         sendUnits.push({ post, users: postUsers });
       }
     });
+
+    
   } else if (query.action == "archived") {
     const postsWithSendTo = posts.filter(
       (post) => post.sendToArchive && post.sendToArchive.length > 0

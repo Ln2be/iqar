@@ -78,3 +78,8 @@ export interface Chance {
   text: string;
   post: Post;
 }
+
+export interface SendUnit {
+  post: Post;
+  users: UserType[];
+}
