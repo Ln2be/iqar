@@ -326,7 +326,7 @@ export async function getServerSideProps({
     (post) => post.sendToArchive && post.sendToArchive.length > 0
   );
 
-  metadata.rep.sendto.total = postsSentArchive.length;
+  metadata.rep.archivedSend.total = postsSentArchive.length;
 
   return {
     props: { metadata: JSON.stringify(metadata) },
