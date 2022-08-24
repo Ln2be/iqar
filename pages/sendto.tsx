@@ -4,6 +4,7 @@ import { PostCard, UserCard } from "../components/cards";
 import Layout from "../components/layout";
 import { DBPost, DBUser } from "../lib/mongo";
 import { Post, UserType } from "../projectTypes";
+import { basepath } from "../lib/myfunctions";
 
 interface SendUnit {
   post: Post;
@@ -26,7 +27,14 @@ export default function Page({ result }: { result: string }) {
             <PostCard type="full" post={sendUnit.post}></PostCard>
             {sendUnit.users.map((user, ius) => {
               console.log(user);
-              return <UserCard key={ius} type="min" user={user}></UserCard>;
+              return (
+                <UserCard
+                  message={basepath + "/posts?count=" + sendUnit.post.count}
+                  key={ius}
+                  type="min"
+                  user={user}
+                ></UserCard>
+              );
             })}
           </Box>
         ))}
