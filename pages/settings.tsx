@@ -5,8 +5,9 @@ import Layout from "../components/layout";
 import Link from "next/link";
 import { DBPost, DBUser } from "../lib/mongo";
 import { Nktt } from "../lib/myfunctions";
-import { UserType } from "../projectTypes";
+import { Post, UserType } from "../projectTypes";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
 
 export default function Page({ metadata }: { metadata: string }) {
   const metadatao = JSON.parse(metadata);
@@ -156,6 +157,59 @@ export default function Page({ metadata }: { metadata: string }) {
               </Box>
             </Link>
           }
+
+          {
+            <Link href={"/sendto"}>
+              <Box
+                sx={{
+                  bgColor: "#fff",
+                  border: "1px solid",
+                  width: "100%",
+                  height: "150px",
+                }}
+              >
+                <ForwardToInboxIcon></ForwardToInboxIcon>
+                <Box
+                  style={{
+                    width: "100%",
+                    height: "60%",
+                  }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-around",
+                    // alignItems: "center",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      // justifyContent: "space-around",
+                      alignItems: "center",
+                      fontSize: 40,
+                    }}
+                  >
+                    {metadatao.rep.sendto.total}
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "20%",
+                    // textAlign: "center",
+                    backgroundColor: (theme) => theme.palette.primary.main,
+                    color: "white",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Box>{"متابعة"}</Box>
+                </Box>
+              </Box>
+            </Link>
+          }
         </Box>
       </Box>
     </Layout>
@@ -186,6 +240,9 @@ export async function getServerSideProps({
       hidden: {
         total: 0,
       },
+      sendto: {
+        total: 0,
+      },
     },
   };
   const usersObjectall = await DBUser.find({}).sort({});
@@ -201,6 +258,13 @@ export async function getServerSideProps({
     }
   }
 
+  const allPosts = (await DBPost.find({})) as Post[];
+
+  const postsSent = allPosts.filter(
+    (post) => post.sendTo && post.sendTo.length > 0
+  );
+
+  metadata.rep.sendto.total = postsSent.length;
 
   return {
     props: { metadata: JSON.stringify(metadata) },
