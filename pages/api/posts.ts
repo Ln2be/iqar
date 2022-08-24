@@ -45,7 +45,6 @@ export default async function helper(
     res.json({
       count: post.count,
     });
-
   } else if (action == "delete") {
     const { count } = req.query;
     const rpost = await DBPost.deleteOne({ count: count });
@@ -57,6 +56,14 @@ export default async function helper(
   } else if (action == "show") {
     const { count } = req.query;
     await DBPost.updateOne({ count: count }, { hidden: false });
+    res.send("OK");
+  } else if (action == "removeSend") {
+    const { count, tel } = req.query;
+    const post = (await DBPost.findOne({ count: count })) as Post;
+
+    const sendTo = post.sendTo.filter((sentTel) => sentTel != tel);
+
+    const update = await DBPost.updateOne({ count: count }, { sendTo: sendTo });
     res.send("OK");
   }
 }

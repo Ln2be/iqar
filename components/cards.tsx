@@ -625,9 +625,31 @@ export function PostCard({
             >
               <Box>تمت احالة المنشور الى</Box>
               {post.sendTo.map((tel, index) => (
-                <Link key={index} href={"/posts?action=posts&codeTel=" + tel}>
-                  <Box>{tel}</Box>
-                </Link>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                  key={index}
+                >
+                  <Link href={"/posts?action=posts&codeTel=" + tel}>
+                    <Box>{tel}</Box>
+                  </Link>
+                  <Button
+                    variant="outlined"
+                    onClick={() => {
+                      fetch(
+                        "/api/posts?action=removeSend&count=" +
+                          post.count +
+                          "&tel=" +
+                          tel
+                      );
+                    }}
+                  >
+                    سحب
+                  </Button>
+                </Box>
               ))}
             </Box>
           )}
