@@ -146,11 +146,24 @@ export async function getServerSideProps({
 }: {
   query: { [key: string]: string };
 }) {
-  const usersObjectall = await DBUser.find({}).sort({
-    trust: -1,
-    activity: -1,
+  const usersObjectall = (await DBUser.find({})) as UserType[];
+  const usersObjectrep = usersObjectall.filter((user) => user.role != "admin");
+
+  const usersObjectr = usersObjectrep.sort((user1, user2) => {
+    if (user1.trust == user2.trust) {
+      if (user1.activity > user2.activity) {
+        return 1;
+      } else {
+        return -1;
+      }
+    } else if (user1.trust > user2.trust) {
+      return 1;
+    } else {
+      return -1;
+    }
   });
-  const usersObject = usersObjectall.filter((user) => user.role != "admin");
+
+  const usersObject = usersObjectr.reverse();
 
   let sreps: UserType[] = [];
 

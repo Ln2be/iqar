@@ -1,13 +1,24 @@
-function getDateAr() {
-  const options = {
-    weekday: "long",
-    day: "2-digit",
-    month: "long",
-    year: "2-digit",
-  };
+const ar = [
+  { t: 1, a: 1 },
+  { t: 2, a: 2 },
+  { t: 2, a: 1 },
+  { t: 1, a: 3 },
+];
 
-  const lastnotified = new Date(Date.now()).toLocaleString("Ar-ma", options);
-  return lastnotified;
-}
+const sorted = ar.sort((a, b) => {
+  if (a.t == b.t) {
+    if (a.a > b.a) {
+      return 1;
+    } else {
+      return -1;
+    }
+  } else if (a.t > b.t) {
+    return 1;
+  } else {
+    return -1;
+  }
+});
 
-console.log(lastnotified);
+const renversed = ar.reverse();
+
+console.log(renversed);
