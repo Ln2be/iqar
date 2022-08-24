@@ -95,13 +95,19 @@ export default function Page({ usersJson }: { usersJson: string }) {
                 key={index}
               >
                 <UserCard
-                  handleSentTo={() => {
-                    setUsers((usersSentTo) => {
-                      userSentTo[user.tel] = true;
-                      return usersSentTo;
-                    });
-                    setRender(!render);
-                  }}
+                  handleSentTo={
+                    text
+                      ? () => {
+                          setUsers((usersSentTo) => {
+                            userSentTo[user.tel] = true;
+                            return usersSentTo;
+                          });
+                          setRender(!render);
+                        }
+                      : () => {
+                          const khroj = "";
+                        }
+                  }
                   type="full"
                   actionlabel={text ? "ارسل" : "واتساب"}
                   message={text ? text : "السلام عليكم"}
