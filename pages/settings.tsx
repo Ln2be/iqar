@@ -159,7 +159,7 @@ export default function Page({ metadata }: { metadata: string }) {
           }
 
           {
-            <Link href={"/sendto"}>
+            <Link href={"/sendto?action=active"}>
               <Box
                 sx={{
                   bgColor: "#fff",
@@ -205,7 +205,60 @@ export default function Page({ metadata }: { metadata: string }) {
                     alignItems: "center",
                   }}
                 >
-                  <Box>{"متابعة"}</Box>
+                  <Box>{"المتابعة النشطة"}</Box>
+                </Box>
+              </Box>
+            </Link>
+          }
+
+          {
+            <Link href={"/sendto?action=archived"}>
+              <Box
+                sx={{
+                  bgColor: "#fff",
+                  border: "1px solid",
+                  width: "100%",
+                  height: "150px",
+                }}
+              >
+                <ForwardToInboxIcon></ForwardToInboxIcon>
+                <Box
+                  style={{
+                    width: "100%",
+                    height: "60%",
+                  }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-around",
+                    // alignItems: "center",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      // justifyContent: "space-around",
+                      alignItems: "center",
+                      fontSize: 40,
+                    }}
+                  >
+                    {metadatao.rep.archivedSend.total}
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "20%",
+                    // textAlign: "center",
+                    backgroundColor: (theme) => theme.palette.primary.main,
+                    color: "white",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Box>{"المتابعة المارشفة"}</Box>
                 </Box>
               </Box>
             </Link>
@@ -243,6 +296,9 @@ export async function getServerSideProps({
       sendto: {
         total: 0,
       },
+      archivedSend: {
+        total: 0,
+      },
     },
   };
   const usersObjectall = await DBUser.find({}).sort({});
@@ -265,6 +321,12 @@ export async function getServerSideProps({
   );
 
   metadata.rep.sendto.total = postsSent.length;
+
+  const postsSentArchive = allPosts.filter(
+    (post) => post.sendToArchive && post.sendToArchive.length > 0
+  );
+
+  metadata.rep.sendto.total = postsSentArchive.length;
 
   return {
     props: { metadata: JSON.stringify(metadata) },

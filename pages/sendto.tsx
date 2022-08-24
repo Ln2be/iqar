@@ -43,25 +43,41 @@ export default function Page({ result }: { result: string }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({
+  query,
+}: {
+  query: { [key: string]: string };
+}) {
   const posts = (await DBPost.find({})) as Post[];
   const users = (await DBUser.find({})) as UserType[];
 
   const sendUnits: SendUnit[] = [];
 
-  const postsWithSendTo = posts.filter(
-    (post) => post.sendTo && post.sendTo.length > 0
-  );
-
-  postsWithSendTo.map((post) => {
-    const postUsers = users.filter(
-      (user) =>
-        post.sendTo.includes(user.tel) &&
-        (!post.sendToArchive || !post.sendToArchive.includes(user.tel))
+  if (query.action == "active") {
+    const postsWithSendTo = posts.filter(
+      (post) => post.sendTo && post.sendTo.length > 0
     );
 
-    sendUnits.push({ post, users: postUsers });
-  });
+    postsWithSendTo.map((post) => {
+      const postUsers = users.filter(
+        (user) =>
+          post.sendTo.includes(user.tel) &&
+          (!post.sendToArchive || !post.sendToArchive.includes(user.tel))
+      );
+
+      sendUnits.push({ post, users: postUsers });
+    });
+  } else if (query.action == "archived") {
+    const postsWithSendTo = posts.filter(
+      (post) => post.sendToArchive && post.sendToArchive.length > 0
+    );
+
+    postsWithSendTo.map((post) => {
+      const postUsers = users.filter((user) => post.sendTo.includes(user.tel));
+
+      sendUnits.push({ post, users: postUsers });
+    });
+  }
 
   const result = JSON.stringify(sendUnits);
 

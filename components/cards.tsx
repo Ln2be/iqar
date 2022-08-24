@@ -646,7 +646,9 @@ export function PostCard({
                             post.count +
                             "&tel=" +
                             tel
-                        );
+                        ).then(() => {
+                          router.reload();
+                        });
                       }}
                     >
                       ارشفة
