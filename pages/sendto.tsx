@@ -65,7 +65,9 @@ export async function getServerSideProps({
           (!post.sendToArchive || !post.sendToArchive.includes(user.tel))
       );
 
-      sendUnits.push({ post, users: postUsers });
+      if (postUsers.length > 0) {
+        sendUnits.push({ post, users: postUsers });
+      }
     });
   } else if (query.action == "archived") {
     const postsWithSendTo = posts.filter(
