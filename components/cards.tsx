@@ -631,6 +631,7 @@ export function PostCard({
                       display: "flex",
                       flexDirection: "row",
                       justifyContent: "space-between",
+                      mt: 0.5,
                     }}
                     key={index}
                   >
