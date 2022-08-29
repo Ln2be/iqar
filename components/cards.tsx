@@ -1011,7 +1011,8 @@ export function PostForm({ upost = post }: { upost?: Post }) {
 
   // sign up the user and save the post to the database
   async function handleSubmitThePost() {
-    setDisable(true);
+    // I think this make the submission get stuck
+    // setDisable(true);
     const result = post;
 
     if (!isUpdate) {
