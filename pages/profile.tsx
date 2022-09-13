@@ -3,9 +3,10 @@ import Box from "@mui/material/Box";
 import Layout from "../components/layout";
 import React from "react";
 import Link from "next/link";
-import { WhatsappShareButton } from "react-share";
+// import { WhatsappShareButton } from "react-share";
 import { DBPost } from "../lib/mongo";
 import { basepath } from "../lib/myfunctions";
+import WhatsappButton from "../components/whatsapp";
 
 export default function Page({ statisjson }: { statisjson: string }) {
   const statistic = JSON.parse(statisjson);
@@ -19,8 +20,8 @@ export default function Page({ statisjson }: { statisjson: string }) {
               <Link href="/reps?role=rep">الممثلين</Link>
             </td>
             <td>
-              <WhatsappShareButton
-                url={basepath + "/sign?action=signup&role=rep"}
+              <WhatsappButton
+                message={basepath + "/sign?action=signup&role=rep"}
               >
                 <Box
                   sx={{
@@ -30,7 +31,7 @@ export default function Page({ statisjson }: { statisjson: string }) {
                 >
                   ممثل جديد
                 </Box>
-              </WhatsappShareButton>
+              </WhatsappButton>
             </td>
           </tr>
           <tr>
@@ -38,8 +39,8 @@ export default function Page({ statisjson }: { statisjson: string }) {
               <Link href="/reps?role=admin">المدراء</Link>
             </td>
             <td>
-              <WhatsappShareButton
-                url={basepath + "/sign?action=signup&role=admin"}
+              <WhatsappButton
+                message={basepath + "/sign?action=signup&role=admin"}
               >
                 <Box
                   sx={{
@@ -49,7 +50,7 @@ export default function Page({ statisjson }: { statisjson: string }) {
                 >
                   مدير جديد
                 </Box>
-              </WhatsappShareButton>
+              </WhatsappButton>
             </td>
           </tr>
           <tr>
