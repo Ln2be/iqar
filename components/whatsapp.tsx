@@ -14,7 +14,7 @@ export default function whatsappButton({
       rel="noreferrer"
       href={"https://wa.me/" + phone + "/?text=" + message}
     >
-      {children}
+    {children}
     </a>
-  );
+)
 }
