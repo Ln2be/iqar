@@ -18,3 +18,21 @@ export default function whatsappButton({
     </a>
   );
 }
+
+export function WhatsappShare({
+  message,
+  children,
+}: {
+  message: string;
+  children: JSX.Element;
+}) {
+  return (
+    <a
+      target={"_blank"}
+      rel="noreferrer"
+      href={"https://wa.me/?text=" + message}
+    >
+      {children}
+    </a>
+  );
+}

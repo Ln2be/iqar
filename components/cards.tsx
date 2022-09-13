@@ -5,11 +5,7 @@ import {
   CardActions,
   CardMedia,
   Checkbox,
-  FormControl,
   FormControlLabel,
-  FormGroup,
-  FormHelperText,
-  FormLabel,
   Link,
   MenuItem,
   TextField,
@@ -31,7 +27,7 @@ import {
   correctPrice,
 } from "../lib/myfunctions";
 import { Chance, Post, Track, UserType } from "../projectTypes";
-import WhatsappButton from "./whatsapp";
+import WhatsappButton, { WhatsappShare } from "./whatsapp";
 import ShareIcon from "@mui/icons-material/Share";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -700,7 +696,7 @@ export function PostCard({
           //   </Box>
           // </WhatsappShareButton>
 
-          <WhatsappButton message={basepath + "/posts?count=" + post.count}>
+          <WhatsappShare message={basepath + "/posts?count=" + post.count}>
             <Box
               sx={{
                 color: "blue",
@@ -710,7 +706,7 @@ export function PostCard({
             >
               <ShareIcon></ShareIcon>
             </Box>
-          </WhatsappButton>
+          </WhatsappShare>
         }
       </CardActions>
     </Card>
