@@ -13,7 +13,6 @@ import Head from "next/head";
 import WhatsappButton from "../components/whatsapp";
 import NumberFormat from "react-number-format";
 import ShareIcon from "@mui/icons-material/Share";
-import { WhatsappShareButton } from "react-share";
 import { DEPARTEMENTS } from "../lib/translate";
 import Link from "next/link";
 
