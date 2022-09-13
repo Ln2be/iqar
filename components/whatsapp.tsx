@@ -4,7 +4,7 @@ export default function whatsappButton({
   message,
   children,
 }: {
-  phone: string;
+  phone?: string;
   message: string;
   children: JSX.Element;
 }) {
@@ -14,7 +14,7 @@ export default function whatsappButton({
       rel="noreferrer"
       href={"https://wa.me/" + phone + "/?text=" + message}
     >
-    {children}
+      {children}
     </a>
-)
+  );
 }

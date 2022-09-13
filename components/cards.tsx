@@ -18,7 +18,7 @@ import {
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import NumberFormat from "react-number-format";
-import { WhatsappShareButton } from "react-share";
+// import { WhatsappShareButton } from "react-share";
 import { useUser } from "../lib/auth/hooks";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import {
@@ -688,7 +688,19 @@ export function PostCard({
 
       <CardActions>
         {
-          <WhatsappShareButton url={basepath + "/posts?count=" + post.count}>
+          // <WhatsappShareButton url={basepath + "/posts?count=" + post.count}>
+          //   <Box
+          //     sx={{
+          //       color: "blue",
+          //       fontSize: "small",
+          //       pt: 2,
+          //     }}
+          //   >
+          //     <ShareIcon></ShareIcon>
+          //   </Box>
+          // </WhatsappShareButton>
+
+          <WhatsappButton message={basepath + "/posts?count=" + post.count}>
             <Box
               sx={{
                 color: "blue",
@@ -698,7 +710,7 @@ export function PostCard({
             >
               <ShareIcon></ShareIcon>
             </Box>
-          </WhatsappShareButton>
+          </WhatsappButton>
         }
       </CardActions>
     </Card>
