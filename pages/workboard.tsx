@@ -1,19 +1,11 @@
 import { Box } from "@mui/material";
 import React from "react";
 import Layout from "../components/layout";
-import LocalHotelIcon from "@mui/icons-material/LocalHotel";
 import KeyIcon from "@mui/icons-material/Key";
-import KeyOffIcon from "@mui/icons-material/KeyOff";
-import ShoppingCart from "@mui/icons-material/ShoppingCart";
-import SellIcon from "@mui/icons-material/Sell";
-import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
-import { useRouter } from "next/router";
 import { useState } from "react";
-import Button from "@mui/material/Button";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Link from "next/link";
 import Head from "next/head";
-import { basepath, Nktt, priceCat } from "../lib/myfunctions";
+import { Nktt, priceCat } from "../lib/myfunctions";
 import CropLandscapeIcon from "@mui/icons-material/CropLandscape";
 import VillaIcon from "@mui/icons-material/Villa";
 import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
@@ -47,7 +39,9 @@ export default function Page({ metadata }: { metadata: string }) {
 
   // iterate
 
-  const workinterface: { [key: string]: { location: any; icon: any } } = {
+  const workinterface: {
+    [key: string]: { location: { [key: string]: string }; icon: JSX.Element };
+  } = {
     rent: {
       location: {
         nn: "الشمالية",
@@ -126,7 +120,7 @@ export default function Page({ metadata }: { metadata: string }) {
     },
   };
 
-  const router = useRouter();
+  // const router = useRouter();
   return (
     <>
       <Head>
@@ -438,13 +432,12 @@ export async function getServerSideProps({
           post.comparedTo[0] == "finished" &&
           metadata[intervall][location].compared++;
         if (location == "nw")
-        post.type == "buying"
-          ? metadata[intervall][location].demands++
-          : metadata[intervall][location].offers++;
+          post.type == "buying"
+            ? metadata[intervall][location].demands++
+            : metadata[intervall][location].offers++;
       }
     }
   }
-
 
   return {
     props: { metadata: JSON.stringify(metadata) },

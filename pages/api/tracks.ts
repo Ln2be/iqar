@@ -17,7 +17,7 @@ export default async function helper(
     const tracksaved = await new DBTrack(track).save();
 
     // add a trackcount to the post
-    const post = await DBPost.updateOne(
+    await DBPost.updateOne(
       { count: postcount },
       { trackcount: tracksaved.count }
     );
@@ -29,10 +29,7 @@ export default async function helper(
     const track = await DBTrack.findOne({ count: count });
     const updates = track.updates;
     updates.push(updatebody);
-    const updatedtrack = await DBTrack.updateOne(
-      { count: count },
-      { updates: updates }
-    );
+    await DBTrack.updateOne({ count: count }, { updates: updates });
     res.send({ count });
   } else if (action == "archive") {
     const { count } = req.query;
@@ -41,15 +38,9 @@ export default async function helper(
 
     // remove the trackcount from the post
     const { postcount } = track;
-    const post = await DBPost.updateOne(
-      { count: postcount },
-      { trackcount: "" }
-    );
+    await DBPost.updateOne({ count: postcount }, { trackcount: "" });
 
-    const response = await DBTrack.updateOne(
-      { count: count },
-      { archived: true }
-    );
+    await DBTrack.updateOne({ count: count }, { archived: true });
     res
       .writeHead(302, { Location: "/tracks?action=tracks&type=archived" })
       .end();
@@ -60,17 +51,14 @@ export default async function helper(
 
     // remove the trackcount from the post
     const { postcount } = track;
-    const post = await DBPost.updateOne(
-      { count: postcount },
-      { trackcount: "" }
-    );
+    await DBPost.updateOne({ count: postcount }, { trackcount: "" });
 
-    const response = await DBTrack.deleteOne({ count: count });
+    await DBTrack.deleteOne({ count: count });
     res
       .writeHead(302, { Location: "/tracks?action=tracks&type=archived" })
       .end();
   } else if (action == "deleteall") {
-    const dtracks = await DBTrack.deleteMany({});
+    await DBTrack.deleteMany({});
     res.send("Ok");
   } else if (action == "restore") {
     const { count } = req.query;
@@ -79,15 +67,9 @@ export default async function helper(
 
     // remove the trackcount from the post
     const { postcount } = track;
-    const post = await DBPost.updateOne(
-      { count: postcount },
-      { trackcount: count }
-    );
+    await DBPost.updateOne({ count: postcount }, { trackcount: count });
 
-    const response = await DBTrack.updateOne(
-      { count: count },
-      { archived: false }
-    );
+    await DBTrack.updateOne({ count: count }, { archived: false });
     res.writeHead(302, { Location: "/tracks?action=tracks" }).end();
   }
 }

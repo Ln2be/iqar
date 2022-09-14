@@ -17,7 +17,7 @@ import {
   translate,
 } from "../lib/myfunctions";
 import { useUser } from "../lib/auth/hooks";
-import { QueryBuilder } from "@mui/icons-material";
+// import { QueryBuilder } from "@mui/icons-material";
 
 export default function Page({
   result,
@@ -29,11 +29,11 @@ export default function Page({
   rep: string;
 }) {
   const router = useRouter();
-  const user = useUser();
+  // const user = useUser();
   const { action, location } = router.query;
 
   // spin if the post is submitted
-  const [spin, setSpin] = useState(false);
+  // const [spin, setSpin] = useState(false);
 
   // show the posts if they are what is requested
   function rPosts() {
@@ -189,7 +189,7 @@ export default function Page({
         )}
         {action == "form" && (
           <Box>
-            {spin ? <Box>{"...جاري رفع المنشور"}</Box> : <PostForm></PostForm>}
+            {false ? <Box>{"...جاري رفع المنشور"}</Box> : <PostForm></PostForm>}
           </Box>
         )}
         {action == "update" && <Box>{rUpdate()}</Box>}

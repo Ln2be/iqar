@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { departements } from "../lib/myfunctions";
-import { Post } from "../projectTypes";
 import { Box, Checkbox, FormControlLabel } from "@mui/material";
 
 export default function Departs({

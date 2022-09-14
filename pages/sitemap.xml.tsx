@@ -1,4 +1,3 @@
-import React from "react";
 import { NextApiResponse } from "next";
 import { DBPost } from "../lib/mongo";
 import fs from "fs";

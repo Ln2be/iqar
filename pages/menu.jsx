@@ -1,5 +1,4 @@
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
-import SearchIcon from "@mui/icons-material/Search";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import Layout from "../components/layout";
 import { Box } from "@mui/system";

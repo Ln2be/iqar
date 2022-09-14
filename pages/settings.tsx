@@ -13,7 +13,9 @@ export default function Page({ metadata }: { metadata: string }) {
   const metadatao = JSON.parse(metadata);
 
   // show the reps in each region
-  const repinterface: { [key: string]: { location: any; icon: any } } = {
+  const repinterface: {
+    [key: string]: { location: { [key: string]: string }; icon: JSX.Element };
+  } = {
     rep: {
       location: {
         nn: "الشمالية",
@@ -46,7 +48,7 @@ export default function Page({ metadata }: { metadata: string }) {
             maxWidth: "500px",
           }}
         >
-          {Object.keys(repinterface).map((key, index) =>
+          {Object.keys(repinterface).map((key) =>
             Object.keys(repinterface[key].location).map(
               (location, ilocation) => (
                 <Link
@@ -276,9 +278,11 @@ export async function getServerSideProps({
   query: { [key: string]: string };
 }) {
   // the object to be injected in the post dom
-  let injectObject;
+  // let injectObject;
 
-  const metadata: { [key: string]: { [key: string]: any } } = {
+  const metadata: {
+    [key: string]: { [key: string]: { [key: string]: number } };
+  } = {
     rep: {
       nn: {
         total: 0,
@@ -309,9 +313,7 @@ export async function getServerSideProps({
 
   for (const location in Nktt) {
     const posts = crossedDep(users, Nktt[location]);
-    for (const post of posts) {
-      metadata.rep[location].total++;
-    }
+    metadata.rep[location].total = posts.length;
   }
 
   const allPosts = (await DBPost.find({})) as Post[];

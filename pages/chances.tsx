@@ -1,28 +1,10 @@
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import { useRouter } from "next/router";
 import Layout from "../components/layout";
 import { DBChance } from "../lib/mongo";
 import React from "react";
-import Image from "next/image";
 import { DBPost } from "../lib/mongo";
-import { useUser } from "../lib/auth/hooks";
-import { Post, Chance } from "../projectTypes";
-import Head from "next/head";
-import WhatsappButton from "../components/whatsapp";
-import NumberFormat from "react-number-format";
-import ShareIcon from "@mui/icons-material/Share";
-import { DEPARTEMENTS } from "../lib/translate";
-import Link from "next/link";
-
-import {
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
-  CardActions,
-} from "@mui/material";
+import { Chance } from "../projectTypes";
 import { ChanceCard, ChanceForm } from "../components/cards";
 
 export default function Page({ result }: { result: string }) {
@@ -30,38 +12,38 @@ export default function Page({ result }: { result: string }) {
   const { action } = router.query;
 
   // save the chance to the database
-  function handleSubmit(result: any) {
-    if (action == "form") {
-      const chance = result;
-      chance.postcount = router.query.postcount as string;
+  // function handleSubmit(result: any) {
+  //   if (action == "form") {
+  //     const chance = result;
+  //     chance.postcount = router.query.postcount as string;
 
-      fetch("/api/chances?action=save", {
-        method: "POST",
-        body: JSON.stringify(chance),
-        headers: {
-          "content-type": "application/json",
-        },
-      }).then((data) => {
-        data.json().then((d) => {
-          router.push("/chances?action=chance&count=" + d.count);
-        });
-      });
-    } else if (action == "update") {
-      const updatebody = result;
-      const { count } = router.query;
-      fetch("/api/chances?action=update&count=" + count, {
-        method: "POST",
-        body: JSON.stringify(updatebody),
-        headers: {
-          "content-type": "application/json",
-        },
-      }).then((data) => {
-        data.json().then((d) => {
-          router.push("/chances?action=chance&id=" + d.id);
-        });
-      });
-    }
-  }
+  //     fetch("/api/chances?action=save", {
+  //       method: "POST",
+  //       body: JSON.stringify(chance),
+  //       headers: {
+  //         "content-type": "application/json",
+  //       },
+  //     }).then((data) => {
+  //       data.json().then((d) => {
+  //         router.push("/chances?action=chance&count=" + d.count);
+  //       });
+  //     });
+  //   } else if (action == "update") {
+  //     const updatebody = result;
+  //     const { count } = router.query;
+  //     fetch("/api/chances?action=update&count=" + count, {
+  //       method: "POST",
+  //       body: JSON.stringify(updatebody),
+  //       headers: {
+  //         "content-type": "application/json",
+  //       },
+  //     }).then((data) => {
+  //       data.json().then((d) => {
+  //         router.push("/chances?action=chance&id=" + d.id);
+  //       });
+  //     });
+  //   }
+  // }
 
   // show the chances if they are what is requested
   function rChances() {

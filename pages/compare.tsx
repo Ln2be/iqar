@@ -2,15 +2,11 @@ import React, { useEffect } from "react";
 import Layout from "../components/layout";
 import { Box } from "@mui/system";
 import { DBPost, DBUser } from "../lib/mongo";
-import { useUser } from "../lib/auth/hooks";
 import { Post, UserType } from "../projectTypes";
-import WhatsappButton from "../components/whatsapp";
 
-import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import { PostCard } from "../components/cards";
 import { basepath, correctPhone, Nktt } from "../lib/myfunctions";
-import { DEPARTEMENTS } from "../lib/translate";
 
 export default function Page({
   postjson,
@@ -21,7 +17,6 @@ export default function Page({
   repsjson: string;
   opostsjson: string;
 }) {
-  const user = useUser();
   const router = useRouter();
 
   const posto = JSON.parse(postjson) as Post;
@@ -29,8 +24,9 @@ export default function Page({
   const posts = JSON.parse(opostsjson) as Post[];
   // const post = null;
 
-  const postoshow =
-    posto.type == "buying" || posto.type == "demandRent" ? true : false;
+  // const postoshow =
+  //   posto.type == "buying" || posto.type == "demandRent" ? true : false;
+
   const typeArabic: { [key: string]: string } = {
     stay: "إقامة",
     buying: "شراء",
@@ -48,11 +44,11 @@ export default function Page({
   };
 
   // add the post or the user as already compared to
-  function compared(url: string) {
-    fetch(url).then((v) => {
-      console.log(v);
-    });
-  }
+  // function compared(url: string) {
+  //   fetch(url).then((v) => {
+  //     console.log(v);
+  //   });
+  // }
 
   // if no reps or posts to compare to than this post finished
   useEffect(() => {
@@ -77,7 +73,9 @@ export default function Page({
               mb: 2,
             }}
           >
-            {posto && <PostCard position="main" post={posto} type="min"></PostCard>}
+            {posto && (
+              <PostCard position="main" post={posto} type="min"></PostCard>
+            )}
           </Box>
           <Box
             sx={{
@@ -172,9 +170,9 @@ export async function getServerSideProps({
   const nw = Nktt["nw"];
 
   const departements = postObject.departements;
-  const inNN = departements.filter((value2: any) => nn.includes(value2));
-  const inNS = departements.filter((value2: any) => ns.includes(value2));
-  const inNW = departements.filter((value2: any) => nw.includes(value2));
+  const inNN = departements.filter((value2: string) => nn.includes(value2));
+  const inNS = departements.filter((value2: string) => ns.includes(value2));
+  const inNW = departements.filter((value2: string) => nw.includes(value2));
 
   const cnn = inNN.length > 0 ? nn : [];
   const cns = inNS.length > 0 ? ns : [];
@@ -182,13 +180,13 @@ export async function getServerSideProps({
 
   const wdep = cnn.concat(cns).concat(cnw);
   const type = postObject.type;
-  const price = postObject.price;
+  // const price = postObject.price;
 
   // send reps who are working in the departement
   const reps = await DBUser.find({ role: "rep" });
 
   const repsdep = reps.filter((value) => {
-    const cross = value.departements.filter((value2: any) =>
+    const cross = value.departements.filter((value2: string) =>
       departements.includes(value2)
     );
     return cross.length > 0;
@@ -199,7 +197,7 @@ export async function getServerSideProps({
   );
 
   // send the opposite posts: if selling the opposite is buying
-  const opposite: any = {
+  const opposite: { [key: string]: string } = {
     selling: "buying",
     buying: "selling",
     demandRent: "offerRent",
@@ -217,7 +215,7 @@ export async function getServerSideProps({
 
   // the posts should be in the same departement
   const deposts = ncposts.filter((value) => {
-    const cross = value.departements.filter((value2: any) =>
+    const cross = value.departements.filter((value2: string) =>
       wdep.includes(value2)
     );
     return cross.length > 0;

@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { DBTrack } from "../../lib/mongo";
 import fs from "fs";
-import { DBCounter, DBPost } from "../../lib/mongo";
+import { DBPost } from "../../lib/mongo";
 import { Buffer } from "buffer";
 import { Post } from "../../projectTypes";
 import { updateCounter } from "../../lib/mongo";
@@ -16,7 +15,7 @@ const prodUrl = "/var/www/iqar/images/";
 const prodSite = "https://iqar.store/images/";
 
 const url = isProduction ? prodUrl : devUrl;
-const site = isProduction ? prodSite : devSite;
+// const site = isProduction ? prodSite : devSite;
 
 export default async function helper(
   req: NextApiRequest,
@@ -26,7 +25,7 @@ export default async function helper(
 
   if (action == "save") {
     const post = req.body as Post;
-    const { images } = post;
+    // const { images } = post;
 
     // add the counter
     const counter = await updateCounter("posts");
@@ -40,8 +39,8 @@ export default async function helper(
     const post = req.body as Post;
     const count = post.count;
     delete post._id;
-    const images = post.images;
-    const rpost = await DBPost.updateOne({ count: count }, post);
+    // const images = post.images;
+    await DBPost.updateOne({ count: count }, post);
     res.json({
       count: post.count,
     });
@@ -68,10 +67,7 @@ export default async function helper(
 
     sendToArchive.push(tel);
 
-    const update = await DBPost.updateOne(
-      { count: count },
-      { sendToArchive: sendToArchive }
-    );
+    await DBPost.updateOne({ count: count }, { sendToArchive: sendToArchive });
     res.send("OK");
   } else if (action == "restoreSend") {
     const count = req.query.count;
@@ -82,32 +78,29 @@ export default async function helper(
       (sentTel) => sentTel != tel
     );
 
-    const update = await DBPost.updateOne(
-      { count: count },
-      { sendToArchive: sendToArchive }
-    );
+    await DBPost.updateOne({ count: count }, { sendToArchive: sendToArchive });
 
     res.send("OK");
   }
 }
 
 // save the image
-function saveimage(imageData: string, callback: (name: string) => void) {
-  // choose a unique name
-  const name: string =
-    Date.now() +
-    "random" +
-    Math.floor(Math.random() * (1000000 - 100000)) +
-    100000 +
-    ".jpeg";
+// function saveimage(imageData: string, callback: (name: string) => void) {
+//   // choose a unique name
+//   const name: string =
+//     Date.now() +
+//     "random" +
+//     Math.floor(Math.random() * (1000000 - 100000)) +
+//     100000 +
+//     ".jpeg";
 
-  // save
+//   // save
 
-  fs.writeFile(
-    url + name,
-    Buffer.from(imageData.split(",")[1], "base64"),
-    async () => {
-      callback(name);
-    }
-  );
-}
+//   fs.writeFile(
+//     url + name,
+//     Buffer.from(imageData.split(",")[1], "base64"),
+//     async () => {
+//       callback(name);
+//     }
+//   );
+// }

@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import Layout from "../components/layout";
 import { DBUser } from "../lib/mongo";
 // import { Box } from "@mui/material";
@@ -9,12 +9,12 @@ import { UserCard } from "../components/cards";
 import { Box, Button, TextField } from "@mui/material";
 import { useRouter } from "next/router";
 
-type JSONValue =
-  | string
-  | number
-  | boolean
-  | { [x: string]: JSONValue }
-  | Array<JSONValue>;
+// type JSONValue =
+//   | string
+//   | number
+//   | boolean
+//   | { [x: string]: JSONValue }
+//   | Array<JSONValue>;
 
 let messageToall = "";
 export default function Page({ usersJson }: { usersJson: string }) {
@@ -106,6 +106,7 @@ export default function Page({ usersJson }: { usersJson: string }) {
                         }
                       : () => {
                           const khroj = "";
+                          console.log(khroj);
                         }
                   }
                   type="full"
