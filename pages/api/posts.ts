@@ -4,11 +4,11 @@ import { Post } from "../../projectTypes";
 import { updateCounter } from "../../lib/mongo";
 
 // see if we are in production or not
-const isProduction = process.env.NODE_ENV === "production";
+// const isProduction = process.env.NODE_ENV === "production";
 
-const devUrl = "/home/elhassen/Downloads/images/";
+// const devUrl = "/home/elhassen/Downloads/images/";
 
-const prodUrl = "/var/www/iqar/images/";
+// const prodUrl = "/var/www/iqar/images/";
 
 // const site = isProduction ? prodSite : devSite;
 
