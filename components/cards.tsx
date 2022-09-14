@@ -31,7 +31,7 @@ import WhatsappButton, { WhatsappShare } from "./whatsapp";
 import ShareIcon from "@mui/icons-material/Share";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Switch from "@mui/material/Switch";
 import Avatar from "@mui/material/Avatar";
 import { red } from "@mui/material/colors";
@@ -715,7 +715,7 @@ export function PostCard({
 
 // the card for the track
 export function TrackCard({ track }: { track: Track }) {
-  const options = { year: "numeric", month: "long", day: "numeric" };
+  // const options = { year: "numeric", month: "long", day: "numeric" };
   return (
     <Box
       sx={{
@@ -836,17 +836,17 @@ const updatebody = {
 };
 
 // initialize the departements checkboxes
-const inicheck: { [key: string]: boolean } = {
-  Tayaret: false,
-  Ksar: false,
-  DarNaim: false,
-  TevreghZeina: false,
-  Sebkha: false,
-  Elmina: false,
-  Arafat: false,
-  Toujounine: false,
-  Riyadh: false,
-};
+// const inicheck: { [key: string]: boolean } = {
+//   Tayaret: false,
+//   Ksar: false,
+//   DarNaim: false,
+//   TevreghZeina: false,
+//   Sebkha: false,
+//   Elmina: false,
+//   Arafat: false,
+//   Toujounine: false,
+//   Riyadh: false,
+// };
 
 // initialize the departements checkboxes
 const inicheckD: { [key: string]: boolean } = {
@@ -865,7 +865,7 @@ export function TrackForm({
   onSubmit,
   update = false,
 }: {
-  onSubmit: any;
+  onSubmit: Function;
   update?: boolean;
 }) {
   function handleSubmit() {
@@ -1013,7 +1013,6 @@ export function PostForm({ upost = post }: { upost?: Post }) {
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
   } = useForm();
 
@@ -1047,7 +1046,7 @@ export function PostForm({ upost = post }: { upost?: Post }) {
           password: "1212",
         };
 
-        const login = await fetch("/api/auth/login", {
+        await fetch("/api/auth/login", {
           method: "POST",
           body: JSON.stringify(userlogin),
           headers: {
@@ -1368,26 +1367,26 @@ export function Departement() {
 
   const [depcheck, setdepcheck] = useState(inicheckD);
 
-  function handleChange(e: any) {
-    const name = e.target.name;
+  // function handleChange(e: any) {
+  //   const name = e.target.name;
 
-    setdepcheck((prev) => {
-      const prevdep: any = { ...prev };
-      prevdep[name] = !prevdep[name];
-      return prevdep;
-    });
+  //   setdepcheck((prev) => {
+  //     const prevdep: any = { ...prev };
+  //     prevdep[name] = !prevdep[name];
+  //     return prevdep;
+  //   });
 
-    if (!e.target.checked) {
-      const index = depvalues.indexOf(name);
-      if (index > -1) {
-        depvalues.splice(index, 1); // 2nd parameter means remove one item only
-      }
-    } else {
-      depvalues.push(name);
-    }
+  //   if (!e.target.checked) {
+  //     const index = depvalues.indexOf(name);
+  //     if (index > -1) {
+  //       depvalues.splice(index, 1); // 2nd parameter means remove one item only
+  //     }
+  //   } else {
+  //     depvalues.push(name);
+  //   }
 
-    // onChangeDep(depvalues);
-  }
+  //   // onChangeDep(depvalues);
+  // }
 
   // submit the search query
   function submit() {
@@ -1617,7 +1616,7 @@ export function UserForm({
         "Content-Type": "application/json",
       },
     }).then((data) => {
-      data.json().then((response) => {
+      data.json().then(() => {
         router.push("/");
       });
     });

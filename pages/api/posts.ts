@@ -1,7 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import fs from "fs";
 import { DBPost } from "../../lib/mongo";
-import { Buffer } from "buffer";
 import { Post } from "../../projectTypes";
 import { updateCounter } from "../../lib/mongo";
 
@@ -9,12 +7,9 @@ import { updateCounter } from "../../lib/mongo";
 const isProduction = process.env.NODE_ENV === "production";
 
 const devUrl = "/home/elhassen/Downloads/images/";
-const devSite = "http://localhost/images/";
 
 const prodUrl = "/var/www/iqar/images/";
-const prodSite = "https://iqar.store/images/";
 
-const url = isProduction ? prodUrl : devUrl;
 // const site = isProduction ? prodSite : devSite;
 
 export default async function helper(

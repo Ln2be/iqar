@@ -27,21 +27,8 @@ export default function Page({
   // const postoshow =
   //   posto.type == "buying" || posto.type == "demandRent" ? true : false;
 
-  const typeArabic: { [key: string]: string } = {
-    stay: "إقامة",
-    buying: "شراء",
-    selling: "بيع",
-    demandRent: "طلب ايجار",
-    offerRent: "عرض ايجار",
-  };
 
-  const subtypeArabic: { [key: string]: string } = {
-    land: "قطعة ارضية",
-    appartment: "شقق",
-    house: "منزل",
-    villa: "فيلا",
-    other: "إخرى",
-  };
+
 
   // add the post or the user as already compared to
   // function compared(url: string) {

@@ -1,8 +1,8 @@
+import React from "react";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
 import Layout from "../components/layout";
 import { DBPost, DBUser } from "../lib/mongo";
-import React, { useState } from "react";
 import { Post, UserType } from "../projectTypes";
 import Head from "next/head";
 import Pagination from "@mui/material/Pagination";
@@ -16,7 +16,6 @@ import {
   subtypes,
   translate,
 } from "../lib/myfunctions";
-import { useUser } from "../lib/auth/hooks";
 // import { QueryBuilder } from "@mui/icons-material";
 
 export default function Page({

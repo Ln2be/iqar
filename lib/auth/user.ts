@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { v4 as uuidv4 } from "uuid";
 import { UserType } from "../../projectTypes";
-import { DBCounter, DBUser } from "../mongo";
+import { DBUser } from "../mongo";
 import { updateCounter } from "../mongo";
 
 /**

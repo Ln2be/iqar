@@ -7,7 +7,7 @@ import createCache from "@emotion/cache";
 import GHeader from "./gHeader";
 import AuthHeader from "./auth/AuthHeader";
 import { Box } from "@mui/system";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 
 const theme = createTheme({
   direction: "rtl", // Both here and <body dir="rtl">

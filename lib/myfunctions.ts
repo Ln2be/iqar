@@ -1,6 +1,6 @@
 import Resizer from "react-image-file-resizer";
 import imageCompression from "browser-image-compression";
-import { DBCounter } from "./mongo";
+// import { DBCounter } from "./mongo";
 
 // Correct the phone. The phone comes incorrect sometimes because of the arabic orientation.
 export function correctPhone(tel: string) {
@@ -85,7 +85,7 @@ export async function handleImageUpload(imageFile: File) {
 
 // turn blob to base64
 export function blobToBase64(blob: Blob) {
-  return new Promise((resolve, _) => {
+  return new Promise((resolve) => {
     const reader = new FileReader();
     reader.onloadend = () => resolve(reader.result);
     reader.readAsDataURL(blob);

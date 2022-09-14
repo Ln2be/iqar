@@ -143,7 +143,7 @@ export default function Page({ metadata }: { metadata: string }) {
               maxWidth: "500px",
             }}
           >
-            {Object.keys(workinterface).map((key, index) =>
+            {Object.keys(workinterface).map((key) =>
               Object.keys(workinterface[key].location).map(
                 (location, ilocation) => (
                   <Link
@@ -247,15 +247,13 @@ export default function Page({ metadata }: { metadata: string }) {
 }
 
 // this function excuted in the server
-export async function getServerSideProps({
-  query,
-}: {
-  query: { [key: string]: string };
-}) {
+export async function getServerSideProps() {
   // the object to be injected in the post dom
-  let injectObject;
+  // let injectObject;
 
-  const metadata: { [key: string]: { [key: string]: any } } = {
+  const metadata: {
+    [key: string]: { [key: string]: { [key: string]: number } };
+  } = {
     rent: {
       nn: {
         total: 0,

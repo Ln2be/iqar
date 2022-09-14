@@ -272,11 +272,7 @@ export default function Page({ metadata }: { metadata: string }) {
 }
 
 // this function excuted in the server
-export async function getServerSideProps({
-  query,
-}: {
-  query: { [key: string]: string };
-}) {
+export async function getServerSideProps() {
   // the object to be injected in the post dom
   // let injectObject;
 
