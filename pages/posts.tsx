@@ -189,7 +189,7 @@ export default function Page({
         )}
         {action == "form" && (
           <Box>
-            {false ? <Box>{"...جاري رفع المنشور"}</Box> : <PostForm></PostForm>}
+            <PostForm></PostForm>
           </Box>
         )}
         {action == "update" && <Box>{rUpdate()}</Box>}
