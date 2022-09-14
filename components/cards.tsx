@@ -865,7 +865,7 @@ export function TrackForm({
   onSubmit,
   update = false,
 }: {
-  onSubmit: Function;
+  onSubmit: any;
   update?: boolean;
 }) {
   function handleSubmit() {
