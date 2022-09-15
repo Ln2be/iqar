@@ -122,20 +122,6 @@ export async function getServerSideProps({
   const type = postObject.type;
   // const price = postObject.price;
 
-  // send reps who are working in the departement
-  const reps = await DBUser.find({ role: "rep" });
-
-  const repsdep = reps.filter((value) => {
-    const cross = value.departements.filter((value2: string) =>
-      departements.includes(value2)
-    );
-    return cross.length > 0;
-  });
-
-  const repsObject = repsdep.filter(
-    (rep) => !postObject.comparedTo?.includes(rep.count)
-  );
-
   // send the opposite posts: if selling the opposite is buying
   const opposite: { [key: string]: string } = {
     selling: "buying",
@@ -161,8 +147,28 @@ export async function getServerSideProps({
     return cross.length > 0;
   });
 
-  // the posts should be in the range of the price given by the client
   const pposts = deposts.filter((depost) => {
+    return within(postObject.price, depost.price, 50);
+  });
+
+  const sposts = pposts.sort((ppost1, ppost2) => {
+    if (within(postObject.price, ppost1.price, 20)) {
+      return 1;
+    } else if (within(postObject.price, ppost2.price, 20)) {
+      return -1;
+    } else {
+      if (ppost1.departements.includes(postObject.departements[0])) {
+        return 1;
+      } else if (ppost2.departements.includes(postObject.departements[0])) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+  });
+
+  // the posts should be in the range of the price given by the client
+  const pposts1 = deposts.filter((depost) => {
     const deprice = depost.price;
     if (
       postObject.type == "demandRent" ||
@@ -189,17 +195,16 @@ export async function getServerSideProps({
   });
 
   const postjson = JSON.stringify(postObject);
-  const opostsjson = JSON.stringify(pposts);
-  const repsjson =
-    type == "buying" || type == "demandRent"
-      ? JSON.stringify(repsObject)
-      : "[]";
+  const opostsjson = JSON.stringify(sposts);
 
   return {
     props: {
       postjson: postjson,
-      repsjson: repsjson,
       opostsjson: opostsjson,
     },
   };
+}
+
+function within(price: number, priceC: number, percentage: number) {
+  return price - percentage / 100 < priceC && priceC < percentage / 100 + price;
 }
