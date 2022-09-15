@@ -7,7 +7,7 @@ import { Post, UserType } from "../projectTypes";
 import Head from "next/head";
 import Pagination from "@mui/material/Pagination";
 
-import { PostCard, PostForm, UserCard, Departement } from "../components/cards";
+import { PostCard, PostForm, UserCard, SearchForm } from "../components/cards";
 import {
   adtypes,
   departements,
@@ -89,7 +89,7 @@ export default function Page({
           }}
         >
           {!location && !router.query.codeTel && !router.query.notifyuser && (
-            <Departement></Departement>
+            <SearchForm></SearchForm>
           )}
           {(router.query.codeTel || router.query.notifyuser) && repo[0] && (
             <UserCard type="board" user={repo[0]}></UserCard>

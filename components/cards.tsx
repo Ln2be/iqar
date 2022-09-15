@@ -57,11 +57,7 @@ export function PostCard({
   //
   return (
     <Card sx={{ maxWidth: 345, backgroundColor: "#ccc" }}>
-      <CardContent
-      // style={{
-      //   backgroundColor: "#ccc",
-      // }}
-      >
+      <CardContent>
         {/* 
         
         
@@ -176,19 +172,19 @@ export function PostCard({
                   flexDirection: "column",
                 }}
               >
-                <WhatsappButton
-                  phone={comparaison.tel}
-                  message={comparaison.url}
+                <Button
+                  onClick={() => {
+                    comparaison.remove(post.count);
+                  }}
+                  variant="contained"
                 >
-                  <Button
-                    onClick={() => {
-                      comparaison.remove(post.count);
-                    }}
-                    variant="contained"
+                  <WhatsappButton
+                    phone={comparaison.tel}
+                    message={comparaison.url}
                   >
-                    واتساب
-                  </Button>
-                </WhatsappButton>
+                    <Box>واتساب</Box>
+                  </WhatsappButton>
+                </Button>
 
                 <Typography variant="body1" color="text.secondary">
                   {post.tel}
@@ -239,11 +235,10 @@ export function PostCard({
         {/* 
         
         
-        Show if the user is not an admin
+        Admin control. Some controls are showed in feed and others in post.
         
         
         */}
-        {/* The admin control */}
         {user?.role == "admin" && (
           <Box>
             <Box
@@ -569,6 +564,7 @@ export function PostForm({ upost = post }: { upost?: Post }) {
   // the type is important and many other fields depend on this type, so we will update according to t
   // this value
   const [type, setType] = useState(upost.type);
+  const [disable, setDisable] = useState(false);
 
   // check if it is an update
   const isUpdate = upost.count ? true : false;
@@ -595,43 +591,11 @@ export function PostForm({ upost = post }: { upost?: Post }) {
   // sign up the user and save the post to the database
   async function handleSubmitThePost() {
     // I think this make the submission get stuck
-    // setDisable(true);
+    setDisable(true);
     const result = post;
 
+    // save the post
     if (!isUpdate) {
-      // if not a user sign him
-      if (!user) {
-        const userbody = {
-          username: result.tel,
-          password: "1212",
-          tel: result.tel,
-          role: "guest",
-        };
-        await fetch("/api/auth/signup", {
-          method: "POST",
-          body: JSON.stringify(userbody),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        //
-
-        const userlogin = {
-          username: result.tel,
-          password: "1212",
-        };
-
-        await fetch("/api/auth/login", {
-          method: "POST",
-          body: JSON.stringify(userlogin),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-      }
-
-      // save the post
       fetch("/api/posts?action=save", {
         method: "POST",
         body: JSON.stringify(result),
@@ -657,8 +621,6 @@ export function PostForm({ upost = post }: { upost?: Post }) {
       });
     }
   }
-
-  const [disable, setDisable] = useState(false);
 
   return (
     <form>
@@ -903,11 +865,10 @@ export function PostForm({ upost = post }: { upost?: Post }) {
 }
 
 let depvalues: string[] = [];
-export function Departement() {
+export function SearchForm() {
   const router = useRouter();
 
   // const [depcheck, setdepcheck] = useState(inicheckD);
-
   function submit() {
     const { type } = router.query;
     const depsjson = JSON.stringify(depvalues);
@@ -935,7 +896,13 @@ export function Departement() {
         }}
         iniDeparts={[]}
       ></Departs>
-      <Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "end",
+        }}
+      >
         <Button variant="contained" onClick={submit}>
           بحث
         </Button>
