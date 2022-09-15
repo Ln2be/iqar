@@ -18,11 +18,11 @@ export default function Page({
 }) {
   const router = useRouter();
   const posto = JSON.parse(postjson) as Post;
-  const allposts = JSON.parse(opostsjson) as Post[];
+  const posts = JSON.parse(opostsjson) as Post[];
 
   const [render, setRender] = useState<boolean>(false);
 
-  const posts = allposts.filter((post) => !comparedPosts.includes(post.count));
+  // const posts = allposts.filter((post) => !comparedPosts.includes(post.count));
 
   // if no posts to compare to then go back
   if (posts.length == 0) {
@@ -33,8 +33,11 @@ export default function Page({
 
   // remove the post compared
   function remove(count: number) {
-    comparedPosts.push(count);
-    setRender(!render);
+    fetch("/api/compared?count=" + posto.count + "&post=" + count).then(() => {
+      router.reload();
+    });
+    // comparedPosts.push(count);
+    // setRender(!render);
   }
 
   return (

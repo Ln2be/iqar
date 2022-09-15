@@ -172,19 +172,19 @@ export function PostCard({
                   flexDirection: "column",
                 }}
               >
-                <Button
-                  onClick={() => {
-                    comparaison.remove(post.count);
-                  }}
-                  variant="contained"
+                <WhatsappButton
+                  phone={comparaison.tel}
+                  message={comparaison.url}
                 >
-                  <WhatsappButton
-                    phone={comparaison.tel}
-                    message={comparaison.url}
+                  <Button
+                    onClick={() => {
+                      comparaison.remove(post.count);
+                    }}
+                    variant="contained"
                   >
-                    <Box>واتساب</Box>
-                  </WhatsappButton>
-                </Button>
+                    واتساب
+                  </Button>
+                </WhatsappButton>
 
                 <Typography variant="body1" color="text.secondary">
                   {post.tel}
