@@ -6,7 +6,7 @@ const post = {
 };
 
 let counter = 0;
-export default class Page extends React.Component<{}, any> {
+export default class Page extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = { counter: 0, array: [0] };
