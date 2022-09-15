@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   CardActions,
-  CardMedia,
   Checkbox,
   FormControlLabel,
   Link,
@@ -14,9 +13,7 @@ import {
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import NumberFormat from "react-number-format";
-// import { WhatsappShareButton } from "react-share";
 import { useUser } from "../lib/auth/hooks";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import {
   correctPhone,
   adtypes,
@@ -26,7 +23,7 @@ import {
   basepath,
   correctPrice,
 } from "../lib/myfunctions";
-import { Chance, Post, Track, UserType } from "../projectTypes";
+import { Post, UserType } from "../projectTypes";
 import WhatsappButton, { WhatsappShare } from "./whatsapp";
 import ShareIcon from "@mui/icons-material/Share";
 import { useForm } from "react-hook-form";
@@ -42,21 +39,11 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 export function PostCard({
   post,
   type = "feed",
-  goto = {
-    url: basepath + "/posts?count=" + post.count,
-    tel: correctPhone(post.tel),
-  },
-  position = "notmain",
+  comparaison,
 }: {
   post: Post;
   type: string;
-  goto?: {
-    url: string;
-    tel: string;
-    ido?: number;
-    idc?: number;
-  };
-  position?: string;
+  comparaison?: { tel: string; url: string; remove: (count: number) => void };
 }) {
   const user = useUser();
   const router = useRouter();
@@ -70,57 +57,21 @@ export function PostCard({
   //
   return (
     <Card sx={{ maxWidth: 345, backgroundColor: "#ccc" }}>
-      {type != "full" && image && (
-        <Box
-          sx={{
-            position: "relative",
-          }}
-        >
-          <CardMedia
-            component="img"
-            // height="140"
-            image={image?.data}
-            alt="green iguana"
-          />
-
-          <Box
-            sx={{
-              position: "absolute",
-              bottom: "4px",
-              right: "4px",
-            }}
-          >
-            {post.images?.length > 1 && (
-              <Box
-                sx={{
-                  backgroundColor: (theme) => {
-                    return theme.palette.primary.light;
-                  },
-                  color: "white",
-                }}
-              >
-                <Button
-                  onClick={() => {
-                    router.push("/posts?action=post&count=" + post.count);
-                  }}
-                  size="small"
-                  style={{
-                    color: "white",
-                  }}
-                >
-                  <ArrowBackIosIcon></ArrowBackIosIcon>
-                </Button>
-              </Box>
-            )}
-          </Box>
-        </Box>
-      )}
-
       <CardContent
-        style={{
-          backgroundColor: "#ccc",
-        }}
+      // style={{
+      //   backgroundColor: "#ccc",
+      // }}
       >
+        {/* 
+        
+        
+
+        The type of post and the departement(s)
+
+
+        
+        */}
+
         <Box
           sx={{
             display: "flex",
@@ -167,9 +118,27 @@ export function PostCard({
             </Box>
           )}
         </Box>
+
+        {/* 
+        
+        
+        The description
+
+        
+        */}
+
         <Typography gutterBottom variant="h6" color="text.secondary">
           {post.details}
         </Typography>
+
+        {/* 
+        
+        
+        The price,  time and whatsapp
+        
+        
+        */}
+
         <Box
           sx={{
             display: "flex",
@@ -182,33 +151,38 @@ export function PostCard({
               {"السعر :"}
             </Typography>
             <NumberFormat value={post.price} thousandSeparator={true} />
+
+            {post.createdAt && (
+              <Box
+                sx={{
+                  display: "flex",
+                }}
+              >
+                {new Date(post.createdAt).toLocaleDateString("ar-MA")}
+              </Box>
+            )}
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            {user?.role == "admin" ? (
+          {/* 
+          
+          Whatsapp may change according to user 
+
+
+          */}
+          {user?.role == "admin" && type == "compared" && comparaison ? (
+            <Box>
               <Box
                 sx={{
                   display: "flex",
                   flexDirection: "column",
                 }}
               >
-                <WhatsappButton phone={goto.tel} message={goto.url}>
+                <WhatsappButton
+                  phone={comparaison.tel}
+                  message={comparaison.url}
+                >
                   <Button
                     onClick={() => {
-                      if (goto.ido && goto.idc) {
-                        fetch(
-                          "/api/compared?count=" +
-                            goto.ido +
-                            "&post=" +
-                            goto.idc
-                        ).then(() => {
-                          router.reload();
-                        });
-                      }
+                      comparaison.remove(post.count);
                     }}
                     variant="contained"
                   >
@@ -219,27 +193,11 @@ export function PostCard({
                 <Typography variant="body1" color="text.secondary">
                   {post.tel}
                 </Typography>
-
-                {goto.ido && goto.idc && (
-                  <Button
-                    style={{
-                      marginTop: "8px",
-                    }}
-                    onClick={() => {
-                      fetch(
-                        "/api/compared?count=" + goto.ido + "&post=" + goto.idc
-                      ).then(() => {
-                        router.reload();
-                      });
-                    }}
-                    variant="outlined"
-                  >
-                    غير مناسب
-                  </Button>
-                )}
               </Box>
-            ) : (router.query.codeTel && user && user.role != "admin") ||
-              (router.query.codeTel && !user) ? (
+            </Box>
+          ) : user?.role == "admin" ||
+            (user && post.sendTo.includes(user.tel)) ? (
+            <Box>
               <Box
                 sx={{
                   display: "flex",
@@ -252,450 +210,316 @@ export function PostCard({
                 >
                   <Button variant="contained">واتساب</Button>
                 </WhatsappButton>
+
                 <Typography variant="body1" color="text.secondary">
                   {post.tel}
                 </Typography>
               </Box>
-            ) : (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <WhatsappButton
-                  phone={"+22248692007"}
-                  message={basepath + "/posts?count=" + post.count}
-                >
-                  <Button variant="contained">واتساب</Button>
-                </WhatsappButton>
-                <Typography variant="body1" color="text.secondary">
-                  {48692007}
-                </Typography>
-              </Box>
-            )}
-            {}
-          </Box>
-        </Box>
-        {post.createdAt && (
-          <Box
-            sx={{
-              display: "flex",
-            }}
-          >
-            {new Date(post.createdAt).toLocaleDateString("ar-MA")}
-          </Box>
-        )}
-
-        {/* the possiblity to contact the owner for more information while comparing */}
-        <Box>
-          {goto.idc && user?.role == "admin" && (
+            </Box>
+          ) : (
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                m: 1,
               }}
             >
               <WhatsappButton
-                phone={correctPhone(post.tel)}
+                phone={correctPhone("48692007")}
                 message={basepath + "/posts?count=" + post.count}
               >
-                <Button variant="contained">استفسار</Button>
+                <Button variant="contained">واتساب</Button>
               </WhatsappButton>
+
               <Typography variant="body1" color="text.secondary">
-                {post.tel}
+                {48692007}
               </Typography>
             </Box>
           )}
         </Box>
-
-        {/* see all this phone posts */}
+        {/* 
+        
+        
+        Show if the user is not an admin
+        
+        
+        */}
+        {/* The admin control */}
         {user?.role == "admin" && (
-          <Link href={"/posts?action=posts&tel=" + post.tel}>
-            منشورات الرقم
-          </Link>
-        )}
-
-        {/* give the user the opportinuty to find customers */}
-        {user &&
-          user?.role == "guest" &&
-          user.tel == post.tel &&
-          type != "min" && (
+          <Box>
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
+                mt: 2,
               }}
             >
-              <Link href={"/compare?count=" + post.count}>
+              {/* only show comparison if the comparaison is not finished */}
+              {!post.comparedTo?.includes("finished") &&
+                (type == "feed" ? (
+                  <Link href={"/compare?count=" + post.count}>
+                    <Button variant="outlined" style={{ color: "blue" }}>
+                      مقارنة
+                    </Button>
+                  </Link>
+                ) : (
+                  type == "comparing" && (
+                    <Button
+                      variant="outlined"
+                      style={{ color: "blue" }}
+                      onClick={() => {
+                        fetch(
+                          "/compare?action=finished&count=" + post.count
+                        ).then(() => {
+                          router.back();
+                        });
+                      }}
+                    >
+                      انهاء المقارنة
+                    </Button>
+                  )
+                ))}
+
+              {/* delete post only the post view */}
+              {type == "post" ? (
                 <Button
-                  style={{
-                    margin: "4px",
-                    backgroundColor: "#ADD8E6",
-                    color: "black",
+                  variant="outlined"
+                  style={{ color: "red" }}
+                  onClick={() => {
+                    fetch("/api/posts?action=delete&count=" + post.count).then(
+                      () => {
+                        router.back();
+                      }
+                    );
                   }}
-                  variant="contained"
                 >
-                  إجاد زبون
+                  حذف نهائيا
                 </Button>
-              </Link>
-              <Link href={"/api/posts?action=delete&count=" + post.count}>
-                <Button variant="outlined" style={{ color: "red" }}>
-                  حذف
-                </Button>
-              </Link>
-              <Link href={"/posts?action=posts&tel=" + post.tel}>
-                <Button variant="outlined">منشوراتي</Button>
-              </Link>
-            </Box>
-          )}
-      </CardContent>
+              ) : (
+                type == "feed" && (
+                  <Link href={"/posts?count=" + post.count}>
+                    <Button variant="outlined" style={{ color: "blue" }}>
+                      التحكم
+                    </Button>
+                  </Link>
+                )
+              )}
 
-      {/* if to show the full post */}
-      {type == "full" &&
-        post.images?.map((image, i) => (
-          <Box
-            key={i}
-            sx={{
-              display: "grid",
-              gap: 2,
-              maxWidth: "400px",
-              pb: 2,
-            }}
-          >
-            <CardMedia
-              key={i}
-              component="img"
-              // height="140"
-              image={image?.data}
-              alt="green iguana"
-            />
-          </Box>
-        ))}
-
-      {/* make the user able to delete his posts. */}
-      {type != "min" &&
-        user &&
-        user.role != "admin" &&
-        user?.username == post.user && (
-          <Link href={"/api/posts?action=delete&count=" + post.count}>
-            <Button style={{ color: "red" }}>حذف</Button>
-          </Link>
-        )}
-
-      {/* The special inviter able to edit and delete */}
-      {(router.query.codeTel && user && user.role != "admin") ||
-        (router.query.codeTel && !user && (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              mt: 2,
-            }}
-          >
-            <Button
-              variant="outlined"
-              style={{ color: "red" }}
-              onClick={() => {
-                fetch("/api/posts?action=hide&count=" + post.count).then(() => {
-                  router.reload();
-                });
-              }}
-            >
-              حذف
-            </Button>
-            <Link href={"/posts?action=update&count=" + post.count}>
-              <Button variant="outlined" style={{ color: "blue" }}>
-                تعديل
-              </Button>
-            </Link>
-          </Box>
-        ))}
-      {user && user?.role == "admin" && (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            mt: 2,
-          }}
-        >
-          {position == "main" && (
-            <Button
-              variant="outlined"
-              style={{ color: "blue" }}
-              onClick={() => {
-                fetch("/api/compared?action=finished&count=" + post.count).then(
-                  () => {
-                    router.back();
-                  }
-                );
-              }}
-            >
-              انهاء المقارنة
-            </Button>
-          )}
-        </Box>
-      )}
-
-      {/* The admin control */}
-      {type != "min" && user && user?.role == "admin" && (
-        <Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              mt: 2,
-            }}
-          >
-            {/* only show comparison if the comparaison is not finished */}
-            {!post.comparedTo?.includes("finished") &&
-            !router.query.hidden &&
-            position != "main" ? (
-              <Link href={"/compare?count=" + post.count}>
-                <Button variant="outlined" style={{ color: "blue" }}>
-                  مقارنة
-                </Button>
-              </Link>
-            ) : (
-              router.query.hidden && (
-                <Link href={"/posts?count=" + post.count}>
-                  <Button variant="outlined" style={{ color: "red" }}>
-                    حذف
+              {type == "post" && (
+                <Link href={"/posts?action=update&count=" + post.count}>
+                  <Button variant="outlined" style={{ color: "blue" }}>
+                    تعديل
                   </Button>
                 </Link>
-              )
-            )}
+              )}
+            </Box>
 
-            {position == "main" && (
-              <Button
-                variant="outlined"
-                style={{ color: "blue" }}
-                onClick={() => {
-                  fetch("/compare?action=finished&count=" + post.count).then(
-                    () => {
-                      router.back();
-                    }
-                  );
-                }}
-              >
-                انهاء المقارنة
-              </Button>
-            )}
-
-            {/* delete post only the post view */}
-            {type == "post" && (
-              <Button
-                variant="outlined"
-                style={{ color: "red" }}
-                onClick={() => {
-                  fetch("/api/posts?action=delete&count=" + post.count).then(
-                    () => {
-                      router.back();
-                    }
-                  );
-                }}
-              >
-                حذف نهائيا
-              </Button>
-            )}
-
-            {router.query.hidden && (
-              <Button
-                variant="outlined"
-                style={{ color: "green" }}
-                onClick={() => {
-                  fetch("/api/posts?action=show&count=" + post.count).then(
-                    () => {
-                      router.reload();
-                    }
-                  );
-                }}
-              >
-                اظهار
-              </Button>
-            )}
-            {type != "post" && !router.query.hidden && (
-              <Link href={"/posts?count=" + post.count}>
-                <Button variant="outlined" style={{ color: "red" }}>
-                  حذف
-                </Button>
-              </Link>
-            )}
-
-            <Link href={"/posts?action=update&count=" + post.count}>
-              <Button variant="outlined" style={{ color: "blue" }}>
-                تعديل
-              </Button>
-            </Link>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              mt: 2,
-            }}
-          >
-            {post.trackcount ? (
-              <Link href={"/tracks?action=track&count=" + post.trackcount}>
-                <Button variant="outlined" style={{ color: "blue" }}>
-                  تحت المتابعة
-                </Button>
-              </Link>
-            ) : (
-              <Link href={"/tracks?action=form&postcount=" + post.count}>
-                <Button variant="outlined" style={{ color: "blue" }}>
-                  متابعة
-                </Button>
-              </Link>
-            )}
-            {post.chancecount ? (
-              <Link href={"/chances?action=chance&count=" + post.chancecount}>
-                <Button variant="outlined" style={{ color: "blue" }}>
-                  تعتبر فرصة
-                </Button>
-              </Link>
-            ) : (
-              <Link href={"/chances?action=form&postcount=" + post.count}>
-                <Button variant="outlined" style={{ color: "blue" }}>
-                  فرصة
-                </Button>
-              </Link>
-            )}
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              // justifyContent: "space-between",
-              alignItems: "end",
-              mt: 2,
-            }}
-          >
-            <TextField
-              id="codeTel"
-              label="الهاتف"
-              // type="tel"
-              style={{
-                backgroundColor: "white",
-              }}
-              variant="outlined"
-              onChange={(event) => {
-                codeTelObject.codeTel = event.target.value;
-              }}
-              required
-            />
-            <Button
-              variant="outlined"
-              onClick={() => {
-                fetch(
-                  "/api/sendto?action=sendTo&codeTel=" +
-                    codeTelObject.codeTel +
-                    "&count=" +
-                    post.count
-                ).then(() => {
-                  router.reload();
-                });
-              }}
-            >
-              احالة
-            </Button>
-          </Box>
-        </Box>
-      )}
-
-      {post.sendTo && (
-        <Box>
-          {post.sendTo.length > 0 && user && user.role == "admin" && (
-            <Box>
-              <Box>تمت احالة المنشور الى</Box>
+            {user?.role == "admin" && type == "compared" && (
               <Box
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  mt: 1,
+                  m: 1,
                 }}
               >
-                {post.sendTo.map((tel, index) => (
+                <WhatsappButton
+                  phone={correctPhone(post.tel)}
+                  message={basepath + "/posts?count=" + post.count}
+                >
+                  <Button variant="contained">استفسار</Button>
+                </WhatsappButton>
+                <Typography variant="body1" color="text.secondary">
+                  {post.tel}
+                </Typography>
+              </Box>
+            )}
+            {/* 
+          
+          
+          track and show the post as a chance
+          
+          
+          
+          */}
+
+            {type == "post" && (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  mt: 2,
+                }}
+              >
+                {/* In this place we can show that this post is tracked */}
+                {post.trackcount ? (
+                  <Link href={"/posts?action=track&count=" + post.trackcount}>
+                    <Button variant="outlined" style={{ color: "blue" }}>
+                      تحت المتابعة
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link href={"/tracks?action=form&postcount=" + post.count}>
+                    <Button variant="outlined" style={{ color: "blue" }}>
+                      متابعة
+                    </Button>
+                  </Link>
+                )}
+                {/* In this place we can show that this post is a chance */}
+                {post.chancecount ? (
+                  <Link
+                    href={"/chances?action=chance&count=" + post.chancecount}
+                  >
+                    <Button variant="outlined" style={{ color: "blue" }}>
+                      تعتبر فرصة
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link href={"/chances?action=form&postcount=" + post.count}>
+                    <Button variant="outlined" style={{ color: "blue" }}>
+                      فرصة
+                    </Button>
+                  </Link>
+                )}
+              </Box>
+            )}
+
+            {/* 
+          
+          
+          send the post to a representant
+          
+          
+          */}
+
+            {type == "post" && (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "end",
+                  mt: 2,
+                }}
+              >
+                <TextField
+                  id="codeTel"
+                  label="الهاتف"
+                  // type="tel"
+                  style={{
+                    backgroundColor: "white",
+                  }}
+                  variant="outlined"
+                  onChange={(event) => {
+                    codeTelObject.codeTel = event.target.value;
+                  }}
+                  required
+                />
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    fetch(
+                      "/api/sendto?action=sendTo&codeTel=" +
+                        codeTelObject.codeTel +
+                        "&count=" +
+                        post.count
+                    ).then(() => {
+                      router.reload();
+                    });
+                  }}
+                >
+                  احالة
+                </Button>
+              </Box>
+            )}
+
+            {post.sendTo &&
+              post.sendTo.length > 0 &&
+              (type == "post" || type == "feed") && (
+                <Box>
+                  <Box>تمت احالة المنشور الى</Box>
                   <Box
                     sx={{
                       display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      mt: 0.5,
+                      flexDirection: "column",
+                      mt: 1,
                     }}
-                    key={index}
                   >
-                    <Link href={"/posts?action=posts&codeTel=" + tel}>
-                      <Box>{tel}</Box>
-                    </Link>
-                    {router.query.action == "archived" ? (
-                      <Button
-                        variant="outlined"
-                        onClick={() => {
-                          fetch(
-                            "/api/posts?action=restoreSend&count=" +
-                              post.count +
-                              "&tel=" +
-                              tel
-                          ).then(() => {
-                            router.reload();
-                          });
+                    {post.sendTo.map((tel, index) => (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          mt: 0.5,
                         }}
+                        key={index}
                       >
-                        استعادة
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="outlined"
-                        onClick={() => {
-                          fetch(
-                            "/api/posts?action=archiveSend&count=" +
-                              post.count +
-                              "&tel=" +
-                              tel
-                          ).then(() => {
-                            router.reload();
-                          });
-                        }}
-                      >
-                        ارشفة
-                      </Button>
-                    )}
+                        <Link href={"/posts?action=posts&codeTel=" + tel}>
+                          <Box>{tel}</Box>
+                        </Link>
+                        {router.query.action == "archived" ? (
+                          <Button
+                            variant="outlined"
+                            onClick={() => {
+                              fetch(
+                                "/api/posts?action=restoreSend&count=" +
+                                  post.count +
+                                  "&tel=" +
+                                  tel
+                              ).then(() => {
+                                router.reload();
+                              });
+                            }}
+                          >
+                            استعادة
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="outlined"
+                            onClick={() => {
+                              fetch(
+                                "/api/posts?action=archiveSend&count=" +
+                                  post.count +
+                                  "&tel=" +
+                                  tel
+                              ).then(() => {
+                                router.reload();
+                              });
+                            }}
+                          >
+                            ارشفة
+                          </Button>
+                        )}
+                      </Box>
+                    ))}
                   </Box>
-                ))}
+                </Box>
+              )}
+
+            {type == "post" && (
+              <Box>
+                <Link href={"/posts?action=posts&tel=" + post.tel}>
+                  منشورات الرقم
+                </Link>
+
+                {/* resources for this post from facebook */}
+                {post.facelink && (
+                  <a href={post.facelink} target="_blank" rel="noreferrer">
+                    صور
+                  </a>
+                )}
               </Box>
-            </Box>
-          )}
-        </Box>
-      )}
-
-      {/* resources for this post from facebook */}
-      {post.facelink && user && user.role == "admin" && (
-        <a href={post.facelink} target="_blank" rel="noreferrer">
-          صور
-        </a>
-      )}
-
+            )}
+          </Box>
+        )}
+      </CardContent>
+      {/* 
+      
+      share the post
+      
+      */}
       <CardActions>
         {
-          // <WhatsappShareButton url={basepath + "/posts?count=" + post.count}>
-          //   <Box
-          //     sx={{
-          //       color: "blue",
-          //       fontSize: "small",
-          //       pt: 2,
-          //     }}
-          //   >
-          //     <ShareIcon></ShareIcon>
-          //   </Box>
-          // </WhatsappShareButton>
-
           <WhatsappShare message={basepath + "/posts?count=" + post.count}>
             <Box
               sx={{
@@ -710,253 +534,6 @@ export function PostCard({
         }
       </CardActions>
     </Card>
-  );
-}
-
-// the card for the track
-export function TrackCard({ track }: { track: Track }) {
-  // const options = { year: "numeric", month: "long", day: "numeric" };
-  return (
-    <Box
-      sx={{
-        display: "grid",
-        gap: 3,
-      }}
-    >
-      <Box>
-        {track.updates
-          .slice(0)
-          .reverse()
-          .map((update, i) => (
-            <Box key={i}>
-              <Box>{new Date(update.date).toLocaleString("ar-MA")}</Box>
-              <Box>{update.text}</Box>
-            </Box>
-          ))}
-      </Box>
-
-      <Box>{track.text}</Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <WhatsappButton phone={correctPhone(track.tel1)} message={""}>
-            <Button variant="contained">واتساب</Button>
-          </WhatsappButton>
-          <Typography variant="body1" color="text.secondary">
-            {track.name1}
-          </Typography>
-        </Box>
-        {track.tel2 && (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <WhatsappButton phone={correctPhone(track.tel1)} message={""}>
-              <Button variant="contained">واتساب</Button>
-            </WhatsappButton>
-            <Typography variant="body1" color="text.secondary">
-              {track.name2}
-            </Typography>
-          </Box>
-        )}
-      </Box>
-
-      <PostCard post={track.post} type="min"></PostCard>
-
-      {track.archived ? (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            mt: 2,
-          }}
-        >
-          <Link href={"/api/tracks?action=restore&count=" + track.count}>
-            <Button variant="outlined" style={{ color: "red" }}>
-              استعادة
-            </Button>
-          </Link>
-          <Link href={"/api/tracks?action=delete&count=" + track.count}>
-            <Button variant="outlined" style={{ color: "red" }}>
-              حذف
-            </Button>
-          </Link>
-        </Box>
-      ) : (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            mt: 2,
-          }}
-        >
-          <Link href={"/tracks?action=update&count=" + track.count}>
-            <Button variant="outlined" style={{ color: "blue" }}>
-              تحديث
-            </Button>
-          </Link>
-          <Link href={"/api/tracks?action=archive&count=" + track.count}>
-            <Button variant="outlined" style={{ color: "red" }}>
-              ارشفة
-            </Button>
-          </Link>
-        </Box>
-      )}
-    </Box>
-  );
-}
-
-// new tracked post
-const track = {
-  text: "",
-  postcount: "",
-  name1: "",
-  tel1: "",
-  name2: "",
-  tel2: "",
-};
-// an update to a tracked post
-const updatebody = {
-  text: "",
-  date: Date.now(),
-};
-
-// initialize the departements checkboxes
-// const inicheck: { [key: string]: boolean } = {
-//   Tayaret: false,
-//   Ksar: false,
-//   DarNaim: false,
-//   TevreghZeina: false,
-//   Sebkha: false,
-//   Elmina: false,
-//   Arafat: false,
-//   Toujounine: false,
-//   Riyadh: false,
-// };
-
-// initialize the departements checkboxes
-const inicheckD: { [key: string]: boolean } = {
-  Tayaret: false,
-  Ksar: false,
-  DarNaim: false,
-  TevreghZeina: false,
-  Sebkha: false,
-  Elmina: false,
-  Arafat: false,
-  Toujounine: false,
-  Riyadh: false,
-};
-
-export function TrackForm({
-  onSubmit,
-  update = false,
-}: {
-  onSubmit: any;
-  update?: boolean;
-}) {
-  function handleSubmit() {
-    if (update) {
-      onSubmit(updatebody);
-    } else {
-      onSubmit(track);
-    }
-  }
-  return (
-    <Box>
-      {!update && (
-        <Box
-          // component={"form"}
-          sx={{
-            display: "grid",
-            gap: 2,
-            p: { xs: 2, md: 4 },
-            maxWidth: "400px",
-          }}
-        >
-          <TextField
-            id="outlined-basic"
-            label="النص"
-            // type="tel"
-            variant="outlined"
-            onChange={(event) => {
-              track.text = event.target.value;
-            }}
-            required
-          />
-          <TextField
-            id="outlined-basic"
-            label="الاسم"
-            // type="tel"
-            variant="outlined"
-            onChange={(event) => {
-              track.name1 = event.target.value;
-            }}
-            required
-          />
-          <TextField
-            id="outlined-basic"
-            label="واتساب "
-            type="tel"
-            variant="outlined"
-            onChange={(event) => {
-              track.tel1 = event.target.value;
-            }}
-            required
-          />
-          <TextField
-            id="outlined-basic"
-            label="الاسم"
-            // type="tel"
-            variant="outlined"
-            onChange={(event) => {
-              track.name2 = event.target.value;
-            }}
-          />
-          <TextField
-            id="outlined-basic"
-            label="واتساب 2"
-            type="tel"
-            variant="outlined"
-            onChange={(event) => {
-              track.tel2 = event.target.value;
-            }}
-          />
-          <Button type="submit" variant="contained" onClick={handleSubmit}>
-            اضافة
-          </Button>
-        </Box>
-      )}
-      {update && (
-        <Box>
-          <TextField
-            id="outlined-basic"
-            label="النص"
-            // type="tel"
-            variant="outlined"
-            onChange={(event) => {
-              updatebody.text = event.target.value;
-            }}
-          />
-          <Button type="submit" variant="contained" onClick={handleSubmit}>
-            تحديث
-          </Button>
-        </Box>
-      )}
-    </Box>
   );
 }
 
@@ -983,7 +560,6 @@ let post: Post = {
 };
 
 // let pathFiles = [];
-
 export function PostForm({ upost = post }: { upost?: Post }) {
   if (upost.count) {
     post = upost;
@@ -1031,7 +607,7 @@ export function PostForm({ upost = post }: { upost?: Post }) {
           tel: result.tel,
           role: "guest",
         };
-        const signup = await fetch("/api/auth/signup", {
+        await fetch("/api/auth/signup", {
           method: "POST",
           body: JSON.stringify(userbody),
           headers: {
@@ -1171,30 +747,6 @@ export function PostForm({ upost = post }: { upost?: Post }) {
             onDeparts={getDeparts}
             iniDeparts={upost.departements}
           ></Departs>
-          // <Box
-          //   sx={{
-          //     display: "grid",
-          //     gridTemplateColumns: "repeat(3, 1fr)",
-          //     gap: { xs: 1, md: 2 },
-          //     maxWidth: "500px",
-          //   }}
-          // >
-          //   {departements.map((departement, i) => {
-          //     return (
-          //       <FormControlLabel
-          //         key={i}
-          //         control={
-          //           <Checkbox
-          //             value={depcheck.includes(departement.value)}
-          //             onChange={handleChange}
-          //             name={departement.value}
-          //           />
-          //         }
-          //         label={departement.label}
-          //       />
-          //     );
-          //   })}
-          // </Box>
         )}
 
         {(type == "selling" || type == "offerRent" || type == "stay") && (
@@ -1277,13 +829,6 @@ export function PostForm({ upost = post }: { upost?: Post }) {
           }}
           required
         />
-        {/* <small
-        style={{
-          color: "red",
-        }}
-      >
-        {messagen}
-      </small> */}
         {errors.tel && (
           <small
             style={{
@@ -1342,9 +887,6 @@ export function PostForm({ upost = post }: { upost?: Post }) {
             />
           </Box>
         )}
-        {/* This button needs to be viewed again */}
-        {/* show the message of validation */}
-        {/* <p>{messagen}</p> */}
         <Box>
           <Button
             type="submit"
@@ -1361,34 +903,11 @@ export function PostForm({ upost = post }: { upost?: Post }) {
 }
 
 let depvalues: string[] = [];
-
 export function Departement() {
   const router = useRouter();
 
-  const [depcheck, setdepcheck] = useState(inicheckD);
+  // const [depcheck, setdepcheck] = useState(inicheckD);
 
-  // function handleChange(e: any) {
-  //   const name = e.target.name;
-
-  //   setdepcheck((prev) => {
-  //     const prevdep: any = { ...prev };
-  //     prevdep[name] = !prevdep[name];
-  //     return prevdep;
-  //   });
-
-  //   if (!e.target.checked) {
-  //     const index = depvalues.indexOf(name);
-  //     if (index > -1) {
-  //       depvalues.splice(index, 1); // 2nd parameter means remove one item only
-  //     }
-  //   } else {
-  //     depvalues.push(name);
-  //   }
-
-  //   // onChangeDep(depvalues);
-  // }
-
-  // submit the search query
   function submit() {
     const { type } = router.query;
     const depsjson = JSON.stringify(depvalues);
@@ -1421,153 +940,6 @@ export function Departement() {
           بحث
         </Button>
       </Box>
-    </Box>
-
-    //   <Box
-    //     sx={{
-    //       display: "flex",
-    //     }}
-    //   >
-    //     <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-    //       <FormLabel component="legend">اختر المقاطعات</FormLabel>
-    //       <FormGroup>
-    //         <Box>
-    //           {departements.slice(0, 3).map((departement, i) => {
-    //             return (
-    //               <FormControlLabel
-    //                 key={i}
-    //                 control={
-    //                   <Checkbox
-    //                     checked={depcheck[departement.value]}
-    //                     onChange={handleChange}
-    //                     name={departement.value}
-    //                   />
-    //                 }
-    //                 label={departement.label}
-    //               />
-    //             );
-    //           })}
-    //         </Box>
-    //         <Box>
-    //           {departements.slice(3, 6).map((departement, i) => {
-    //             return (
-    //               <FormControlLabel
-    //                 key={i}
-    //                 control={
-    //                   <Checkbox
-    //                     checked={depcheck[departement.value]}
-    //                     onChange={handleChange}
-    //                     name={departement.value}
-    //                   />
-    //                 }
-    //                 label={departement.label}
-    //               />
-    //             );
-    //           })}
-    //         </Box>
-    //         <Box>
-    //           {departements.slice(6, 9).map((departement, i) => {
-    //             return (
-    //               <FormControlLabel
-    //                 key={i}
-    //                 control={
-    //                   <Checkbox
-    //                     checked={depcheck[departement.value]}
-    //                     onChange={handleChange}
-    //                     name={departement.value}
-    //                   />
-    //                 }
-    //                 label={departement.label}
-    //               />
-    //             );
-    //           })}
-    //         </Box>
-    //       </FormGroup>
-    //       <FormHelperText>
-    //         اختر بعض المقاطعات من اجل مزيد من التحديد
-    //       </FormHelperText>
-    //     </FormControl>
-    //   </Box>
-  );
-}
-
-// Cards for the Chance crud
-export function ChanceCard({ chance }: { chance: Chance }) {
-  return (
-    <Box
-      sx={{
-        dispay: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <Box>{chance.text}</Box>
-      <PostCard post={chance.post} type="min"></PostCard>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          mt: 2,
-        }}
-      >
-        <Link href={"/api/chances?action=delete&count=" + chance.count}>
-          <Button variant="outlined" style={{ color: "red" }}>
-            حذف
-          </Button>
-        </Link>
-      </Box>
-    </Box>
-  );
-}
-
-const chance = {
-  postcount: "",
-  text: "",
-};
-export function ChanceForm() {
-  const router = useRouter();
-  const postcount = router.query.postcount as unknown as string;
-  chance.postcount = postcount;
-
-  function handleSubmit() {
-    fetch("api/chances?action=save", {
-      method: "POST",
-      body: JSON.stringify(chance),
-      headers: {
-        "content-type": "application/json",
-      },
-    }).then((data) => {
-      data.json().then((rchance) => {
-        router.push("/chances?action=chance&count=" + rchance.count);
-      });
-    });
-  }
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <TextField
-        id="outlined-basic"
-        label="لماذا"
-        // type="tel"
-        variant="outlined"
-        onChange={(event) => {
-          chance.text = event.target.value;
-        }}
-      />
-      <Button
-        style={{
-          marginTop: "16px",
-        }}
-        type="submit"
-        variant="contained"
-        onClick={handleSubmit}
-      >
-        اضافة
-      </Button>
     </Box>
   );
 }

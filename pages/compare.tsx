@@ -1,52 +1,41 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import Layout from "../components/layout";
 import { Box } from "@mui/system";
 import { DBPost, DBUser } from "../lib/mongo";
-import { Post, UserType } from "../projectTypes";
+import { Post } from "../projectTypes";
 
-import { useRouter } from "next/router";
 import { PostCard } from "../components/cards";
 import { basepath, correctPhone, Nktt } from "../lib/myfunctions";
+import { useRouter } from "next/router";
 
+const comparedPosts: number[] = [];
 export default function Page({
   postjson,
-  repsjson,
   opostsjson,
 }: {
   postjson: string;
-  repsjson: string;
   opostsjson: string;
 }) {
   const router = useRouter();
-
   const posto = JSON.parse(postjson) as Post;
-  const reps = JSON.parse(repsjson) as UserType[];
-  const posts = JSON.parse(opostsjson) as Post[];
-  // const post = null;
+  const allposts = JSON.parse(opostsjson) as Post[];
 
-  // const postoshow =
-  //   posto.type == "buying" || posto.type == "demandRent" ? true : false;
+  const [render, setRender] = useState<boolean>(false);
 
+  const posts = allposts.filter((post) => !comparedPosts.includes(post.count));
 
+  // if no posts to compare to then go back
+  if (posts.length == 0) {
+    fetch("/api/compared?finished=true&count=" + posto.count).then(() => {
+      router.back();
+    });
+  }
 
-
-  // add the post or the user as already compared to
-  // function compared(url: string) {
-  //   fetch(url).then((v) => {
-  //     console.log(v);
-  //   });
-  // }
-
-  // if no reps or posts to compare to than this post finished
-  useEffect(() => {
-    if (reps.length == 0 && posts.length == 0) {
-      fetch("/api/compared?count=" + posto.count + "&finished=true").then(
-        () => {
-          router.back();
-        }
-      );
-    }
-  }, []);
+  // remove the post compared
+  function remove(count: number) {
+    comparedPosts.push(count);
+    setRender(!render);
+  }
 
   return (
     <>
@@ -60,9 +49,7 @@ export default function Page({
               mb: 2,
             }}
           >
-            {posto && (
-              <PostCard position="main" post={posto} type="min"></PostCard>
-            )}
+            {posto && <PostCard post={posto} type="comparing"></PostCard>}
           </Box>
           <Box
             sx={{
@@ -71,42 +58,6 @@ export default function Page({
               maxWidth: "400px",
             }}
           >
-            {/* {user?.role == "admin" &&
-              reps.map((rep, i) => (
-                <Box
-                  key={i}
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box>{rep.username}</Box>
-                  <Box>{DEPARTEMENTS[rep.departements[0]]}</Box>
-                  <Box>{rep.region}</Box>
-
-                  <WhatsappButton
-                    phone={correctPhone(rep.tel)}
-                    message={basepath + "/posts?count=" + posto.count}
-                  >
-                    <Button
-                      onClick={() => {
-                        fetch(
-                          "/api/compared?count=" +
-                            posto.count +
-                            "&user=" +
-                            rep.count
-                        ).then(() => {
-                          router.reload();
-                        });
-                      }}
-                      variant="contained"
-                    >
-                      واتساب
-                    </Button>
-                  </WhatsappButton>
-                </Box>
-              ))} */}
             {posts.map((postc, i) => {
               // is the post a demand post so send him the offer. If not send it to the original post
               const isdemand =
@@ -125,15 +76,14 @@ export default function Page({
                 : correctPhone(posto.tel);
               return (
                 <PostCard
-                  goto={{
+                  key={i}
+                  type="compared"
+                  post={postc}
+                  comparaison={{
                     url: url,
                     tel: tel,
-                    ido: posto.count,
-                    idc: postc.count,
+                    remove: remove,
                   }}
-                  key={i}
-                  post={postc}
-                  type="min"
                 ></PostCard>
               );
             })}
