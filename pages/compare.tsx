@@ -167,32 +167,9 @@ export async function getServerSideProps({
     }
   });
 
-  // the posts should be in the range of the price given by the client
-  const pposts1 = deposts.filter((depost) => {
-    const deprice = depost.price;
-    if (
-      postObject.type == "demandRent" ||
-      postObject.type == "demandRent" ||
-      postObject.type == "stay"
-    ) {
-      return true;
-    } else {
-      const lowprice = postObject.price > 0 && postObject.price <= 4;
-      const mediumprice = postObject.price > 4 && postObject.price <= 10;
-      const highprice = postObject.price > 10 && postObject.price <= 20;
-      const veryhighprice = postObject.price > 20 && postObject.price <= 200;
+  sposts.reverse();
 
-      if (lowprice) {
-        return deprice > 0 && deprice <= 4;
-      } else if (mediumprice) {
-        return deprice > 4 && deprice <= 10;
-      } else if (highprice) {
-        return deprice > 10 && deprice <= 20;
-      } else if (veryhighprice) {
-        return deprice > 20 && deprice <= 200;
-      }
-    }
-  });
+  // the posts should be in the range of the price given by the client
 
   const postjson = JSON.stringify(postObject);
   const opostsjson = JSON.stringify(sposts);

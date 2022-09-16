@@ -24,8 +24,18 @@ const posts = [
 ];
 
 const fposts = posts.filter((post) => within(posto.price, post.price, 50));
+const sposts = fposts.sort((post1, post2) => {
+  if (within(posto.price, post1.price, 20)) {
+    return 1;
+  } else if (within(posto.price, post1.price, 20)) {
+    return -1;
+  } else {
+    return 0;
+  }
+});
 
-console.log(fposts);
+sposts.reverse();
+console.log(sposts);
 function within(price, priceC, percentage) {
   return (
     price * (1 - percentage / 100) <= priceC &&
