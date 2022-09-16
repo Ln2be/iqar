@@ -69,6 +69,7 @@ export async function getUser({ tel }: { tel: string }) {
     "tel",
     "departements",
     "count",
+    "password",
   ]);
 }
 
