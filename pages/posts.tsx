@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
 import Layout from "../components/layout";
@@ -16,21 +16,44 @@ import {
   subtypes,
   translate,
 } from "../lib/myfunctions";
+import { useUser } from "../lib/auth/hooks";
 // import { QueryBuilder } from "@mui/icons-material";
 
 export default function Page({
   result,
   length,
   rep,
+  signin,
 }: {
   result: string;
   length: string;
   rep: string;
+  signin: string;
 }) {
   const router = useRouter();
   // const user = useUser();
   const { action, location } = router.query;
+  const user = useUser();
 
+  useEffect(() => {
+    if (!user && signin) {
+      const signino = JSON.parse(signin);
+      fetch("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({
+          username: signino[1],
+          password: signino[2],
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((data) => {
+        data.json().then(() => {
+          // router.push("/");
+        });
+      });
+    }
+  }, []);
   // spin if the post is submitted
   // const [spin, setSpin] = useState(false);
 
@@ -215,6 +238,8 @@ export async function getServerSideProps({
   // the object to be injected in the post dom
   let injectObject;
 
+  //
+
   // if requesting all the Posts
   if (query.action == "posts") {
     let posts: Post[] = [];
@@ -341,7 +366,8 @@ export async function getServerSideProps({
 
     // if requesting the form to add new post, no is injected
   } else if (query.notifyuser) {
-    const user = await DBUser.findOne({ count: query.notifyuser });
+    const signin = JSON.parse(query.notifyuser);
+    const user = await DBUser.findOne({ count: signin[0] });
 
     const departements = user.departements;
     const nposts = crossedDep(allposts, departements);
@@ -362,6 +388,7 @@ export async function getServerSideProps({
       result: result,
       length: nposts.length,
       rep: repst,
+      signin: query.notifyuser,
     };
   }
 

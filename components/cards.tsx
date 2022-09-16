@@ -348,33 +348,43 @@ export function PostCard({
               >
                 {/* In this place we can show that this post is tracked */}
                 {post.trackcount ? (
-                  <Link href={"/posts?action=track&count=" + post.trackcount}>
-                    <Button variant="outlined" style={{ color: "blue" }}>
-                      تحت المتابعة
-                    </Button>
-                  </Link>
+                  <Button variant="outlined" style={{ color: "blue" }}>
+                    تحت المتابعة
+                  </Button>
                 ) : (
-                  <Link href={"/tracks?action=form&postcount=" + post.count}>
-                    <Button variant="outlined" style={{ color: "blue" }}>
-                      متابعة
-                    </Button>
-                  </Link>
+                  <Button
+                    onClick={() => {
+                      fetch("/api/posts?action=track&count=" + post.count).then(
+                        () => {
+                          router.reload();
+                        }
+                      );
+                    }}
+                    variant="outlined"
+                    style={{ color: "blue" }}
+                  >
+                    متابعة
+                  </Button>
                 )}
                 {/* In this place we can show that this post is a chance */}
                 {post.chancecount ? (
-                  <Link
-                    href={"/chances?action=chance&count=" + post.chancecount}
-                  >
-                    <Button variant="outlined" style={{ color: "blue" }}>
-                      تعتبر فرصة
-                    </Button>
-                  </Link>
+                  <Button variant="outlined" style={{ color: "blue" }}>
+                    تعتبر فرصة
+                  </Button>
                 ) : (
-                  <Link href={"/chances?action=form&postcount=" + post.count}>
-                    <Button variant="outlined" style={{ color: "blue" }}>
-                      فرصة
-                    </Button>
-                  </Link>
+                  <Button
+                    onClick={() => {
+                      fetch("/api/posts?action=track&count=" + post.count).then(
+                        () => {
+                          router.reload();
+                        }
+                      );
+                    }}
+                    variant="outlined"
+                    style={{ color: "blue" }}
+                  >
+                    فرصة
+                  </Button>
                 )}
               </Box>
             )}
@@ -1147,6 +1157,8 @@ export function UserCard({
 }) {
   const router = useRouter();
   const admin = useUser();
+
+  const signin = JSON.stringify([user.count, user.tel, user.password]);
   return (
     <Box
       sx={{
@@ -1224,7 +1236,7 @@ export function UserCard({
           {sendLink(user.lastNotified) && (
             <WhatsappButton
               phone={correctPhone(user.tel ? user.tel : "no phone")}
-              message={basepath + "/posts?notifyuser=" + user.count}
+              message={basepath + "/posts?notifyuser=" + signin}
             >
               <Button
                 variant="contained"

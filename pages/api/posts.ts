@@ -16,7 +16,7 @@ export default async function helper(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { action } = req.query;
+  const { action, count } = req.query;
 
   if (action == "save") {
     const post = req.body as Post;
@@ -75,6 +75,12 @@ export default async function helper(
 
     await DBPost.updateOne({ count: count }, { sendToArchive: sendToArchive });
 
+    res.send("OK");
+  } else if (action == "track") {
+    await DBPost.updateOne({ count: count }, { trackcount: "tracked" });
+    res.send("OK");
+  } else if (action == "chance") {
+    await DBPost.updateOne({ count: count }, { chancecount: "chance" });
     res.send("OK");
   }
 }
