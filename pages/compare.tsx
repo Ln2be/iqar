@@ -206,5 +206,8 @@ export async function getServerSideProps({
 }
 
 function within(price: number, priceC: number, percentage: number) {
-  return price - percentage / 100 < priceC && priceC < percentage / 100 + price;
+  return (
+    price * (1 - percentage / 100) <= priceC &&
+    priceC <= (percentage / 100 + 1) * price
+  );
 }

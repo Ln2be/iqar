@@ -12,7 +12,7 @@ export default class Page extends React.Component<any, any> {
     this.state = { counter: 0, array: [0] };
   }
   render() {
-    return (
+    return (  
       <Box>
         <Button
           onClick={() => {
