@@ -120,7 +120,7 @@ export default function AuthHeader() {
               </Box>
               <Box>
                 <Link href={basepath + "/posts?notifyuser=" + user.count}>
-                  الطلبات
+                  حسابي
                 </Link>
               </Box>
             </Box>
