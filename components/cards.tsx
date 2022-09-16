@@ -1168,38 +1168,43 @@ export function UserCard({
       }}
     >
       {/* for all type demanding UserCard */}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
+      {type != "board" && (
         <Box
           sx={{
             display: "flex",
-            alignItems: "center",
-            // p: 2,
+            flexDirection: "row",
+            justifyContent: "space-between",
           }}
         >
-          <Avatar sx={{ bgcolor: red[500], m: 1 }} aria-label="recipe">
-            {user.username.charAt(0)}
-          </Avatar>
-          {user.username}
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            m: 1,
-          }}
-        >
-          <Box>
-            {translate(user.departements && user.departements[0], departements)}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              // p: 2,
+            }}
+          >
+            <Avatar sx={{ bgcolor: red[500], m: 1 }} aria-label="recipe">
+              {user.username.charAt(0)}
+            </Avatar>
+            {user.username}
           </Box>
-          <Box>{user.region}</Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              m: 1,
+            }}
+          >
+            <Box>
+              {translate(
+                user.departements && user.departements[0],
+                departements
+              )}
+            </Box>
+            <Box>{user.region}</Box>
+          </Box>
         </Box>
-      </Box>
+      )}
 
       {/* handle delete  */}
       {type != "board" && admin && admin.role == "admin" && (
