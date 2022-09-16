@@ -49,7 +49,7 @@ export default function Page({
         },
       }).then((data) => {
         data.json().then(() => {
-          router.reload();
+          router.push("/");
         });
       });
     }
