@@ -37,7 +37,7 @@ export default function Page({
 
   useEffect(() => {
     if (!user && signin) {
-      const signino = JSON.parse(signin);
+      const signino = signin.split("+");
       fetch("/api/auth/login", {
         method: "POST",
         body: JSON.stringify({
@@ -366,8 +366,9 @@ export async function getServerSideProps({
 
     // if requesting the form to add new post, no is injected
   } else if (query.notifyuser) {
-    const signin = JSON.parse(query.notifyuser);
-    const user = await DBUser.findOne({ count: signin[0] });
+    const signin = query.notifyuser.split("+");
+    const usercount = signin[0] as unknown as number;
+    const user = await DBUser.findOne({ count: usercount });
 
     const departements = user.departements;
     const nposts = crossedDep(allposts, departements);

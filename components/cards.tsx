@@ -1158,7 +1158,7 @@ export function UserCard({
   const router = useRouter();
   const admin = useUser();
 
-  const signin = JSON.stringify([user.count, user.tel, user.password]);
+  const signin = user.count + "+" + user.tel + "+" + user.password;
   return (
     <Box
       sx={{
