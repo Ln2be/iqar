@@ -37,7 +37,7 @@ export default function Page({
 
   useEffect(() => {
     if (!user && signin) {
-      const signino = signin.split("+");
+      const signino = signin.split("iqar");
       fetch("/api/auth/login", {
         method: "POST",
         body: JSON.stringify({
@@ -366,7 +366,7 @@ export async function getServerSideProps({
 
     // if requesting the form to add new post, no is injected
   } else if (query.notifyuser) {
-    const signin = query.notifyuser.split("+");
+    const signin = query.notifyuser.split("iqar");
     const usercount = signin[0] as unknown as number;
     const user = await DBUser.findOne({ count: usercount });
 
