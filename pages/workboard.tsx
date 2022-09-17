@@ -443,7 +443,7 @@ export async function getServerSideProps() {
           metadata[key][location].compared++;
 
         // increment the demand and offers
-        post.type == "demandRent" || "buying"
+        post.type == "demandRent" || post.type == "buying"
           ? metadata[key][location].demands++
           : metadata[key][location].offers++;
       }
