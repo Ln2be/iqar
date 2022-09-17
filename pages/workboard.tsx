@@ -420,10 +420,10 @@ export async function getServerSideProps() {
       const kindSearch: { [key: string]: boolean } = {
         perio: typeof post.periority == "undefined" && post.periority > 1,
         rent: renttype,
-        lowPrice: selltype && pricewithin(0, 4),
-        mediumPrice: selltype && pricewithin(4, 15),
-        highPrice: selltype && pricewithin(15, 30),
-        veryhighPrice: selltype && pricewithin(30, 300),
+        lowprice: selltype && pricewithin(0, 4),
+        mediumprice: selltype && pricewithin(4, 15),
+        highprice: selltype && pricewithin(15, 30),
+        veryhighprice: selltype && pricewithin(30, 300),
       };
       return kindSearch[kind];
     });
