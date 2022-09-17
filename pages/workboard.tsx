@@ -12,6 +12,7 @@ import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { DBPost } from "../lib/mongo";
 import { Post } from "../projectTypes";
+import StarIcon from "@mui/icons-material/Star";
 
 let deferredPrompt: any; // Allows to show the install prompt
 
@@ -42,6 +43,21 @@ export default function Page({ metadata }: { metadata: string }) {
   const workinterface: {
     [key: string]: { location: { [key: string]: string }; icon: JSX.Element };
   } = {
+    perio: {
+      location: {
+        nn: "الشمالية",
+        ns: "الجنوبية",
+        nw: "الغربية",
+      },
+      icon: (
+        <StarIcon
+          style={{
+            width: "20%",
+            height: "20%",
+          }}
+        ></StarIcon>
+      ),
+    },
     rent: {
       location: {
         nn: "الشمالية",
@@ -254,6 +270,27 @@ export async function getServerSideProps() {
   const metadata: {
     [key: string]: { [key: string]: { [key: string]: number } };
   } = {
+    perio: {
+      nn: {
+        total: 0,
+        compared: 0,
+        demands: 0,
+        offers: 0,
+      },
+      ns: {
+        total: 0,
+        compared: 0,
+        demands: 0,
+        offers: 0,
+      },
+
+      nw: {
+        total: 0,
+        compared: 0,
+        demands: 0,
+        offers: 0,
+      },
+    },
     rent: {
       nn: {
         total: 0,
@@ -367,75 +404,92 @@ export async function getServerSideProps() {
       },
     },
   };
-  const postsrent = await DBPost.find({
-    $or: [
-      {
-        type: "demandRent",
-      },
 
-      {
-        type: "offerRent",
-      },
+  const allposts = await DBPost.find({}).sort({ createdAt: -1 });
+  function mfilter(kind: string) {
+    return allposts.filter((post) => {
+      const type = post.type;
+      const price = post.price;
+      const renttype = type == "demandRent" || type == "offerRent";
+      const selltype = type == "selling" || type == "buying";
 
-      {
-        type: "stay",
-      },
-    ],
-    hidden: false,
-  }).sort({ createdAt: -1 });
+      function pricewithin(low: number, high: number) {
+        return low <= price && price <= high;
+      }
 
-  for (const location in Nktt) {
-    const posts = crossedDep(postsrent, Nktt[location]);
-    for (const post of posts) {
-      metadata.rent[location].total++;
-      post.comparedTo &&
-        post.comparedTo[0] == "finished" &&
-        metadata.rent[location].compared++;
-      post.type == "demandRent"
-        ? metadata.rent[location].demands++
-        : metadata.rent[location].offers++;
-    }
+      const kindSearch: { [key: string]: boolean } = {
+        perio: post.periority && post.periority > 1,
+        rent: renttype,
+        lowPrice: selltype && pricewithin(0, 4),
+        mediumPrice: selltype && pricewithin(4, 15),
+        highPrice: selltype && pricewithin(15, 30),
+        veryhighPrice: selltype && pricewithin(30, 300),
+      };
+      return kindSearch[kind];
+    });
   }
 
-  for (const intervall of [
-    "lowprice",
-    "mediumprice",
-    "highprice",
-    "veryhighprice",
-  ]) {
-    const lowHigh = priceCat[intervall];
-    const postsintervall = await DBPost.find({
-      $or: [
-        {
-          type: "buying",
-        },
+  Object.keys(metadata).map((key) => {
+    const mfilterposts = mfilter(key);
 
-        {
-          type: "selling",
-        },
-      ],
-      $and: [
-        {
-          price: { $gt: lowHigh.low },
-        },
-        { price: { $lte: lowHigh.high } },
-      ],
-      hidden: false,
-    }).sort({ createdAt: -1 });
     for (const location in Nktt) {
-      const posts = crossedDep(postsintervall, Nktt[location]);
+      const posts = crossedDep(mfilterposts, Nktt[location]);
       for (const post of posts) {
-        metadata[intervall][location].total++;
+        metadata[key][location].total++;
+
+        // increment the compared posts
         post.comparedTo &&
-          post.comparedTo[0] == "finished" &&
-          metadata[intervall][location].compared++;
-        if (location == "nw")
-          post.type == "buying"
-            ? metadata[intervall][location].demands++
-            : metadata[intervall][location].offers++;
+          post.comparedTo.includes("finished") &&
+          metadata[key][location].compared++;
+
+        // increment the demand and offers
+        post.type == "demandRent" || "buying"
+          ? metadata[key][location].demands++
+          : metadata[key][location].offers++;
       }
     }
-  }
+  });
+
+  // for (const intervall of [
+  //   "lowprice",
+  //   "mediumprice",
+  //   "highprice",
+  //   "veryhighprice",
+  // ]) {
+  //   const lowHigh = priceCat[intervall];
+  //   const postsintervall = await DBPost.find({
+  //     $or: [
+  //       {
+  //         type: "buying",
+  //       },
+
+  //       {
+  //         type: "selling",
+  //       },
+  //     ],
+  //     $and: [
+  //       {
+  //         price: { $gt: lowHigh.low },
+  //       },
+  //       { price: { $lte: lowHigh.high } },
+  //     ],
+  //     hidden: false,
+  //   }).sort({ createdAt: -1 });
+
+  //   for (const location in Nktt) {
+  //     const posts = crossedDep(postsintervall, Nktt[location]);
+  //     for (const post of posts) {
+  //       metadata[intervall][location].total++;
+  //       post.comparedTo &&
+  //         post.comparedTo[0] == "finished" &&
+  //         metadata[intervall][location].compared++;
+  //       if (location == "nw")
+  //         post.type == "buying"
+  //           ? metadata[intervall][location].demands++
+  //           : metadata[intervall][location].offers++;
+  //     }
+  //   }
+  // }
 
   return {
     props: { metadata: JSON.stringify(metadata) },

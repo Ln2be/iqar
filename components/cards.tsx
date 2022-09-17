@@ -562,6 +562,7 @@ let post: Post = {
   sendTo: [],
   sendToArchive: [],
   facelink: "",
+  periority: 1,
 };
 
 // let pathFiles = [];
@@ -834,6 +835,19 @@ export function PostForm({ upost = post }: { upost?: Post }) {
           >
             ادخل السعر بالالاف و بالعملة القديمة
           </small>
+        )}
+        {user?.role == "admin" && (
+          <TextField
+            id="outlined-basic"
+            label="الاولوية"
+            type="number"
+            variant="outlined"
+            onChange={(event) => {
+              const prio = event.target.value as unknown as number;
+              post.periority = prio;
+              // post.price = iprice;
+            }}
+          />
         )}
 
         {user && user.role == "admin" && (

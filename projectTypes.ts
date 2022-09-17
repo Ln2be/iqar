@@ -42,6 +42,7 @@ export interface Post {
   archived?: boolean;
   sendTo: string[];
   sendToArchive: string[];
+  periority: number;
 }
 
 export interface Image {
