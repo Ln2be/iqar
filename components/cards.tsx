@@ -264,7 +264,7 @@ export function PostCard({
                       style={{ color: "blue" }}
                       onClick={() => {
                         fetch(
-                          "/api/compare?action=finished&count=" + post.count
+                          "/api/compared?action=finished&count=" + post.count
                         ).then(() => {
                           router.back();
                         });
