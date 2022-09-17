@@ -181,8 +181,8 @@ export const subtypes = [
     label: "دار",
   },
   {
-    value: "villa",
-    label: "فيلا",
+    value: "incomplete",
+    label: "شانتية",
   },
   {
     value: "invest",
@@ -198,6 +198,16 @@ export const subtypes = [
   },
 ];
 
+// similar subtypes
+export const similarsub: { [key: string]: string[] } = {
+  land: ["land", "incomplete"],
+  other: ["other"],
+  incomplete: ["land", "incomplete", "house", "appartment"],
+  house: ["house", "appartment"],
+  appartment: ["house", "appartment"],
+  invest: ["invest"],
+  store: ["store"],
+};
 // show label in the interface but not the value
 export function translate(
   value: string,

@@ -5,7 +5,7 @@ import { DBPost, DBUser } from "../lib/mongo";
 import { Post } from "../projectTypes";
 
 import { PostCard } from "../components/cards";
-import { basepath, correctPhone, Nktt } from "../lib/myfunctions";
+import { basepath, correctPhone, Nktt, similarsub } from "../lib/myfunctions";
 import { useRouter } from "next/router";
 
 const comparedPosts: number[] = [];
@@ -135,8 +135,13 @@ export async function getServerSideProps({
   });
 
   // the post shouldn't be already compared to this post
-  const ncposts = oppositeposts.filter(
+  const ncposts1 = oppositeposts.filter(
     (post) => !postObject.comparedTo?.includes(post.count)
+  );
+
+  // show only the similar subtypes
+  const ncposts = ncposts1.filter((post) =>
+    similarsub[postObject.subtype].includes(post.subtype)
   );
 
   // the posts should be in the same departement
