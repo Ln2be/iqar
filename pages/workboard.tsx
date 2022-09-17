@@ -405,9 +405,9 @@ export async function getServerSideProps() {
     },
   };
 
-  const allposts = await DBPost.find({}).sort({ createdAt: -1 });
-  function mfilter(kind: string) {
-    return allposts.filter((post) => {
+  const allposts = (await DBPost.find({}).sort({ createdAt: -1 })) as Post[];
+  function mfilter(posts: Post[], kind: string) {
+    return posts.filter((post) => {
       const type = post.type;
       const price = post.price;
       const renttype = type == "demandRent" || type == "offerRent";
@@ -418,7 +418,7 @@ export async function getServerSideProps() {
       }
 
       const kindSearch: { [key: string]: boolean } = {
-        perio: post.periority && post.periority > 1,
+        perio: typeof post.periority == "undefined" && post.periority > 1,
         rent: renttype,
         lowPrice: selltype && pricewithin(0, 4),
         mediumPrice: selltype && pricewithin(4, 15),
@@ -430,7 +430,7 @@ export async function getServerSideProps() {
   }
 
   Object.keys(metadata).map((key) => {
-    const mfilterposts = mfilter(key);
+    const mfilterposts = mfilter(allposts, key);
 
     for (const location in Nktt) {
       const posts = crossedDep(mfilterposts, Nktt[location]);
