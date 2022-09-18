@@ -418,7 +418,7 @@ export async function getServerSideProps() {
       }
 
       const kindSearch: { [key: string]: boolean } = {
-        perio: typeof post.periority == "undefined" && post.periority > 1,
+        perio: typeof post.periority != "undefined" && post.periority > 1,
         rent: renttype,
         lowprice: selltype && pricewithin(0, 4),
         mediumprice: selltype && pricewithin(4, 15),
