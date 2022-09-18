@@ -299,7 +299,13 @@ export function PostCard({
                   </Link>
                 )
               )}
-
+              {type == "post" && post.hidden && (
+                <Link href={"/posts?action=show&count=" + post.count}>
+                  <Button variant="outlined" style={{ color: "blue" }}>
+                    اظهار
+                  </Button>
+                </Link>
+              )}
               {type == "post" && (
                 <Link href={"/posts?action=update&count=" + post.count}>
                   <Button variant="outlined" style={{ color: "blue" }}>
@@ -483,7 +489,7 @@ export function PostCard({
                             variant="outlined"
                             onClick={() => {
                               fetch(
-                                "/api/posts?action=archiveSend&count=" +
+                                "/api/posts?action=takeback&count=" +
                                   post.count +
                                   "&tel=" +
                                   tel
@@ -492,7 +498,7 @@ export function PostCard({
                               });
                             }}
                           >
-                            ارشفة
+                            سحب
                           </Button>
                         )}
                       </Box>
@@ -856,8 +862,8 @@ export function PostForm({ upost = post }: { upost?: Post }) {
               label="اخفاء"
               control={
                 <Switch
-                  onChange={() => {
-                    post.hidden = true;
+                  onChange={(event) => {
+                    post.hidden = event.target.value as unknown as boolean;
                   }}
                 />
               }

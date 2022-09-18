@@ -82,6 +82,15 @@ export default async function helper(
   } else if (action == "chance") {
     await DBPost.updateOne({ count: count }, { chancecount: "chance" });
     res.send("OK");
+  } else if (action == "takeback") {
+    const count = req.query.count;
+    const tel = req.query.tel as string;
+    const post = (await DBPost.findOne({ count: count })) as Post;
+    const sendTo = post.sendTo;
+    const index = sendTo.indexOf(tel);
+    sendTo.splice(index, 1);
+    await DBPost.updateOne({ count: count }, { sendTo: sendTo });
+    res.send("OK");
   }
 }
 
