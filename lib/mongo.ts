@@ -74,6 +74,7 @@ const postSchema = new Schema<Post>({
   sendTo: [String],
   facelink: String,
   sendToArchive: [String],
+  periority: { type: Number, default: 1 },
 });
 
 export const DBPost =
