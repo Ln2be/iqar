@@ -8,7 +8,7 @@ import { PostCard } from "../components/cards";
 import { basepath, correctPhone, Nktt, similarsub } from "../lib/myfunctions";
 import { useRouter } from "next/router";
 
-const comparedPosts: number[] = [];
+// const comparedPosts: number[] = [];
 export default function Page({
   postjson,
   opostsjson,
@@ -20,7 +20,7 @@ export default function Page({
   const posto = JSON.parse(postjson) as Post;
   const posts = JSON.parse(opostsjson) as Post[];
 
-  const [render, setRender] = useState<boolean>(false);
+  // const [render, setRender] = useState<boolean>(false);
 
   // const posts = allposts.filter((post) => !comparedPosts.includes(post.count));
 

@@ -275,6 +275,11 @@ export async function getServerSideProps({
 
         // send the posts if they are in the region
         posts = crossedDep(postsdb, wlocation);
+      } else if (query.type == "perio") {
+        const postsdb = allposts.filter((post) => {
+          return typeof post.periority != "undefined" && post.periority > 1;
+        });
+        posts = crossedDep(postsdb, wlocation);
       } else {
         const lowHigh = priceCat[query.type];
 
