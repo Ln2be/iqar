@@ -299,12 +299,20 @@ export function PostCard({
                   </Link>
                 )
               )}
-              {type == "post" && post.hidden && (
-                <Link href={"/posts?action=show&count=" + post.count}>
-                  <Button variant="outlined" style={{ color: "blue" }}>
-                    اظهار
-                  </Button>
-                </Link>
+              {post.hidden && (
+                <Button
+                  onClick={() => {
+                    fetch("/api/posts?action=show&count=" + post.count).then(
+                      () => {
+                        router.reload();
+                      }
+                    );
+                  }}
+                  variant="outlined"
+                  style={{ color: "blue" }}
+                >
+                  اظهار
+                </Button>
               )}
               {type == "post" && (
                 <Link href={"/posts?action=update&count=" + post.count}>

@@ -5,7 +5,7 @@ import KeyIcon from "@mui/icons-material/Key";
 import { useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
-import { Nktt, priceCat } from "../lib/myfunctions";
+import { Nktt } from "../lib/myfunctions";
 import CropLandscapeIcon from "@mui/icons-material/CropLandscape";
 import VillaIcon from "@mui/icons-material/Villa";
 import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
