@@ -1557,6 +1557,7 @@ export function Tab({
       <Button
         style={{
           color: value == index ? "blue" : "GrayText",
+          borderBottom: value == index ? "3px solid blue" : "none",
         }}
         onClick={() => {
           handleChange(index);

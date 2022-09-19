@@ -171,6 +171,7 @@ export default function Page({ metadata }: { metadata: string }) {
             sx={{
               display: "flex",
               justifyContent: "space-between",
+              mb: 3,
             }}
           >
             <Tab
