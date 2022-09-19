@@ -276,3 +276,6 @@ export async function isASpecialLink({
 }) {
   return validCode && type == "demandRent";
 }
+
+
+

@@ -13,11 +13,13 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { DBPost } from "../lib/mongo";
 import { Post } from "../projectTypes";
 import StarIcon from "@mui/icons-material/Star";
+import { Tab, Tabpanel } from "../components/cards";
 
-let deferredPrompt: any; // Allows to show the install prompt
+// let deferredPrompt: any; // Allows to show the install prompt
 
 export default function Page({ metadata }: { metadata: string }) {
-  const [installb, setInstallb] = useState("none");
+  // const [installb, setInstallb] = useState("none");
+  const [value, setValue] = useState(1);
 
   // the metadata
 
@@ -25,22 +27,22 @@ export default function Page({ metadata }: { metadata: string }) {
   // install pwa
   // const installButton = document.getElementById("install_button");
 
-  if (typeof window !== "undefined") {
-    window.addEventListener("beforeinstallprompt", (e) => {
-      // Prevent Chrome 76 and earlier from automatically showing a prompt
-      e.preventDefault();
-      // Stash the event so it can be triggered later.
-      deferredPrompt = e;
-      // Show the install button
-      setInstallb("flex");
-      // installButton.hidden = false;
-      // installButton.addEventListener("click", installApp);
-    });
-  }
+  // if (typeof window !== "undefined") {
+  //   window.addEventListener("beforeinstallprompt", (e) => {
+  //     // Prevent Chrome 76 and earlier from automatically showing a prompt
+  //     e.preventDefault();
+  //     // Stash the event so it can be triggered later.
+  //     deferredPrompt = e;
+  //     // Show the install button
+  //     setInstallb("flex");
+  //     // installButton.hidden = false;
+  //     // installButton.addEventListener("click", installApp);
+  //   });
+  // }
 
   // iterate
 
-  const workinterface: {
+  const workinterface1: {
     [key: string]: { location: { [key: string]: string }; icon: JSX.Element };
   } = {
     perio: {
@@ -73,36 +75,11 @@ export default function Page({ metadata }: { metadata: string }) {
         ></KeyIcon>
       ),
     },
-    lowprice: {
-      location: {
-        nn: "الشمالية",
-        ns: "الجنوبية",
-        nw: "الغربية",
-      },
-      icon: (
-        <CropLandscapeIcon
-          style={{
-            width: "20%",
-            height: "20%",
-          }}
-        ></CropLandscapeIcon>
-      ),
-    },
-    mediumprice: {
-      location: {
-        nn: "الشمالية",
-        ns: "الجنوبية",
-        nw: "الغربية",
-      },
-      icon: (
-        <VillaIcon
-          style={{
-            width: "20%",
-            height: "20%",
-          }}
-        ></VillaIcon>
-      ),
-    },
+  };
+
+  const workinterface2: {
+    [key: string]: { location: { [key: string]: string }; icon: JSX.Element };
+  } = {
     highprice: {
       location: {
         nn: "الشمالية",
@@ -136,6 +113,45 @@ export default function Page({ metadata }: { metadata: string }) {
     },
   };
 
+  const workinterface3: {
+    [key: string]: { location: { [key: string]: string }; icon: JSX.Element };
+  } = {
+    lowprice: {
+      location: {
+        nn: "الشمالية",
+        ns: "الجنوبية",
+        nw: "الغربية",
+      },
+      icon: (
+        <CropLandscapeIcon
+          style={{
+            width: "20%",
+            height: "20%",
+          }}
+        ></CropLandscapeIcon>
+      ),
+    },
+    mediumprice: {
+      location: {
+        nn: "الشمالية",
+        ns: "الجنوبية",
+        nw: "الغربية",
+      },
+      icon: (
+        <VillaIcon
+          style={{
+            width: "20%",
+            height: "20%",
+          }}
+        ></VillaIcon>
+      ),
+    },
+  };
+
+  function handleChange(index: number) {
+    setValue(index);
+  }
+
   // const router = useRouter();
   return (
     <>
@@ -153,109 +169,356 @@ export default function Page({ metadata }: { metadata: string }) {
         >
           <Box
             sx={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: { xs: 1, md: 2 },
-              maxWidth: "500px",
+              display: "flex",
+              justifyContent: "space-between",
             }}
           >
-            {Object.keys(workinterface).map((key) =>
-              Object.keys(workinterface[key].location).map(
-                (location, ilocation) => (
-                  <Link
-                    key={ilocation}
-                    href={
-                      "/posts?action=posts&type=" +
-                      key +
-                      "&location=" +
-                      location
-                    }
-                  >
-                    <Box
-                      sx={{
-                        bgColor: "#fff",
-                        border: "1px solid",
-                        width: "100%",
-                        height: "150px",
-                      }}
+            <Tab
+              value={value}
+              name={"اولوية 1"}
+              index={1}
+              handleChange={handleChange}
+            />
+            <Tab
+              value={value}
+              name={"اولوية 2"}
+              index={2}
+              handleChange={handleChange}
+            />
+            <Tab
+              value={value}
+              name={"اولوية 3"}
+              index={3}
+              handleChange={handleChange}
+            />
+          </Box>
+          <Tabpanel value={value} index={1}>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: { xs: 1, md: 2 },
+                maxWidth: "500px",
+              }}
+            >
+              {Object.keys(workinterface1).map((key) =>
+                Object.keys(workinterface1[key].location).map(
+                  (location, ilocation) => (
+                    <Link
+                      key={ilocation}
+                      href={
+                        "/posts?action=posts&type=" +
+                        key +
+                        "&location=" +
+                        location
+                      }
                     >
-                      {workinterface[key].icon}
                       <Box
-                        style={{
-                          width: "100%",
-                          height: "60%",
-                        }}
                         sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "space-around",
-                          // alignItems: "center",
+                          bgColor: "#fff",
+                          border: "1px solid",
+                          width: "100%",
+                          height: "150px",
                         }}
                       >
+                        {workinterface1[key].icon}
                         <Box
+                          style={{
+                            width: "100%",
+                            height: "60%",
+                          }}
                           sx={{
                             display: "flex",
                             flexDirection: "column",
-                            // justifyContent: "space-around",
+                            justifyContent: "space-around",
+                            // alignItems: "center",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              // justifyContent: "space-around",
+                              alignItems: "center",
+                            }}
+                          >
+                            {metadatao[key][location].total}
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-around",
+                              // textAlign: "center",
+                              backgroundColor: (theme) =>
+                                theme.palette.primary.light,
+                              color: "white",
+                            }}
+                          >
+                            <Box>
+                              {"ط: " + metadatao[key][location].demands}
+                            </Box>
+                            <Box>{"ع: " + metadatao[key][location].offers}</Box>
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-around",
+                            }}
+                          >
+                            {
+                              metadatao[key][location].compared
+                                ? Math.floor(
+                                    (metadatao[key][location].compared /
+                                      metadatao[key][location].total) *
+                                      100
+                                  ) + "%"
+                                : "0%"
+                              // metadatao[key][location].compared
+                            }
+                          </Box>
+                        </Box>
+                        <Box
+                          sx={{
+                            width: "100%",
+                            height: "20%",
+                            // textAlign: "center",
+                            backgroundColor: (theme) =>
+                              theme.palette.primary.main,
+                            color: "white",
+                            display: "flex",
+                            justifyContent: "center",
                             alignItems: "center",
                           }}
                         >
-                          {metadatao[key][location].total}
-                        </Box>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "space-around",
-                            // textAlign: "center",
-                            backgroundColor: (theme) =>
-                              theme.palette.primary.light,
-                            color: "white",
-                          }}
-                        >
-                          <Box>{"ط: " + metadatao[key][location].demands}</Box>
-                          <Box>{"ع: " + metadatao[key][location].offers}</Box>
-                        </Box>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "space-around",
-                          }}
-                        >
-                          {
-                            metadatao[key][location].compared
-                              ? Math.floor(
-                                  (metadatao[key][location].compared /
-                                    metadatao[key][location].total) *
-                                    100
-                                ) + "%"
-                              : "0%"
-                            // metadatao[key][location].compared
-                          }
+                          <Box>{workinterface1[key].location[location]}</Box>
                         </Box>
                       </Box>
+                    </Link>
+                  )
+                )
+              )}
+            </Box>
+          </Tabpanel>
+          <Tabpanel value={value} index={2}>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: { xs: 1, md: 2 },
+                maxWidth: "500px",
+              }}
+            >
+              {Object.keys(workinterface2).map((key) =>
+                Object.keys(workinterface2[key].location).map(
+                  (location, ilocation) => (
+                    <Link
+                      key={ilocation}
+                      href={
+                        "/posts?action=posts&type=" +
+                        key +
+                        "&location=" +
+                        location
+                      }
+                    >
                       <Box
                         sx={{
+                          bgColor: "#fff",
+                          border: "1px solid",
                           width: "100%",
-                          height: "20%",
-                          // textAlign: "center",
-                          backgroundColor: (theme) =>
-                            theme.palette.primary.main,
-                          color: "white",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
+                          height: "150px",
                         }}
                       >
-                        <Box>{workinterface[key].location[location]}</Box>
+                        {workinterface2[key].icon}
+                        <Box
+                          style={{
+                            width: "100%",
+                            height: "60%",
+                          }}
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-around",
+                            // alignItems: "center",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              // justifyContent: "space-around",
+                              alignItems: "center",
+                            }}
+                          >
+                            {metadatao[key][location].total}
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-around",
+                              // textAlign: "center",
+                              backgroundColor: (theme) =>
+                                theme.palette.primary.light,
+                              color: "white",
+                            }}
+                          >
+                            <Box>
+                              {"ط: " + metadatao[key][location].demands}
+                            </Box>
+                            <Box>{"ع: " + metadatao[key][location].offers}</Box>
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-around",
+                            }}
+                          >
+                            {
+                              metadatao[key][location].compared
+                                ? Math.floor(
+                                    (metadatao[key][location].compared /
+                                      metadatao[key][location].total) *
+                                      100
+                                  ) + "%"
+                                : "0%"
+                              // metadatao[key][location].compared
+                            }
+                          </Box>
+                        </Box>
+                        <Box
+                          sx={{
+                            width: "100%",
+                            height: "20%",
+                            // textAlign: "center",
+                            backgroundColor: (theme) =>
+                              theme.palette.primary.main,
+                            color: "white",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box>{workinterface2[key].location[location]}</Box>
+                        </Box>
                       </Box>
-                    </Box>
-                  </Link>
+                    </Link>
+                  )
                 )
-              )
-            )}
-          </Box>
+              )}
+            </Box>
+          </Tabpanel>
+          <Tabpanel value={value} index={3}>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: { xs: 1, md: 2 },
+                maxWidth: "500px",
+              }}
+            >
+              {Object.keys(workinterface3).map((key) =>
+                Object.keys(workinterface3[key].location).map(
+                  (location, ilocation) => (
+                    <Link
+                      key={ilocation}
+                      href={
+                        "/posts?action=posts&type=" +
+                        key +
+                        "&location=" +
+                        location
+                      }
+                    >
+                      <Box
+                        sx={{
+                          bgColor: "#fff",
+                          border: "1px solid",
+                          width: "100%",
+                          height: "150px",
+                        }}
+                      >
+                        {workinterface3[key].icon}
+                        <Box
+                          style={{
+                            width: "100%",
+                            height: "60%",
+                          }}
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-around",
+                            // alignItems: "center",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              // justifyContent: "space-around",
+                              alignItems: "center",
+                            }}
+                          >
+                            {metadatao[key][location].total}
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-around",
+                              // textAlign: "center",
+                              backgroundColor: (theme) =>
+                                theme.palette.primary.light,
+                              color: "white",
+                            }}
+                          >
+                            <Box>
+                              {"ط: " + metadatao[key][location].demands}
+                            </Box>
+                            <Box>{"ع: " + metadatao[key][location].offers}</Box>
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-around",
+                            }}
+                          >
+                            {
+                              metadatao[key][location].compared
+                                ? Math.floor(
+                                    (metadatao[key][location].compared /
+                                      metadatao[key][location].total) *
+                                      100
+                                  ) + "%"
+                                : "0%"
+                              // metadatao[key][location].compared
+                            }
+                          </Box>
+                        </Box>
+                        <Box
+                          sx={{
+                            width: "100%",
+                            height: "20%",
+                            // textAlign: "center",
+                            backgroundColor: (theme) =>
+                              theme.palette.primary.main,
+                            color: "white",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box>{workinterface3[key].location[location]}</Box>
+                        </Box>
+                      </Box>
+                    </Link>
+                  )
+                )
+              )}
+            </Box>
+          </Tabpanel>
         </Box>
       </Layout>
     </>

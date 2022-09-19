@@ -1528,3 +1528,42 @@ function sendLink(lastnotified: number) {
     return true;
   }
 }
+
+export function Tabpanel({
+  value,
+  index,
+  children,
+}: {
+  value: number;
+  index: number;
+  children: JSX.Element;
+}) {
+  return <Box> {value == index && <Box>{children}</Box>}</Box>;
+}
+
+export function Tab({
+  value,
+  index,
+  name,
+  handleChange,
+}: {
+  value: number;
+  index: number;
+  name: string;
+  handleChange: (hi: number) => void;
+}) {
+  return (
+    <Box>
+      <Button
+        style={{
+          color: value == index ? "blue" : "GrayText",
+        }}
+        onClick={() => {
+          handleChange(index);
+        }}
+      >
+        {name}
+      </Button>
+    </Box>
+  );
+}
