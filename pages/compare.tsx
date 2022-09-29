@@ -102,7 +102,9 @@ export async function getServerSideProps({
 }: {
   query: { [key: string]: string };
 }) {
-  const postObject = await DBPost.findOne({ count: query.count });
+  const postObject = await DBPost.findOne({ count: query.count }).sort({
+    createdAt: -1,
+  });
 
   // which Nouakchott district the post belong to
   const nn = Nktt["nn"];
