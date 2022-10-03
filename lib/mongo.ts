@@ -1,13 +1,11 @@
 import mongoose, { Schema } from "mongoose";
-import { UserType, Post, Track, Chance } from "../projectTypes";
+import { UserType, Post } from "../projectTypes";
 
 const isProduction = process.env.NODE_ENV === "production";
 
 const db = isProduction ? "iqardb" : "iqardb";
 
 mongoose.connect("mongodb://localhost:27017/" + db);
-
-
 
 const userSchema = new Schema<UserType>({
   username: String,
@@ -61,11 +59,3 @@ const postSchema = new Schema<Post>({
 
 export const DBPost =
   mongoose.models.DBPost || mongoose.model("DBPost", postSchema);
-
-
-
-
-
-
-
-
