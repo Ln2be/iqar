@@ -8,7 +8,6 @@ export interface UserType {
   region: string;
   tel: string;
   code: string;
-  count: number;
   hash?: string;
   salt: string | "";
   _id?: string;
@@ -32,12 +31,9 @@ export interface Post {
   tel: string;
   id?: string;
   createdAt?: Date;
-  count: number;
   user: string;
   userTel: string;
   comparedTo?: string[];
-  trackcount?: string;
-  chancecount?: string;
   hidden?: boolean;
   archived?: boolean;
   sendTo: string[];
@@ -51,36 +47,5 @@ export interface Image {
   height: number;
 }
 
-// the track type
-export interface Track {
-  count: number;
-  _id?: string;
-  postcount: string;
-  updates: [
-    {
-      date: Date;
-      text: string;
-    }
-  ];
-  post: Post;
-  name1: string;
-  tel1: string;
-  name2?: string;
-  tel2?: string;
-  text: string;
-  archived: boolean;
-}
 
-// A type Chance
-export interface Chance {
-  count: number;
-  _id?: string;
-  postcount: string;
-  text: string;
-  post: Post;
-}
 
-export interface SendUnit {
-  post: Post;
-  users: UserType[];
-}

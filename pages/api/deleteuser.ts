@@ -5,7 +5,7 @@ export default async function helper(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  await DBUser.deleteOne({ count: req.query.count });
+  await DBUser.deleteOne({ _id: req.query.id });
 
   res.writeHead(302, { Location: "/reps" });
   res.json({});

@@ -5,15 +5,15 @@ export default async function helper(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { action, count, codeTel } = req.query;
+  const { action, id, codeTel } = req.query;
 
 
-  const post = await DBPost.findOne({ count: count });
+  const post = await DBPost.findOne({ _id: id });
 
   if (action == "sendTo") {
     const sendTo = post.sendTo ? post.sendTo : [];
     sendTo.push(codeTel);
-    await DBPost.updateOne({ count: count }, { sendTo: sendTo });
+    await DBPost.updateOne({ _id: id }, { sendTo: sendTo });
     res.send("Ok");
   }
 
@@ -24,7 +24,7 @@ export default async function helper(
       // only splice array when item is found
       sendTo.splice(index, 1); // 2nd parameter means remove one item only
     }
-    await DBPost.updateOne({ count: count }, { sendTo: sendTo });
+    await DBPost.updateOne({ _id: id }, { sendTo: sendTo });
     res.send("Ok");
   }
 }

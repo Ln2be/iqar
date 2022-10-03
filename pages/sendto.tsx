@@ -29,7 +29,7 @@ export default function Page({ result }: { result: string }) {
               console.log(user);
               return (
                 <UserCard
-                  message={basepath + "/posts?count=" + sendUnit.post.count}
+                  message={basepath + "/posts?id=" + sendUnit.post._id}
                   key={ius}
                   type="min"
                   user={user}

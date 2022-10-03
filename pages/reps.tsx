@@ -132,7 +132,7 @@ export default function Page({ usersJson }: { usersJson: string }) {
       </Head>
       <Layout>
         <Box>
-          {(query.count || query.tel) && (
+          {(query.id || query.tel) && (
             <Box
               sx={{
                 maxWidth: "345px",
@@ -177,8 +177,8 @@ export async function getServerSideProps({
   if (query.type) {
     const location = Nktt[query.location];
     sreps = crossedDep(usersObject, location);
-  } else if (query.count) {
-    const user = await DBUser.findOne({ count: query.count });
+  } else if (query.id) {
+    const user = await DBUser.findOne({ _id: query.id });
     sreps.push(user);
   } else if (query.tel) {
     const user = await DBUser.findOne({ tel: query.tel });

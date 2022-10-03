@@ -22,21 +22,21 @@ export default function Page({
 
   // const [render, setRender] = useState<boolean>(false);
 
-  // const posts = allposts.filter((post) => !comparedPosts.includes(post.count));
+  // const posts = allposts.filter((post) => !comparedPosts.includes(post._id));
 
   // if no posts to compare to then go back
   if (posts.length == 0) {
-    fetch("/api/compared?finished=true&count=" + posto.count).then(() => {
+    fetch("/api/compared?finished=true&id=" + posto._id).then(() => {
       router.back();
     });
   }
 
   // remove the post compared
-  function remove(count: number) {
-    fetch("/api/compared?count=" + posto.count + "&post=" + count).then(() => {
+  function remove(id: number) {
+    fetch("/api/compared?id=" + posto._id + "&post=" + id).then(() => {
       router.reload();
     });
-    // comparedPosts.push(count);
+    // comparedPosts.push(id);
     // setRender(!render);
   }
 
@@ -66,11 +66,11 @@ export default function Page({
               const isdemand =
                 postc.type == "buying" || postc.type == "demandRent";
               let url = "";
-              if (posto.count && postc.count) {
+              if (posto._id && postc._id) {
                 // If it's a demand so this post will receive the original post link if not this
                 // post will be sent to the "original post" owner
-                const count = isdemand ? posto.count : postc.count;
-                url = basepath + "/posts?count=" + count;
+                const id = isdemand ? posto._id : postc._id;
+                url = basepath + "/posts?id=" + id;
               }
 
               // if the nature is "demand" send the post to the owner of the "original post".
@@ -102,7 +102,7 @@ export async function getServerSideProps({
 }: {
   query: { [key: string]: string };
 }) {
-  const postObject = await DBPost.findOne({ count: query.count }).sort({
+  const postObject = await DBPost.findOne({ _id: query.id }).sort({
     createdAt: -1,
   });
 
@@ -138,7 +138,7 @@ export async function getServerSideProps({
 
   // the post shouldn't be already compared to this post
   const ncposts1 = oppositeposts.filter(
-    (post) => !postObject.comparedTo?.includes(post.count)
+    (post) => !postObject.comparedTo?.includes(post._id)
   );
 
   // show only the similar subtypes

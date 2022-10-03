@@ -29,8 +29,7 @@ export async function createUser(newUser: UserType) {
   // This is an in memory store for users, there is no data persistence without a proper DB
   // users.push(user);
 
-  const counter = await updateCounter("users");
-  user.count = counter;
+ 
 
   if (newUser.role == "admin") {
     // const codeCorrect = await DBAdminCode.findOne({ code: newUser.code });
@@ -68,7 +67,6 @@ export async function getUser({ tel }: { tel: string }) {
     "role",
     "tel",
     "departements",
-    "count",
     "password",
   ]);
 }
