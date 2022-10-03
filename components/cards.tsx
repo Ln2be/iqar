@@ -302,11 +302,9 @@ export function PostCard({
               {post.hidden && (
                 <Button
                   onClick={() => {
-                    fetch("/api/posts?action=show&id=" + post._id).then(
-                      () => {
-                        router.reload();
-                      }
-                    );
+                    fetch("/api/posts?action=show&id=" + post._id).then(() => {
+                      router.reload();
+                    });
                   }}
                   variant="outlined"
                   style={{ color: "blue" }}
@@ -363,7 +361,6 @@ export function PostCard({
                 {/* In this place we can show that this post is tracked */}
 
                 {/* In this place we can show that this post is a chance */}
-
               </Box>
             )}
 
@@ -592,7 +589,7 @@ export function PostForm({ upost = post }: { upost?: Post }) {
         },
       }).then((data) => {
         data.json().then((rpost) => {
-          router.push("/posts?id=" + rpost._id);
+          router.push("/posts?id=" + rpost.id);
         });
       });
     } else {
@@ -604,7 +601,7 @@ export function PostForm({ upost = post }: { upost?: Post }) {
         },
       }).then((data) => {
         data.json().then((rpost) => {
-          router.push("/posts?id=" + rpost._id);
+          router.push("/posts?id=" + rpost.id);
         });
       });
     }
@@ -1291,11 +1288,11 @@ export function UserCard({
             <Button
               variant="outlined"
               onClick={() => {
-                fetch(
-                  "/api/usertrust?action=incrtrust&id=" + user._id
-                ).then(() => {
-                  router.reload();
-                });
+                fetch("/api/usertrust?action=incrtrust&id=" + user._id).then(
+                  () => {
+                    router.reload();
+                  }
+                );
               }}
             >
               <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
@@ -1313,11 +1310,11 @@ export function UserCard({
             <Button
               variant="outlined"
               onClick={() => {
-                fetch(
-                  "/api/usertrust?action=decrtrust&id=" + user._id
-                ).then(() => {
-                  router.reload();
-                });
+                fetch("/api/usertrust?action=decrtrust&id=" + user._id).then(
+                  () => {
+                    router.reload();
+                  }
+                );
               }}
             >
               <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
@@ -1333,11 +1330,11 @@ export function UserCard({
             <Button
               variant="outlined"
               onClick={() => {
-                fetch(
-                  "/api/usertrust?action=incractivity&id=" + user._id
-                ).then(() => {
-                  router.reload();
-                });
+                fetch("/api/usertrust?action=incractivity&id=" + user._id).then(
+                  () => {
+                    router.reload();
+                  }
+                );
               }}
             >
               <KeyboardArrowUpIcon></KeyboardArrowUpIcon>
@@ -1355,11 +1352,11 @@ export function UserCard({
             <Button
               variant="outlined"
               onClick={() => {
-                fetch(
-                  "/api/usertrust?action=decractivity&id=" + user._id
-                ).then(() => {
-                  router.reload();
-                });
+                fetch("/api/usertrust?action=decractivity&id=" + user._id).then(
+                  () => {
+                    router.reload();
+                  }
+                );
               }}
             >
               <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
@@ -1397,11 +1394,7 @@ export function UserCard({
           <WhatsappButton
             phone={"+22248692007"}
             message={
-              "اريد الغاء الاشتراك" +
-              "\n" +
-              basepath +
-              "/reps?id=" +
-              user._id
+              "اريد الغاء الاشتراك" + "\n" + basepath + "/reps?id=" + user._id
             }
           >
             <Button variant="outlined" color="warning">
