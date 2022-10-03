@@ -2,7 +2,6 @@ import crypto from "crypto";
 import { v4 as uuidv4 } from "uuid";
 import { UserType } from "../../projectTypes";
 import { DBUser } from "../mongo";
-import { updateCounter } from "../mongo";
 
 /**
  * User methods. The example doesn't contain a DB, but for real applications you must use a
@@ -28,8 +27,6 @@ export async function createUser(newUser: UserType) {
 
   // This is an in memory store for users, there is no data persistence without a proper DB
   // users.push(user);
-
- 
 
   if (newUser.role == "admin") {
     // const codeCorrect = await DBAdminCode.findOne({ code: newUser.code });
