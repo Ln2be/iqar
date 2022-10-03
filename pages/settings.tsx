@@ -5,7 +5,7 @@ import Layout from "../components/layout";
 import Link from "next/link";
 import { DBPost, DBUser } from "../lib/mongo";
 import { Nktt } from "../lib/myfunctions";
-import { Post, UserType, SendUnit } from "../projectTypes";
+import { Post, UserType } from "../projectTypes";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
 
@@ -275,6 +275,11 @@ export default function Page({ metadata }: { metadata: string }) {
 export async function getServerSideProps() {
   // the object to be injected in the post dom
   // let injectObject;
+
+  interface SendUnit {
+    post: Post;
+    users: UserType[];
+  }
 
   const metadata: {
     [key: string]: { [key: string]: { [key: string]: number } };

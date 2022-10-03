@@ -32,7 +32,7 @@ export default function Page({
   }
 
   // remove the post compared
-  function remove(id: number) {
+  function remove(id: string) {
     fetch("/api/compared?id=" + posto._id + "&post=" + id).then(() => {
       router.reload();
     });
