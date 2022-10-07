@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Map, Marker } from "pigeon-maps";
+import { Map, Marker, ZoomControl } from "pigeon-maps";
 import { Post } from "../projectTypes";
 import HouseSidingIcon from "@mui/icons-material/HouseSiding";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -15,7 +15,7 @@ export function PickMap({
   const [anchor, setAnchor] = useState<[number, number]>([18.0782, -15.965]);
   return (
     <Map
-      height={300}
+      height={500}
       defaultCenter={[18.0782, -15.965]}
       defaultZoom={11}
       onClick={({ event, latLng, pixel }) => {
@@ -32,6 +32,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
   // const [anchor, setAnchor] = useState<[number, number]>([18.0782, -15.965]);
   return (
     <Map height={300} defaultCenter={[18.0782, -15.965]} defaultZoom={11}>
+      <ZoomControl />
       {posts.map((post, i) => {
         return (
           <Marker key={i} anchor={post.position}>

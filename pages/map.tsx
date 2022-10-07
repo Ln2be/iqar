@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { PickMap } from "../components/map";
 import { DBPost } from "../lib/mongo";
 import { FillMap } from "../components/map";
+import Layout from "../components/layout";
 
 // const Map = dynamic(() => import("../components/map"), {
 //   ssr: false,
@@ -13,9 +14,9 @@ export default function Page({ sposts }: { sposts: string }) {
   const posts = JSON.parse(sposts);
   console.log("post length=", posts.length);
   return (
-    <Box>
+    <Layout>
       <FillMap posts={posts}></FillMap>
-    </Box>
+    </Layout>
   );
 }
 
