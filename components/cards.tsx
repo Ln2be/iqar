@@ -764,7 +764,7 @@ export function PostForm({ upost = post }: { upost?: Post }) {
           </small>
         )}
 
-        {user.role == "admin" && (
+        {user?.role == "admin" && (
           <PickMap
             handlePosition={
               handlePosition

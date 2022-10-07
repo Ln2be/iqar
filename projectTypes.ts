@@ -39,7 +39,7 @@ export interface Post {
   sendTo: string[];
   sendToArchive: string[];
   periority: number;
-  position: [number, number];
+  position?: [number, number];
 }
 
 export interface Image {

@@ -15,7 +15,7 @@ export function PickMap({
   const [anchor, setAnchor] = useState<[number, number]>([18.0782, -15.965]);
   return (
     <Map
-      height={500}
+      height={300}
       defaultCenter={[18.0782, -15.965]}
       defaultZoom={11}
       onClick={({ event, latLng, pixel }) => {
@@ -31,7 +31,7 @@ export function PickMap({
 export function FillMap({ posts }: { posts: Post[] }) {
   // const [anchor, setAnchor] = useState<[number, number]>([18.0782, -15.965]);
   return (
-    <Map height={300} defaultCenter={[18.0782, -15.965]} defaultZoom={11}>
+    <Map height={500} defaultCenter={[18.0782, -15.965]} defaultZoom={11}>
       <ZoomControl />
       {posts.map((post, i) => {
         return (
