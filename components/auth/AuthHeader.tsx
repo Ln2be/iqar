@@ -50,6 +50,20 @@ export default function AuthHeader() {
                   flexDirection: "column",
                 }}
               >
+                <Link href="/map">خريطة الايجار</Link>
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                cursor: "pointer",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
                 <Link href="/workboard">العمل</Link>
               </Box>
             </Box>

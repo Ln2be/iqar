@@ -45,7 +45,7 @@ const postSchema = new Schema<Post>({
   price: Number,
   tel: String,
   id: String,
-  createdAt: Date,
+  createdAt: Number,
   user: String,
   userTel: String,
   comparedTo: [String],
@@ -55,6 +55,7 @@ const postSchema = new Schema<Post>({
   facelink: String,
   sendToArchive: [String],
   periority: { type: Number, default: 1 },
+  position: [Number],
 });
 
 export const DBPost =

@@ -23,6 +23,6 @@
     "lib/Roboto-normal.js",
     "pages/post-form.js",
     "components/search.tsx"
-  ],
+, "pages/map.jsx", "components/nossr.jsx", "components/map.tsx"  ],
   "exclude": ["node_modules"]
 }

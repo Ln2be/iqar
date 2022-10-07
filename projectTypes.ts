@@ -30,7 +30,7 @@ export interface Post {
   price: number;
   tel: string;
   id?: string;
-  createdAt?: Date;
+  createdAt?: number;
   user: string;
   userTel: string;
   comparedTo?: string[];
@@ -39,6 +39,7 @@ export interface Post {
   sendTo: string[];
   sendToArchive: string[];
   periority: number;
+  position: [number, number];
 }
 
 export interface Image {
@@ -46,6 +47,3 @@ export interface Image {
   width: number;
   height: number;
 }
-
-
-

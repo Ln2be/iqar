@@ -21,7 +21,6 @@ export default async function helper(
     const post = req.body as Post;
     // const { images } = post;
 
- 
     const rpost = await new DBPost(post).save();
     res.json({
       id: rpost._id,
@@ -33,7 +32,7 @@ export default async function helper(
     // const images = post.images;
     await DBPost.updateOne({ _id: id }, post);
     res.json({
-      id: post._id,
+      id: id,
     });
   } else if (action == "delete") {
     const { id } = req.query;
@@ -72,7 +71,7 @@ export default async function helper(
     await DBPost.updateOne({ _id: id }, { sendToArchive: sendToArchive });
 
     res.send("OK");
-  }  else if (action == "takeback") {
+  } else if (action == "takeback") {
     const id = req.query.id;
     const tel = req.query.tel as string;
     const post = (await DBPost.findOne({ _id: id })) as Post;
