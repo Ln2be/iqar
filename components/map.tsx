@@ -25,7 +25,7 @@ export function PickMap({
     >
       <ZoomControl />
 
-      <Marker width={50} anchor={anchor}></Marker>
+      <Marker width={30} anchor={anchor}></Marker>
     </Map>
   );
 }
