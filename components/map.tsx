@@ -23,6 +23,8 @@ export function PickMap({
         handlePosition(latLng);
       }}
     >
+      <ZoomControl />
+
       <Marker width={50} anchor={anchor}></Marker>
     </Map>
   );
