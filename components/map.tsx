@@ -10,7 +10,7 @@ import VillaIcon from "@mui/icons-material/Villa";
 export function PickMap({
   handlePosition,
 }: {
-  handlePosition: (arg: [number, number]) => void;
+  handlePosition: (position: [number, number]) => void;
 }) {
   const [anchor, setAnchor] = useState<[number, number]>([18.0782, -15.965]);
   return (
@@ -32,9 +32,9 @@ export function FillMap({ posts }: { posts: Post[] }) {
   // const [anchor, setAnchor] = useState<[number, number]>([18.0782, -15.965]);
   return (
     <Map height={300} defaultCenter={[18.0782, -15.965]} defaultZoom={11}>
-      {posts.map((post) => {
+      {posts.map((post, i) => {
         return (
-          <Marker anchor={post.position}>
+          <Marker key={i} anchor={post.position}>
             <IMarker post={post}></IMarker>
           </Marker>
         );

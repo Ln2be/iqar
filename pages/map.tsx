@@ -1,3 +1,4 @@
+import React from "react";
 import { Box } from "@mui/material";
 import dynamic from "next/dynamic";
 import { PickMap } from "../components/map";
