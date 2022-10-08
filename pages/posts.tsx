@@ -330,7 +330,11 @@ export async function getServerSideProps({
       posts = await DBPost.find({ hidden: true }).sort({ createdAt: -1 });
     } else if (query.position) {
       // const code = query.codeTel;
-      posts = allposts.filter((post) => {
+      const allPostsAdmin = allposts.filter((post) => {
+        return post.user == "22118721" || post.user == "22405904";
+      });
+
+      posts = allpostsAdmin.filter((post) => {
         return !post.position || post.position.length < 1;
       });
     } else {

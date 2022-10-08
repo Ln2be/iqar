@@ -771,7 +771,7 @@ export async function getServerSideProps() {
   });
 
   const allPostsAdmin = allposts.filter((post) => {
-    return post.userTel == "22118721" || post.userTel == "22405904";
+    return post.user == "22118721" || post.user == "22405904";
   });
 
   const remainmap = allPostsAdmin.filter((post) => {
