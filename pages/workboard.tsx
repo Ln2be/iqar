@@ -771,7 +771,7 @@ export async function getServerSideProps() {
   });
 
   const remainmap = allposts.filter((post) => {
-    return post.position && post.position.length > 1;
+    return !post.position || post.position.length < 1;
   });
   return {
     props: {
