@@ -352,7 +352,7 @@ export default function Page({
                       alignItems: "center",
                     }}
                   >
-                    <Box>"الخريطة"</Box>
+                    <Box>الخريطة</Box>
                   </Box>
                 </Box>
               </Link>
