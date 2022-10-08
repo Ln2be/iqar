@@ -770,15 +770,19 @@ export async function getServerSideProps() {
     }
   });
 
-  const remainmap = allposts.filter((post) => {
+  const allPostsAdmin = allposts.filter((post) => {
+    return post.userTel == "22118721" || post.userTel == "22405904";
+  });
+
+  const remainmap = allPostsAdmin.filter((post) => {
     return !post.position || post.position.length < 1;
   });
   return {
     props: {
       metadata: JSON.stringify(metadata),
       sremainLength: JSON.stringify([
-        allposts.length,
-        allposts.length - remainmap.length,
+        allPostsAdmin.length,
+        allPostsAdmin.length - remainmap.length,
       ]),
     },
   };
