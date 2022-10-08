@@ -45,7 +45,7 @@ const postSchema = new Schema<Post>({
   price: Number,
   tel: String,
   id: String,
-  createdAt: Number,
+  createdAt: { type: Date, default: Date.now() },
   user: String,
   userTel: String,
   comparedTo: [String],

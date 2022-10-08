@@ -536,7 +536,7 @@ let post: Post = {
   tel: "",
   user: "",
   userTel: "",
-  createdAt: Date.now(),
+  // createdAt: Date.now(),
   hidden: false,
   sendTo: [],
   sendToArchive: [],
