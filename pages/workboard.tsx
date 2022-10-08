@@ -774,15 +774,15 @@ export async function getServerSideProps() {
     return post.user == "22118721" || post.user == "22405904";
   });
 
-  const remainmap = allPostsAdmin.filter((post) => {
+  const remainmap = allposts.filter((post) => {
     return !post.position || post.position.length < 1;
   });
   return {
     props: {
       metadata: JSON.stringify(metadata),
       sremainLength: JSON.stringify([
-        allPostsAdmin.length,
-        allPostsAdmin.length - remainmap.length,
+        allposts.length,
+        allposts.length - remainmap.length,
       ]),
     },
   };

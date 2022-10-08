@@ -334,7 +334,7 @@ export async function getServerSideProps({
         return post.user == "22118721" || post.user == "22405904";
       });
 
-      posts = allPostsAdmin.filter((post) => {
+      posts = allposts.filter((post) => {
         return !post.position || post.position.length < 1;
       });
     } else {
