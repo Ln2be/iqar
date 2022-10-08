@@ -15,6 +15,7 @@ import {
   priceCat,
   subtypes,
   translate,
+  whichSubtype,
 } from "../lib/myfunctions";
 import { useUser } from "../lib/auth/hooks";
 // import { QueryBuilder } from "@mui/icons-material";
@@ -167,7 +168,7 @@ export default function Page({
               content={
                 translate(post.type, adtypes) +
                 " \n" +
-                translate(post.subtype, subtypes) +
+                translate(post.subtype, subtypes[whichSubtype(post.type)]) +
                 " \n" +
                 translate(post.departements[0], departements) +
                 " \n" +
@@ -327,6 +328,11 @@ export async function getServerSideProps({
     } else if (query.hidden) {
       // const code = query.codeTel;
       posts = await DBPost.find({ hidden: true }).sort({ createdAt: -1 });
+    } else if (query.position) {
+      // const code = query.codeTel;
+      posts = allposts.filter((post) => {
+        return !post.position || post.position.length < 1;
+      });
     } else {
       posts = allposts;
     }
@@ -361,7 +367,7 @@ export async function getServerSideProps({
 
     // if requesting one post, whatsapp api contraint prevented me from using an action query here
   } else if (query.id) {
-    const post = await DBPost.findOne({ _id: query.id});
+    const post = await DBPost.findOne({ _id: query.id });
 
     const result = JSON.stringify(post);
 

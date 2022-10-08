@@ -167,36 +167,52 @@ export const adtypes = [
   },
 ];
 
-export const subtypes = [
-  {
-    value: "land",
-    label: "قطعة ارضية",
-  },
-  {
-    value: "appartment",
-    label: "شقق",
-  },
-  {
-    value: "house",
-    label: "دار",
-  },
-  {
-    value: "incomplete",
-    label: "شانتية",
-  },
-  {
-    value: "invest",
-    label: "إستثمار",
-  },
-  {
-    value: "store",
-    label: "مخزن",
-  },
-  {
-    value: "other",
-    label: "اخرى",
-  },
-];
+export const subtypes = {
+  buying: [
+    {
+      value: "land",
+      label: "قطعة ارضية",
+    },
+    {
+      value: "house",
+      label: "دار",
+    },
+    {
+      value: "invest",
+      label: "إستثمار",
+    },
+  ],
+  rent: [
+    {
+      value: "house",
+      label: "دار",
+    },
+    {
+      value: "appartment",
+      label: "شقة",
+    },
+    {
+      value: "studio",
+      label: "استيديو",
+    },
+    {
+      value: "shop",
+      label: "محل",
+    },
+    {
+      value: "store",
+      label: "مخزن",
+    },
+    {
+      value: "other",
+      label: "اخرى",
+    },
+  ],
+};
+
+export function whichSubtype(type: string) {
+  return (type == "demandRent" || type == "offerRent") ? "rent" : "buying";
+}
 
 // similar subtypes
 export const similarsub: { [key: string]: string[] } = {
@@ -276,6 +292,3 @@ export async function isASpecialLink({
 }) {
   return validCode && type == "demandRent";
 }
-
-
-

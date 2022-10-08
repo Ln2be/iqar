@@ -22,6 +22,7 @@ import {
   translate,
   basepath,
   correctPrice,
+  whichSubtype,
 } from "../lib/myfunctions";
 import { Post, UserType } from "../projectTypes";
 import WhatsappButton, { WhatsappShare } from "./whatsapp";
@@ -90,7 +91,7 @@ export function PostCard({
               {translate(post.type, adtypes)}
             </Typography>
             <Typography gutterBottom variant="h5">
-              {translate(post.subtype, subtypes)}
+              {translate(post.subtype, subtypes[whichSubtype(post.type)])}
             </Typography>
           </Box>
 
@@ -681,7 +682,7 @@ export function PostForm({ upost = post }: { upost?: Post }) {
                 post.subtype = event.target.value;
               }}
             >
-              {subtypes.map((option, i) => (
+              {subtypes[whichSubtype(type)].map((option, i) => (
                 <MenuItem key={i} value={option.value}>
                   {option.label}
                 </MenuItem>

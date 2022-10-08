@@ -14,33 +14,24 @@ import { DBPost } from "../lib/mongo";
 import { Post } from "../projectTypes";
 import StarIcon from "@mui/icons-material/Star";
 import { Tab, Tabpanel } from "../components/cards";
+import MyLocationIcon from "@mui/icons-material/MyLocation";
 
 // let deferredPrompt: any; // Allows to show the install prompt
 
-export default function Page({ metadata }: { metadata: string }) {
+export default function Page({
+  metadata,
+  sremainLength,
+}: {
+  metadata: string;
+  sremainLength: string;
+}) {
   // const [installb, setInstallb] = useState("none");
   const [value, setValue] = useState(1);
 
   // the metadata
 
   const metadatao = JSON.parse(metadata);
-  // install pwa
-  // const installButton = document.getElementById("install_button");
-
-  // if (typeof window !== "undefined") {
-  //   window.addEventListener("beforeinstallprompt", (e) => {
-  //     // Prevent Chrome 76 and earlier from automatically showing a prompt
-  //     e.preventDefault();
-  //     // Stash the event so it can be triggered later.
-  //     deferredPrompt = e;
-  //     // Show the install button
-  //     setInstallb("flex");
-  //     // installButton.hidden = false;
-  //     // installButton.addEventListener("click", installApp);
-  //   });
-  // }
-
-  // iterate
+  const remainLength = JSON.parse(sremainLength);
 
   const workinterface1: {
     [key: string]: { location: { [key: string]: string }; icon: JSX.Element };
@@ -300,6 +291,71 @@ export default function Page({ metadata }: { metadata: string }) {
                   )
                 )
               )}
+              <Link href={"/posts?action=posts&position=position"}>
+                <Box
+                  sx={{
+                    bgColor: "#fff",
+                    border: "1px solid",
+                    width: "100%",
+                    height: "150px",
+                  }}
+                >
+                  <MyLocationIcon></MyLocationIcon>
+                  <Box
+                    style={{
+                      width: "100%",
+                      height: "60%",
+                    }}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-around",
+                      // alignItems: "center",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        // justifyContent: "space-around",
+                        alignItems: "center",
+                      }}
+                    >
+                      {remainLength[1]}
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                      }}
+                    >
+                      {
+                        remainLength[1]
+                          ? Math.floor(
+                              (remainLength[1] / remainLength[0]) * 100
+                            ) + "%"
+                          : "0%"
+                        // metadatao[key][location].compared
+                      }
+                    </Box>
+                  </Box>
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: "20%",
+                      // textAlign: "center",
+                      backgroundColor: (theme) => theme.palette.primary.main,
+                      color: "white",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box>"الخريطة"</Box>
+                  </Box>
+                </Box>
+              </Link>
             </Box>
           </Tabpanel>
           <Tabpanel value={value} index={2}>
@@ -714,49 +770,17 @@ export async function getServerSideProps() {
     }
   });
 
-  // for (const intervall of [
-  //   "lowprice",
-  //   "mediumprice",
-  //   "highprice",
-  //   "veryhighprice",
-  // ]) {
-  //   const lowHigh = priceCat[intervall];
-  //   const postsintervall = await DBPost.find({
-  //     $or: [
-  //       {
-  //         type: "buying",
-  //       },
-
-  //       {
-  //         type: "selling",
-  //       },
-  //     ],
-  //     $and: [
-  //       {
-  //         price: { $gt: lowHigh.low },
-  //       },
-  //       { price: { $lte: lowHigh.high } },
-  //     ],
-  //     hidden: false,
-  //   }).sort({ createdAt: -1 });
-
-  //   for (const location in Nktt) {
-  //     const posts = crossedDep(postsintervall, Nktt[location]);
-  //     for (const post of posts) {
-  //       metadata[intervall][location].total++;
-  //       post.comparedTo &&
-  //         post.comparedTo[0] == "finished" &&
-  //         metadata[intervall][location].compared++;
-  //       if (location == "nw")
-  //         post.type == "buying"
-  //           ? metadata[intervall][location].demands++
-  //           : metadata[intervall][location].offers++;
-  //     }
-  //   }
-  // }
-
+  const remainmap = allposts.filter((post) => {
+    return post.position && post.position.length > 1;
+  });
   return {
-    props: { metadata: JSON.stringify(metadata) },
+    props: {
+      metadata: JSON.stringify(metadata),
+      sremainLength: JSON.stringify([
+        allposts.length,
+        allposts.length - remainmap.length,
+      ]),
+    },
   };
 }
 
