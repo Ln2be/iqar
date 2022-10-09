@@ -771,11 +771,11 @@ export async function getServerSideProps() {
   });
 
   const allPostsAdmin = allposts.filter((post) => {
-    return post.user == "22118721" || post.user == "22405904";
+    return post.periority > 0;
   });
 
   const remainmap = allposts.filter((post) => {
-    return !post.position || post.position.length < 1;
+    return post.periority > 0 && (!post.position || post.position.length < 1);
   });
   return {
     props: {

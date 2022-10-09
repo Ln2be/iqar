@@ -552,6 +552,10 @@ export function PostForm({ upost = post }: { upost?: Post }) {
     post = upost;
   }
   const user = useUser();
+
+  if (user?.role != "admin") {
+    post.periority = 0;
+  }
   const router = useRouter();
   // the type is important and many other fields depend on this type, so we will update according to t
   // this value

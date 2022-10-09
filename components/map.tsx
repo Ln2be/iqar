@@ -8,6 +8,7 @@ import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import VillaIcon from "@mui/icons-material/Villa";
 import { Box } from "@mui/material";
 import { PostCard } from "./cards";
+import ChaletIcon from "@mui/icons-material/Chalet";
 
 export function PickMap({
   handlePosition,
@@ -84,7 +85,7 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
   // const dimension = 10;
 
   function IconMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
-    if (60 <= post.price && post.price <= 70) {
+    if (50 <= post.price && post.price <= 70) {
       return (
         <HouseSidingIcon
           onClick={onClick}
@@ -140,7 +141,7 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
         ></VillaIcon>
       );
     } else {
-      return <>c</>;
+      return <ChaletIcon></ChaletIcon>;
     }
   }
 
