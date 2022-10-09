@@ -141,7 +141,16 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
         ></VillaIcon>
       );
     } else {
-      return <ChaletIcon onClick={onClick}></ChaletIcon>;
+      return (
+        <ChaletIcon
+          onClick={onClick}
+          sx={{
+            color: color,
+          }}
+          width={dimension}
+          height={dimension}
+        ></ChaletIcon>
+      );
     }
   }
 
