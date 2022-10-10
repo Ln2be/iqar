@@ -264,6 +264,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
 
 function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
   const color = post.type == "demandRent" ? "green" : "yellow";
+  const colorB = post.type == "buying" ? "green" : "yellow";
   const lapsedWeeks = post.createdAt && lapsedTime(post.createdAt, 1);
   const dimension = lapsedWeeks && lapsedWeeks <= 7 ? 40 - lapsedWeeks * 5 : 5;
   // const dimension = 10;
@@ -411,7 +412,7 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
           <CropLandscapeIcon
             onClick={onClick}
             sx={{
-              color: color,
+              color: colorB,
             }}
             width={dimension}
             height={dimension}
@@ -423,7 +424,7 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
             <HouseSidingIcon
               onClick={onClick}
               sx={{
-                color: color,
+                color: colorB,
               }}
               width={dimension}
               height={dimension}
@@ -434,7 +435,7 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
             <OtherHousesIcon
               onClick={onClick}
               sx={{
-                color: color,
+                color: colorB,
               }}
               width={dimension}
               height={dimension}
@@ -445,7 +446,7 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
             <VillaIcon
               onClick={onClick}
               sx={{
-                color: color,
+                color: colorB,
               }}
               width={dimension}
               height={dimension}
@@ -456,7 +457,7 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
             <VillaIcon
               onClick={onClick}
               sx={{
-                color: color,
+                color: colorB,
               }}
               width={dimension}
               height={dimension}
@@ -468,7 +469,7 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
           <AttachMoneyIcon
             onClick={onClick}
             sx={{
-              color: color,
+              color: colorB,
             }}
             width={dimension}
             height={dimension}
@@ -479,7 +480,7 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
           <AttachMoneyIcon
             onClick={onClick}
             sx={{
-              color: color,
+              color: colorB,
             }}
             width={dimension}
             height={dimension}
