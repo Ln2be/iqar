@@ -61,7 +61,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
       all: true,
       veryLow: isHouseRent && post.price < 50,
       low: isHouseRent && 50 <= post.price && post.price <= 70,
-      meduimOne: isHouseRent && 80 <= post.price && post.price <= 100,
+      mediumOne: isHouseRent && 80 <= post.price && post.price <= 100,
       meduimTwo: isHouseRent && 110 <= post.price && post.price <= 130,
       high: isHouseRent && 140 <= post.price && post.price <= 160,
       veryHigh: isHouseRent && 170 <= post.price,
