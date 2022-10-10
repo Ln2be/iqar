@@ -52,14 +52,19 @@ export function FillMap({ posts }: { posts: Post[] }) {
 
   // filter function
   function filterp(post: Post) {
+    const isHouseRent =
+      post.subtype == "house" ||
+      post.subtype == "appartment" ||
+      post.subtype == "studio";
+
     const filterObject: { [key: string]: boolean } = {
       all: true,
-      veryLow: post.price < 50,
-      low: 50 <= post.price || post.price <= 70,
-      meduimOne: 80 <= post.price || post.price <= 100,
-      meduimTwo: 110 <= post.price || post.price <= 130,
-      high: 140 <= post.price || post.price <= 160,
-      veryHigh: 170 <= post.price,
+      veryLow: isHouseRent && post.price < 50,
+      low: isHouseRent && (50 <= post.price || post.price <= 70),
+      meduimOne: isHouseRent && (80 <= post.price || post.price <= 100),
+      meduimTwo: isHouseRent && (110 <= post.price || post.price <= 130),
+      high: isHouseRent && (140 <= post.price || post.price <= 160),
+      veryHigh: isHouseRent && 170 <= post.price,
       //
       stay: post.subtype == "stay",
       warehouse: post.subtype == "store",
