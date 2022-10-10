@@ -31,6 +31,7 @@ export default function Page({ sposts }: { sposts: string }) {
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
+            marginBottom: 2,
           }}
         >
           <Link href="/map?action=rent">
