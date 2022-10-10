@@ -105,7 +105,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
               setFilter("land");
             }}
             sx={{
-              color: "greenyellow",
+              color: "green",
             }}
           ></CropLandscapeIcon>
           <HouseSidingIcon
@@ -113,7 +113,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
               setFilter("lowHouse");
             }}
             sx={{
-              color: "greenyellow",
+              color: "green",
             }}
           ></HouseSidingIcon>
           <OtherHousesIcon
@@ -121,7 +121,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
               setFilter("mediumHouse");
             }}
             sx={{
-              color: "greenyellow",
+              color: "green",
             }}
           ></OtherHousesIcon>
           <VillaIcon
@@ -129,7 +129,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
               setFilter("highHouse");
             }}
             sx={{
-              color: "greenyellow",
+              color: "green",
             }}
           ></VillaIcon>
         </Box>
@@ -150,7 +150,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
               setFilter("veryLow");
             }}
             sx={{
-              color: "greenyellow",
+              color: "green",
             }}
           ></ChaletIcon>
           <HouseSidingIcon
@@ -158,7 +158,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
               setFilter("low");
             }}
             sx={{
-              color: "greenyellow",
+              color: "green",
             }}
           ></HouseSidingIcon>
           <OtherHousesIcon
@@ -166,7 +166,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
               setFilter("mediumOne");
             }}
             sx={{
-              color: "greenyellow",
+              color: "green",
             }}
           ></OtherHousesIcon>
           <ApartmentIcon
@@ -174,7 +174,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
               setFilter("mediumTwo");
             }}
             sx={{
-              color: "greenyellow",
+              color: "green",
             }}
           ></ApartmentIcon>
           <HomeWorkIcon
@@ -182,7 +182,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
               setFilter("high");
             }}
             sx={{
-              color: "greenyellow",
+              color: "green",
             }}
           ></HomeWorkIcon>
 
@@ -191,7 +191,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
               setFilter("veryHigh");
             }}
             sx={{
-              color: "greenyellow",
+              color: "green",
             }}
           ></VillaIcon>
           <HotelIcon
@@ -199,7 +199,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
               setFilter("stay");
             }}
             sx={{
-              color: "greenyellow",
+              color: "green",
             }}
           ></HotelIcon>
           <WarehouseIcon
@@ -207,7 +207,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
               setFilter("warehouse");
             }}
             sx={{
-              color: "greenyellow",
+              color: "green",
             }}
           ></WarehouseIcon>
           <StoreIcon
@@ -215,7 +215,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
               setFilter("shop");
             }}
             sx={{
-              color: "greenyellow",
+              color: "green",
             }}
           ></StoreIcon>
           <AltRouteIcon
@@ -223,7 +223,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
               setFilter("other");
             }}
             sx={{
-              color: "greenyellow",
+              color: "green",
             }}
           ></AltRouteIcon>
         </Box>
