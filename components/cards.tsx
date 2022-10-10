@@ -553,9 +553,6 @@ export function PostForm({ upost = post }: { upost?: Post }) {
   }
   const user = useUser();
 
-  if (user?.role != "admin") {
-    post.periority = 0;
-  }
   const router = useRouter();
   // the type is important and many other fields depend on this type, so we will update according to t
   // this value
@@ -589,6 +586,10 @@ export function PostForm({ upost = post }: { upost?: Post }) {
     // I think this make the submission get stuck
     setDisable(true);
     const result = post;
+
+    if (user?.role != "admin") {
+      post.periority = 0;
+    }
 
     // save the post
     if (!isUpdate) {
