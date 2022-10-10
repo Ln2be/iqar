@@ -133,6 +133,14 @@ export function FillMap({ posts }: { posts: Post[] }) {
               color: "green",
             }}
           ></VillaIcon>
+          <AltRouteIcon
+            onClick={() => {
+              setFilter("invest");
+            }}
+            sx={{
+              color: "green",
+            }}
+          ></AltRouteIcon>
         </Box>
       )}
 
