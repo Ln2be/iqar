@@ -14,6 +14,7 @@ import WarehouseIcon from "@mui/icons-material/Warehouse";
 import StoreIcon from "@mui/icons-material/Store";
 import AltRouteIcon from "@mui/icons-material/AltRoute";
 import HotelIcon from "@mui/icons-material/Hotel";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 import CropLandscapeIcon from "@mui/icons-material/CropLandscape";
 
@@ -268,72 +269,223 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
   // const dimension = 10;
 
   function IconMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
-    if (50 <= post.price && post.price <= 70) {
-      return (
-        <HouseSidingIcon
-          onClick={onClick}
-          sx={{
-            color: color,
-          }}
-          width={dimension}
-          height={dimension}
-        ></HouseSidingIcon>
-      );
-    } else if (80 <= post.price && post.price <= 100) {
-      return (
-        <OtherHousesIcon
-          onClick={onClick}
-          sx={{
-            color: color,
-          }}
-          width={dimension}
-          height={dimension}
-        ></OtherHousesIcon>
-      );
-    } else if (110 <= post.price && post.price <= 130) {
-      return (
-        <ApartmentIcon
-          onClick={onClick}
-          sx={{
-            color: color,
-          }}
-          width={dimension}
-          height={dimension}
-        ></ApartmentIcon>
-      );
-    } else if (140 <= post.price && post.price <= 160) {
-      return (
-        <HomeWorkIcon
-          onClick={onClick}
-          sx={{
-            color: color,
-          }}
-          width={dimension}
-          height={dimension}
-        ></HomeWorkIcon>
-      );
-    } else if (170 <= post.price) {
-      return (
-        <VillaIcon
-          onClick={onClick}
-          sx={{
-            color: color,
-          }}
-          width={dimension}
-          height={dimension}
-        ></VillaIcon>
-      );
+    const isRent = post.type == "demandRent" || post.type == "offerRent";
+    const isHouseRent = post.subtype == "house" || post.type == "appartment";
+    const isWarhouse = post.subtype == "store";
+    const isShop = post.subtype == "shop";
+    const isOther = post.subtype == "other";
+    const isStay = post.subtype == "stay";
+
+    const isLand = post.subtype == "land";
+    const isHouseBuying = post.subtype == "house";
+    const isInvest = post.subtype == "invest";
+
+    if (isRent) {
+      if (isHouseRent) {
+        if (50 <= post.price && post.price <= 70) {
+          return (
+            <HouseSidingIcon
+              onClick={onClick}
+              sx={{
+                color: color,
+              }}
+              width={dimension}
+              height={dimension}
+            ></HouseSidingIcon>
+          );
+        } else if (80 <= post.price && post.price <= 100) {
+          return (
+            <OtherHousesIcon
+              onClick={onClick}
+              sx={{
+                color: color,
+              }}
+              width={dimension}
+              height={dimension}
+            ></OtherHousesIcon>
+          );
+        } else if (110 <= post.price && post.price <= 130) {
+          return (
+            <ApartmentIcon
+              onClick={onClick}
+              sx={{
+                color: color,
+              }}
+              width={dimension}
+              height={dimension}
+            ></ApartmentIcon>
+          );
+        } else if (140 <= post.price && post.price <= 160) {
+          return (
+            <HomeWorkIcon
+              onClick={onClick}
+              sx={{
+                color: color,
+              }}
+              width={dimension}
+              height={dimension}
+            ></HomeWorkIcon>
+          );
+        } else if (170 <= post.price) {
+          return (
+            <VillaIcon
+              onClick={onClick}
+              sx={{
+                color: color,
+              }}
+              width={dimension}
+              height={dimension}
+            ></VillaIcon>
+          );
+        } else {
+          return (
+            <ChaletIcon
+              onClick={onClick}
+              sx={{
+                color: color,
+              }}
+              width={dimension}
+              height={dimension}
+            ></ChaletIcon>
+          );
+        }
+      } else if (isWarhouse) {
+        return (
+          <WarehouseIcon
+            onClick={onClick}
+            sx={{
+              color: color,
+            }}
+            width={dimension}
+            height={dimension}
+          ></WarehouseIcon>
+        );
+      } else if (isShop) {
+        return (
+          <StoreIcon
+            onClick={onClick}
+            sx={{
+              color: color,
+            }}
+            width={dimension}
+            height={dimension}
+          ></StoreIcon>
+        );
+      } else if (isOther) {
+        return (
+          <AltRouteIcon
+            onClick={onClick}
+            sx={{
+              color: color,
+            }}
+            width={dimension}
+            height={dimension}
+          ></AltRouteIcon>
+        );
+      } else if (isStay) {
+        return (
+          <HotelIcon
+            onClick={onClick}
+            sx={{
+              color: color,
+            }}
+            width={dimension}
+            height={dimension}
+          ></HotelIcon>
+        );
+      } else {
+        return (
+          <WarehouseIcon
+            onClick={onClick}
+            sx={{
+              color: color,
+            }}
+            width={dimension}
+            height={dimension}
+          ></WarehouseIcon>
+        );
+      }
     } else {
-      return (
-        <ChaletIcon
-          onClick={onClick}
-          sx={{
-            color: color,
-          }}
-          width={dimension}
-          height={dimension}
-        ></ChaletIcon>
-      );
+      if (isLand) {
+        return (
+          <CropLandscapeIcon
+            onClick={onClick}
+            sx={{
+              color: color,
+            }}
+            width={dimension}
+            height={dimension}
+          ></CropLandscapeIcon>
+        );
+      } else if (isHouseBuying) {
+        if (0 <= post.price && post.price <= 10) {
+          return (
+            <HouseSidingIcon
+              onClick={onClick}
+              sx={{
+                color: color,
+              }}
+              width={dimension}
+              height={dimension}
+            ></HouseSidingIcon>
+          );
+        } else if (10 < post.price && post.price <= 20) {
+          return (
+            <OtherHousesIcon
+              onClick={onClick}
+              sx={{
+                color: color,
+              }}
+              width={dimension}
+              height={dimension}
+            ></OtherHousesIcon>
+          );
+        } else if (20 < post.price) {
+          return (
+            <VillaIcon
+              onClick={onClick}
+              sx={{
+                color: color,
+              }}
+              width={dimension}
+              height={dimension}
+            ></VillaIcon>
+          );
+        } else {
+          return (
+            <VillaIcon
+              onClick={onClick}
+              sx={{
+                color: color,
+              }}
+              width={dimension}
+              height={dimension}
+            ></VillaIcon>
+          );
+        }
+      } else if (isInvest) {
+        return (
+          <AttachMoneyIcon
+            onClick={onClick}
+            sx={{
+              color: color,
+            }}
+            width={dimension}
+            height={dimension}
+          ></AttachMoneyIcon>
+        );
+      } else {
+        return (
+          <AttachMoneyIcon
+            onClick={onClick}
+            sx={{
+              color: color,
+            }}
+            width={dimension}
+            height={dimension}
+          ></AttachMoneyIcon>
+        );
+      }
     }
   }
 
