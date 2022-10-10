@@ -279,7 +279,10 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
 
   function IconMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
     const isRent = post.type == "demandRent" || post.type == "offerRent";
-    const isHouseRent = post.subtype == "house" || post.type == "appartment";
+    const isHouseRent =
+      post.subtype == "house" ||
+      post.subtype == "appartment" ||
+      post.subtype == "studio";
     const isWarhouse = post.subtype == "store";
     const isShop = post.subtype == "shop";
     const isOther = post.subtype == "other";
@@ -403,16 +406,7 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
           ></HotelIcon>
         );
       } else {
-        return (
-          <WarehouseIcon
-            onClick={onClick}
-            sx={{
-              color: color,
-            }}
-            width={dimension}
-            height={dimension}
-          ></WarehouseIcon>
-        );
+        return <div onClick={onClick}>o</div>;
       }
     } else {
       if (isLand) {
