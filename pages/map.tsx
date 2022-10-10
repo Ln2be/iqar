@@ -1,10 +1,11 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Button, Link } from "@mui/material";
 import dynamic from "next/dynamic";
 import { PickMap } from "../components/map";
 import { DBPost } from "../lib/mongo";
 import { FillMap } from "../components/map";
 import Layout from "../components/layout";
+import { useRouter } from "next/router";
 
 // const Map = dynamic(() => import("../components/map"), {
 //   ssr: false,
@@ -12,10 +13,35 @@ import Layout from "../components/layout";
 
 export default function Page({ sposts }: { sposts: string }) {
   const posts = JSON.parse(sposts);
-  console.log("post length=", posts.length);
+  const router = useRouter();
+  const query = router.query;
+  const { action } = query;
+  const isRent = action == "rent";
   return (
     <Layout>
-      <FillMap posts={posts}></FillMap>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {/* switch between rent and buy */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Link href="/map?action=rent">
+            <Button variant={isRent ? "contained" : "outlined"}>الايجار</Button>
+          </Link>
+          <Link href="/map?action=buying">
+            <Button variant={!isRent ? "contained" : "outlined"}>البيع</Button>
+          </Link>
+        </Box>
+        <FillMap posts={posts}></FillMap>
+      </Box>
     </Layout>
   );
 }
@@ -29,9 +55,13 @@ export async function getServerSideProps({
     createdAt: -1,
   });
 
+  const { action } = query;
+
   const posts = allposts.filter((post) => {
     const isRent = post.type == "demandRent" || post.type == "offerRent";
-    return post.position.length > 0 && isRent;
+    const isBuying = post.type == "buying" || post.type == "selling";
+    const type = action == "rent" ? isRent : isBuying;
+    return post.position.length > 0 && type;
   });
 
   return {

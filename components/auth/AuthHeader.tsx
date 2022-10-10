@@ -50,7 +50,7 @@ export default function AuthHeader() {
                   flexDirection: "column",
                 }}
               >
-                <Link href="/map">خريطة الايجار</Link>
+                <Link href="/map?action=rent">الخريطة</Link>
               </Box>
             </Box>
             <Box
