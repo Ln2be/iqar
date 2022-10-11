@@ -276,8 +276,8 @@ export function FillMap({ posts }: { posts: Post[] }) {
 // iqar marker
 
 function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
-  const color = post.type == "demandRent" ? "green" : "yellow";
-  const colorB = post.type == "buying" ? "green" : "yellow";
+  const color = post.type == "demandRent" ? "green" : "red";
+  const colorB = post.type == "buying" ? "green" : "red";
   const lapsedWeeks = post.createdAt && lapsedTime(post.createdAt, 1);
   const dimension = lapsedWeeks && lapsedWeeks <= 7 ? 40 - lapsedWeeks * 5 : 5;
   // const dimension = 10;

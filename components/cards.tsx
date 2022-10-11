@@ -282,7 +282,7 @@ export function PostCard({
                 ))}
 
               {/* delete post only the post view */}
-              {type == "post" ? (
+              {type == "post" && user.tel == "22118721" ? (
                 <Button
                   variant="outlined"
                   style={{ color: "red" }}
