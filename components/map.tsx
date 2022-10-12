@@ -651,9 +651,9 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
 
 function lapsedTime(lasttime: number, nbweeks: number) {
   const last = new Date(lasttime);
-  const now = Date.now();
+  const now = new Date(Date.now());
 
-  const diff = now - last.getMilliseconds();
+  const diff = now.getTime() - last.getTime();
   const msinweek = 1000 * 3600 * 24 * 7;
 
   const weeks = diff / msinweek;
