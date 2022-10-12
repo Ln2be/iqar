@@ -80,7 +80,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
           }
         })
       : cPostid &&
-        (post?.type == "offerRent" || post?.type == "buying") &&
+        !(post?.type == "offerRent" || post?.type == "buying") &&
         cPosts
       ? cPosts
       : posts;
