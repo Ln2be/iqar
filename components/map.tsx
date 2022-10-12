@@ -6,7 +6,7 @@ import OtherHousesIcon from "@mui/icons-material/OtherHouses";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import VillaIcon from "@mui/icons-material/Villa";
-import { Box } from "@mui/material";
+import { Badge, Box } from "@mui/material";
 import { PostCard } from "./cards";
 import ChaletIcon from "@mui/icons-material/Chalet";
 import { useRouter } from "next/router";
@@ -21,6 +21,8 @@ import JoinLeftIcon from "@mui/icons-material/JoinLeft";
 import RedoIcon from "@mui/icons-material/Redo";
 import * as geolib from "geolib";
 import { basepath, correctPhone } from "../lib/myfunctions";
+import AvTimerIcon from "@mui/icons-material/AvTimer";
+import SpatialTrackingIcon from "@mui/icons-material/SpatialTracking";
 
 export function PickMap({
   handlePosition,
@@ -53,6 +55,9 @@ export function FillMap({ posts }: { posts: Post[] }) {
   const [filter, setFilter] = useState<string>("all");
 
   const [cPostid, setCPostid] = useState<string>();
+
+  // set badge
+  const [badge, setBadge] = useState<string>("time");
 
   // function getPost(id: string) {
   //   return posts.filter((post) => (post._id = id))[0];
@@ -136,6 +141,16 @@ export function FillMap({ posts }: { posts: Post[] }) {
 
   // filtred posts
   const fposts = posts.filter((post) => filterp(post));
+
+  function getBadge(post: Post) {
+    if (badge == "time" && post.createdAt) {
+      const nweeks = action == "rent" ? 1 : 4;
+      // return nweeks;
+      return lapsedTime(post.createdAt, nweeks);
+    } else {
+      return "0";
+    }
+  }
 
   // const [anchor, setAnchor] = useState<[number, number]>([18.0782, -15.965]);
   return (
@@ -299,16 +314,32 @@ export function FillMap({ posts }: { posts: Post[] }) {
         {fposts.map((post, i) => {
           return (
             <Overlay key={i} anchor={post.position}>
-              <IMarker
-                onClick={() => {
-                  setPost(post);
-                  if (cPostid) {
-                    setCPosts(posts);
-                  }
-                  setRender(!render);
-                }}
-                post={post}
-              ></IMarker>
+              {badge == "time" &&
+              (post.type == "demandRent" || post.type == "buying") ? (
+                <Badge badgeContent={getBadge(post)} color="primary">
+                  <IMarker
+                    onClick={() => {
+                      setPost(post);
+                      if (cPostid) {
+                        setCPosts(posts);
+                      }
+                      setRender(!render);
+                    }}
+                    post={post}
+                  ></IMarker>
+                </Badge>
+              ) : (
+                <IMarker
+                  onClick={() => {
+                    setPost(post);
+                    if (cPostid) {
+                      setCPosts(posts);
+                    }
+                    setRender(!render);
+                  }}
+                  post={post}
+                ></IMarker>
+              )}
             </Overlay>
           );
         })}
@@ -330,6 +361,18 @@ export function FillMap({ posts }: { posts: Post[] }) {
             alignContent: "center",
           }}
         >
+          <AvTimerIcon
+            onClick={() => {
+              setBadge("time");
+            }}
+          ></AvTimerIcon>
+
+          <SpatialTrackingIcon
+            onClick={() => {
+              setBadge("track");
+            }}
+          ></SpatialTrackingIcon>
+
           {post && !cPostid && (
             <JoinLeftIcon
               sx={{
@@ -607,9 +650,10 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
 }
 
 function lapsedTime(lasttime: number, nbweeks: number) {
+  const last = new Date(lasttime);
   const now = Date.now();
 
-  const diff = now - lasttime;
+  const diff = now - last;
   const msinweek = 1000 * 3600 * 24 * 7;
 
   const weeks = diff / msinweek;
