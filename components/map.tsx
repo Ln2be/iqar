@@ -62,22 +62,23 @@ export function FillMap({ posts }: { posts: Post[] }) {
     buying: "selling",
   };
 
-  posts = cPostid && (post?.type == "offerRent" || post?.type == "buying")
-    ? posts.filter((upost) => {
-        if (upost.position && upost._id && post?.position) {
-          const isNearby = geolib.isPointWithinRadius(
-            upost.position,
-            post.position,
-            5000
-          );
-          const isOpposit = opposite[post.type] == upost.type;
-          const notComparedBefore = !post.comparedTo?.includes(upost._id);
-          return isNearby && isOpposit && notComparedBefore;
-        } else {
-          return false;
-        }
-      })
-    : posts;
+  posts =
+    cPostid && (post?.type == "offerRent" || post?.type == "buying")
+      ? posts.filter((upost) => {
+          if (upost.position && upost._id && post?.position) {
+            const isNearby = geolib.isPointWithinRadius(
+              upost.position,
+              post.position,
+              5000
+            );
+            const isOpposit = opposite[post.type] == upost.type;
+            const notComparedBefore = !post.comparedTo?.includes(upost._id);
+            return isNearby && isOpposit && notComparedBefore;
+          } else {
+            return false;
+          }
+        })
+      : posts;
 
   const router = useRouter();
   const query = router.query;
