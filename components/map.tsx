@@ -359,13 +359,13 @@ export function FillMap({ posts }: { posts: Post[] }) {
             post={post}
             comparaison={{
               url:
-                post.type == "offerRent"
+                oPost.type == "offerRent"
                   ? basepath + "/posts?id=" + oPost._id
                   : basepath + "/posts?id=" + post._id,
               tel:
-                post.type == "offerRent"
+                oPost.type == "offerRent"
                   ? correctPhone(post.tel)
-                  : correctPhone(post.tel),
+                  : correctPhone(oPost.tel),
               remove: remove,
             }}
           ></PostCard>
