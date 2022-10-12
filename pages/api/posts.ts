@@ -2,15 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { DBPost } from "../../lib/mongo";
 import { Post } from "../../projectTypes";
 
-// see if we are in production or not
-// const isProduction = process.env.NODE_ENV === "production";
-
-// const devUrl = "/home/elhassen/Downloads/images/";
-
-// const prodUrl = "/var/www/iqar/images/";
-
-// const site = isProduction ? prodSite : devSite;
-
 export default async function helper(
   req: NextApiRequest,
   res: NextApiResponse
@@ -83,24 +74,3 @@ export default async function helper(
     res.send("OK");
   }
 }
-
-// save the image
-// function saveimage(imageData: string, callback: (name: string) => void) {
-//   // choose a unique name
-//   const name: string =
-//     Date.now() +
-//     "random" +
-//     Math.floor(Math.random() * (1000000 - 100000)) +
-//     100000 +
-//     ".jpeg";
-
-//   // save
-
-//   fs.writeFile(
-//     url + name,
-//     Buffer.from(imageData.split(",")[1], "base64"),
-//     async () => {
-//       callback(name);
-//     }
-//   );
-// }

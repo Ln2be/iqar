@@ -17,6 +17,10 @@ import HotelIcon from "@mui/icons-material/Hotel";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 import CropLandscapeIcon from "@mui/icons-material/CropLandscape";
+import JoinLeftIcon from "@mui/icons-material/JoinLeft";
+import RedoIcon from "@mui/icons-material/Redo";
+import * as geolib from "geolib";
+import { basepath, correctPhone } from "../lib/myfunctions";
 
 export function PickMap({
   handlePosition,
@@ -43,11 +47,40 @@ export function PickMap({
 
 export function FillMap({ posts }: { posts: Post[] }) {
   const [post, setPost] = useState<Post>();
+  const [oPost, setOPost] = useState<Post>();
   const [render, setRender] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>("all");
 
+  const [cPostid, setCPostid] = useState<string>();
+
+  // function getPost(id: string) {
+  //   return posts.filter((post) => (post._id = id))[0];
+  // }
+
+  const opposite: { [key: string]: string } = {
+    offerRent: "demandRent",
+    buying: "selling",
+  };
+
+  posts = cPostid
+    ? posts.filter((upost) => {
+        if (upost.position && upost._id && post?.position) {
+          const isNearby = geolib.isPointWithinRadius(
+            upost.position,
+            post.position,
+            5000
+          );
+          const isOpposit = opposite[post.type] == upost.type;
+          const notComparedBefore = !post.comparedTo?.includes(upost._id);
+          return isNearby && isOpposit && notComparedBefore;
+        } else {
+          return false;
+        }
+      })
+    : posts;
+
   const router = useRouter();
-  const query = useRouter().query;
+  const query = router.query;
   const { action } = query;
 
   // filter function
@@ -81,6 +114,15 @@ export function FillMap({ posts }: { posts: Post[] }) {
     };
 
     return filterObject[filter];
+  }
+
+  // remove the post compared
+  function remove(id: string) {
+    if (oPost) {
+      fetch("/api/compared?id=" + oPost._id + "&post=" + id).then(() => {
+        router.reload();
+      });
+    }
   }
 
   // filtred posts
@@ -267,7 +309,55 @@ export function FillMap({ posts }: { posts: Post[] }) {
           marginTop: 2,
         }}
       >
-        {post && <PostCard type="post" post={post}></PostCard>}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            marginTop: 2,
+            justifyContent: "space-around",
+            alignContent: "center",
+          }}
+        >
+          {post && !cPostid && (
+            <JoinLeftIcon
+              sx={{
+                color: "yellow",
+              }}
+              onClick={() => {
+                if (post.type == "offerRent" || post.type == "buying") {
+                  setOPost(post);
+                  setCPostid(post._id);
+                }
+              }}
+            ></JoinLeftIcon>
+          )}
+          {cPostid && (
+            <RedoIcon
+              onClick={() => {
+                setCPostid(undefined);
+              }}
+            ></RedoIcon>
+          )}
+        </Box>
+
+        {post && !cPostid && <PostCard type="post" post={post}></PostCard>}
+        {post?._id && cPostid && oPost?._id && (
+          <PostCard
+            type="compared"
+            post={post}
+            comparaison={{
+              url:
+                basepath + "/posts?id=" + post.type == "offerRent"
+                  ? oPost._id
+                  : post._id,
+              tel:
+                post.type == "offerRent"
+                  ? correctPhone(post.tel)
+                  : correctPhone(post.tel),
+              remove: remove,
+            }}
+          ></PostCard>
+        )}
       </Box>
     </Box>
   );

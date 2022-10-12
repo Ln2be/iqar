@@ -6,6 +6,7 @@ import { DBPost } from "../lib/mongo";
 import { FillMap } from "../components/map";
 import Layout from "../components/layout";
 import { useRouter } from "next/router";
+import * as geolib from "geolib";
 
 // const Map = dynamic(() => import("../components/map"), {
 //   ssr: false,
