@@ -289,7 +289,7 @@ export function PostCard({
                   onClick={() => {
                     fetch("/api/posts?action=delete&id=" + post._id).then(
                       () => {
-                        router.back();
+                        router.reload();
                       }
                     );
                   }}
