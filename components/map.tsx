@@ -57,7 +57,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
   const [cPostid, setCPostid] = useState<string>();
 
   // set badge
-  const [badge, setBadge] = useState<string>("time");
+  const [badge, setBadge] = useState<string>();
 
   // function getPost(id: string) {
   //   return posts.filter((post) => (post._id = id))[0];
@@ -363,7 +363,11 @@ export function FillMap({ posts }: { posts: Post[] }) {
         >
           <AvTimerIcon
             onClick={() => {
-              setBadge("time");
+              if (badge == "time") {
+                setBadge("");
+              } else {
+                setBadge("time");
+              }
             }}
           ></AvTimerIcon>
 
