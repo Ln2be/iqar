@@ -97,7 +97,10 @@ export function FillMap({ posts }: { posts: Post[] }) {
       post.subtype == "studio";
 
     const filterObject: { [key: string]: boolean } = {
-      all: true,
+      all:
+        action == "rent"
+          ? isHouseRent && post.price < 50
+          : post.subtype == "land",
       veryLow: isHouseRent && post.price < 50,
       low: isHouseRent && 50 <= post.price && post.price <= 70,
       mediumOne: isHouseRent && 80 <= post.price && post.price <= 100,
@@ -356,9 +359,9 @@ export function FillMap({ posts }: { posts: Post[] }) {
             post={post}
             comparaison={{
               url:
-                basepath + "/posts?id=" + post.type == "offerRent"
-                  ? oPost._id
-                  : post._id,
+                post.type == "offerRent"
+                  ? basepath + "/posts?id=" + oPost._id
+                  : basepath + "/posts?id=" + post._id,
               tel:
                 post.type == "offerRent"
                   ? correctPhone(post.tel)
