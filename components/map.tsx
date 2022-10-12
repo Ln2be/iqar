@@ -48,6 +48,7 @@ export function PickMap({
 export function FillMap({ posts }: { posts: Post[] }) {
   const [post, setPost] = useState<Post>();
   const [oPost, setOPost] = useState<Post>();
+  const [cPosts, setCPosts] = useState<Post[]>();
   const [render, setRender] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>("all");
 
@@ -78,6 +79,10 @@ export function FillMap({ posts }: { posts: Post[] }) {
             return false;
           }
         })
+      : cPostid &&
+        (post?.type == "offerRent" || post?.type == "buying") &&
+        cPosts
+      ? cPosts
       : posts;
 
   const router = useRouter();
@@ -294,6 +299,9 @@ export function FillMap({ posts }: { posts: Post[] }) {
               <IMarker
                 onClick={() => {
                   setPost(post);
+                  if (cPostid) {
+                    setCPosts(posts);
+                  }
                   setRender(!render);
                 }}
                 post={post}
