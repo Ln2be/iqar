@@ -62,7 +62,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
     buying: "selling",
   };
 
-  posts = cPostid
+  posts = cPostid && (post?.type == "offerRent" || post?.type == "buying")
     ? posts.filter((upost) => {
         if (upost.position && upost._id && post?.position) {
           const isNearby = geolib.isPointWithinRadius(
