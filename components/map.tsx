@@ -653,7 +653,7 @@ function lapsedTime(lasttime: number, nbweeks: number) {
   const last = new Date(lasttime);
   const now = Date.now();
 
-  const diff = now - last;
+  const diff = now - last.getMilliseconds();
   const msinweek = 1000 * 3600 * 24 * 7;
 
   const weeks = diff / msinweek;
