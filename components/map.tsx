@@ -407,7 +407,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
 
           {post && !cPostid && (
             <JoinLeftIcon
-              sx={{ color: "blue" }}
+              // sx={{ color: "blue" }}
               onClick={() => {
                 if (post.type == "offerRent" || post.type == "buying") {
                   setOPost(post);
