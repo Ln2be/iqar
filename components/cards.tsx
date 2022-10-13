@@ -60,7 +60,18 @@ export function PostCard({
   const codeTelObject = {
     codeTel: "0",
   };
+
+  // track
+  const track = {
+    postid: "",
+    postLink: "",
+    trackDate: Date.now(),
+    trackDelay: 0,
+  };
+
   //
+  let trackDelay = 0;
+
   return (
     <Card sx={{ maxWidth: 345, backgroundColor: "#ccc" }}>
       <CardContent>
@@ -378,7 +389,7 @@ export function PostCard({
           
           */}
 
-            {type == "post" && (
+            {/* {type == "post" && (
               <Box
                 sx={{
                   display: "flex",
@@ -416,9 +427,115 @@ export function PostCard({
                   احالة
                 </Button>
               </Box>
+            )} */}
+
+            {type == "post" && (!post.track || !post.track.postLink) && (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "end",
+                  mt: 2,
+                }}
+              >
+                <TextField
+                  id="codeTel"
+                  label="الهاتف"
+                  type="tel"
+                  style={{
+                    backgroundColor: "white",
+                  }}
+                  variant="outlined"
+                  onChange={(event) => {
+                    track.postLink = event.target.value;
+                  }}
+                  required
+                />
+                <TextField
+                  id="codeTel"
+                  label="المهلة"
+                  type="number"
+                  style={{
+                    backgroundColor: "white",
+                  }}
+                  variant="outlined"
+                  onChange={(event) => {
+                    track.trackDelay = event.target.value as unknown as number;
+                  }}
+                  required
+                />
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    if (post._id) {
+                      track.postid = post._id;
+                    }
+                    fetch("/api/posts?action=savetrack", {
+                      method: "POST",
+                      body: JSON.stringify(track),
+                      headers: {
+                        "content-type": "application/json",
+                      },
+                    }).then(() => {
+                      router.reload();
+                    });
+                  }}
+                >
+                  متابعة
+                </Button>
+              </Box>
+            )}
+            {type == "post" && post.track && post.track.postLink && (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "end",
+                  mt: 2,
+                }}
+              >
+                <TextField
+                  id="codeTel"
+                  label="المهلة"
+                  type="number"
+                  style={{
+                    backgroundColor: "white",
+                  }}
+                  variant="outlined"
+                  onChange={(event) => {
+                    trackDelay = event.target.value as unknown as number;
+                  }}
+                  required
+                />
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    fetch(
+                      "/api/posts?action=updatetrack&trackDelay=" +
+                        trackDelay +
+                        "&trackDate=" +
+                        Date.now() +
+                        "&postid=" +
+                        post._id
+                    ).then(() => {
+                      router.reload();
+                    });
+                  }}
+                >
+                  تمديد
+                </Button>
+              </Box>
             )}
 
-            {post.sendTo &&
+            {type == "post" && post.track && post.track.postLink && (
+              <Box>
+                <Link href={"/posts?action=posts&tel=" + post.track.postLink}>
+                  {post.track.postLink}
+                </Link>
+              </Box>
+            )}
+
+            {/* {post.sendTo &&
               post.sendTo.length > 0 &&
               (type == "post" || type == "feed") && (
                 <Box>
@@ -480,7 +597,7 @@ export function PostCard({
                     ))}
                   </Box>
                 </Box>
-              )}
+              )} */}
 
             {type == "post" && (
               <Box>

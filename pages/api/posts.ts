@@ -72,5 +72,29 @@ export default async function helper(
     sendTo.splice(index, 1);
     await DBPost.updateOne({ _id: id }, { sendTo: sendTo });
     res.send("OK");
+  } else if (action == "savetrack") {
+    const track = req.body;
+    const post = await DBPost.updateOne(
+      { _id: track.postid },
+      { track: track }
+    );
+    res.send("OK");
+  } else if (action == "updatetrack") {
+    const { trackDate, trackDelay, postid } = req.query;
+    const post = await DBPost.findOne({ _id: postid });
+    const postLink = post.track.postLink;
+    delete post.track;
+    await DBPost.updateOne(
+      { _id: postid },
+      {
+        track: {
+          postid: postid,
+          postLink: postLink,
+          trackDate: trackDate,
+          trackDelay: trackDelay,
+        },
+      }
+    );
+    res.send("Ok")
   }
 }

@@ -56,6 +56,12 @@ const postSchema = new Schema<Post>({
   sendToArchive: [String],
   periority: { type: Number, default: 1 },
   position: [Number],
+  track: {
+    postid: String,
+    postLink: String,
+    trackDate: Number,
+    trackDelay: Number,
+  },
 });
 
 export const DBPost =

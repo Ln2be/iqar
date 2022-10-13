@@ -40,6 +40,12 @@ export interface Post {
   sendToArchive: string[];
   periority: number;
   position?: [number, number];
+  track?: {
+    postid: string;
+    postLink: string;
+    trackDate: number;
+    trackDelay: number;
+  };
 }
 
 export interface Image {

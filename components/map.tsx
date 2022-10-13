@@ -320,9 +320,23 @@ export function FillMap({ posts }: { posts: Post[] }) {
                   <IMarker
                     onClick={() => {
                       setPost(post);
-                      if (cPostid) {
-                        setCPosts(posts);
-                      }
+                      setRender(!render);
+                    }}
+                    post={post}
+                  ></IMarker>
+                </Badge>
+              ) : badge == "track" && post.track && post.track.trackDelay ? (
+                <Badge
+                  badgeContent={
+                    post.track?.trackDelay -
+                    lapsedTimeDays(post.track.trackDate)
+                  }
+                  // sx={{ color: "yellow" }}
+                  color="info"
+                >
+                  <IMarker
+                    onClick={() => {
+                      setPost(post);
                       setRender(!render);
                     }}
                     post={post}
@@ -361,7 +375,16 @@ export function FillMap({ posts }: { posts: Post[] }) {
             alignContent: "center",
           }}
         >
+          {cPostid && (
+            <RedoIcon
+              sx={{ color: "blue" }}
+              onClick={() => {
+                setCPostid(undefined);
+              }}
+            ></RedoIcon>
+          )}
           <AvTimerIcon
+            sx={{ color: badge == "track" ? "blue" : "inherit" }}
             onClick={() => {
               if (badge == "time") {
                 setBadge("");
@@ -372,16 +395,19 @@ export function FillMap({ posts }: { posts: Post[] }) {
           ></AvTimerIcon>
 
           <SpatialTrackingIcon
+            sx={{ color: badge == "track" ? "blue" : "inherit" }}
             onClick={() => {
-              setBadge("track");
+              if (badge == "track") {
+                setBadge("");
+              } else {
+                setBadge("track");
+              }
             }}
           ></SpatialTrackingIcon>
 
           {post && !cPostid && (
             <JoinLeftIcon
-              sx={{
-                color: "yellow",
-              }}
+              sx={{ color: "blue" }}
               onClick={() => {
                 if (post.type == "offerRent" || post.type == "buying") {
                   setOPost(post);
@@ -389,13 +415,6 @@ export function FillMap({ posts }: { posts: Post[] }) {
                 }
               }}
             ></JoinLeftIcon>
-          )}
-          {cPostid && (
-            <RedoIcon
-              onClick={() => {
-                setCPostid(undefined);
-              }}
-            ></RedoIcon>
           )}
         </Box>
 
@@ -663,5 +682,18 @@ function lapsedTime(lasttime: number, nbweeks: number) {
   const weeks = diff / msinweek;
 
   const result = Math.round(weeks / nbweeks);
+  return result;
+}
+
+function lapsedTimeDays(lasttime: number) {
+  const last = new Date(lasttime);
+  const now = new Date(Date.now());
+
+  const diff = now.getTime() - last.getTime();
+  const msindays = 1000 * 3600 * 24;
+
+  const days = diff / msindays;
+
+  const result = Math.round(days);
   return result;
 }
