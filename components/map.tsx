@@ -384,7 +384,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
             ></RedoIcon>
           )}
           <AvTimerIcon
-            sx={{ color: badge == "track" ? "blue" : "inherit" }}
+            sx={{ color: badge == "time" ? "blue" : "inherit" }}
             onClick={() => {
               if (badge == "time") {
                 setBadge("");

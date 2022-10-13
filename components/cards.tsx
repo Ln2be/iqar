@@ -532,6 +532,18 @@ export function PostCard({
                 <Link href={"/posts?action=posts&tel=" + post.track.postLink}>
                   {post.track.postLink}
                 </Link>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    fetch(
+                      "/api/posts?action=deletetrack&postid=" + post._id
+                    ).then(() => {
+                      router.reload();
+                    });
+                  }}
+                >
+                  الغاء المتابغة
+                </Button>
               </Box>
             )}
 

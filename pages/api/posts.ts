@@ -95,6 +95,15 @@ export default async function helper(
         },
       }
     );
-    res.send("Ok")
+    res.send("Ok");
+  } else if (action == "deletetrack") {
+    const { postid } = req.query;
+    await DBPost.updateOne(
+      { _id: postid },
+      {
+        track: {},
+      }
+    );
+    res.send("Ok");
   }
 }
