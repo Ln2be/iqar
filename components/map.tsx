@@ -460,7 +460,10 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
   // const dimension = 10;
 
   function IconMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
-    const isRent = post.type == "demandRent" || post.type == "offerRent";
+    const isRent =
+      post.type == "demandRent" ||
+      post.type == "offerRent" ||
+      post.type == "stay";
     const isHouseRent =
       post.subtype == "house" ||
       post.subtype == "appartment" ||
