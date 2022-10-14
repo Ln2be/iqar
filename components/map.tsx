@@ -471,7 +471,7 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
     const isWarhouse = post.subtype == "store";
     const isShop = post.subtype == "shop";
     const isOther = post.subtype == "other";
-    const isStay = post.subtype == "stay";
+    const isStay = post.type == "stay";
 
     const isLand = post.subtype == "land";
     const isHouseBuying = post.subtype == "house";
