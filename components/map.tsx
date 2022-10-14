@@ -23,6 +23,7 @@ import * as geolib from "geolib";
 import { basepath, correctPhone } from "../lib/myfunctions";
 import AvTimerIcon from "@mui/icons-material/AvTimer";
 import SpatialTrackingIcon from "@mui/icons-material/SpatialTracking";
+import DeskIcon from "@mui/icons-material/DesktopMac";
 
 export function PickMap({
   handlePosition,
@@ -113,8 +114,9 @@ export function FillMap({ posts }: { posts: Post[] }) {
       high: isHouseRent && 140 <= post.price && post.price <= 160,
       veryHigh: isHouseRent && 170 <= post.price,
       //
-      stay: post.subtype == "stay",
+      stay: post.type == "stay",
       warehouse: post.subtype == "store",
+      office: post.subtype == "office",
       shop: post.subtype == "shop",
       other: post.subtype == "other",
       //
@@ -298,6 +300,14 @@ export function FillMap({ posts }: { posts: Post[] }) {
               color: "green",
             }}
           ></StoreIcon>
+          <DeskIcon
+            onClick={() => {
+              setFilter("office");
+            }}
+            sx={{
+              color: "green",
+            }}
+          ></DeskIcon>
           <AltRouteIcon
             onClick={() => {
               setFilter("other");
@@ -328,8 +338,7 @@ export function FillMap({ posts }: { posts: Post[] }) {
               ) : badge == "track" && post.track && post.track.trackDelay ? (
                 <Badge
                   badgeContent={
-                    post.track?.trackDelay -
-                    lapsedTimeDays(post.track.trackDate)
+                    post.track.trackDelay - lapsedTimeDays(post.track.trackDate)
                   }
                   // sx={{ color: "yellow" }}
                   color="info"
@@ -464,6 +473,7 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
     const isLand = post.subtype == "land";
     const isHouseBuying = post.subtype == "house";
     const isInvest = post.subtype == "invest";
+    const isOffice = post.subtype == "office";
 
     if (isRent) {
       if (isHouseRent) {
@@ -578,6 +588,17 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
             height={dimension}
           ></HotelIcon>
         );
+      } else if (isOffice) {
+        return (
+          <DeskIcon
+            onClick={onClick}
+            sx={{
+              color: color,
+            }}
+            width={dimension}
+            height={dimension}
+          ></DeskIcon>
+        );
       } else {
         return <div onClick={onClick}>o</div>;
       }
@@ -690,7 +711,7 @@ function lapsedTimeDays(lasttime: number) {
   const now = new Date(Date.now());
 
   const diff = now.getTime() - last.getTime();
-  const msindays = 1000 * 3600 * 24;
+  const msindays = 1000 * 3600;
 
   const days = diff / msindays;
 

@@ -38,6 +38,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import dynamic from "next/dynamic";
 import { PickMap } from "../components/map";
 
+
 // const PickMap = dynamic(() => import("../components/map"), {
 //   ssr: false,
 // });

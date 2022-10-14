@@ -5,9 +5,11 @@ import { useUser } from "../../lib/auth/hooks";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Link from "next/link";
 import { basepath } from "../../lib/myfunctions";
+import { useRouter } from "next/router";
 
 export default function AuthHeader() {
   const user = useUser();
+  const router = useRouter();
   return (
     <Box>
       <Box>
@@ -22,23 +24,38 @@ export default function AuthHeader() {
               pr: 2,
             }}
           >
-            <Link href={"/settings"}>
+            {user.tel == "22405904" ? (
               <Box
                 sx={{
-                  display: "flex",
-                  flexDirection: "row",
+                  pl: 1,
+                }}
+                onClick={() => {
+                  router.back();
+                  router.reload();
                 }}
               >
-                <AccountCircleIcon></AccountCircleIcon>
+                رجوع
+              </Box>
+            ) : (
+              <Link href={"/settings"}>
                 <Box
                   sx={{
-                    pl: 1,
+                    display: "flex",
+                    flexDirection: "row",
                   }}
                 >
-                  {user?.username}
+                  <AccountCircleIcon></AccountCircleIcon>
+                  <Box
+                    sx={{
+                      pl: 1,
+                    }}
+                  >
+                    {user?.username}
+                  </Box>
                 </Box>
-              </Box>
-            </Link>
+              </Link>
+            )}
+
             <Box
               sx={{
                 cursor: "pointer",
