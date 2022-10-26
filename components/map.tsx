@@ -26,15 +26,17 @@ import SpatialTrackingIcon from "@mui/icons-material/SpatialTracking";
 import DeskIcon from "@mui/icons-material/DesktopMac";
 
 export function PickMap({
+  position = [18.0782, -15.965],
   handlePosition,
 }: {
+  position?: [number, number];
   handlePosition: (position: [number, number]) => void;
 }) {
   const [anchor, setAnchor] = useState<[number, number]>([18.0782, -15.965]);
   return (
     <Map
       height={300}
-      defaultCenter={[18.0782, -15.965]}
+      defaultCenter={position}
       defaultZoom={11}
       onClick={({ event, latLng, pixel }) => {
         setAnchor(latLng);
@@ -689,11 +691,7 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
     }
   }
 
-  return (
-    <>
-      <IconMarker onClick={onClick} post={post}></IconMarker>
-    </>
-  );
+  return <IconMarker onClick={onClick} post={post}></IconMarker>;
 }
 
 function lapsedTime(lasttime: number, nbweeks: number) {

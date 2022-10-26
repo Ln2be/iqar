@@ -31,7 +31,6 @@ export default function AuthHeader() {
                 }}
                 onClick={() => {
                   router.back();
-                  router.reload();
                 }}
               >
                 رجوع

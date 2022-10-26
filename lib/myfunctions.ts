@@ -1,6 +1,7 @@
 import Resizer from "react-image-file-resizer";
 import imageCompression from "browser-image-compression";
 // import { DBCounter } from "./mongo";
+import * as geolib from "geolib";
 
 // Correct the phone. The phone comes incorrect sometimes because of the arabic orientation.
 export function correctPhone(tel: string) {
@@ -167,6 +168,17 @@ export const adtypes = [
   },
 ];
 
+export const adtypesrent = [
+  {
+    value: "demandRent",
+    label: "طلب ايجار",
+  },
+  {
+    value: "offerRent",
+    label: "عرض ايجار",
+  },
+];
+
 export const subtypes = {
   buying: [
     {
@@ -184,17 +196,18 @@ export const subtypes = {
   ],
   rent: [
     {
-      value: "house",
-      label: "دار",
-    },
-    {
-      value: "appartment",
-      label: "شقة",
-    },
-    {
       value: "studio",
       label: "استيديو",
     },
+    {
+      value: "big",
+      label: "دار",
+    },
+    {
+      value: "medium",
+      label: "منزل متوسط",
+    },
+
     {
       value: "shop",
       label: "محل",
@@ -210,8 +223,19 @@ export const subtypes = {
   ],
 };
 
+export const mfeatures = [
+  {
+    value: "favorite",
+    label: "مفضلة",
+  },
+  {
+    value: "garage",
+    label: "كراج",
+  },
+];
+
 export function whichSubtype(type: string) {
-  return (type == "demandRent" || type == "offerRent") ? "rent" : "buying";
+  return type == "demandRent" || type == "offerRent" ? "rent" : "buying";
 }
 
 // similar subtypes
@@ -291,4 +315,98 @@ export async function isASpecialLink({
   type: string;
 }) {
   return validCode && type == "demandRent";
+}
+
+const Tayaret = [
+  { longitude: -15.9029792, latitude: 18.1560679 },
+  { longitude: -15.9267114, latitude: 18.1744173 },
+  { longitude: -15.9637902, latitude: 18.1729494 },
+  { longitude: -15.9599708, latitude: 18.1231156 },
+  { longitude: -15.9492419, latitude: 18.1200158 },
+  { longitude: -15.9403155, latitude: 18.1147134 },
+  { longitude: -15.9231494, latitude: 18.1362483 },
+  { longitude: -15.9029792, latitude: 18.1560679 },
+];
+
+const Ksar = [
+  { longitude: -15.9599708, latitude: 18.1231156 },
+  { longitude: -15.9751813, latitude: 18.1025223 },
+  { longitude: -15.9615343, latitude: 18.100809 },
+  { longitude: -15.9537237, latitude: 18.097872 },
+  { longitude: -15.9403155, latitude: 18.1147134 },
+  { longitude: -15.9492419, latitude: 18.1200158 },
+  { longitude: -15.9599708, latitude: 18.1231156 },
+];
+
+const TevreghZeina = [
+  { longitude: -15.9751813, latitude: 18.1025223 },
+  { longitude: -15.9599708, latitude: 18.1231156 },
+  { longitude: -15.9621351, latitude: 18.1514648 },
+  { longitude: -16.0092561, latitude: 18.1513832 },
+  { longitude: -16.0051362, latitude: 18.1366203 },
+  { longitude: -16.0053937, latitude: 18.0995037 },
+  { longitude: -15.997154, latitude: 18.0986063 },
+  { longitude: -15.9829061, latitude: 18.1039092 },
+  { longitude: -15.9751813, latitude: 18.1025223 },
+];
+
+const Capital = [
+  { longitude: -15.997154, latitude: 18.0986063 },
+  { longitude: -15.9952657, latitude: 18.0915083 },
+  { longitude: -15.9911458, latitude: 18.084818 },
+  { longitude: -15.9833353, latitude: 18.0873473 },
+  { longitude: -15.975353, latitude: 18.0875105 },
+  { longitude: -15.9674566, latitude: 18.0864498 },
+  { longitude: -15.9600751, latitude: 18.0887343 },
+  { longitude: -15.9537237, latitude: 18.097872 },
+  { longitude: -15.9615343, latitude: 18.100809 },
+  { longitude: -15.9751813, latitude: 18.1025223 },
+  { longitude: -15.9829061, latitude: 18.1039092 },
+  { longitude: -15.997154, latitude: 18.0986063 },
+];
+
+const Arafat = [
+  { longitude: -15.9655819, latitude: 18.079028 },
+  { longitude: -15.9755383, latitude: 18.0553644 },
+  { longitude: -15.9729634, latitude: 18.0415728 },
+  { longitude: -15.9552823, latitude: 18.0499785 },
+  { longitude: -15.935112, latitude: 18.0509577 },
+  { longitude: -15.9315072, latitude: 18.0734796 },
+  { longitude: -15.9655819, latitude: 18.079028 },
+];
+
+export function getMapregion(position: [number, number]) {
+  const llposition = { latitude: position[0], longitude: position[1] };
+
+  const isTayaret = geolib.isPointInPolygon(llposition, Tayaret);
+  const isKsar = geolib.isPointInPolygon(llposition, Ksar);
+  const isTevreghZeina = geolib.isPointInPolygon(llposition, TevreghZeina);
+  const isCapital = geolib.isPointInPolygon(llposition, Capital);
+  const isArafat = geolib.isPointInPolygon(llposition, Arafat);
+
+  return isTayaret
+    ? "Tayaret"
+    : isKsar
+    ? "Ksar"
+    : isTevreghZeina
+    ? "TevreghZeina"
+    : isCapital
+    ? "Capital"
+    : isArafat
+    ? "Arafat"
+    : "None";
+}
+
+export function categoryPrice(price: number) {
+  return price < 50
+    ? "price40"
+    : 50 <= price && price <= 70
+    ? "price60"
+    : 80 <= price && price <= 100
+    ? "price90"
+    : 110 <= price && price <= 130
+    ? "price120"
+    : 140 <= price && price <= 160
+    ? "price150"
+    : "price170";
 }

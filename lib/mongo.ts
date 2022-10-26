@@ -31,6 +31,7 @@ export const DBUser =
 const postSchema = new Schema<Post>({
   type: String,
   subtype: String,
+  size: String,
   departement: String,
   departements: [String],
   region: String,
@@ -62,6 +63,8 @@ const postSchema = new Schema<Post>({
     trackDate: Number,
     trackDelay: Number,
   },
+  mapregion: String,
+  features: [String],
 });
 
 export const DBPost =

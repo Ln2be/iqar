@@ -14,6 +14,7 @@ import CreateIcon from "@mui/icons-material/Create";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import CallIcon from "@mui/icons-material/Call";
 import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
+import { Button } from "@mui/material";
 
 export default function GHeader() {
   const router = useRouter();
@@ -26,17 +27,48 @@ export default function GHeader() {
       }}
       className={styles.cairofont}
     >
-      <Box>
-        <Box
-          sx={{
-            bgcolor: (theme) => theme.palette.primary.main,
-            p: 1,
-            color: "white",
-          }}
-        >
+      <Box
+        sx={{
+          bgcolor: (theme) => theme.palette.primary.main,
+          p: 1,
+          color: "white",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <Box>
           <p></p>
           عقار نواكشوط
         </Box>
+        {router.pathname.startsWith("/buy") && (
+          <Button
+            variant="contained"
+            sx={{
+              background: "white",
+              color: "red",
+            }}
+            onClick={() => {
+              router.push("/rent");
+            }}
+          >
+            الايجار
+          </Button>
+        )}
+        {router.pathname.startsWith("/rent") && (
+          <Button
+            variant="contained"
+            sx={{
+              background: "white",
+              color: "red",
+            }}
+            onClick={() => {
+              router.push("/buy");
+            }}
+          >
+            البيع
+          </Button>
+        )}
       </Box>
       <Box
         sx={{
@@ -71,29 +103,22 @@ export default function GHeader() {
           ></HomeOutlinedIcon>
         )}
 
-        {router.pathname == "/posts?action=form" ? (
-          <Box
-            sx={{
-              borderBottom: "3px solid",
-              borderColor: (theme) => theme.palette.primary.main,
-              // color: "#0039e6",
-              color: (theme) => theme.palette.primary.main,
-              // width: "100%",
-            }}
-          >
-            <CreateIcon
+        {user?.role == "admin" &&
+          (router.pathname.startsWith("/rent") ? (
+            <CreateOutlinedIcon
               onClick={() => {
-                router.push("/posts?action=form");
+                router.push("/posts?action=rentform");
               }}
-            ></CreateIcon>
-          </Box>
-        ) : (
-          <CreateOutlinedIcon
-            onClick={() => {
-              router.push("/posts?action=form");
-            }}
-          ></CreateOutlinedIcon>
-        )}
+            ></CreateOutlinedIcon>
+          ) : (
+            router.pathname.startsWith("/buy") && (
+              <CreateOutlinedIcon
+                onClick={() => {
+                  router.push("/posts?action=buyform");
+                }}
+              ></CreateOutlinedIcon>
+            )
+          ))}
 
         {router.pathname == "/contactUs" ? (
           <Box
@@ -147,7 +172,7 @@ export default function GHeader() {
           ></LoginOutlinedIcon>
         )}
 
-        {router.pathname == "/menu" ? (
+        {/* {router.pathname == "/menu" ? (
           <Box
             sx={{
               borderBottom: "3px solid",
@@ -165,7 +190,7 @@ export default function GHeader() {
               router.push("/menu");
             }}
           ></MenuOutlinedIcon>
-        )}
+        )} */}
       </Box>
     </Box>
   );

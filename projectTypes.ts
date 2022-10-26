@@ -22,6 +22,7 @@ export interface Post {
   _id?: string;
   type: string;
   subtype: string;
+  size: string;
   departement: string;
   departements: string[];
   region: string;
@@ -39,13 +40,15 @@ export interface Post {
   sendTo: string[];
   sendToArchive: string[];
   periority: number;
-  position?: [number, number];
+  position: [number, number];
   track?: {
     postid: string;
     postLink: string;
     trackDate: number;
     trackDelay: number;
   };
+  mapregion: string;
+  features: string[];
 }
 
 export interface Image {
