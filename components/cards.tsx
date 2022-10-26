@@ -1042,6 +1042,8 @@ export function PostRentForm({ upost = post }: { upost?: Post }) {
   const [type, setType] = useState(upost.type);
   const [disable, setDisable] = useState(false);
 
+  const [render, setRender] = useState(false);
+
   // check if it is an update
   const isUpdate = upost._id ? true : false;
 
@@ -1278,15 +1280,18 @@ export function PostRentForm({ upost = post }: { upost?: Post }) {
                   label={mfeature.label}
                   control={
                     <Checkbox
+                      defaultChecked={post.features.includes(mfeature.value)}
                       checked={post.features.includes(mfeature.value)}
                       onClick={(checked) => {
                         if (checked) {
                           post.features.push(mfeature.value);
+                          setRender(!render);
                         } else {
                           if (post.features.includes(mfeature.value)) {
                             post.features = post.features.filter(
                               (value) => value != mfeature.value
                             );
+                            setRender(!render);
                           }
                         }
                       }}
