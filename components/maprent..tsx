@@ -56,7 +56,7 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
     }
   });
 
-  let cposts: Post[][] = [];
+  const cposts: Post[][] = [];
 
   if (state == "comparison" && gposti != undefined && cpost) {
     const tposts = gposts.filter((post) => {
