@@ -200,12 +200,12 @@ export const subtypes = {
       label: "استيديو",
     },
     {
-      value: "big",
-      label: "دار",
-    },
-    {
       value: "medium",
       label: "منزل متوسط",
+    },
+    {
+      value: "big",
+      label: "منزل كبير",
     },
 
     {

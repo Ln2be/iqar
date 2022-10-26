@@ -1282,18 +1282,17 @@ export function PostRentForm({ upost = post }: { upost?: Post }) {
                     <Checkbox
                       defaultChecked={post.features.includes(mfeature.value)}
                       checked={post.features.includes(mfeature.value)}
-                      onClick={(checked) => {
-                        if (checked) {
+                      onClick={(e: any) => {
+                        if (e.target.checked) {
                           post.features.push(mfeature.value);
-                          setRender(!render);
                         } else {
                           if (post.features.includes(mfeature.value)) {
                             post.features = post.features.filter(
                               (value) => value != mfeature.value
                             );
-                            setRender(!render);
                           }
                         }
+                        setRender(!render);
                       }}
                     ></Checkbox>
                   }
