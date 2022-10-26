@@ -32,7 +32,7 @@ export function PickMap({
   position?: [number, number];
   handlePosition: (position: [number, number]) => void;
 }) {
-  const [anchor, setAnchor] = useState<[number, number]>([18.0782, -15.965]);
+  const [anchor, setAnchor] = useState<[number, number]>(position);
   return (
     <Map
       height={300}

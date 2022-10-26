@@ -253,7 +253,7 @@ export async function getServerSideProps({
       result: result,
       length: posts.length,
     };
-  } else if (query.action == "form") {
+  } else if (query.action == "rentform") {
     injectObject = {
       result: query.action,
     };

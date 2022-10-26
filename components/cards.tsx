@@ -1178,7 +1178,7 @@ export function PostRentForm({ upost = post }: { upost?: Post }) {
         {user?.role == "admin" &&
           (isUpdate ? (
             <PickMap
-              position={post.position}
+              position={upost.position}
               handlePosition={
                 handlePosition
                 //   (position) => {
