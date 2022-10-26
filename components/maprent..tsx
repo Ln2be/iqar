@@ -56,17 +56,18 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
     }
   });
 
-  let cposts: Post[] = [];
+  let cposts: Post[][] = [];
 
   if (state == "comparison" && gposti != undefined && cpost) {
     const tposts = gposts.filter((post) => {
-      console.log(cpost.mapregion);
       return post[0].mapregion == cpost.mapregion;
     })[0];
 
-    cposts = tposts.filter(
-      (cspost) => cpost._id && !cspost.comparedTo?.includes(cpost._id)
+    const tnposts = tposts.filter(
+      (cpost) => cpost._id && !cpost.comparedTo?.includes(cpost._id)
     );
+
+    cposts.push(tposts);
   }
 
   const router = useRouter();
@@ -163,13 +164,14 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
       <Map height={500} defaultCenter={[18.0782, -15.965]} defaultZoom={11}>
         <ZoomControl />
         {gposts.length > 0 &&
+          !cpost &&
           gposts.map((gpost, i) => {
             const length = gpost.length;
             const post = gpost[0];
 
             return (
               <Overlay key={i} anchor={post.position}>
-                <Badge badgeContent={length}>
+                <Badge badgeContent={length} color="primary">
                   <IMarkerPH
                     onClick={() => {
                       setGPostI(i);
@@ -202,6 +204,30 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
             </Overlay>
           );
         })}
+        {cpost &&
+          cposts.length > 0 &&
+          cposts.map((gpost, i) => {
+            const length = gpost.length;
+            const post = gpost[0];
+
+            return (
+              <Overlay key={i} anchor={post.position}>
+                <Badge badgeContent={length} color="primary">
+                  <IMarkerPH
+                    onClick={() => {
+                      setGPostI(i);
+                      setType("demand");
+                      // if (cPostid) {
+                      //   setCPosts(posts);
+                      // }
+                      setRender(!render);
+                    }}
+                    post={post}
+                  ></IMarkerPH>
+                </Badge>
+              </Overlay>
+            );
+          })}
       </Map>
 
       <Box>
@@ -219,6 +245,7 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
             variant="outlined"
             onClick={() => {
               setState("contact");
+              setCPost(undefined);
             }}
           >
             رجوع
@@ -247,7 +274,7 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
           cposts &&
           type == "demand" &&
           cpost &&
-          cposts.map((gpost, i) => (
+          cposts[0].map((gpost, i) => (
             <PostCard
               key={i}
               type="compared"

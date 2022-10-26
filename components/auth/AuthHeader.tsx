@@ -66,7 +66,13 @@ export default function AuthHeader() {
                   flexDirection: "column",
                 }}
               >
-                <Link href="/map?action=rent">الخريطة</Link>
+                {router.pathname.startsWith("/rent") ? (
+                  <Link href="/rent/maprent">الخريطة</Link>
+                ) : (
+                  router.pathname.startsWith("/buy/mapbuy") && (
+                    <Link href="/map?action=rent">الخريطة</Link>
+                  )
+                )}
               </Box>
             </Box>
             <Box
