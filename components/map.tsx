@@ -27,9 +27,11 @@ import DeskIcon from "@mui/icons-material/DesktopMac";
 
 export function PickMap({
   position = [18.0782, -15.965],
+  zoum = 11,
   handlePosition,
 }: {
   position?: [number, number];
+  zoom?: number;
   handlePosition: (position: [number, number]) => void;
 }) {
   const [anchor, setAnchor] = useState<[number, number]>(position);
@@ -37,7 +39,7 @@ export function PickMap({
     <Map
       height={300}
       defaultCenter={position}
-      defaultZoom={11}
+      defaultZoom={zoom}
       onClick={({ event, latLng, pixel }) => {
         setAnchor(latLng);
         handlePosition(latLng);

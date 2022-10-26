@@ -1179,6 +1179,7 @@ export function PostRentForm({ upost = post }: { upost?: Post }) {
           (isUpdate ? (
             <PickMap
               position={upost.position}
+              zoom={14}
               handlePosition={
                 handlePosition
                 //   (position) => {
