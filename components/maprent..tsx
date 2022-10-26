@@ -85,6 +85,7 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
       <Chalet
         onClick={() => {
           setFilter("price40");
+          setGPostI(undefined);
         }}
         sx={{
           color: "green",
@@ -93,6 +94,7 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
       <HouseSiding
         onClick={() => {
           setFilter("price60");
+          setGPostI(undefined);
         }}
         sx={{
           color: "green",
@@ -101,6 +103,7 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
       <OtherHouses
         onClick={() => {
           setFilter("price90");
+          setGPostI(undefined);
         }}
         sx={{
           color: "green",
@@ -109,6 +112,7 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
       <Apartment
         onClick={() => {
           setFilter("price120");
+          setGPostI(undefined);
         }}
         sx={{
           color: "green",
@@ -117,6 +121,7 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
       <HomeWork
         onClick={() => {
           setFilter("price150");
+          setGPostI(undefined);
         }}
         sx={{
           color: "green",
@@ -126,6 +131,7 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
       <Villa
         onClick={() => {
           setFilter("170");
+          setGPostI(undefined);
         }}
         sx={{
           color: "green",

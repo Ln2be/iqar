@@ -45,11 +45,18 @@ export default function Page({
   // spin if the post is submitted
   // const [spin, setSpin] = useState(false);
 
-  function rUpdate() {
+  function rentUpdate() {
     const post = result && (JSON.parse(result) as Post);
 
     return post && <PostRentForm upost={post}></PostRentForm>;
   }
+
+  function buyUpdate() {
+    const post = result && (JSON.parse(result) as Post);
+
+    return post && <PostRentForm upost={post}></PostRentForm>;
+  }
+
   function rPost() {
     const post = result && (JSON.parse(result) as Post);
 
@@ -105,8 +112,11 @@ export default function Page({
     <Layout>
       <Box>
         {action == "rentform" && <PostRentForm></PostRentForm>}
-        {action == "update" && <Box>{rUpdate()}</Box>}
-        {id && <Box>{rPost()}</Box>}
+        {action == "rentupdate" && <Box>{rentUpdate()}</Box>}
+        {action == "update" && <Box>{buyUpdate()}</Box>}
+        {id && (action != "rentupdate" || action != "rentupdate") && (
+          <Box>{rPost()}</Box>
+        )}
       </Box>
     </Layout>
   );
@@ -247,6 +257,16 @@ export async function getServerSideProps({
     injectObject = {
       result: query.action,
     };
+  } else if (query.action == "rentupdate") {
+    const post = await DBPost.findOne({ _id: query.id });
+
+    const result = JSON.stringify(post);
+
+    injectObject = {
+      result,
+    };
+
+    // if requesting one post, whatsapp api contraint prevented me from using an action query here
   } else if (query.action == "update") {
     const post = await DBPost.findOne({ _id: query.id });
 
