@@ -27,7 +27,7 @@ import DeskIcon from "@mui/icons-material/DesktopMac";
 
 export function PickMap({
   position = [18.0782, -15.965],
-  zoum = 11,
+  zoom = 11,
   handlePosition,
 }: {
   position?: [number, number];
