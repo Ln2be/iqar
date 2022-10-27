@@ -434,7 +434,7 @@ export function FillMapO({ posts }: { posts: Post[] }) {
       ></Store>
       <DesktopMac
         onClick={() => {
-          setFilter("other");
+          setFilter("office");
           setPost(undefined);
         }}
         sx={{
