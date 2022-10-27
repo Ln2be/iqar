@@ -25,7 +25,6 @@ import {
 
 import { basepath, correctPhone, getMapregion } from "../lib/myfunctions";
 
-const removeids: { [key: string]: string[] }[] = [];
 export function FillMapPH({ posts }: { posts: Post[] }) {
   const [gposti, setGPostI] = useState<number>();
   const [render, setRender] = useState<boolean>(false);
@@ -118,7 +117,7 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
                 <PostCard
                   key={i}
                   type="compared"
-                  post={gpost}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                  post={gpost}
                   comparaison={{
                     url:
                       cpost.details +
@@ -394,3 +393,128 @@ function IMarkerPH({ post, onClick }: { post: Post; onClick?: () => void }) {
   return <IconMarker onClick={onClick} post={post}></IconMarker>;
 }
 // iqar marker
+
+export function FillMapO({ posts }: { posts: Post[] }) {
+  const [filter, setFilter] = useState<string>("warehouse");
+  const [post, setPost] = useState<Post>();
+  const [render, setRender] = useState<boolean>(false);
+
+  // filtered posts
+  const fposts = posts.filter((post) => post.subtype == filter);
+
+  const filterPanel = (
+    <Box
+      sx={{
+        display: "grid",
+        gridTemplateColumns: "repeat(5, 1fr)",
+        gap: { xs: 1, md: 2 },
+        marginBottom: 2,
+        // maxWidth: "500px",
+      }}
+    >
+      <Warehouse
+        onClick={() => {
+          setFilter("store");
+          setPost(undefined);
+        }}
+        sx={{
+          color: "green",
+        }}
+      ></Warehouse>
+      <Store
+        onClick={() => {
+          setFilter("shop");
+          setPost(undefined);
+        }}
+        sx={{
+          color: "green",
+        }}
+      ></Store>
+      <OtherHouses
+        onClick={() => {
+          setFilter("other");
+          setPost(undefined);
+        }}
+        sx={{
+          color: "green",
+        }}
+      ></OtherHouses>
+    </Box>
+  );
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        marginBottom: 2,
+      }}
+    >
+      {filterPanel}
+      <Map height={500} defaultCenter={[18.0782, -15.965]} defaultZoom={11}>
+        <ZoomControl />
+        {fposts.length > 0 &&
+          fposts.map((fpost, i) => {
+            return (
+              <Overlay key={i} anchor={fpost.position}>
+                <IMarkerO
+                  onClick={() => {
+                    setPost(fpost);
+                    // if (cPostid) {
+                    //   setCPosts(posts);
+                    // }
+                    setRender(!render);
+                  }}
+                  post={fpost}
+                ></IMarkerO>
+              </Overlay>
+            );
+          })}
+      </Map>
+      <Box
+        sx={{
+          marginTop: 2,
+        }}
+      >
+        {post && <PostCard type="post" post={post}></PostCard>}
+      </Box>
+    </Box>
+  );
+}
+
+function IMarkerO({ post, onClick }: { post: Post; onClick?: () => void }) {
+  const color = post.type == "demandRent" ? "green" : "red";
+  // const dimension = 10;
+
+  const typeToIcon: { [key: string]: JSX.Element } = {
+    warehouse: (
+      <Warehouse
+        onClick={onClick}
+        sx={{
+          color: color,
+        }}
+      ></Warehouse>
+    ),
+    store: (
+      <Store
+        onClick={onClick}
+        sx={{
+          color: color,
+        }}
+        // width={dimension}
+        // height={dimension}
+      ></Store>
+    ),
+
+    other: (
+      <OtherHouses
+        onClick={onClick}
+        sx={{
+          color: color,
+        }}
+      ></OtherHouses>
+    ),
+  };
+
+  return typeToIcon[post.subtype];
+}

@@ -183,7 +183,7 @@ export default function Page() {
               </Box>
             </Link>
 
-            <Link href={"/rent/map?category=price"}>
+            <Link href={"/rent/map?action=houseprice"}>
               <Box
                 sx={{
                   bgColor: "#fff",
@@ -221,7 +221,45 @@ export default function Page() {
                 </Box>
               </Box>
             </Link>
-            <Link href={"/map?action=rent&category=size"}>
+            <Link href={"/rent/map?action=other"}>
+              <Box
+                sx={{
+                  bgColor: "#fff",
+                  border: "1px solid",
+                  width: "100%",
+                  height: "150px",
+                }}
+              >
+                <Home></Home>
+                <Box
+                  style={{
+                    width: "100%",
+                    height: "60%",
+                  }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-around",
+                    // alignItems: "center",
+                  }}
+                ></Box>
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "20%",
+                    // textAlign: "center",
+                    backgroundColor: (theme) => theme.palette.primary.main,
+                    color: "white",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Box>اخرى</Box>
+                </Box>
+              </Box>
+            </Link>
+            {/* <Link href={"/map?action=rent&category=size"}>
               <Box
                 sx={{
                   bgColor: "#fff",
@@ -297,7 +335,7 @@ export default function Page() {
                   <Box>المفضلة</Box>
                 </Box>
               </Box>
-            </Link>
+            </Link> */}
           </Box>
         </Box>
       </Layout>

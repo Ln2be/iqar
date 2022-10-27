@@ -16,7 +16,7 @@ import {
   HomeWork,
   Villa,
 } from "@mui/icons-material";
-import { FillMapPH } from "../../components/maprent.";
+import { FillMapO, FillMapPH } from "../../components/maprent.";
 
 // const Map = dynamic(() => import("../components/map"), {
 //   ssr: false,
@@ -27,7 +27,6 @@ export default function Page({ sposts }: { sposts: string }) {
   const router = useRouter();
   const query = router.query;
   const { action } = query;
-  const isRent = action == "rent";
   return (
     <Layout>
       <Box
@@ -45,7 +44,8 @@ export default function Page({ sposts }: { sposts: string }) {
             marginBottom: 2,
           }}
         ></Box>
-        <FillMapPH posts={posts}></FillMapPH>
+        {action == "houseprice" && <FillMapPH posts={posts}></FillMapPH>}
+        {action == "other" && <FillMapO posts={posts}></FillMapO>}
       </Box>
     </Layout>
   );
@@ -61,99 +61,32 @@ export async function getServerSideProps({
   })) as Post[];
 
   const { action } = query;
+  let posts: Post[] = [];
 
-  const posts = allposts.filter((post) => {
-    const isRent =
-      (post.type == "demandRent" || post.type == "offerRent") &&
-      post.subtype != "stay";
-    return post.position && post.position.length > 0 && isRent;
-  });
+  if (action == "houseprice") {
+    posts = allposts.filter((post) => {
+      const isRent =
+        (post.type == "demandRent" || post.type == "offerRent") &&
+        post.subtype != "stay";
+      return post.position && post.position.length > 0 && isRent;
+    });
+  } else if (action == "other") {
+    posts = allposts.filter((post) => {
+      const isRent =
+        (post.type == "demandRent" || post.type == "offerRent") &&
+        post.subtype != "stay";
+
+      const isOther =
+        post.subtype == "warehouse" ||
+        post.subtype == "store" ||
+        post.subtype == "other";
+      return post.position && post.position.length > 0 && isRent && isOther;
+    });
+  }
 
   return {
     props: {
       sposts: JSON.stringify(posts),
     },
   };
-}
-
-function IMarkerPH({ post, onClick }: { post: Post; onClick?: () => void }) {
-  const color = post.type == "demandRent" ? "green" : "red";
-  // const dimension = 10;
-
-  function IconMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
-    function categoryPrice(price: number) {
-      return price < 50
-        ? "price40"
-        : 50 <= price && price <= 70
-        ? "price60"
-        : 80 <= price && price <= 100
-        ? "price90"
-        : 110 <= price && price <= 130
-        ? "price120"
-        : 140 <= price && price <= 160
-        ? "price150"
-        : "price170";
-    }
-
-    const priceToIcon = {
-      price40: (
-        <Chalet
-          onClick={onClick}
-          sx={{
-            color: color,
-          }}
-        ></Chalet>
-      ),
-      price60: (
-        <HouseSiding
-          onClick={onClick}
-          sx={{
-            color: color,
-          }}
-          // width={dimension}
-          // height={dimension}
-        ></HouseSiding>
-      ),
-
-      price90: (
-        <OtherHouses
-          onClick={onClick}
-          sx={{
-            color: color,
-          }}
-        ></OtherHouses>
-      ),
-
-      price120: (
-        <Apartment
-          onClick={onClick}
-          sx={{
-            color: color,
-          }}
-        ></Apartment>
-      ),
-
-      price150: (
-        <HomeWork
-          onClick={onClick}
-          sx={{
-            color: color,
-          }}
-        ></HomeWork>
-      ),
-
-      price170: (
-        <Villa
-          onClick={onClick}
-          sx={{
-            color: color,
-          }}
-        ></Villa>
-      ),
-    };
-
-    return priceToIcon[categoryPrice(post.price)];
-  }
-
-  return <IconMarker onClick={onClick} post={post}></IconMarker>;
 }
