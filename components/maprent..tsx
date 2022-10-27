@@ -25,6 +25,7 @@ import {
 
 import { basepath, correctPhone, getMapregion } from "../lib/myfunctions";
 
+const removeids: { [key: string]: string[] }[] = [];
 export function FillMapPH({ posts }: { posts: Post[] }) {
   const [gposti, setGPostI] = useState<number>();
   const [render, setRender] = useState<boolean>(false);
@@ -56,18 +57,84 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
     }
   });
 
-  const cposts: Post[][] = [];
+  function rCPosts({ ctype }: { ctype: string }) {
+    const [crender, setCRender] = useState(false);
 
-  if (state == "comparison" && gposti != undefined && cpost) {
-    const tposts = gposts.filter((post) => {
-      return post[0].mapregion == cpost.mapregion;
-    })[0];
+    const cposts: Post[][] = [];
 
-    const tnposts = tposts.filter(
-      (cpost) => cpost._id && !cpost.comparedTo?.includes(cpost._id)
-    );
+    if (state == "comparison" && gposti != undefined && cpost) {
+      const tposts = gposts.filter((post) => {
+        return post[0].mapregion == cpost.mapregion;
+      })[0];
 
-    cposts.push(tposts);
+      const tnposts = tposts.filter(
+        (post) => post._id && !cpost.comparedTo?.includes(post._id)
+      );
+
+      tnposts.length > 0 && cposts.push(tnposts);
+    }
+
+    // remove the post compared
+    function remove(id: string) {
+      if (cpost) {
+        cpost.comparedTo?.push(id);
+        fetch("/api/compared?id=" + cpost._id + "&post=" + id).then(() => {
+          setCRender(!crender);
+        });
+      }
+    }
+
+    return ctype == "map"
+      ? cpost &&
+          cposts.length > 0 &&
+          cposts.map((gpost, i) => {
+            const length = gpost.length;
+            const post = gpost[0];
+
+            return (
+              <Overlay key={i} anchor={post.position}>
+                <Badge badgeContent={length} color="primary">
+                  <IMarkerPH
+                    onClick={() => {
+                      setGPostI(i);
+                      setType("demand");
+                      // if (cPostid) {
+                      //   setCPosts(posts);
+                      // }
+                      setRender(!render);
+                    }}
+                    post={post}
+                  ></IMarkerPH>
+                </Badge>
+              </Overlay>
+            );
+          })
+      : ctype == "show" &&
+          (state == "comparison" &&
+          cposts.length > 0 &&
+          type == "demand" &&
+          cpost
+            ? cposts[0].map((gpost, i) => (
+                <PostCard
+                  key={i}
+                  type="compared"
+                  post={gpost}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                  comparaison={{
+                    url:
+                      cpost.details +
+                      "\n" +
+                      basepath +
+                      "/posts?id=" +
+                      cpost._id,
+                    tel: correctPhone(gpost.tel),
+                    remove: remove,
+                  }}
+                ></PostCard>
+              ))
+            : cpost &&
+              type == "offer" && (
+                <PostCard type="post" post={cpost}></PostCard>
+              ));
   }
 
   const router = useRouter();
@@ -142,15 +209,6 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
   );
   // filter function
 
-  // remove the post compared
-  function remove(id: string) {
-    if (cpost) {
-      fetch("/api/compared?id=" + cpost._id + "&post=" + id).then(() => {
-        router.reload();
-      });
-    }
-  }
-
   // const [anchor, setAnchor] = useState<[number, number]>([18.0782, -15.965]);
   return (
     <Box
@@ -204,30 +262,8 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
             </Overlay>
           );
         })}
-        {cpost &&
-          cposts.length > 0 &&
-          cposts.map((gpost, i) => {
-            const length = gpost.length;
-            const post = gpost[0];
 
-            return (
-              <Overlay key={i} anchor={post.position}>
-                <Badge badgeContent={length} color="primary">
-                  <IMarkerPH
-                    onClick={() => {
-                      setGPostI(i);
-                      setType("demand");
-                      // if (cPostid) {
-                      //   setCPosts(posts);
-                      // }
-                      setRender(!render);
-                    }}
-                    post={post}
-                  ></IMarkerPH>
-                </Badge>
-              </Overlay>
-            );
-          })}
+        {rCPosts({ ctype: "map" })}
       </Map>
 
       <Box>
@@ -270,22 +306,7 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
               type == "offer" && (
                 <PostCard type="post" post={oposts[gposti]}></PostCard>
               ))}
-        {state == "comparison" && cposts && type == "demand" && cpost
-          ? cposts[0].map((gpost, i) => (
-              <PostCard
-                key={i}
-                type="compared"
-                post={gpost}
-                comparaison={{
-                  url:
-                    cpost.details + "\n" + basepath + "/posts?id=" + cpost._id,
-                  tel: correctPhone(gpost.tel),
-                  remove: remove,
-                }}
-              ></PostCard>
-            ))
-          : cpost &&
-            type == "offer" && <PostCard type="post" post={cpost}></PostCard>}
+        {rCPosts({ ctype: "show" })}
       </Box>
     </Box>
   );
