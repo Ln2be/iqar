@@ -64,8 +64,8 @@ export async function getServerSideProps({
 
   const posts = allposts.filter((post) => {
     const isRent =
-      post.type == "demandRent" ||
-      (post.type == "offerRent" && post.size != "stay");
+      (post.type == "demandRent" || post.type == "offerRent") &&
+      post.subtype != "stay";
     return post.position && post.position.length > 0 && isRent;
   });
 
