@@ -487,7 +487,7 @@ function IMarkerO({ post, onClick }: { post: Post; onClick?: () => void }) {
   // const dimension = 10;
 
   const typeToIcon: { [key: string]: JSX.Element } = {
-    warehouse: (
+    store: (
       <Warehouse
         onClick={onClick}
         sx={{
@@ -495,7 +495,7 @@ function IMarkerO({ post, onClick }: { post: Post; onClick?: () => void }) {
         }}
       ></Warehouse>
     ),
-    store: (
+    shop: (
       <Store
         onClick={onClick}
         sx={{
