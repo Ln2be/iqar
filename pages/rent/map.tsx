@@ -77,8 +77,9 @@ export async function getServerSideProps({
         post.subtype != "stay";
 
       const isOther =
-        post.subtype == "warehouse" ||
+        post.subtype == "shop" ||
         post.subtype == "store" ||
+        post.subtype == "office" ||
         post.subtype == "other";
       return post.position && post.position.length > 0 && isRent && isOther;
     });

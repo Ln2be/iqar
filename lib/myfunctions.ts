@@ -223,6 +223,10 @@ export const subtypes = {
       label: "مخزن",
     },
     {
+      value: "office",
+      label: "مكتب",
+    },
+    {
       value: "other",
       label: "اخرى",
     },
