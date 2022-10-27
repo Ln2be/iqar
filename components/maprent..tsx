@@ -22,8 +22,8 @@ import {
   AvTimer,
   SpatialTracking,
   Abc,
+  DesktopMac,
 } from "@mui/icons-material";
-import DeskIcon from "@mui/icons-material/Desk";
 
 import { basepath, correctPhone, getMapregion } from "../lib/myfunctions";
 
@@ -432,7 +432,7 @@ export function FillMapO({ posts }: { posts: Post[] }) {
           color: "green",
         }}
       ></Store>
-      <DeskIcon
+      <DesktopMac
         onClick={() => {
           setFilter("other");
           setPost(undefined);
@@ -440,7 +440,7 @@ export function FillMapO({ posts }: { posts: Post[] }) {
         sx={{
           color: "green",
         }}
-      ></DeskIcon>
+      ></DesktopMac>
       <Abc
         onClick={() => {
           setFilter("other");
@@ -526,12 +526,12 @@ function IMarkerO({ post, onClick }: { post: Post; onClick?: () => void }) {
       ></Abc>
     ),
     office: (
-      <DeskIcon
+      <DesktopMac
         onClick={onClick}
         sx={{
           color: color,
         }}
-      ></DeskIcon>
+      ></DesktopMac>
     ),
   };
 
