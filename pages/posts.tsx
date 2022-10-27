@@ -108,9 +108,69 @@ export default function Page({
       </Box>
     );
   }
+
+  function rPosts() {
+    const posts = result && (JSON.parse(result) as Post[]);
+    const total = length && JSON.parse(length);
+    return (
+      <Box>
+        {
+          <Head>
+            <title>
+              مؤسسة وسيطة لبيع و شراء و ايجار المنازل و الشقق و العقارات بشكل
+              عام في نواكشوط موريتانيا
+            </title>
+            <meta property="og:title" content="وسيط بيع و شراء العقارات" />
+            <meta
+              property="og:description"
+              content="تتوفر عقار نواكشوط على الكثير من عروض بيع و شراء و ايجار العقارات"
+            />
+            <meta
+              property="og:image"
+              content="https://example.com/images/cool-page.jpg"
+            />
+          </Head>
+        }
+
+        <Box
+          sx={{
+            display: "grid",
+            gap: 2,
+          }}
+        >
+          {posts &&
+            posts.map((post, i) => (
+              <PostCard key={i} post={post} type="feed"></PostCard>
+            ))}
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            mt: 2,
+          }}
+        >
+          <Pagination
+            count={Math.ceil(total / 10)}
+            variant="outlined"
+            color="secondary"
+            onChange={(event, value) => {
+              router.query.pagination = value.toString();
+              router.push(router);
+            }}
+          />
+        </Box>
+      </Box>
+    );
+  }
+
   return (
     <Layout>
       <Box>
+        {(action == "posts" || router.query.notifyuser) && (
+          <Box>{rPosts()}</Box>
+        )}
         {action == "rentform" && <PostRentForm></PostRentForm>}
         {action == "rentupdate" && <Box>{rentUpdate()}</Box>}
         {action == "update" && <Box>{buyUpdate()}</Box>}
@@ -175,6 +235,12 @@ export async function getServerSideProps({
 
         // send the posts if they are in the region
         posts = crossedDep(postsdb, wlocation);
+      } else if (query.tel) {
+        const tel = query.tel;
+        // posts = await DBPost.find({ tel: tel }).sort({ createdAt: -1 });
+        posts = allposts.filter((post) => {
+          return post.tel == tel;
+        });
       } else if (query.type == "perio") {
         const postsdb = allposts.filter((post) => {
           return typeof post.periority != "undefined" && post.periority > 1;

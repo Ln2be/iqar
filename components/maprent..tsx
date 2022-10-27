@@ -270,22 +270,22 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
               type == "offer" && (
                 <PostCard type="post" post={oposts[gposti]}></PostCard>
               ))}
-        {state == "comparison" &&
-          cposts &&
-          type == "demand" &&
-          cpost &&
-          cposts[0].map((gpost, i) => (
-            <PostCard
-              key={i}
-              type="compared"
-              post={gpost}
-              comparaison={{
-                url: cpost.details + "\n" + basepath + "/posts?id=" + cpost._id,
-                tel: correctPhone(gpost.tel),
-                remove: remove,
-              }}
-            ></PostCard>
-          ))}
+        {state == "comparison" && cposts && type == "demand" && cpost
+          ? cposts[0].map((gpost, i) => (
+              <PostCard
+                key={i}
+                type="compared"
+                post={gpost}
+                comparaison={{
+                  url:
+                    cpost.details + "\n" + basepath + "/posts?id=" + cpost._id,
+                  tel: correctPhone(gpost.tel),
+                  remove: remove,
+                }}
+              ></PostCard>
+            ))
+          : cpost &&
+            type == "offer" && <PostCard type="post" post={cpost}></PostCard>}
       </Box>
     </Box>
   );
