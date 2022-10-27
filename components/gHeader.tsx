@@ -41,21 +41,7 @@ export default function GHeader() {
           <p></p>
           عقار نواكشوط
         </Box>
-        {router.pathname.startsWith("/buy") && (
-          <Button
-            variant="contained"
-            sx={{
-              background: "white",
-              color: "red",
-            }}
-            onClick={() => {
-              router.push("/rent");
-            }}
-          >
-            الايجار
-          </Button>
-        )}
-        {router.pathname.startsWith("/rent") && (
+        {router.pathname.startsWith("/rent") ? (
           <Button
             variant="contained"
             sx={{
@@ -67,6 +53,19 @@ export default function GHeader() {
             }}
           >
             البيع
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            sx={{
+              background: "white",
+              color: "red",
+            }}
+            onClick={() => {
+              router.push("/rent");
+            }}
+          >
+            الايجار
           </Button>
         )}
       </Box>

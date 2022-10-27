@@ -11,13 +11,20 @@ import { PostCard, SearchForm } from "../../components/cards";
 import { useUser } from "../../lib/auth/hooks";
 // import { QueryBuilder } from "@mui/icons-material";
 
-export default function Page({ result }: { result: string }) {
+export default function Page({
+  result,
+  length,
+}: {
+  result: string;
+  length: string;
+}) {
   const router = useRouter();
   // const user = useUser();
   const { action, location } = router.query;
   const user = useUser();
 
   const posts = JSON.parse(result) as Post[];
+  const total = JSON.parse(length);
   // spin if the post is submitted
   // const [spin, setSpin] = useState(false);
 
@@ -63,7 +70,7 @@ export default function Page({ result }: { result: string }) {
           }}
         >
           <Pagination
-            count={Math.ceil(posts.length / 10)}
+            count={Math.ceil(total / 10)}
             variant="outlined"
             color="secondary"
             onChange={(event, value) => {
@@ -90,7 +97,7 @@ export async function getServerSideProps({
   query: { [key: string]: string };
 }) {
   const allposts_old = await DBPost.find({ hidden: false }).sort({
-    createdAt: +1,
+    createdAt: -1,
   });
 
   const allposts = allposts_old.filter(
@@ -128,7 +135,7 @@ export async function getServerSideProps({
   const result = JSON.stringify(postsresult);
 
   return {
-    props: { result },
+    props: { result: result, length: fposts.length },
   };
 }
 
