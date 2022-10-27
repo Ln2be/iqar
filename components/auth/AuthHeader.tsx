@@ -67,10 +67,10 @@ export default function AuthHeader() {
                 }}
               >
                 {router.pathname.startsWith("/rent") ? (
-                  <Link href="/rent/maprent">الخريطة</Link>
+                  <Link href="/rent">الخريطة</Link>
                 ) : (
-                  router.pathname.startsWith("/buy/mapbuy") && (
-                    <Link href="/map?action=rent">الخريطة</Link>
+                  router.pathname.startsWith("/buy") && (
+                    <Link href="/buy">الخريطة</Link>
                   )
                 )}
               </Box>
