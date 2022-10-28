@@ -177,6 +177,10 @@ export const adtypesrent = [
     value: "offerRent",
     label: "عرض ايجار",
   },
+  {
+    value: "stay",
+    label: "آقامة",
+  },
 ];
 
 export const subtypes = {
@@ -229,6 +233,25 @@ export const subtypes = {
     {
       value: "other",
       label: "اخرى",
+    },
+  ],
+  stay: [
+    {
+      value: "small",
+      label: "شقة صغيرة",
+    },
+    {
+      value: "medium",
+      label: "شغة متوسطة",
+    },
+    {
+      value: "big",
+      label: "منزل كبير",
+    },
+
+    {
+      value: "party",
+      label: "فاعة حفلات",
     },
   ],
 };
@@ -419,4 +442,17 @@ export function categoryPrice(price: number) {
     : 140 <= price && price <= 160
     ? "price150"
     : "price170";
+}
+
+export function lapsedTimeDays(lasttime: number) {
+  const last = new Date(lasttime);
+  const now = new Date(Date.now());
+
+  const diff = now.getTime() - last.getTime();
+  const msindays = 1000 * 3600;
+
+  const days = diff / msindays;
+
+  const result = Math.round(days);
+  return result;
 }

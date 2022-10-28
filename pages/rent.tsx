@@ -13,7 +13,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Link from "next/link";
 import Head from "next/head";
 import { basepath } from "../lib/myfunctions";
-import { LocalOffer, Home } from "@mui/icons-material";
+import { LocalOffer, Home, Hotel } from "@mui/icons-material";
 
 export default function Page() {
   return (
@@ -218,6 +218,44 @@ export default function Page() {
                   }}
                 >
                   <Box>السعر</Box>
+                </Box>
+              </Box>
+            </Link>
+            <Link href={"/rent/map?action=stay"}>
+              <Box
+                sx={{
+                  bgColor: "#fff",
+                  border: "1px solid",
+                  width: "100%",
+                  height: "150px",
+                }}
+              >
+                <Hotel></Hotel>
+                <Box
+                  style={{
+                    width: "100%",
+                    height: "60%",
+                  }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-around",
+                    // alignItems: "center",
+                  }}
+                ></Box>
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "20%",
+                    // textAlign: "center",
+                    backgroundColor: (theme) => theme.palette.primary.main,
+                    color: "white",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Box>إقامة</Box>
                 </Box>
               </Box>
             </Link>

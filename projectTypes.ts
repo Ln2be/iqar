@@ -31,7 +31,7 @@ export interface Post {
   price: number;
   tel: string;
   id?: string;
-  createdAt?: number;
+  createdAt: number;
   user: string;
   userTel: string;
   comparedTo?: string[];

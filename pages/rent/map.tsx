@@ -16,7 +16,7 @@ import {
   HomeWork,
   Villa,
 } from "@mui/icons-material";
-import { FillMapO, FillMapPH } from "../../components/maprent.";
+import { FillMapO, FillMapPH, FillMapS } from "../../components/maprent.";
 
 // const Map = dynamic(() => import("../components/map"), {
 //   ssr: false,
@@ -45,6 +45,7 @@ export default function Page({ sposts }: { sposts: string }) {
           }}
         ></Box>
         {action == "houseprice" && <FillMapPH posts={posts}></FillMapPH>}
+        {action == "stay" && <FillMapS posts={posts}></FillMapS>}
         {action == "other" && <FillMapO posts={posts}></FillMapO>}
       </Box>
     </Layout>
@@ -83,6 +84,13 @@ export async function getServerSideProps({
         post.subtype == "other";
       return post.position && post.position.length > 0 && isRent && isOther;
     });
+  } else if (action == "stay") {
+    posts = allposts.filter((post) => {
+      const isRent = post.type == "stay";
+
+      return post.position && post.position.length > 0 && isRent;
+    });
+    console.log(posts.length);
   }
 
   return {

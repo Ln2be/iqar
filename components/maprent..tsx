@@ -23,15 +23,23 @@ import {
   SpatialTracking,
   Abc,
   DesktopMac,
+  Celebration,
+  FolderDeleteOutlined,
 } from "@mui/icons-material";
 
-import { basepath, correctPhone, getMapregion } from "../lib/myfunctions";
+import {
+  basepath,
+  correctPhone,
+  getMapregion,
+  lapsedTimeDays,
+} from "../lib/myfunctions";
 
 export function FillMapPH({ posts }: { posts: Post[] }) {
   const [gposti, setGPostI] = useState<number>();
   const [render, setRender] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>("price40");
   const [type, setType] = useState<string>();
+  const [key, setKey] = useState<string>();
 
   const [state, setState] = useState<string>("contact");
 
@@ -44,35 +52,62 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
       categoryPrice(post.price) == filter
   );
 
-  const gposts: Post[][] = [];
+  // grouped demands posts
+  const gposts: { [key: string]: Post[][] } = {
+    space: [],
+    old: [],
+  };
+
+  gposts.space = [];
+  gposts.old = [];
 
   ["Tayaret", "Ksar", "TevreghZeina", "Capital", "Arafat"].map((region) => {
-    const rposts = posts.filter(
+    // spaced blocks
+    const space = posts.filter(
       (post) =>
         post.type == "demandRent" &&
         post.mapregion == region &&
-        categoryPrice(post.price) == filter
+        categoryPrice(post.price) == filter &&
+        lapsedTimeDays(post.createdAt) < 30
     );
-    if (rposts.length > 0 && type != "compare") {
-      gposts.push(rposts);
-    }
+
+    gposts.space.push(space);
+
+    const old = posts.filter(
+      (post) =>
+        post.type == "demandRent" &&
+        post.mapregion == region &&
+        categoryPrice(post.price) == filter &&
+        lapsedTimeDays(post.createdAt) >= 30
+    );
+
+    gposts.old.push(old);
   });
 
   function rCPosts({ ctype }: { ctype: string }) {
     const [crender, setCRender] = useState(false);
 
-    const cposts: Post[][] = [];
+    const cposts: { [key: string]: Post[] } = {
+      space: [],
+      old: [],
+    };
 
     if (state == "comparison" && gposti != undefined && cpost) {
-      const tposts = gposts.filter((post) => {
+      const space = gposts.space.filter((post) => {
         return post[0].mapregion == cpost.mapregion;
       })[0];
 
-      const tnposts = tposts.filter(
+      cposts.space = space.filter(
         (post) => post._id && !cpost.comparedTo?.includes(post._id)
       );
 
-      tnposts.length > 0 && cposts.push(tnposts);
+      const old = gposts.old.filter((post) => {
+        return post[0].mapregion == cpost.mapregion;
+      })[0];
+
+      cposts.old = old.filter(
+        (post) => post._id && !cpost.comparedTo?.includes(post._id)
+      );
     }
 
     // remove the post compared
@@ -87,35 +122,37 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
 
     return ctype == "map"
       ? cpost &&
-          cposts.length > 0 &&
-          cposts.map((gpost, i) => {
-            const length = gpost.length;
-            const post = gpost[0];
+          state == "comparison" &&
+          Object.keys(cposts).map((key, i) => {
+            const length = cposts[key].length;
+            const post = cposts[key][0];
 
             return (
-              <Overlay key={i} anchor={post.position}>
-                <Badge badgeContent={length} color="primary">
-                  <IMarkerPH
-                    onClick={() => {
-                      setGPostI(i);
-                      setType("demand");
-                      // if (cPostid) {
-                      //   setCPosts(posts);
-                      // }
-                      setRender(!render);
-                    }}
-                    post={post}
-                  ></IMarkerPH>
-                </Badge>
-              </Overlay>
+              post && (
+                <Overlay key={i} anchor={post.position}>
+                  <Badge
+                    badgeContent={length}
+                    color={key == "space" ? "primary" : "info"}
+                  >
+                    <IMarkerPH
+                      onClick={() => {
+                        setKey(key);
+                        setType("demand");
+                        // if (cPostid) {
+                        //   setCPosts(posts);
+                        // }
+                        setRender(!render);
+                      }}
+                      post={post}
+                    ></IMarkerPH>
+                  </Badge>
+                </Overlay>
+              )
             );
           })
       : ctype == "show" &&
-          (state == "comparison" &&
-          cposts.length > 0 &&
-          type == "demand" &&
-          cpost
-            ? cposts[0].map((gpost, i) => (
+          (state == "comparison" && type == "demand" && cpost && key
+            ? cposts[key].map((gpost, i) => (
                 <PostCard
                   key={i}
                   type="compared"
@@ -222,30 +259,37 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
       {filterPanel}
       <Map height={500} defaultCenter={[18.0782, -15.965]} defaultZoom={11}>
         <ZoomControl />
-        {gposts.length > 0 &&
-          !cpost &&
-          gposts.map((gpost, i) => {
-            const length = gpost.length;
-            const post = gpost[0];
+        {!cpost &&
+          Object.keys(gposts).map((key) =>
+            gposts[key].map((posts, i) => {
+              const length = posts.length;
+              const post = posts[0];
 
-            return (
-              <Overlay key={i} anchor={post.position}>
-                <Badge badgeContent={length} color="primary">
-                  <IMarkerPH
-                    onClick={() => {
-                      setGPostI(i);
-                      setType("demand");
-                      // if (cPostid) {
-                      //   setCPosts(posts);
-                      // }
-                      setRender(!render);
-                    }}
-                    post={post}
-                  ></IMarkerPH>
-                </Badge>
-              </Overlay>
-            );
-          })}
+              return (
+                post && (
+                  <Overlay key={i} anchor={post.position}>
+                    <Badge
+                      badgeContent={length}
+                      color={key == "space" ? "primary" : "info"}
+                    >
+                      <IMarkerPH
+                        onClick={() => {
+                          setKey(key);
+                          setGPostI(i);
+                          setType("demand");
+                          // if (cPostid) {
+                          //   setCPosts(posts);
+                          // }
+                          setRender(!render);
+                        }}
+                        post={post}
+                      ></IMarkerPH>
+                    </Badge>
+                  </Overlay>
+                )
+              );
+            })
+          )}
         {oposts.map((post, i) => {
           return (
             <Overlay key={i} anchor={post.position}>
@@ -299,10 +343,10 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
         }}
       >
         {state == "contact" &&
-          (gposti != undefined && type == "demand"
-            ? gposts[gposti].map((gpost, i) => (
-                <PostCard key={i} type="post" post={gpost}></PostCard>
-              ))
+          (key && type == "demand" && gposti != undefined
+            ? gposts[key][gposti].map((gpost, i) => {
+                return <PostCard key={i} type="post" post={gpost}></PostCard>;
+              })
             : gposti != undefined &&
               type == "offer" && (
                 <PostCard type="post" post={oposts[gposti]}></PostCard>
@@ -536,4 +580,111 @@ function IMarkerO({ post, onClick }: { post: Post; onClick?: () => void }) {
   };
 
   return typeToIcon[post.subtype];
+}
+
+export function FillMapS({ posts }: { posts: Post[] }) {
+  const [post, setPost] = useState<Post>();
+  const [render, setRender] = useState<boolean>(false);
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        marginBottom: 2,
+      }}
+    >
+      <Map height={500} defaultCenter={[18.0782, -15.965]} defaultZoom={11}>
+        <ZoomControl />
+        {posts.length > 0 &&
+          posts.map((fpost, i) => {
+            return (
+              <Overlay key={i} anchor={fpost.position}>
+                <IMarkerS
+                  onClick={() => {
+                    setPost(fpost);
+                    // if (cPostid) {
+                    //   setCPosts(posts);
+                    // }
+                    setRender(!render);
+                  }}
+                  post={fpost}
+                ></IMarkerS>
+              </Overlay>
+            );
+          })}
+      </Map>
+      <Box
+        sx={{
+          marginTop: 2,
+        }}
+      >
+        {post && <PostCard type="post" post={post}></PostCard>}
+      </Box>
+    </Box>
+  );
+}
+
+function IMarkerS({ post, onClick }: { post: Post; onClick?: () => void }) {
+  const color = "red";
+  // const dimension = 10;
+
+  const typeToIcon: { [key: string]: JSX.Element } = {
+    party: (
+      <Celebration
+        onClick={onClick}
+        sx={{
+          color: color,
+        }}
+      ></Celebration>
+    ),
+    small: (
+      <Badge badgeContent={1} color="primary">
+        <Hotel
+          onClick={onClick}
+          sx={{
+            color: color,
+          }}
+          // width={dimension}
+          // height={dimension}
+        ></Hotel>
+      </Badge>
+    ),
+
+    medium: (
+      <Badge badgeContent={2} color="primary">
+        <Hotel
+          onClick={onClick}
+          sx={{
+            color: color,
+          }}
+          // width={dimension}
+          // height={dimension}
+        ></Hotel>
+      </Badge>
+    ),
+    big: (
+      <Badge badgeContent={3} color="primary">
+        <Hotel
+          onClick={onClick}
+          sx={{
+            color: color,
+          }}
+          // width={dimension}
+          // height={dimension}
+        ></Hotel>
+      </Badge>
+    ),
+  };
+
+  return post.subtype ? (
+    typeToIcon[post.subtype]
+  ) : (
+    <Hotel
+      onClick={onClick}
+      sx={{
+        color: color,
+      }}
+    ></Hotel>
+  );
 }

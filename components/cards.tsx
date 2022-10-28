@@ -332,22 +332,23 @@ export function PostCard({
                   اظهار
                 </Button>
               )}
-              {type == "post" &&
-                (router.pathname.startsWith("/rent") ? (
-                  <Link href={"/posts?action=rentupdate&id=" + post._id}>
+              {post.type == "demandRent" ||
+              post.type == "offerRent" ||
+              post.type == "stay" ? (
+                <Link href={"/posts?action=rentupdate&id=" + post._id}>
+                  <Button variant="outlined" style={{ color: "blue" }}>
+                    تعديل
+                  </Button>
+                </Link>
+              ) : (
+                router.pathname.startsWith("/buy") && (
+                  <Link href={"/posts?action=buyupdate&id=" + post._id}>
                     <Button variant="outlined" style={{ color: "blue" }}>
                       تعديل
                     </Button>
                   </Link>
-                ) : (
-                  router.pathname.startsWith("/buy") && (
-                    <Link href={"/posts?action=buyupdate&id=" + post._id}>
-                      <Button variant="outlined" style={{ color: "blue" }}>
-                        تعديل
-                      </Button>
-                    </Link>
-                  )
-                ))}
+                )
+              )}
             </Box>
 
             {user?.role == "admin" && type == "compared" && (
@@ -688,6 +689,7 @@ let post: Post = {
   position: [18.0782, -15.965],
   mapregion: "",
   features: [],
+  createdAt: Date.now(),
 };
 
 // let pathFiles = [];
@@ -1034,6 +1036,7 @@ export function PostRentForm({ upost = post }: { upost?: Post }) {
   if (upost._id) {
     post = upost;
   }
+
   const user = useUser();
 
   const router = useRouter();
@@ -1047,9 +1050,8 @@ export function PostRentForm({ upost = post }: { upost?: Post }) {
   // check if it is an update
   const isUpdate = upost._id ? true : false;
 
-  // also know the departements checked, they also important for the checkboxes
-
-  // the checked departements
+  //  stay or rent
+  const subtypelabel = type == "stay" ? "stay" : "rent";
 
   const {
     register,
@@ -1161,7 +1163,7 @@ export function PostRentForm({ upost = post }: { upost?: Post }) {
             post.subtype = event.target.value;
           }}
         >
-          {subtypes["rent"].map((option, i) => (
+          {subtypes[subtypelabel].map((option, i) => (
             <MenuItem key={i} value={option.value}>
               {option.label}
             </MenuItem>
