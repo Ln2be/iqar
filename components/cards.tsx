@@ -1032,6 +1032,293 @@ export function PostForm({ upost = post }: { upost?: Post }) {
   );
 }
 
+export function PostBuyForm({ upost = post }: { upost?: Post }) {
+  if (upost._id) {
+    post = upost;
+  }
+
+  const user = useUser();
+
+  const router = useRouter();
+  // the type is important and many other fields depend on this type, so we will update according to t
+  // this value
+  const [type, setType] = useState(upost.type);
+  const [disable, setDisable] = useState(false);
+
+  const [render, setRender] = useState(false);
+
+  // check if it is an update
+  const isUpdate = upost._id ? true : false;
+
+  //  stay or rent
+  const subtypelabel = type == "stay" ? "stay" : "rent";
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  // sign up the user and save the post to the database
+  async function handleSubmitThePost() {
+    // I think this make the submission get stuck
+    setDisable(true);
+    post.mapregion = getMapregion(post.position);
+    const result = post;
+
+    if (user?.role != "admin") {
+      post.periority = 0;
+    }
+
+    // save the post
+    if (!isUpdate) {
+      fetch("/api/posts?action=save", {
+        method: "POST",
+        body: JSON.stringify(result),
+        headers: {
+          "content-type": "application/json",
+        },
+      }).then((data) => {
+        data.json().then((rpost) => {
+          router.push("/posts?id=" + rpost.id);
+        });
+      });
+    } else {
+      fetch("/api/posts?action=update", {
+        method: "POST",
+        body: JSON.stringify(result),
+        headers: {
+          "content-type": "application/json",
+        },
+      }).then((data) => {
+        data.json().then((rpost) => {
+          router.push("/posts?id=" + rpost.id);
+        });
+      });
+    }
+  }
+
+  function handlePosition(position: [number, number]) {
+    post.position = position;
+  }
+
+  return (
+    <form>
+      <Box
+        // component={"form"}
+        sx={{
+          display: "grid",
+          gap: 2,
+          p: { xs: 2, md: 4 },
+          maxWidth: "400px",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            // flexDirection: "column",
+            pb: 2,
+          }}
+        >
+          انشر إعلان
+        </Box>
+        <TextField
+          id="type"
+          select
+          label="نوع الاعلان"
+          {...register("typev", { required: true })}
+          defaultValue={upost.type}
+          onChange={(event) => {
+            post.type = event.target.value;
+            // post.departements = [];
+            setType(event.target.value);
+          }}
+          value={type}
+        >
+          {adtypesrent.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+        {errors.typev && (
+          <small
+            style={{
+              color: "red",
+            }}
+          >
+            ادخل الاعلان
+          </small>
+        )}
+
+        <TextField
+          id="subtype"
+          select
+          label="اختيار فرعي"
+          defaultValue={upost.subtype}
+          {...register("subtype", { required: true })}
+          // value={currency}
+          onChange={(event) => {
+            post.subtype = event.target.value;
+          }}
+        >
+          {subtypes["buying"].map((option, i) => (
+            <MenuItem key={i} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+        {errors.subtype && (
+          <small
+            style={{
+              color: "red",
+            }}
+          >
+            ادخل الاختيار الفرعي
+          </small>
+        )}
+
+        {user?.role == "admin" &&
+          (isUpdate ? (
+            <PickMap
+              position={upost.position}
+              zoom={14}
+              handlePosition={
+                handlePosition
+                //   (position) => {
+                //   post.position = position;
+                // }
+              }
+            ></PickMap>
+          ) : (
+            <PickMap
+              handlePosition={
+                handlePosition
+                //   (position) => {
+                //   post.position = position;
+                // }
+              }
+            ></PickMap>
+          ))}
+
+        <TextField
+          id="outlined-basic"
+          multiline
+          label="المواضقات"
+          defaultValue={upost.details}
+          variant="outlined"
+          onChange={(event) => {
+            post.details = event.target.value;
+          }}
+          helperText="مساحة المنزل   الشارع  الخ"
+        />
+        <TextField
+          id="outlined-basic"
+          label="واتساب"
+          defaultValue={upost.tel}
+          {...register("tel", { required: true })}
+          type="tel"
+          variant="outlined"
+          onChange={(event) => {
+            post.tel = event.target.value;
+          }}
+          required
+        />
+        {errors.tel && (
+          <small
+            style={{
+              color: "red",
+            }}
+          >
+            ادخل واتساب
+          </small>
+        )}
+        {post.type && (
+          <TextField
+            id="outlined-basic"
+            label="السعر"
+            type="number"
+            {...register("price", { required: true, min: 1 })}
+            defaultValue={upost.price}
+            variant="outlined"
+            onChange={(event) => {
+              const iprice = event.target.value as unknown as number;
+              post.price = correctPrice(iprice, post.type);
+              // post.price = iprice;
+            }}
+          />
+        )}
+
+        {errors.price && (
+          <small
+            style={{
+              color: "red",
+            }}
+          >
+            ادخل السعر بالالاف و بالعملة القديمة
+          </small>
+        )}
+
+        {user && user.role == "admin" && (
+          <TextField
+            id="outlined-basic"
+            label="صور"
+            defaultValue={upost.facelink}
+            variant="outlined"
+            onChange={(event) => {
+              post.facelink = event.target.value;
+            }}
+          />
+        )}
+
+        {/* features of the rented house */}
+        {user && user.role == "admin" && (
+          <Box>
+            {mfeatures.map((mfeature, i) => {
+              return (
+                <FormControlLabel
+                  key={i}
+                  label={mfeature.label}
+                  control={
+                    <Checkbox
+                      defaultChecked={post.features.includes(mfeature.value)}
+                      checked={post.features.includes(mfeature.value)}
+                      onClick={(e: any) => {
+                        if (e.target.checked) {
+                          post.features.push(mfeature.value);
+                        } else {
+                          if (post.features.includes(mfeature.value)) {
+                            post.features = post.features.filter(
+                              (value) => value != mfeature.value
+                            );
+                          }
+                        }
+                        setRender(!render);
+                      }}
+                    ></Checkbox>
+                  }
+                />
+              );
+            })}
+          </Box>
+        )}
+
+        <Box>
+          <Button
+            type="submit"
+            disabled={disable}
+            variant="contained"
+            onClick={handleSubmit(handleSubmitThePost)}
+          >
+            نشر
+          </Button>
+        </Box>
+      </Box>
+    </form>
+  );
+}
+
 export function PostRentForm({ upost = post }: { upost?: Post }) {
   if (upost._id) {
     post = upost;

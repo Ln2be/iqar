@@ -13,6 +13,7 @@ import {
   UserCard,
   SearchForm,
   PostRentForm,
+  PostBuyForm,
 } from "../components/cards";
 import {
   adtypes,
@@ -172,6 +173,7 @@ export default function Page({
           <Box>{rPosts()}</Box>
         )}
         {action == "rentform" && <PostRentForm></PostRentForm>}
+        {action == "buyform" && <PostBuyForm></PostBuyForm>}
         {action == "rentupdate" && <Box>{rentUpdate()}</Box>}
         {action == "update" && <Box>{buyUpdate()}</Box>}
         {id && (action != "rentupdate" || action != "rentupdate") && (
