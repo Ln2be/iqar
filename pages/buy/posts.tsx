@@ -249,7 +249,6 @@ export async function getServerSideProps({
   // if requesting all the Posts
   if (query.action == "posts") {
     let posts: Post[] = [];
-    let repuser: UserType[] = [];
 
     posts = allposts;
 
@@ -261,12 +260,9 @@ export async function getServerSideProps({
     // the object to be injected in the post dom
     const result = JSON.stringify(postsresult);
 
-    const repst = JSON.stringify(repuser);
-
     injectObject = {
       result: result,
       length: posts.length,
-      rep: repst,
     };
   }
   return {
