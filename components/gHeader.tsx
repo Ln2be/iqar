@@ -78,24 +78,7 @@ export default function GHeader() {
         }}
       >
         {router.pathname.startsWith("/rent") ? (
-          <Box
-            sx={{
-              borderBottom: "3px solid",
-              borderColor: (theme) => theme.palette.primary.main,
-              // color: "#0039e6",
-              color: (theme) => theme.palette.primary.main,
-              // width: "100%",
-            }}
-          >
-            <HomeIcon
-              onClick={() => {
-                router.push("/rent");
-              }}
-              style={{}}
-            ></HomeIcon>
-          </Box>
-        ) : (
-          router.pathname.startsWith("/buy") && (
+          router.pathname == "/rent" ? (
             <Box
               sx={{
                 borderBottom: "3px solid",
@@ -107,12 +90,36 @@ export default function GHeader() {
             >
               <HomeIcon
                 onClick={() => {
-                  router.push("/buy");
+                  router.push("/rent");
                 }}
                 style={{}}
               ></HomeIcon>
             </Box>
+          ) : (
+            <HomeOutlinedIcon></HomeOutlinedIcon>
           )
+        ) : (
+          router.pathname.startsWith("/buy") &&
+          (router.pathname == "buy" ? (
+            <Box
+              sx={{
+                borderBottom: "3px solid",
+                borderColor: (theme) => theme.palette.primary.main,
+                // color: "#0039e6",
+                color: (theme) => theme.palette.primary.main,
+                // width: "100%",
+              }}
+            >
+              <HomeIcon></HomeIcon>
+            </Box>
+          ) : (
+            <HomeOutlinedIcon
+              onClick={() => {
+                router.push("/buy");
+              }}
+              style={{}}
+            ></HomeOutlinedIcon>
+          ))
         )}
 
         {user?.role == "admin" &&
