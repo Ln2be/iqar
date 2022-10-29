@@ -88,15 +88,14 @@ export default function GHeader() {
                 // width: "100%",
               }}
             >
-              <HomeIcon
-                onClick={() => {
-                  router.push("/rent");
-                }}
-                style={{}}
-              ></HomeIcon>
+              <HomeIcon style={{}}></HomeIcon>
             </Box>
           ) : (
-            <HomeOutlinedIcon></HomeOutlinedIcon>
+            <HomeOutlinedIcon
+              onClick={() => {
+                router.push("/rent");
+              }}
+            ></HomeOutlinedIcon>
           )
         ) : (
           router.pathname.startsWith("/buy") &&
