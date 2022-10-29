@@ -188,7 +188,6 @@ export async function getServerSideProps({
 
   // const allposts = allpostsdb.slice((pagination - 1) * 10, pagination * 10);
   // the object to be injected in the post dom
-  let injectObject;
 
   //
 
@@ -212,7 +211,7 @@ export async function getServerSideProps({
   // the object to be injected in the post dom
   const result = JSON.stringify(postsresult);
 
-  injectObject = {
+  const injectObject = {
     result: result,
     length: posts.length,
   };
