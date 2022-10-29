@@ -366,7 +366,7 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
 }
 
 function lapsedTime(lasttime: Date | number, nbweeks: number) {
-  const last = typeof lasttime == "number" ? new Date(lasttime) : lasttime;
+  const last = new Date(lasttime);
   const now = new Date(Date.now());
 
   const diff = now.getTime() - last.getTime();
