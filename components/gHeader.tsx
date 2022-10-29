@@ -99,7 +99,7 @@ export default function GHeader() {
           )
         ) : (
           router.pathname.startsWith("/buy") &&
-          (router.pathname == "buy" ? (
+          (router.pathname == "/buy" ? (
             <Box
               sx={{
                 borderBottom: "3px solid",
