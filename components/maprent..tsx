@@ -61,7 +61,15 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
   gposts.space = [];
   gposts.old = [];
 
-  ["Tayaret", "Ksar", "TevreghZeina", "Capital", "Arafat"].map((region) => {
+  [
+    "Tayaret",
+    "Ksar",
+    "TevreghZeina",
+    "Capital",
+    "Arafat",
+    "DarNaim",
+    "Toujounine",
+  ].map((region) => {
     // spaced blocks
     const space = posts.filter(
       (post) =>
@@ -132,7 +140,10 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
                 <Overlay key={i} anchor={post.position}>
                   <Badge
                     badgeContent={length}
-                    color={key == "space" ? "primary" : "info"}
+                    sx={{
+                      backgroundColor: key == "space" ? "blue" : "black",
+                      color: "white",
+                    }}
                   >
                     <IMarkerPH
                       onClick={() => {
@@ -236,7 +247,7 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
 
       <Villa
         onClick={() => {
-          setFilter("170");
+          setFilter("price170");
           setGPostI(undefined);
         }}
         sx={{

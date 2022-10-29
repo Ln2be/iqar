@@ -696,8 +696,8 @@ function IMarker({ post, onClick }: { post: Post; onClick?: () => void }) {
   return <IconMarker onClick={onClick} post={post}></IconMarker>;
 }
 
-function lapsedTime(lasttime: number, nbweeks: number) {
-  const last = new Date(lasttime);
+function lapsedTime(lasttime: Date | number, nbweeks: number) {
+  const last = typeof lasttime == "number" ? new Date(lasttime) : lasttime;
   const now = new Date(Date.now());
 
   const diff = now.getTime() - last.getTime();

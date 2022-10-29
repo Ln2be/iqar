@@ -689,7 +689,7 @@ let post: Post = {
   position: [18.0782, -15.965],
   mapregion: "",
   features: [],
-  createdAt: Date.now(),
+  createdAt: new Date(Date.now()),
 };
 
 // let pathFiles = [];

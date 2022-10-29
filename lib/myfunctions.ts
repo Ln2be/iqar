@@ -408,14 +408,37 @@ const Arafat = [
   { longitude: -15.9655819, latitude: 18.079028 },
 ];
 
+const DarNaim = [
+  { longitude: -15.9018727, latitude: 18.1530338 },
+  { longitude: -15.9358616, latitude: 18.1151865 },
+  { longitude: -15.9259052, latitude: 18.1096392 },
+  { longitude: -15.945818, latitude: 18.0819002 },
+  { longitude: -15.9279652, latitude: 18.0760255 },
+  { longitude: -15.9259052, latitude: 18.0714561 },
+  { longitude: -15.87887, latitude: 18.0652547 },
+  { longitude: -15.9018727, latitude: 18.1530338 },
+];
+
+const Toujounine = [
+  { longitude: -15.9286518, latitude: 18.0685186 },
+  { longitude: -15.9310551, latitude: 18.0469754 },
+  { longitude: -15.9561176, latitude: 18.0459961 },
+  { longitude: -15.9725971, latitude: 18.0378351 },
+  { longitude: -15.9743138, latitude: 18.0094317 },
+  { longitude: -15.8709736, latitude: 18.0580738 },
+  { longitude: -15.8991261, latitude: 18.0665603 },
+  { longitude: -15.9286518, latitude: 18.0685186 },
+];
+
 export function getMapregion(position: [number, number]) {
   const llposition = { latitude: position[0], longitude: position[1] };
-
   const isTayaret = geolib.isPointInPolygon(llposition, Tayaret);
   const isKsar = geolib.isPointInPolygon(llposition, Ksar);
   const isTevreghZeina = geolib.isPointInPolygon(llposition, TevreghZeina);
   const isCapital = geolib.isPointInPolygon(llposition, Capital);
   const isArafat = geolib.isPointInPolygon(llposition, Arafat);
+  const isDarNaim = geolib.isPointInPolygon(llposition, DarNaim);
+  const isToujounine = geolib.isPointInPolygon(llposition, Toujounine);
 
   return isTayaret
     ? "Tayaret"
@@ -427,6 +450,10 @@ export function getMapregion(position: [number, number]) {
     ? "Capital"
     : isArafat
     ? "Arafat"
+    : isDarNaim
+    ? "DarNaim"
+    : isToujounine
+    ? "Toujounine"
     : "None";
 }
 
@@ -435,17 +462,17 @@ export function categoryPrice(price: number) {
     ? "price40"
     : 50 <= price && price <= 70
     ? "price60"
-    : 80 <= price && price <= 100
+    : 70 < price && price <= 100
     ? "price90"
-    : 110 <= price && price <= 130
+    : 100 < price && price <= 130
     ? "price120"
-    : 140 <= price && price <= 160
+    : 130 < price && price <= 160
     ? "price150"
-    : "price170";
+    : price > 160 && "price170";
 }
 
-export function lapsedTimeDays(lasttime: number) {
-  const last = new Date(lasttime);
+export function lapsedTimeDays(lasttime: Date | number) {
+  const last = typeof lasttime == "number" ? new Date(lasttime) : lasttime;
   const now = new Date(Date.now());
 
   const diff = now.getTime() - last.getTime();

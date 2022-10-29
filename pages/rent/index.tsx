@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import React from "react";
-import Layout from "../components/layout";
+import Layout from "../../components/layout";
 import LocalHotelIcon from "@mui/icons-material/LocalHotel";
 import KeyIcon from "@mui/icons-material/Key";
 import KeyOffIcon from "@mui/icons-material/KeyOff";
@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Link from "next/link";
 import Head from "next/head";
-import { basepath } from "../lib/myfunctions";
+import { basepath } from "../../lib/myfunctions";
 import { LocalOffer, Home, Hotel } from "@mui/icons-material";
 
 export default function Page() {
