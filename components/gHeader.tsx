@@ -77,7 +77,7 @@ export default function GHeader() {
           p: 1,
         }}
       >
-        {router.pathname == "/" ? (
+        {router.pathname.startsWith("/rent") ? (
           <Box
             sx={{
               borderBottom: "3px solid",
@@ -89,17 +89,30 @@ export default function GHeader() {
           >
             <HomeIcon
               onClick={() => {
-                router.push("/");
+                router.push("/rent");
               }}
               style={{}}
             ></HomeIcon>
           </Box>
         ) : (
-          <HomeOutlinedIcon
-            onClick={() => {
-              router.push("/");
-            }}
-          ></HomeOutlinedIcon>
+          router.pathname.startsWith("/buy") && (
+            <Box
+              sx={{
+                borderBottom: "3px solid",
+                borderColor: (theme) => theme.palette.primary.main,
+                // color: "#0039e6",
+                color: (theme) => theme.palette.primary.main,
+                // width: "100%",
+              }}
+            >
+              <HomeIcon
+                onClick={() => {
+                  router.push("/buy");
+                }}
+                style={{}}
+              ></HomeIcon>
+            </Box>
+          )
         )}
 
         {user?.role == "admin" &&
