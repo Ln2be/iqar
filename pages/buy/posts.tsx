@@ -158,9 +158,9 @@ export default function Page({
   return (
     <Layout>
       <Box>
-        {action == "posts" ||
-          action == "buying" ||
-          (action == "selling" && <Box>{rPosts()}</Box>)}
+        {(action == "posts" || action == "buying" || action == "selling") && (
+          <Box>{rPosts()}</Box>
+        )}
         {action == "form" && <PostForm></PostForm>}
         {action == "update" && <Box>{rUpdate()}</Box>}
         {action == "post" && <Box>{rPost()}</Box>}
