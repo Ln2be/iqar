@@ -158,7 +158,9 @@ export default function Page({
   return (
     <Layout>
       <Box>
-        {action == "posts" && <Box>{rPosts()}</Box>}
+        {action == "posts" ||
+          action == "buying" ||
+          (action == "selling" && <Box>{rPosts()}</Box>)}
         {action == "form" && <PostForm></PostForm>}
         {action == "update" && <Box>{rUpdate()}</Box>}
         {action == "post" && <Box>{rPost()}</Box>}
@@ -180,8 +182,8 @@ export async function getServerSideProps({
   const allposts = allpostsdb.filter(
     (post) => post.type == "buying" || post.type == "selling"
   );
-  const buyingposts = allpostsdb.filter((post) => post.type == "buying");
-  const sellingposts = allpostsdb.filter((post) => post.type == "selling");
+  const buyingposts = allposts.filter((post) => post.type == "buying");
+  const sellingposts = allposts.filter((post) => post.type == "selling");
   // test if the user is coming with special code
 
   // const pagination = (query.pagination ? query.pagination : 1) as number;
