@@ -13,6 +13,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Link from "next/link";
 import Head from "next/head";
 import { basepath } from "../../lib/myfunctions";
+import { Map } from "@mui/icons-material";
 
 let deferredPrompt: any; // Allows to show the install prompt
 
@@ -126,22 +127,28 @@ export default function Page() {
               maxWidth: "500px",
             }}
           >
-            <Link href="/posts?action=posts">
+            <Link href={"/buy/posts?action=posts"}>
               <Box
                 sx={{
                   bgColor: "#fff",
                   border: "1px solid",
                   width: "100%",
-                  height: "100%",
+                  height: "150px",
                 }}
               >
-                <DynamicFeedIcon
+                <DynamicFeedIcon></DynamicFeedIcon>
+                <Box
                   style={{
                     width: "100%",
-                    height: "80%",
+                    height: "60%",
                   }}
-                ></DynamicFeedIcon>
-
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-around",
+                    // alignItems: "center",
+                  }}
+                ></Box>
                 <Box
                   sx={{
                     width: "100%",
@@ -154,27 +161,32 @@ export default function Page() {
                     alignItems: "center",
                   }}
                 >
-                  <Box>جميع الاعلانات</Box>
+                  <Box>آخر الاعلانات</Box>
                 </Box>
               </Box>
             </Link>
-
-            <Link href="/posts?action=posts&type=stay">
+            <Link href={"//buy/posts?action=buying"}>
               <Box
                 sx={{
                   bgColor: "#fff",
                   border: "1px solid",
                   width: "100%",
-                  height: "100%",
+                  height: "150px",
                 }}
               >
-                <LocalHotelIcon
+                <ShoppingCart></ShoppingCart>
+                <Box
                   style={{
                     width: "100%",
-                    height: "80%",
+                    height: "60%",
                   }}
-                ></LocalHotelIcon>
-
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-around",
+                    // alignItems: "center",
+                  }}
+                ></Box>
                 <Box
                   sx={{
                     width: "100%",
@@ -187,93 +199,38 @@ export default function Page() {
                     alignItems: "center",
                   }}
                 >
-                  <Box>اقامة</Box>
+                  <Box>طلبات الشراء</Box>
                 </Box>
               </Box>
             </Link>
-
-            <Link href="/posts?action=posts&type=offerRent">
+            <Link href={"/buy/posts?action=selling"}>
               <Box
                 sx={{
                   bgColor: "#fff",
                   border: "1px solid",
+                  width: "100%",
+                  height: "150px",
                 }}
               >
-                <KeyIcon
+                <SellIcon></SellIcon>
+                <Box
                   style={{
                     width: "100%",
-                    height: "80%",
+                    height: "60%",
                   }}
-                ></KeyIcon>
-                <Box
                   sx={{
-                    width: "100%",
-                    height: "20%",
-                    // textAlign: "center",
-                    backgroundColor: (theme) => theme.palette.primary.main,
-
-                    color: "white",
                     display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    flexDirection: "column",
+                    justifyContent: "space-around",
+                    // alignItems: "center",
                   }}
-                >
-                  <Box>عروض الايجار</Box>
-                </Box>
-              </Box>
-            </Link>
-
-            <Link href="/posts?action=posts&type=demandRent">
-              <Box
-                sx={{
-                  bgColor: "#fff",
-                  border: "1px solid",
-                }}
-              >
-                <KeyOffIcon
-                  style={{
-                    width: "100%",
-                    height: "80%",
-                  }}
-                ></KeyOffIcon>
+                ></Box>
                 <Box
                   sx={{
                     width: "100%",
                     height: "20%",
                     // textAlign: "center",
                     backgroundColor: (theme) => theme.palette.primary.main,
-
-                    color: "white",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Box>طلبات الايجار</Box>
-                </Box>
-              </Box>
-            </Link>
-
-            <Link href="/posts?action=posts&type=selling">
-              <Box
-                sx={{
-                  bgColor: "#fff",
-                  border: "1px solid",
-                }}
-              >
-                <SellIcon
-                  style={{
-                    width: "100%",
-                    height: "80%",
-                  }}
-                ></SellIcon>
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "20%",
-                    // textAlign: "center",
-                    backgroundColor: (theme) => theme.palette.primary.main,
-
                     color: "white",
                     display: "flex",
                     justifyContent: "center",
@@ -284,34 +241,41 @@ export default function Page() {
                 </Box>
               </Box>
             </Link>
-
-            <Link href="/posts?action=posts&type=buying">
+            <Link href={"/buy/map?action=buying"}>
               <Box
                 sx={{
                   bgColor: "#fff",
                   border: "1px solid",
+                  width: "100%",
+                  height: "150px",
                 }}
               >
-                <ShoppingCart
+                <Map></Map>
+                <Box
                   style={{
                     width: "100%",
-                    height: "80%",
+                    height: "60%",
                   }}
-                ></ShoppingCart>
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-around",
+                    // alignItems: "center",
+                  }}
+                ></Box>
                 <Box
                   sx={{
                     width: "100%",
                     height: "20%",
                     // textAlign: "center",
                     backgroundColor: (theme) => theme.palette.primary.main,
-
                     color: "white",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                   }}
                 >
-                  <Box>طلبات الشراء</Box>
+                  <Box>السعر</Box>
                 </Box>
               </Box>
             </Link>
