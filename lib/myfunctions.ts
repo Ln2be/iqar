@@ -183,6 +183,17 @@ export const adtypesrent = [
   },
 ];
 
+export const adtypesbuy = [
+  {
+    value: "buying",
+    label: "شراء",
+  },
+  {
+    value: "selling",
+    label: "بيع",
+  },
+];
+
 export const subtypes = {
   buying: [
     {

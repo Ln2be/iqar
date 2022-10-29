@@ -25,6 +25,7 @@ import {
   whichSubtype,
   getMapregion,
   adtypesrent,
+  adtypesbuy,
   mfeatures,
 } from "../lib/myfunctions";
 import { Post, UserType } from "../projectTypes";
@@ -1136,7 +1137,7 @@ export function PostBuyForm({ upost = post }: { upost?: Post }) {
           }}
           value={type}
         >
-          {adtypesrent.map((option) => (
+          {adtypesbuy.map((option) => (
             <MenuItem key={option.value} value={option.value}>
               {option.label}
             </MenuItem>
