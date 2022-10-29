@@ -483,7 +483,7 @@ export function categoryPrice(price: number) {
 }
 
 export function lapsedTimeDays(lasttime: Date | number) {
-  const last = typeof lasttime == "number" ? new Date(lasttime) : lasttime;
+  const last = new Date(lasttime);
   const now = new Date(Date.now());
 
   const diff = now.getTime() - last.getTime();
