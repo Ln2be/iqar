@@ -50,6 +50,7 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
 
   function onDelete(id: string) {
     deleted.push(id);
+    setRender(!render);
   }
 
   const [cpost, setCPost] = useState<Post>();
