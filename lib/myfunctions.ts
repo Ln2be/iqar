@@ -271,6 +271,18 @@ export const mfeatures = [
     value: "garage",
     label: "كراج",
   },
+  {
+    value: "road",
+    label: "اكريب من كدروه",
+  },
+  {
+    value: "wall",
+    label: "تحويشة",
+  },
+  {
+    value: "wideStreet",
+    label: "شارع كبير",
+  },
 ];
 
 export function whichSubtype(type: string) {

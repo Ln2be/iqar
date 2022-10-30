@@ -92,7 +92,7 @@ export default function Page({
   return (
     <Layout>
       <Box>
-        {(type == "offer" || type == "buying") && <Box>{rPosts()}</Box>}
+        {(action == "offer" || action == "buying") && <Box>{rPosts()}</Box>}
         {action == "update" && <Box>{rentUpdate()}</Box>}
       </Box>
     </Layout>
