@@ -58,10 +58,15 @@ export async function getServerSideProps({
 
   if (action == "houseprice") {
     posts = allposts.filter((post) => {
+      const isOther =
+        post.subtype == "shop" ||
+        post.subtype == "store" ||
+        post.subtype == "office" ||
+        post.subtype == "other";
       const isRent =
         (post.type == "demandRent" || post.type == "offerRent") &&
         post.subtype != "stay";
-      return post.position && post.position.length > 0 && isRent;
+      return post.position && post.position.length > 0 && isRent && !isOther;
     });
   } else if (action == "other") {
     posts = allposts.filter((post) => {
