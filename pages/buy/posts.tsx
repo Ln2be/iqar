@@ -96,7 +96,7 @@ export default function Page({
   }
 
   function rUpdate() {
-    const post = JSON.parse(result) as Post;
+    const post = JSON.parse(result)[0] as Post;
 
     return (
       <Box>
@@ -204,6 +204,8 @@ export async function getServerSideProps({
   } else if (query.action == "selling") {
     posts = sellingposts;
   } else if (query.action == "post") {
+    posts = allposts.filter((post) => (post._id = query.id));
+  } else if (query.action == "update") {
     posts = allposts.filter((post) => (post._id = query.id));
   }
 

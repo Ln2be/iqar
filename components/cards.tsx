@@ -340,14 +340,14 @@ export function PostCard({
               {post.type == "demandRent" ||
               post.type == "offerRent" ||
               post.type == "stay" ? (
-                <Link href={"/posts?action=rentupdate&id=" + post._id}>
+                <Link href={"/rent/posts?action=update&id=" + post._id}>
                   <Button variant="outlined" style={{ color: "blue" }}>
                     تعديل
                   </Button>
                 </Link>
               ) : (
                 router.pathname.startsWith("/buy") && (
-                  <Link href={"/posts?action=buyupdate&id=" + post._id}>
+                  <Link href={"/buy/posts?action=update&id=" + post._id}>
                     <Button variant="outlined" style={{ color: "blue" }}>
                       تعديل
                     </Button>

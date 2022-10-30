@@ -7,7 +7,7 @@ import { Post, UserType } from "../../projectTypes";
 import Head from "next/head";
 import Pagination from "@mui/material/Pagination";
 
-import { PostCard, SearchForm } from "../../components/cards";
+import { PostCard, PostRentForm, SearchForm } from "../../components/cards";
 import { useUser } from "../../lib/auth/hooks";
 // import { QueryBuilder } from "@mui/icons-material";
 
@@ -20,7 +20,7 @@ export default function Page({
 }) {
   const router = useRouter();
   // const user = useUser();
-  const { action, location } = router.query;
+  const { action, location, type } = router.query;
   const user = useUser();
 
   const posts = JSON.parse(result) as Post[];
@@ -83,9 +83,18 @@ export default function Page({
     );
   }
 
+  function rentUpdate() {
+    const post = result && (JSON.parse(result)[0] as Post);
+
+    return post && <PostRentForm upost={post}></PostRentForm>;
+  }
+
   return (
     <Layout>
-      <Box>{rPosts()}</Box>
+      <Box>
+        {(type == "offer" || type == "buying") && <Box>{rPosts()}</Box>}
+        {action == "update" && <Box>{rentUpdate()}</Box>}
+      </Box>
     </Layout>
   );
 }
@@ -99,6 +108,8 @@ export async function getServerSideProps({
   const allposts_old = await DBPost.find({ hidden: false }).sort({
     createdAt: -1,
   });
+
+  const action = query.action;
 
   const allposts = allposts_old.filter(
     (post) =>
@@ -117,12 +128,17 @@ export async function getServerSideProps({
   //
 
   // if requesting all the Posts
-  if (query.type == "offer") {
+  if (action == "offer") {
     fposts = allposts.filter((post) => post.type == "offerRent");
   }
 
-  if (query.type == "demand") {
+  if (action == "demand") {
     fposts = allposts.filter((post) => post.type == "demandRent");
+  }
+
+  if (action == "update") {
+    const id = query.id;
+    fposts = allposts.filter((post) => post._id == id);
   }
   // repuser.push(user);
 

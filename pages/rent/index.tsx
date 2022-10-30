@@ -106,7 +106,7 @@ export default function Page() {
                 </Box>
               </Box>
             </Link>
-            <Link href={"/rent/posts?action=posts&type=offer"}>
+            <Link href={"/rent/posts?action=offer"}>
               <Box
                 sx={{
                   bgColor: "#fff",
@@ -144,7 +144,7 @@ export default function Page() {
                 </Box>
               </Box>
             </Link>
-            <Link href={"/rent/posts?action=posts&type=demand"}>
+            <Link href={"/rent/posts?action=demand"}>
               <Box
                 sx={{
                   bgColor: "#fff",
