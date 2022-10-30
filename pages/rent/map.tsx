@@ -8,14 +8,6 @@ import Layout from "../../components/layout";
 import { useRouter } from "next/router";
 import * as geolib from "geolib";
 import { Post } from "../../projectTypes";
-import {
-  Chalet,
-  HouseSiding,
-  OtherHouses,
-  Apartment,
-  HomeWork,
-  Villa,
-} from "@mui/icons-material";
 import { FillMapO, FillMapPH, FillMapS } from "../../components/maprent.";
 
 // const Map = dynamic(() => import("../components/map"), {

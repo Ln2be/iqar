@@ -224,11 +224,6 @@ export const subtypes = {
     },
 
     {
-      value: "stay",
-      label: "شقة مفروشة",
-    },
-
-    {
       value: "shop",
       label: "محل",
     },

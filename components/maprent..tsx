@@ -34,6 +34,7 @@ import {
   lapsedTimeDays,
 } from "../lib/myfunctions";
 
+const deleted: string[] = [];
 export function FillMapPH({ posts }: { posts: Post[] }) {
   const [gposti, setGPostI] = useState<number>();
   const [render, setRender] = useState<boolean>(false);
@@ -43,8 +44,16 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
 
   const [state, setState] = useState<string>("contact");
 
+  const ndposts = posts.filter(
+    (post) => post._id && !deleted.includes(post._id)
+  );
+
+  function onDelete(id: string) {
+    deleted.push(id);
+  }
+
   const [cpost, setCPost] = useState<Post>();
-  const oposts = posts.filter(
+  const oposts = ndposts.filter(
     (post) =>
       post.type == "offerRent" &&
       post.mapregion &&
@@ -71,25 +80,25 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
     "Toujounine",
   ].map((region) => {
     // spaced blocks
-    const space = posts.filter(
+    const space = ndposts.filter(
       (post) =>
         post.type == "demandRent" &&
         post.mapregion == region &&
-        categoryPrice(post.price) == filter &&
-        lapsedTimeDays(post.createdAt) < 30
+        categoryPrice(post.price) == filter
+      // lapsedTimeDays(post.createdAt) < 30
     );
 
     gposts.space.push(space);
 
-    const old = posts.filter(
-      (post) =>
-        post.type == "demandRent" &&
-        post.mapregion == region &&
-        categoryPrice(post.price) == filter &&
-        lapsedTimeDays(post.createdAt) >= 30
-    );
+    // const old = ndposts.filter(
+    //   (post) =>
+    //     post.type == "demandRent" &&
+    //     post.mapregion == region &&
+    //     categoryPrice(post.price) == filter &&
+    //     lapsedTimeDays(post.createdAt) >= 30
+    // );
 
-    gposts.old.push(old);
+    // gposts.old.push(old);
   });
 
   function rCPosts({ ctype }: { ctype: string }) {
@@ -102,20 +111,20 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
 
     if (state == "comparison" && gposti != undefined && cpost) {
       const space = gposts.space.filter((post) => {
-        return post[0].mapregion == cpost.mapregion;
+        return post.length > 0 && post[0].mapregion == cpost.mapregion;
       })[0];
 
       cposts.space = space.filter(
         (post) => post._id && !cpost.comparedTo?.includes(post._id)
       );
 
-      const old = gposts.old.filter((post) => {
-        return post[0].mapregion == cpost.mapregion;
-      })[0];
+      // const old = gposts.old.filter((post) => {
+      //   return post[0].mapregion == cpost.mapregion;
+      // })[0];
 
-      cposts.old = old.filter(
-        (post) => post._id && !cpost.comparedTo?.includes(post._id)
-      );
+      // cposts.old = old.filter(
+      //   (post) => post._id && !cpost.comparedTo?.includes(post._id)
+      // );
     }
 
     // remove the post compared
@@ -138,13 +147,7 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
             return (
               post && (
                 <Overlay key={i} anchor={post.position}>
-                  <Badge
-                    badgeContent={length}
-                    sx={{
-                      backgroundColor: key == "space" ? "blue" : "black",
-                      color: "white",
-                    }}
-                  >
+                  <Badge badgeContent={length} color="primary">
                     <IMarkerPH
                       onClick={() => {
                         setKey(key);
@@ -356,11 +359,22 @@ export function FillMapPH({ posts }: { posts: Post[] }) {
         {state == "contact" &&
           (key && type == "demand" && gposti != undefined
             ? gposts[key][gposti].map((gpost, i) => {
-                return <PostCard key={i} type="post" post={gpost}></PostCard>;
+                return (
+                  <PostCard
+                    onDelete={onDelete}
+                    key={i}
+                    type="post"
+                    post={gpost}
+                  ></PostCard>
+                );
               })
             : gposti != undefined &&
               type == "offer" && (
-                <PostCard type="post" post={oposts[gposti]}></PostCard>
+                <PostCard
+                  onDelete={onDelete}
+                  type="post"
+                  post={oposts[gposti]}
+                ></PostCard>
               ))}
         {rCPosts({ ctype: "show" })}
       </Box>
@@ -373,11 +387,11 @@ function categoryPrice(price: number) {
     ? "price40"
     : 50 <= price && price <= 70
     ? "price60"
-    : 80 <= price && price <= 100
+    : 70 < price && price <= 100
     ? "price90"
-    : 110 <= price && price <= 130
+    : 100 < price && price <= 130
     ? "price120"
-    : 140 <= price && price <= 160
+    : 130 < price && price <= 160
     ? "price150"
     : "price170";
 }

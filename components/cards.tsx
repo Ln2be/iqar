@@ -50,10 +50,12 @@ export function PostCard({
   post,
   type = "feed",
   comparaison,
+  onDelete,
 }: {
   post: Post;
   type: string;
   comparaison?: { tel: string; url: string; remove: (id: string) => void };
+  onDelete?: (id: string) => void;
 }) {
   const user = useUser();
   const router = useRouter();
@@ -304,7 +306,9 @@ export function PostCard({
                   onClick={() => {
                     fetch("/api/posts?action=delete&id=" + post._id).then(
                       () => {
-                        router.reload();
+                        if (onDelete && post._id) {
+                          onDelete(post._id);
+                        }
                       }
                     );
                   }}
@@ -402,46 +406,6 @@ export function PostCard({
           
           
           */}
-
-            {/* {type == "post" && (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "end",
-                  mt: 2,
-                }}
-              >
-                <TextField
-                  id="codeTel"
-                  label="الهاتف"
-                  // type="tel"
-                  style={{
-                    backgroundColor: "white",
-                  }}
-                  variant="outlined"
-                  onChange={(event) => {
-                    codeTelObject.codeTel = event.target.value;
-                  }}
-                  required
-                />
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    fetch(
-                      "/api/sendto?action=sendTo&codeTel=" +
-                        codeTelObject.codeTel +
-                        "&id=" +
-                        post._id
-                    ).then(() => {
-                      router.reload();
-                    });
-                  }}
-                >
-                  احالة
-                </Button>
-              </Box>
-            )} */}
 
             {type == "post" && (!post.track || !post.track.postLink) && (
               <Box
